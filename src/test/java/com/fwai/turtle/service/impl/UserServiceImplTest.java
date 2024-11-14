@@ -1,7 +1,7 @@
 package com.fwai.turtle.service.impl;
 
-import com.fwai.turtle.persistence.model.User;
-import com.fwai.turtle.persistence.repositories.UserRepository;
+import com.fwai.turtle.persistence.entity.User;
+import com.fwai.turtle.persistence.repository.UserRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -49,25 +49,25 @@ public class UserServiceImplTest {
   void findByEmail_ShouldReturnUser_WhenFound() {
     User expectedUser = User.builder().email(TEST_EMAIL).build();
 
-    when(userRepository.findByEmail(TEST_EMAIL)).thenReturn(Optional.of(expectedUser));
+    when(userRepository.findByUsername(TEST_EMAIL)).thenReturn(Optional.of(expectedUser));
 
-    User result = userService.findByEmail(TEST_EMAIL)
+    User result = userService.findByUsername(TEST_EMAIL)
         .orElseThrow(() -> new RuntimeException("User " + TEST_EMAIL + " not found"));
 
     log.info(result.toString());
 
     assertNotNull(result);
-    assertEquals(TEST_EMAIL, result.getEmail());
-    verify(userRepository, times(1)).findByEmail(TEST_EMAIL);
+    assertEquals(TEST_EMAIL, result.getUsername());
+    verify(userRepository, times(1)).findByUsername(TEST_EMAIL);
   }
 
   @Test
   void findByEmail_ShouldReturnNull_WhenNotFound() {
-    when(userRepository.findByEmail(TEST_EMAIL)).thenReturn(Optional.empty());
+    when(userRepository.findByUsername(TEST_EMAIL)).thenReturn(Optional.empty());
 
-    Optional<User> result = userService.findByEmail(TEST_EMAIL);
+    Optional<User> result = userService.findByUsername(TEST_EMAIL);
 
     assert (result.isEmpty());
-    verify(userRepository, times(1)).findByEmail(TEST_EMAIL);
+    verify(userRepository, times(1)).findByUsername(TEST_EMAIL);
   }
 }

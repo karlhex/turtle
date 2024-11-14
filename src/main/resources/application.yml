@@ -1,13 +1,23 @@
+server:
+  servlet:
+    context-path: /api
 spring:
+  jackson:
+    date-format: yyyy-MM-dd
+    time-format: HH:mm:ss
+    time-zone: GMT+8
   profiles:
-    active: test
+    active: dev
   datasource:
-    url: jdbc:h2:mem:mydb
-    username: sa
-    password: password
-    driverClassName: org.h2.Driver
+    url: jdbc:postgresql://127.0.0.1:5432/emsdb
+    username: ems
+    password: example
+    driverClassName: org.postgresql.Driver
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+      show_sql: true
 token:
   signing:
     secretKey: "NllmZHptNVVrNG9RRUs3NllmZHptNVVrNG9RRUs3NllmZHptNVVrNG9RRUs3NllmZHptNVVrNG9RRUs3NllmZHptNVVrNG9RRUs3NllmZHptNVVrNG9RRUs3NllmZHptNVVrNG9RRUs3Nl"

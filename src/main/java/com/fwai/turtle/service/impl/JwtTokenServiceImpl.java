@@ -2,9 +2,10 @@ package com.fwai.turtle.service.impl;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import com.fwai.turtle.persistence.model.Role;
-import com.fwai.turtle.persistence.types.RoleType;
+
+import com.fwai.turtle.persistence.entity.Role;
 import com.fwai.turtle.service.interfaces.JwtTokenService;
+import com.fwai.turtle.types.RoleType;
 
 import javax.crypto.SecretKey;
 import java.util.function.Function;

@@ -1,0 +1,51 @@
+package com.fwai.turtle.dto;
+
+import lombok.Data;
+import jakarta.validation.constraints.*;
+
+import java.util.List;
+
+import com.fwai.turtle.persistence.entity.Department;
+import com.fwai.turtle.persistence.entity.Person;
+
+import java.time.LocalDate;
+
+@Data
+public class EmployeeDTO {
+    private Long id;
+    
+    @NotBlank
+    private String name;
+    
+    @NotBlank
+    private String employeeNumber;
+    
+    @Email
+    private String email;
+    
+    private String phone;
+    private Department department;
+    private String position;
+    private Boolean isActive;
+
+    private LocalDate hireDate;
+
+    private LocalDate leaveDate;
+
+    private String remarks;
+    private Person emergencyContact;
+    private LocalDate birthday;
+    private String gender;
+    private String ethnicity;
+    private String contractType;
+    private Integer contractDuration;
+    private LocalDate contractStartDate;
+    private String idType;
+    
+    @NotBlank
+    private String idNumber;
+
+    private List<EmployeeEducationDTO> educations;
+    private List<EmployeeAttendanceDTO> attendances;
+    private List<EmployeeLeaveDTO> leaves;
+} 

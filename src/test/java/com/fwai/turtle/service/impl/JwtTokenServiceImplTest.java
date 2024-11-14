@@ -1,7 +1,8 @@
 package com.fwai.turtle.service.impl;
 
-import com.fwai.turtle.persistence.model.Role;
-import com.fwai.turtle.persistence.types.RoleType;
+import com.fwai.turtle.persistence.entity.Role;
+import com.fwai.turtle.types.RoleType;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
