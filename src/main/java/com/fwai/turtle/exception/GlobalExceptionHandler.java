@@ -37,4 +37,9 @@ public class GlobalExceptionHandler {
     public Result<Void> handleResourceNotFoundException(ResourceNotFoundException ex) {
         return Result.error(404, ex.getMessage());
     }
-} 
+
+    @ExceptionHandler(AuthenticationException.class)
+    public Result<Void> handleAuthenticationException(AuthenticationException ex) {
+        return Result.error(401, ex.getMessage());
+    }
+}

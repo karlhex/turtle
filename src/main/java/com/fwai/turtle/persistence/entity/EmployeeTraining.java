@@ -26,10 +26,9 @@ public class EmployeeTraining {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "employee_id", nullable = false)
-    private Employee employee;              // 关联员工
-
+    @Column(nullable = false)
+    private Long employeeId;
+    
     @Column(nullable = false)
     private String trainingName;            // 培训名称
 

@@ -22,7 +22,18 @@ public class UserServiceImpl implements UserService {
   private UserRepository userRepository;
 
   @Override
+  public Optional<User> findByEmail(String email) {
+    try {
+      User user = userRepository.findByEmail(email).orElse(null);
+      log.info("findByEmail: {}, user: {}", email, user);
+      return Optional.ofNullable(user);
+    } catch (Exception e) {
+      log.error("Error finding user by email: {}", email, e);
+      return Optional.empty();
+    }
+  }
 
+  @Override
   public Optional<User> findById(Long id) {
     try {
       User user = userRepository.findById(id).orElse(null);

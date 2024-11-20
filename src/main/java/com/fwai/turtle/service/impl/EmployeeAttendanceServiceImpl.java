@@ -1,7 +1,9 @@
-package com.fwai.turtle.service;
+package com.fwai.turtle.service.impl;
 
 import java.time.LocalDate;
 import java.util.stream.Collectors;
+
+import com.fwai.turtle.service.interfaces.EmployeeAttendanceService;
 
 import com.fwai.turtle.dto.EmployeeAttendanceDTO;
 import com.fwai.turtle.exception.DuplicateRecordException;
@@ -20,7 +22,7 @@ import com.fwai.turtle.common.Result;
 import java.util.List;
 
 @Service
-public class EmployeeAttendanceService {
+public class EmployeeAttendanceServiceImpl implements EmployeeAttendanceService {
         @Autowired
         private EmployeeRepository employeeRepository;
 

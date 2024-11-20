@@ -3,24 +3,37 @@ package com.fwai.turtle.controller;
 import com.fwai.turtle.common.Result;
 import com.fwai.turtle.dto.EmployeeDTO;
 import com.fwai.turtle.dto.EmployeeEducationDTO;
+import com.fwai.turtle.dto.EmployeeJobHistoryDTO;
 import com.fwai.turtle.dto.EmployeeAttendanceDTO;
+import com.fwai.turtle.dto.EmployeeLeaveDTO;
+import com.fwai.turtle.dto.EmployeePayrollDTO;
 import com.fwai.turtle.service.EmployeeService;
+import com.fwai.turtle.service.impl.EmployeeAttendanceServiceImpl;
+import com.fwai.turtle.service.interfaces.IEmployeeLeaveService;
+import com.fwai.turtle.service.interfaces.IEmployeePayrollService;
+import com.fwai.turtle.service.interfaces.IEmployeeEducationService;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.fwai.turtle.service.EmployeeEducationService;
-
 import jakarta.validation.Valid;
 import java.util.List;
-import com.fwai.turtle.service.EmployeeAttendanceService;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.fwai.turtle.service.interfaces.EmployeeJobHistoryService;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/employees")
 public class EmployeeController {
     private final EmployeeService employeeService;
-    private final EmployeeEducationService employeeEducationService;
-    private final EmployeeAttendanceService employeeAttendanceService;
+    private final IEmployeeEducationService employeeEducationService;
+    private final EmployeeAttendanceServiceImpl employeeAttendanceService;
+    private final IEmployeeLeaveService employeeLeaveService;
+    private final IEmployeePayrollService employeePayrollService;
+    @Autowired
+    private final EmployeeJobHistoryService employeeJobHistoryService;
 
     @PostMapping
     public ResponseEntity<Result<EmployeeDTO>> create(@Valid @RequestBody EmployeeDTO employeeDTO) {
@@ -98,4 +111,71 @@ public class EmployeeController {
         return employeeAttendanceService.delete(employeeId, attendanceId);
     }
 
-} 
+    @GetMapping("/{employeeId}/job-history")
+    public Result<List<EmployeeJobHistoryDTO>> getJobHistory(@PathVariable Long employeeId) {
+        return employeeJobHistoryService.getByEmployeeId(employeeId);
+    }
+
+    @PostMapping("/{employeeId}/job-history")
+    public Result<EmployeeJobHistoryDTO> createJobHistory(@PathVariable Long employeeId, @RequestBody EmployeeJobHistoryDTO jobHistoryDTO) {
+        jobHistoryDTO.setEmployeeId(employeeId);
+        return employeeJobHistoryService.add(employeeId, jobHistoryDTO);
+    }
+
+    @PutMapping("/{employeeId}/job-history/{id}")
+    public Result<EmployeeJobHistoryDTO> updateJobHistory(@PathVariable Long employeeId, @PathVariable Long id, @RequestBody EmployeeJobHistoryDTO jobHistoryDTO) {
+        jobHistoryDTO.setEmployeeId(employeeId);
+        return employeeJobHistoryService.update(employeeId, id, jobHistoryDTO);
+    }
+
+    @DeleteMapping("/{employeeId}/job-history/{id}")
+    public Result<Void> deleteJobHistory(@PathVariable Long employeeId, @PathVariable Long id) {
+        return employeeJobHistoryService.delete(employeeId, id);
+    }
+
+    // Employee Leave APIs
+    @PostMapping("/{employeeId}/leaves")
+    public ResponseEntity<Result<EmployeeLeaveDTO>> addLeave(
+            @PathVariable Long employeeId,
+            @Valid @RequestBody EmployeeLeaveDTO leaveDTO) {
+        return ResponseEntity.ok(employeeLeaveService.add(employeeId, leaveDTO));
+    }
+
+    @PutMapping("/{employeeId}/leaves/{leaveId}")
+    public ResponseEntity<Result<EmployeeLeaveDTO>> updateLeave(
+            @PathVariable Long employeeId,
+            @PathVariable Long leaveId,
+            @Valid @RequestBody EmployeeLeaveDTO leaveDTO) {
+        return ResponseEntity.ok(employeeLeaveService.update(employeeId, leaveId, leaveDTO));
+    }
+
+    @DeleteMapping("/{employeeId}/leaves/{leaveId}")
+    public ResponseEntity<Result<Void>> deleteLeave(
+            @PathVariable Long employeeId,
+            @PathVariable Long leaveId) {
+        return ResponseEntity.ok(employeeLeaveService.delete(employeeId, leaveId));
+    }
+
+    // Employee Payroll APIs
+    @PostMapping("/{employeeId}/payrolls")
+    public ResponseEntity<Result<EmployeePayrollDTO>> addPayroll(
+            @PathVariable Long employeeId,
+            @Valid @RequestBody EmployeePayrollDTO payrollDTO) {
+        return ResponseEntity.ok(employeePayrollService.add(employeeId, payrollDTO));
+    }
+
+    @PutMapping("/{employeeId}/payrolls/{payrollId}")
+    public ResponseEntity<Result<EmployeePayrollDTO>> updatePayroll(
+            @PathVariable Long employeeId,
+            @PathVariable Long payrollId,
+            @Valid @RequestBody EmployeePayrollDTO payrollDTO) {
+        return ResponseEntity.ok(employeePayrollService.update(employeeId, payrollId, payrollDTO));
+    }
+
+    @DeleteMapping("/{employeeId}/payrolls/{payrollId}")
+    public ResponseEntity<Result<Void>> deletePayroll(
+            @PathVariable Long employeeId,
+            @PathVariable Long payrollId) {
+        return ResponseEntity.ok(employeePayrollService.delete(employeeId, payrollId));
+    }
+}

@@ -28,10 +28,10 @@ public class SecurityConfiguration {
   private JwtAuthenticationFilter jwtAuthenticationFilter;
 
   private static final String[] AUTH_WHITELIST = {
-      "/v1/auth/**",
-      "/h2-console/**",
-      "/hello",
-      "/employees/**"
+      "/api/v1/auth/**",
+      "/api/h2-console/**",
+      "/api/hello",
+      "/api/employees/**"
   };
 
   @Bean

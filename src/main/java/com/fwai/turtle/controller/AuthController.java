@@ -1,7 +1,6 @@
 package com.fwai.turtle.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +10,7 @@ import com.fwai.turtle.dto.SigninAns;
 import com.fwai.turtle.dto.SigninReq;
 import com.fwai.turtle.dto.SignupReq;
 import com.fwai.turtle.service.interfaces.AuthService;
+import com.fwai.turtle.common.Result;
 
 @RestController
 @RequestMapping("/v1/auth")
@@ -20,13 +20,13 @@ public class AuthController {
   private AuthService authService;
 
   @PostMapping("/signin")
-  ResponseEntity<SigninAns> signin(@RequestBody SigninReq signinReq) {
-    return ResponseEntity.ok(authService.signin(signinReq));
+  public Result<SigninAns> signin(@RequestBody SigninReq signinReq) {
+    return Result.success(authService.signin(signinReq));
   }
 
   @PostMapping("/signup")
-  ResponseEntity<SigninAns> signup(@RequestBody SignupReq signupReq) {
-    return ResponseEntity.ok(authService.signup(signupReq));
+  public Result<SigninAns> signup(@RequestBody SignupReq signupReq) {
+    return Result.success(authService.signup(signupReq));
   }
 
 }

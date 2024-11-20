@@ -7,6 +7,8 @@ import com.fwai.turtle.persistence.entity.User;
 public interface UserService {
   public Optional<User> findByUsername(String username);
 
+  public Optional<User> findByEmail(String email);
+
   public Optional<User> findById(Long id);
 
   public User newUser(User user);

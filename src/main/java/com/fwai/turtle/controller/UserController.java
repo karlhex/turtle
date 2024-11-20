@@ -11,33 +11,41 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.fwai.turtle.persistence.entity.User;
 import com.fwai.turtle.service.interfaces.UserService;
+import com.fwai.turtle.common.Result;
+import com.fwai.turtle.exception.ResourceNotFoundException;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping("/v1/users")
+@RequestMapping("/users")
 public class UserController {
 
   @Autowired
   private UserService userService;
 
   @GetMapping("/{id}")
-  public User getUser(@PathVariable("id") Long id) {
+  public Result<User> getUser(@PathVariable("id") Long id) {
     log.info("getUser: {}", id);
-    return userService.findById(id).orElse(null);
+    return Result.success(userService.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id)));
   }
 
   @DeleteMapping("/{id}")
-  public User destroyUser(@PathVariable("id") Long id) {
+  public Result<User> destroyUser(@PathVariable("id") Long id) {
     log.info("destroyUser: {}", id);
-    return userService.destroyUser(userService.findById(id).orElse(null));
+    User user = userService.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
+    return Result.success(userService.destroyUser(user));
   }
 
   @PutMapping("/{id}")
-  public User updateUser(@PathVariable("id") Long id, @RequestBody User user) {
+  public Result<User> updateUser(@PathVariable("id") Long id, @RequestBody User user) {
     log.info("updateUser: {}", id);
+    if (!userService.findById(id).isPresent()) {
+      throw new ResourceNotFoundException("User not found with id: " + id);
+    }
     user.setId(id);
-    return userService.updateUser(user);
+    return Result.success(userService.updateUser(user));
   }
 }
