@@ -1,0 +1,159 @@
+{
+  "app": {
+    "title": "乌龟人力资源管理系统",
+    "menu": {
+      "dashboard": "仪表盘",
+      "employees": "员工管理",
+      "departments": "部门管理",
+      "positions": "职位管理",
+      "attendance": "考勤管理",
+      "leave": "请假管理",
+      "payroll": "工资管理",
+      "logout": "退出登录"
+    }
+  },
+  "employee": {
+    "title": "员工管理",
+    "search": {
+      "label": "搜索员工",
+      "placeholder": "搜索姓名、邮箱或部门"
+    },
+    "actions": {
+      "add": "添加员工",
+      "view": "查看员工",
+      "edit": "编辑员工",
+      "delete": "删除员工",
+      "save": "保存",
+      "cancel": "取消",
+      "ok": "确定"
+    },
+    "list": {
+      "id": "工号",
+      "name": "姓名",
+      "email": "邮箱",
+      "department": "部门",
+      "position": "职位",
+      "hireDate": "入职日期",
+      "status": "状态",
+      "actions": "操作",
+      "noResults": "没有找到员工",
+      "matching": "匹配"
+    },
+    "status": {
+      "active": "在职",
+      "inactive": "离职"
+    },
+    "form": {
+      "basic": {
+        "title": "基本信息",
+        "employeeNumber": "工号",
+        "name": "姓名",
+        "email": "邮箱",
+        "phone": "电话"
+      },
+      "department": {
+        "title": "部门与职位",
+        "department": "部门",
+        "position": "职位",
+        "hireDate": "入职日期",
+        "leaveDate": "离职日期"
+      },
+      "personal": {
+        "title": "个人信息",
+        "birthday": "出生日期",
+        "gender": "性别",
+        "idNumber": "身份证号",
+        "ethnicity": "民族",
+        "idType": "证件类型",
+        "idTypeCell": {
+          "idCard": "身份证",
+          "passport": "护照",
+          "other": "其他"
+        }
+      },
+      "emergency": {
+        "title": "紧急联系人",
+        "person": "选择联系人",
+        "name": "姓名",
+        "phone": "联系电话",
+        "email": "电子邮箱",
+        "address": "联系地址"
+      },
+      "contract": {
+        "title": "合同信息",
+        "type": "合同类型",
+        "duration": "合同期限(月)",
+        "startDate": "合同开始日期"
+      },
+      "additional": {
+        "title": "备注",
+        "remarks": "备注信息",
+        "status": "在职状态"
+      }
+    },
+    "validation": {
+      "required": {
+        "employeeNumber": "工号不能为空",
+        "name": "姓名不能为空",
+        "email": "邮箱不能为空",
+        "department": "部门不能为空",
+        "position": "职位不能为空",
+        "hireDate": "入职日期不能为空",
+        "idNumber": "身份证号不能为空"
+      },
+      "email": {
+        "invalid": "请输入有效的邮箱地址"
+      }
+    }
+  },
+  "department": {
+    "title": "部门管理",
+    "search": {
+      "label": "搜索部门",
+      "placeholder": "按名称、代码或描述搜索"
+    },
+    "button": {
+      "add": "添加部门",
+      "edit": "编辑部门",
+      "delete": "删除部门",
+      "save": "保存",
+      "cancel": "取消"
+    },
+    "list": {
+      "name": "名称",
+      "code": "代码",
+      "description": "描述",
+      "parentDepartment": "上级部门",
+      "manager": "负责人",
+      "actions": "操作"
+    },
+    "dialog": {
+      "add": "添加部门",
+      "edit": "编辑部门",
+      "name": "部门名称",
+      "code": "部门代码",
+      "description": "部门描述",
+      "parentDepartment": "上级部门",
+      "manager": "负责人",
+      "nameRequired": "请输入部门名称",
+      "codeRequired": "请输入部门代码",
+      "descriptionRequired": "请输入部门描述"
+    },
+    "message": {
+      "saveSuccess": "保存成功",
+      "deleteSuccess": "删除成功",
+      "deleteConfirm": "确定要删除此部门吗？",
+      "error": "操作失败"
+    }
+  },
+  "common": {
+    "button": {
+      "confirm": "确定",
+      "cancel": "取消"
+    },
+    "status": {
+      "active": "启用",
+      "inactive": "禁用"
+    }
+  }
+}

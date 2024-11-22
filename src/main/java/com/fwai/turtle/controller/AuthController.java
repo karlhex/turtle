@@ -9,11 +9,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fwai.turtle.dto.SigninAns;
 import com.fwai.turtle.dto.SigninReq;
 import com.fwai.turtle.dto.SignupReq;
+import com.fwai.turtle.dto.RefreshTokenRequest;
 import com.fwai.turtle.service.interfaces.AuthService;
 import com.fwai.turtle.common.Result;
 
 @RestController
-@RequestMapping("/v1/auth")
+@RequestMapping("/auth")
 public class AuthController {
 
   @Autowired
@@ -29,4 +30,8 @@ public class AuthController {
     return Result.success(authService.signup(signupReq));
   }
 
+  @PostMapping("/refresh")
+  public Result<SigninAns> refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest) {
+    return Result.success(authService.refreshToken(refreshTokenRequest));
+  }
 }

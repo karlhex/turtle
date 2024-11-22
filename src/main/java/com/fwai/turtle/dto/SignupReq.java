@@ -2,8 +2,6 @@ package com.fwai.turtle.dto;
 
 import java.util.Set;
 
-import com.fwai.turtle.persistence.entity.Role;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -17,5 +15,5 @@ public class SignupReq {
     String password;
     String username;
 
-    Set<Role> roles;
+    Set<String> roles;
 }

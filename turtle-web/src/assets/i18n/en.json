@@ -1,0 +1,145 @@
+{
+  "app": {
+    "title": "Turtle HR Management System",
+    "menu": {
+      "dashboard": "Dashboard",
+      "employees": "Employees",
+      "departments": "Departments",
+      "positions": "Positions",
+      "attendance": "Attendance",
+      "leave": "Leave Management",
+      "payroll": "Payroll",
+      "logout": "Logout"
+    }
+  },
+  "employee": {
+    "title": "Employees",
+    "search": {
+      "label": "Search employees",
+      "placeholder": "Search by name, email, or department"
+    },
+    "actions": {
+      "add": "Add Employee",
+      "view": "View employee",
+      "edit": "Edit employee",
+      "delete": "Delete employee",
+      "save": "Save",
+      "cancel": "Cancel",
+      "ok": "OK"
+    },
+    "list": {
+      "id": "ID",
+      "name": "Name",
+      "email": "Email",
+      "department": "Department",
+      "position": "Position",
+      "hireDate": "Hire Date",
+      "status": "Status",
+      "actions": "Actions",
+      "noResults": "No employees found",
+      "matching": "matching"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "form": {
+      "basic": {
+        "title": "Basic Information",
+        "employeeNumber": "Employee Number",
+        "name": "Name",
+        "email": "Email",
+        "phone": "Phone"
+      },
+      "department": {
+        "title": "Department & Position",
+        "department": "Department",
+        "position": "Position",
+        "hireDate": "Hire Date",
+        "leaveDate": "Leave Date"
+      },
+      "personal": {
+        "title": "Personal Information",
+        "birthday": "Birthday",
+        "gender": "Gender",
+        "idNumber": "ID Number",
+        "ethnicity": "Ethnicity",
+        "idType": "ID Type"
+      },
+      "emergency": {
+        "title": "Emergency Contact",
+        "name": "Contact Name",
+        "phone": "Contact Phone",
+        "address": "Contact Address",
+        "email": "Contact Email"
+      },
+      "contract": {
+        "title": "Contract Information",
+        "type": "Contract Type",
+        "duration": "Contract Duration (months)",
+        "startDate": "Contract Start Date"
+      },
+      "additional": {
+        "title": "Additional Information",
+        "remarks": "Remarks",
+        "status": "Active Employee"
+      }
+    },
+    "validation": {
+      "required": {
+        "employeeNumber": "Employee number is required",
+        "name": "Name is required",
+        "email": "Email is required",
+        "department": "Department is required",
+        "position": "Position is required",
+        "hireDate": "Hire date is required",
+        "idNumber": "ID number is required"
+      },
+      "email": {
+        "invalid": "Please enter a valid email"
+      }
+    }
+  },
+  "department": {
+    "title": "Department Management",
+    "search": {
+      "label": "Search Departments",
+      "placeholder": "Search by name or description"
+    },
+    "list": {
+      "name": "Department Name",
+      "description": "Description",
+      "parentDepartment": "Parent Department",
+      "manager": "Manager",
+      "actions": "Actions"
+    },
+    "dialog": {
+      "add": "Add Department",
+      "edit": "Edit Department",
+      "name": "Department Name",
+      "description": "Description",
+      "parentDepartment": "Parent Department",
+      "manager": "Manager",
+      "nameRequired": "Department name is required",
+      "descriptionRequired": "Description is required"
+    },
+    "button": {
+      "add": "Add Department",
+      "edit": "Edit",
+      "delete": "Delete",
+      "save": "Save",
+      "cancel": "Cancel"
+    },
+    "message": {
+      "deleteConfirm": "Are you sure you want to delete this department?",
+      "deleteSuccess": "Department deleted successfully",
+      "saveSuccess": "Department saved successfully"
+    }
+  },
+  "common": {
+    "button": {
+      "confirm": "Confirm",
+      "cancel": "Cancel"
+    }
+  }
+}

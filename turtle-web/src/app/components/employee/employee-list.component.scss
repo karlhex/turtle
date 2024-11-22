@@ -1,0 +1,169 @@
+.employee-list-container {
+  padding: 24px;
+
+  mat-card {
+    .mat-mdc-card-header {
+      padding: 16px;
+    }
+
+    mat-card-header {
+      margin-bottom: 20px;
+    }
+
+    mat-card-content {
+      padding: 0 16px 16px 16px;
+    }
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+
+    h1 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 500;
+    }
+
+    .actions {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+
+      .search-field {
+        width: 300px;
+      }
+
+      .add-button {
+        height: 48px;
+      }
+    }
+  }
+
+  .table-container {
+    position: relative;
+    min-height: 200px;
+    overflow: auto;
+
+    table {
+      width: 100%;
+
+      .mat-mdc-row {
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.04);
+        }
+      }
+
+      .mat-column-actions {
+        width: 160px;
+        text-align: center;
+        padding: 0 8px;
+
+        .actions-cell {
+          padding: 0;
+        }
+
+        .action-buttons {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 4px;
+
+          button {
+            margin: 0;
+          }
+        }
+      }
+
+      .mat-column-isActive {
+        width: 120px;
+        text-align: center;
+      }
+
+      .mat-column-employeeNumber {
+        width: 100px;
+      }
+
+      .mat-column-hireDate {
+        width: 120px;
+      }
+
+      td.mat-cell {
+        padding: 16px;
+      }
+    }
+
+    .no-data-message {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px;
+      color: rgba(0, 0, 0, 0.54);
+
+      mat-icon {
+        margin-right: 8px;
+      }
+    }
+
+    .no-data {
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+      font-style: italic;
+      color: rgba(0, 0, 0, 0.54);
+    }
+  }
+
+  ::ng-deep {
+    .delete-action {
+      color: #f44336;  // Material Design red color
+      
+      .mat-icon {
+        color: #f44336;
+      }
+    }
+  }
+
+  // Status chip styles
+  .status-chip {
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+
+    &.status-active {
+      background-color: #e8f5e9;
+      color: #2e7d32;
+    }
+
+    &.status-inactive {
+      background-color: #fafafa;
+      color: #616161;
+    }
+  }
+
+  // Responsive adjustments
+  @media (max-width: 768px) {
+    padding: 10px;
+
+    .mat-column-email,
+    .mat-column-department,
+    .mat-column-position {
+      display: none;
+    }
+
+    td.mat-cell {
+      padding: 12px 6px;
+    }
+  }
+}
+
+mat-progress-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}

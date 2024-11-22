@@ -1,5 +1,6 @@
 package com.fwai.turtle.controller;
 
+import com.fwai.turtle.common.PageResponse;
 import com.fwai.turtle.common.Result;
 import com.fwai.turtle.dto.EmployeeDTO;
 import com.fwai.turtle.dto.EmployeeEducationDTO;
@@ -12,6 +13,7 @@ import com.fwai.turtle.service.impl.EmployeeAttendanceServiceImpl;
 import com.fwai.turtle.service.interfaces.IEmployeeLeaveService;
 import com.fwai.turtle.service.interfaces.IEmployeePayrollService;
 import com.fwai.turtle.service.interfaces.IEmployeeEducationService;
+import com.fwai.turtle.service.interfaces.EmployeeJobHistoryService;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +22,6 @@ import jakarta.validation.Valid;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
-import com.fwai.turtle.service.interfaces.EmployeeJobHistoryService;
 
 @RestController
 @RequiredArgsConstructor
@@ -51,10 +51,20 @@ public class EmployeeController {
     }
 
     @GetMapping
-    public ResponseEntity<Result<List<EmployeeDTO>>> getAll(
+    public ResponseEntity<Result<PageResponse<EmployeeDTO>>> getAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "ASC") String direction) {
+        return ResponseEntity.ok(employeeService.getAll(page, size, sortBy, direction));
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<Result<PageResponse<EmployeeDTO>>> search(
+            @RequestParam String query,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
-        return ResponseEntity.ok(employeeService.getAll(page, size));
+        return ResponseEntity.ok(employeeService.search(query, page, size));
     }
 
     @DeleteMapping("/{id}")

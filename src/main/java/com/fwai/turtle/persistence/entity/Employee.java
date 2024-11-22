@@ -41,7 +41,7 @@ public class Employee {
     @Column
     private String phone;           // 电话
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "department_id")
     private Department department;   // 所属部门
 
@@ -61,7 +61,7 @@ public class Employee {
     @Column
     private String remarks;         // 备注
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "emergency_contact_id")
     private Person emergencyContact;        // 紧急联系人
 
