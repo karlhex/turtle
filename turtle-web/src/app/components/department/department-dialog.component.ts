@@ -27,9 +27,11 @@ export class DepartmentDialogComponent implements OnInit {
   ) {
     this.departmentForm = this.fb.group({
       name: ['', [Validators.required]],
+      code: ['', [Validators.required]],
       description: ['', [Validators.required]],
       parentId: [null],
-      managerId: [null]
+      managerId: [null],
+      isActive: [true]
     });
   }
 
@@ -40,9 +42,11 @@ export class DepartmentDialogComponent implements OnInit {
     if (this.data.department) {
       this.departmentForm.patchValue({
         name: this.data.department.name,
+        code: this.data.department.code,
         description: this.data.department.description,
         parentId: this.data.department.parentId,
-        managerId: this.data.department.managerId
+        managerId: this.data.department.managerId,
+        isActive: this.data.department.isActive
       });
     }
   }
@@ -83,7 +87,8 @@ export class DepartmentDialogComponent implements OnInit {
         ...this.data.department,
         ...this.departmentForm.value
       };
-
+      console.log(department);
+      
       const request = this.data.department?.id
         ? this.departmentService.updateDepartment(this.data.department.id, department)
         : this.departmentService.createDepartment(department);

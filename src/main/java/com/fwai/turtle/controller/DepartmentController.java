@@ -1,6 +1,6 @@
 package com.fwai.turtle.controller;
 
-import com.fwai.turtle.common.Result;
+import com.fwai.turtle.common.ApiResponse;
 import com.fwai.turtle.dto.DepartmentDTO;
 import com.fwai.turtle.service.DepartmentService;
 import lombok.RequiredArgsConstructor;
@@ -17,42 +17,42 @@ public class DepartmentController {
     private final DepartmentService departmentService;
 
     @GetMapping
-    public ResponseEntity<Result<Page<DepartmentDTO>>> findAll(Pageable pageable) {
+    public ResponseEntity<ApiResponse<Page<DepartmentDTO>>> findAll(Pageable pageable) {
         Page<DepartmentDTO> departments = departmentService.findAll(pageable);
-        return ResponseEntity.ok(Result.success(departments));
+        return ResponseEntity.ok(ApiResponse.ok(departments));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Result<DepartmentDTO>> findById(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<DepartmentDTO>> findById(@PathVariable Long id) {
         DepartmentDTO department = departmentService.findById(id);
-        return ResponseEntity.ok(Result.success(department));
+        return ResponseEntity.ok(ApiResponse.ok(department));
     }
 
     @PostMapping
-    public ResponseEntity<Result<DepartmentDTO>> create(@RequestBody DepartmentDTO departmentDTO) {
+    public ResponseEntity<ApiResponse<DepartmentDTO>> create(@RequestBody DepartmentDTO departmentDTO) {
         DepartmentDTO created = departmentService.create(departmentDTO);
-        return ResponseEntity.ok(Result.success(created));
+        return ResponseEntity.ok(ApiResponse.ok(created));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Result<DepartmentDTO>> update(
+    public ResponseEntity<ApiResponse<DepartmentDTO>> update(
             @PathVariable Long id,
             @RequestBody DepartmentDTO departmentDTO) {
         DepartmentDTO updated = departmentService.update(id, departmentDTO);
-        return ResponseEntity.ok(Result.success(updated));
+        return ResponseEntity.ok(ApiResponse.ok(updated));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Result<Void>> delete(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id) {
         departmentService.delete(id);
-        return ResponseEntity.ok(Result.success(null));
+        return ResponseEntity.ok(ApiResponse.ok(null));
     }
 
     @GetMapping("/search")
-    public ResponseEntity<Result<Page<DepartmentDTO>>> search(
+    public ResponseEntity<ApiResponse<Page<DepartmentDTO>>> search(
             @RequestParam String query,
             Pageable pageable) {
         Page<DepartmentDTO> departments = departmentService.search(query, pageable);
-        return ResponseEntity.ok(Result.success(departments));
+        return ResponseEntity.ok(ApiResponse.ok(departments));
     }
 }

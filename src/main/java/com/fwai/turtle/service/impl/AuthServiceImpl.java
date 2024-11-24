@@ -61,14 +61,21 @@ public class AuthServiceImpl implements AuthService {
       final User user = userService.findByUsername(signinReq.getUsername())
           .orElseThrow(() -> new AuthenticationException("User not found"));
 
+      log.info("Found user: {}", user);
+      log.info("User roles before authentication: {}", user.getRoles());
+
       final Authentication authentication = authenticationProvider
           .authenticate(new UsernamePasswordAuthenticationToken(signinReq.getUsername(), signinReq.getPassword()));
 
       SecurityContextHolder.getContext().setAuthentication(authentication);
 
-      return new SigninAns(user.getId(),
-          jwtTokenService.createToken(user.getUsername(), user.getRoles()));
+      log.info("User roles after authentication: {}", user.getRoles());
+      String token = jwtTokenService.createToken(user.getUsername(), user.getRoles());
+      log.info("Generated token: {}", token);
+
+      return new SigninAns(user.getId(), token);
     } catch (BadCredentialsException e) {
+      log.error("Authentication failed for user: {}", signinReq.getUsername(), e);
       throw new AuthenticationException("Invalid username or password");
     }
   }

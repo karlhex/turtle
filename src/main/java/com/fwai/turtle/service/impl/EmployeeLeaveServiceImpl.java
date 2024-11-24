@@ -1,6 +1,5 @@
 package com.fwai.turtle.service.impl;
 
-import com.fwai.turtle.common.Result;
 import com.fwai.turtle.dto.EmployeeLeaveDTO;
 import com.fwai.turtle.exception.ResourceNotFoundException;
 import com.fwai.turtle.persistence.entity.Employee;
@@ -26,7 +25,7 @@ public class EmployeeLeaveServiceImpl implements IEmployeeLeaveService {
     private EmployeeLeaveMapper employeeLeaveMapper;
 
     @Override
-    public Result<EmployeeLeaveDTO> add(Long employeeId, EmployeeLeaveDTO LeaveDTO) {
+    public EmployeeLeaveDTO add(Long employeeId, EmployeeLeaveDTO LeaveDTO) {
         Employee employee = employeeRepository.findById(employeeId)
             .orElseThrow(() -> new ResourceNotFoundException("员工不存在"));
                 
@@ -34,26 +33,25 @@ public class EmployeeLeaveServiceImpl implements IEmployeeLeaveService {
         leave.setEmployeeId(employee.getId());
         leave = employeeLeaveRepository.save(leave);
             
-        return Result.success(employeeLeaveMapper.toDTO(leave));
+        return employeeLeaveMapper.toDTO(leave);
     }
         
     @Override
-    public Result<EmployeeLeaveDTO> update(Long employeeId, Long leaveId, EmployeeLeaveDTO leaveDTO) {
+    public EmployeeLeaveDTO update(Long employeeId, Long leaveId, EmployeeLeaveDTO leaveDTO) {
         EmployeeLeave leave = employeeLeaveRepository.findById(leaveId)
             .orElseThrow(() -> new ResourceNotFoundException("请假记录不存在"));
                 
         employeeLeaveMapper.updateEntity(leaveDTO,leave);
         leave = employeeLeaveRepository.save(leave);
             
-        return Result.success(employeeLeaveMapper.toDTO(leave));
+        return employeeLeaveMapper.toDTO(leave);
     }
         
     @Override
-    public Result<Void> delete(Long employeeId, Long leaveId) {
+    public void delete(Long employeeId, Long leaveId) {
         if (!employeeLeaveRepository.existsByIdAndEmployeeId(leaveId, employeeId)) {
             throw new ResourceNotFoundException("请假记录不存在");
         }
         employeeLeaveRepository.deleteById(leaveId);
-        return Result.success(null);
     }
 }

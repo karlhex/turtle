@@ -1,0 +1,84 @@
+<h2 mat-dialog-title>
+  {{ (data.mode === 'edit' ? 'employee.jobHistory.dialog.edit' : 'employee.jobHistory.dialog.view') | translate }}
+</h2>
+
+<form [formGroup]="jobHistoryForm" (ngSubmit)="onSubmit()">
+  <mat-dialog-content>
+    <div class="form-fields">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>{{ 'employee.jobHistory.companyName' | translate }}</mat-label>
+        <input matInput formControlName="companyName" required>
+        <mat-error *ngIf="jobHistoryForm.get('companyName')?.hasError('required')">
+          {{ 'employee.jobHistory.validation.companyNameRequired' | translate }}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>{{ 'employee.jobHistory.department' | translate }}</mat-label>
+        <input matInput formControlName="department" required>
+        <mat-error *ngIf="jobHistoryForm.get('department')?.hasError('required')">
+          {{ 'employee.jobHistory.validation.departmentRequired' | translate }}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>{{ 'employee.jobHistory.position' | translate }}</mat-label>
+        <input matInput formControlName="position" required>
+        <mat-error *ngIf="jobHistoryForm.get('position')?.hasError('required')">
+          {{ 'employee.jobHistory.validation.positionRequired' | translate }}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>{{ 'employee.jobHistory.startDate' | translate }}</mat-label>
+        <input matInput [matDatepicker]="startDatePicker" formControlName="startDate" required>
+        <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #startDatePicker></mat-datepicker>
+        <mat-error *ngIf="jobHistoryForm.get('startDate')?.hasError('required')">
+          {{ 'employee.jobHistory.validation.startDateRequired' | translate }}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>{{ 'employee.jobHistory.endDate' | translate }}</mat-label>
+        <input matInput [matDatepicker]="endDatePicker" formControlName="endDate">
+        <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #endDatePicker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>{{ 'employee.jobHistory.jobDescription' | translate }}</mat-label>
+        <textarea matInput formControlName="jobDescription" rows="3"></textarea>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>{{ 'employee.jobHistory.achievements' | translate }}</mat-label>
+        <textarea matInput formControlName="achievements" rows="3"></textarea>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>{{ 'employee.jobHistory.leavingReason' | translate }}</mat-label>
+        <textarea matInput formControlName="leavingReason" rows="2"></textarea>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>{{ 'employee.jobHistory.referenceContact' | translate }}</mat-label>
+        <input matInput formControlName="referenceContact">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>{{ 'employee.jobHistory.remarks' | translate }}</mat-label>
+        <textarea matInput formControlName="remarks" rows="2"></textarea>
+      </mat-form-field>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button type="button" (click)="onCancel()">
+      {{ 'employee.jobHistory.button.cancel' | translate }}
+    </button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="!jobHistoryForm.valid || data.mode === 'view'">
+      {{ data.mode === 'view' ? 'employee.jobHistory.button.close' : 'employee.jobHistory.button.save' | translate }}
+    </button>
+  </mat-dialog-actions>
+</form>

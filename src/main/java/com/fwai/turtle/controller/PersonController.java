@@ -1,9 +1,8 @@
 package com.fwai.turtle.controller;
 
 import com.fwai.turtle.dto.PersonDTO;
-import com.fwai.turtle.common.PageResponse;
 import com.fwai.turtle.service.interfaces.PersonService;
-import com.fwai.turtle.common.Result;
+import com.fwai.turtle.common.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,43 +18,43 @@ public class PersonController {
     private final PersonService personService;
 
     @GetMapping
-    public ResponseEntity<Result<Page<PersonDTO>>> getPersons(
+    public ResponseEntity<ApiResponse<Page<PersonDTO>>> getPersons(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
         Page<PersonDTO> personPage = personService.getPersons(PageRequest.of(page, size));
-        return ResponseEntity.ok(Result.success(personPage));
+        return ResponseEntity.ok(ApiResponse.ok(personPage));
     }
 
     @GetMapping("/search")
-    public ResponseEntity<Result<List<PersonDTO>>> searchPersons(
+    public ResponseEntity<ApiResponse<List<PersonDTO>>> searchPersons(
             @RequestParam String query) {
         List<PersonDTO> persons = personService.searchPersons(query);
-        return ResponseEntity.ok(Result.success(persons));
+        return ResponseEntity.ok(ApiResponse.ok(persons));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Result<PersonDTO>> getPersonById(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<PersonDTO>> getPersonById(@PathVariable Long id) {
         PersonDTO person = personService.getPersonById(id);
-        return ResponseEntity.ok(Result.success(person));
+        return ResponseEntity.ok(ApiResponse.ok(person));
     }
 
     @PostMapping
-    public ResponseEntity<Result<PersonDTO>> createPerson(@RequestBody PersonDTO personDTO) {
+    public ResponseEntity<ApiResponse<PersonDTO>> createPerson(@RequestBody PersonDTO personDTO) {
         PersonDTO createdPerson = personService.createPerson(personDTO);
-        return ResponseEntity.ok(Result.success(createdPerson));
+        return ResponseEntity.ok(ApiResponse.ok(createdPerson));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Result<PersonDTO>> updatePerson(
+    public ResponseEntity<ApiResponse<PersonDTO>> updatePerson(
             @PathVariable Long id,
             @RequestBody PersonDTO personDTO) {
         PersonDTO updatedPerson = personService.updatePerson(id, personDTO);
-        return ResponseEntity.ok(Result.success(updatedPerson));
+        return ResponseEntity.ok(ApiResponse.ok(updatedPerson));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Result<Void>> deletePerson(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<Void>> deletePerson(@PathVariable Long id) {
         personService.deletePerson(id);
-        return ResponseEntity.ok(Result.success(null));
+        return ResponseEntity.ok(ApiResponse.ok(null));
     }
 }

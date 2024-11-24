@@ -15,7 +15,6 @@ import com.fwai.turtle.persistence.mapper.EmployeeJobHistoryMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.fwai.turtle.common.Result;
 
 import java.util.List;
 
@@ -31,7 +30,7 @@ public class EmployeeJobHistoryServiceImpl implements EmployeeJobHistoryService 
         private EmployeeJobHistoryMapper jobHistoryMapper;
 
         @Transactional
-    public Result<EmployeeJobHistoryDTO> add(Long employeeId, EmployeeJobHistoryDTO jobHistoryDTO) {
+    public EmployeeJobHistoryDTO add(Long employeeId, EmployeeJobHistoryDTO jobHistoryDTO) {
 
         Employee employee = employeeRepository.findById(employeeId)
             .orElseThrow(() -> new ResourceNotFoundException("员工不存在"));
@@ -40,11 +39,11 @@ public class EmployeeJobHistoryServiceImpl implements EmployeeJobHistoryService 
         jobHistory.setEmployeeId(employee.getId());
         jobHistory = jobHistoryRepository.save(jobHistory);
         
-        return Result.success(jobHistoryMapper.toDTO(jobHistory));
+        return jobHistoryMapper.toDTO(jobHistory);
     }
 
     @Transactional
-    public Result<EmployeeJobHistoryDTO> update(Long employeeId, Long jobHistoryId, 
+    public EmployeeJobHistoryDTO update(Long employeeId, Long jobHistoryId, 
             EmployeeJobHistoryDTO jobHistoryDTO) {
         EmployeeJobHistory jobHistory = jobHistoryRepository.findById(jobHistoryId)
             .orElseThrow(() -> new ResourceNotFoundException("工作历史记录不存在"));
@@ -66,19 +65,18 @@ public class EmployeeJobHistoryServiceImpl implements EmployeeJobHistoryService 
         jobHistory.setRemarks(jobHistoryDTO.getRemarks());
         
         jobHistory = jobHistoryRepository.save(jobHistory);
-        return Result.success(jobHistoryMapper.toDTO(jobHistory));
+        return jobHistoryMapper.toDTO(jobHistory);
     }
 
-    public Result<List<EmployeeJobHistoryDTO>> getByEmployeeId(Long employeeId) {
-        List<EmployeeJobHistoryDTO> jobHistories = jobHistoryRepository.findByEmployeeId(employeeId)
+    public List<EmployeeJobHistoryDTO> getByEmployeeId(Long employeeId) {
+        return jobHistoryRepository.findByEmployeeId(employeeId)
             .stream()
             .map(jobHistoryMapper::toDTO)
             .collect(Collectors.toList());
-        return Result.success(jobHistories);
     }
 
     @Transactional
-    public Result<Void> delete(Long employeeId, Long jobHistoryId) {
+    public void delete(Long employeeId, Long jobHistoryId) {
         EmployeeJobHistory jobHistory = jobHistoryRepository.findById(jobHistoryId)
             .orElseThrow(() -> new ResourceNotFoundException("工作历史记录不存在"));
         
@@ -87,7 +85,6 @@ public class EmployeeJobHistoryServiceImpl implements EmployeeJobHistoryService 
         }
 
         jobHistoryRepository.delete(jobHistory);
-        return Result.success(null);
     }
 
 }

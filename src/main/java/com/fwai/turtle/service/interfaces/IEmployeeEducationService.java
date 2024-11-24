@@ -1,7 +1,7 @@
 package com.fwai.turtle.service.interfaces;
 
-import com.fwai.turtle.common.Result;
 import com.fwai.turtle.dto.EmployeeEducationDTO;
+import java.util.List;
 
 public interface IEmployeeEducationService {
     
@@ -11,7 +11,7 @@ public interface IEmployeeEducationService {
      * @param educationDTO the education details
      * @return the created education record
      */
-    Result<EmployeeEducationDTO> add(Long employeeId, EmployeeEducationDTO educationDTO);
+    EmployeeEducationDTO add(Long employeeId, EmployeeEducationDTO educationDTO);
 
     /**
      * Update an existing employee education record
@@ -20,13 +20,19 @@ public interface IEmployeeEducationService {
      * @param educationDTO the updated education details
      * @return the updated education record
      */
-    Result<EmployeeEducationDTO> update(Long employeeId, Long educationId, EmployeeEducationDTO educationDTO);
+    EmployeeEducationDTO update(Long employeeId, Long educationId, EmployeeEducationDTO educationDTO);
 
     /**
      * Delete an employee education record
      * @param employeeId the employee ID
      * @param educationId the education record ID
-     * @return void result
      */
-    Result<Void> delete(Long employeeId, Long educationId);
+    void delete(Long employeeId, Long educationId);
+
+    /**
+     * Get all education records for an employee
+     * @param employeeId the employee ID
+     * @return list of education records
+     */
+    List<EmployeeEducationDTO> getByEmployeeId(Long employeeId);
 }

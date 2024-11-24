@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.fwai.turtle.persistence.entity.User;
 import com.fwai.turtle.service.interfaces.UserService;
-import com.fwai.turtle.common.Result;
+import com.fwai.turtle.common.ApiResponse;
 import com.fwai.turtle.exception.ResourceNotFoundException;
 
 import lombok.extern.slf4j.Slf4j;
@@ -25,27 +25,27 @@ public class UserController {
   private UserService userService;
 
   @GetMapping("/{id}")
-  public Result<User> getUser(@PathVariable("id") Long id) {
+  public ApiResponse<User> getUser(@PathVariable("id") Long id) {
     log.info("getUser: {}", id);
-    return Result.success(userService.findById(id)
+    return ApiResponse.ok(userService.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id)));
   }
 
   @DeleteMapping("/{id}")
-  public Result<User> destroyUser(@PathVariable("id") Long id) {
+  public ApiResponse<User> destroyUser(@PathVariable("id") Long id) {
     log.info("destroyUser: {}", id);
     User user = userService.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
-    return Result.success(userService.destroyUser(user));
+    return ApiResponse.ok(userService.destroyUser(user));
   }
 
   @PutMapping("/{id}")
-  public Result<User> updateUser(@PathVariable("id") Long id, @RequestBody User user) {
+  public ApiResponse<User> updateUser(@PathVariable("id") Long id, @RequestBody User user) {
     log.info("updateUser: {}", id);
     if (!userService.findById(id).isPresent()) {
       throw new ResourceNotFoundException("User not found with id: " + id);
     }
     user.setId(id);
-    return Result.success(userService.updateUser(user));
+    return ApiResponse.ok(userService.updateUser(user));
   }
 }

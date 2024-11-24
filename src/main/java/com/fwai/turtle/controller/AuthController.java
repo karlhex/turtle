@@ -11,7 +11,7 @@ import com.fwai.turtle.dto.SigninReq;
 import com.fwai.turtle.dto.SignupReq;
 import com.fwai.turtle.dto.RefreshTokenRequest;
 import com.fwai.turtle.service.interfaces.AuthService;
-import com.fwai.turtle.common.Result;
+import com.fwai.turtle.common.ApiResponse;
 
 @RestController
 @RequestMapping("/auth")
@@ -21,17 +21,17 @@ public class AuthController {
   private AuthService authService;
 
   @PostMapping("/signin")
-  public Result<SigninAns> signin(@RequestBody SigninReq signinReq) {
-    return Result.success(authService.signin(signinReq));
+  public ApiResponse<SigninAns> signin(@RequestBody SigninReq signinReq) {
+    return ApiResponse.ok(authService.signin(signinReq));
   }
 
   @PostMapping("/signup")
-  public Result<SigninAns> signup(@RequestBody SignupReq signupReq) {
-    return Result.success(authService.signup(signupReq));
+  public ApiResponse<SigninAns> signup(@RequestBody SignupReq signupReq) {
+    return ApiResponse.ok(authService.signup(signupReq));
   }
 
   @PostMapping("/refresh")
-  public Result<SigninAns> refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest) {
-    return Result.success(authService.refreshToken(refreshTokenRequest));
+  public ApiResponse<SigninAns> refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest) {
+    return ApiResponse.ok(authService.refreshToken(refreshTokenRequest));
   }
 }

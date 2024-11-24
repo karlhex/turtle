@@ -1,213 +1,361 @@
 <h2 mat-dialog-title>{{(data.mode === 'edit' ? 'employee.actions.edit' : 'employee.actions.view') | translate}}</h2>
 
-<form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
-  <mat-dialog-content>
-    <div class="form-grid">
-      <!-- Basic Information -->
-      <div class="section">
-        <h3>{{ 'employee.form.basic.title' | translate }}</h3>
-        <mat-form-field>
-          <mat-label>{{ 'employee.form.basic.employeeNumber' | translate }}</mat-label>
-          <input matInput formControlName="employeeNumber" required>
-          <mat-error *ngIf="employeeForm.get('employeeNumber')?.errors?.['required']">
-            {{ 'employee.validation.required.employeeNumber' | translate }}
-          </mat-error>
-        </mat-form-field>
+<mat-tab-group>
+  <mat-tab [label]="'employee.tabs.basic' | translate">
+    <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+      <mat-dialog-content>
+        <div class="form-grid">
+          <!-- Basic Information -->
+          <div class="section">
+            <h3>{{ 'employee.form.basic.title' | translate }}</h3>
+            <mat-form-field>
+              <mat-label>{{ 'employee.form.basic.employeeNumber' | translate }}</mat-label>
+              <input matInput formControlName="employeeNumber" required>
+              <mat-error *ngIf="employeeForm.get('employeeNumber')?.errors?.['required']">
+                {{ 'employee.validation.required.employeeNumber' | translate }}
+              </mat-error>
+            </mat-form-field>
 
-        <mat-form-field>
-          <mat-label>{{ 'employee.form.basic.name' | translate }}</mat-label>
-          <input matInput formControlName="name" required>
-          <mat-error *ngIf="employeeForm.get('name')?.errors?.['required']">
-            {{ 'employee.validation.required.name' | translate }}
-          </mat-error>
-        </mat-form-field>
+            <mat-form-field>
+              <mat-label>{{ 'employee.form.basic.name' | translate }}</mat-label>
+              <input matInput formControlName="name" required>
+              <mat-error *ngIf="employeeForm.get('name')?.errors?.['required']">
+                {{ 'employee.validation.required.name' | translate }}
+              </mat-error>
+            </mat-form-field>
 
-        <mat-form-field>
-          <mat-label>{{ 'employee.form.basic.email' | translate }}</mat-label>
-          <input matInput formControlName="email" required type="email">
-          <mat-error *ngIf="employeeForm.get('email')?.errors?.['required']">
-            {{ 'employee.validation.required.email' | translate }}
-          </mat-error>
-          <mat-error *ngIf="employeeForm.get('email')?.errors?.['email']">
-            {{ 'employee.validation.email.invalid' | translate }}
-          </mat-error>
-        </mat-form-field>
+            <mat-form-field>
+              <mat-label>{{ 'employee.form.basic.email' | translate }}</mat-label>
+              <input matInput formControlName="email" required type="email">
+              <mat-error *ngIf="employeeForm.get('email')?.errors?.['required']">
+                {{ 'employee.validation.required.email' | translate }}
+              </mat-error>
+              <mat-error *ngIf="employeeForm.get('email')?.errors?.['email']">
+                {{ 'employee.validation.email.invalid' | translate }}
+              </mat-error>
+            </mat-form-field>
 
-        <mat-form-field>
-          <mat-label>{{ 'employee.form.basic.phone' | translate }}</mat-label>
-          <input matInput formControlName="phone">
-        </mat-form-field>
+            <mat-form-field>
+              <mat-label>{{ 'employee.form.basic.phone' | translate }}</mat-label>
+              <input matInput formControlName="phone">
+            </mat-form-field>
+          </div>
+
+          <!-- Department & Position -->
+          <div class="section">
+            <h3>{{ 'employee.form.department.title' | translate }}</h3>
+            <mat-form-field>
+              <mat-label>{{ 'employee.form.department.department' | translate }}</mat-label>
+              <mat-select formControlName="department" required>
+                <mat-option *ngFor="let dept of departments" [value]="dept">
+                  {{dept.name}} ({{dept.code}})
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="employeeForm.get('department')?.errors?.['required']">
+                {{ 'employee.validation.required.department' | translate }}
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>{{ 'employee.form.department.position' | translate }}</mat-label>
+              <input matInput formControlName="position" required>
+              <mat-error *ngIf="employeeForm.get('position')?.errors?.['required']">
+                {{ 'employee.validation.required.position' | translate }}
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>{{ 'employee.form.department.hireDate' | translate }}</mat-label>
+              <input matInput [matDatepicker]="hireDatePicker" formControlName="hireDate" required>
+              <mat-datepicker-toggle matSuffix [for]="hireDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #hireDatePicker></mat-datepicker>
+              <mat-error *ngIf="employeeForm.get('hireDate')?.errors?.['required']">
+                {{ 'employee.validation.required.hireDate' | translate }}
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>{{ 'employee.form.department.leaveDate' | translate }}</mat-label>
+              <input matInput [matDatepicker]="leaveDatePicker" formControlName="leaveDate">
+              <mat-datepicker-toggle matSuffix [for]="leaveDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #leaveDatePicker></mat-datepicker>
+            </mat-form-field>
+          </div>
+
+          <!-- Personal Information -->
+          <div class="section">
+            <h3>{{ 'employee.form.personal.title' | translate }}</h3>
+            <mat-form-field>
+              <mat-label>{{ 'employee.form.personal.birthday' | translate }}</mat-label>
+              <input matInput [matDatepicker]="birthdayPicker" formControlName="birthday">
+              <mat-datepicker-toggle matSuffix [for]="birthdayPicker"></mat-datepicker-toggle>
+              <mat-datepicker #birthdayPicker></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>{{ 'employee.form.personal.gender' | translate }}</mat-label>
+              <mat-select formControlName="gender">
+                <mat-option value="MALE">{{ 'employee.form.personal.gender.male' | translate }}</mat-option>
+                <mat-option value="FEMALE">{{ 'employee.form.personal.gender.female' | translate }}</mat-option>
+                <mat-option value="OTHER">{{ 'employee.form.personal.gender.other' | translate }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>{{ 'employee.form.personal.ethnicity' | translate }}</mat-label>
+              <input matInput formControlName="ethnicity">
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>{{ 'employee.form.personal.idType' | translate }}</mat-label>
+              <mat-select formControlName="idType">
+                <mat-option value="ID_CARD">{{ 'employee.form.personal.idTypeCell.idCard' | translate }}</mat-option>
+                <mat-option value="PASSPORT">{{ 'employee.form.personal.idTypeCell.passport' | translate }}</mat-option>
+                <mat-option value="OTHER">{{ 'employee.form.personal.idTypeCell.other' | translate }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>{{ 'employee.form.personal.idNumber' | translate }}</mat-label>
+              <input matInput formControlName="idNumber" required>
+              <mat-error *ngIf="employeeForm.get('idNumber')?.errors?.['required']">
+                {{ 'employee.validation.required.idNumber' | translate }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <!-- Emergency Contact -->
+          <div class="section" formGroupName="emergencyContact">
+            <h3>{{ 'employee.form.emergency.title' | translate }}</h3>
+            
+            <mat-form-field class="full-width">
+              <mat-label>{{ 'employee.form.emergency.person' | translate }}</mat-label>
+              <input type="text"
+                    matInput
+                    [formControlName]="'person'"
+                    [matAutocomplete]="personAuto"
+                    (input)="onSearchPerson($event)">
+              <mat-autocomplete #personAuto="matAutocomplete" 
+                              [displayWith]="displayPersonFn.bind(this)"
+                              (optionSelected)="onPersonSelected($event.option.value)">
+                <mat-option *ngFor="let person of filteredPersons" [value]="person">
+                  {{person.firstName}} {{person.lastName}} ({{person.phone}})
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>{{ 'employee.form.emergency.name' | translate }}</mat-label>
+              <input matInput formControlName="firstName">
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>{{ 'employee.form.emergency.phone' | translate }}</mat-label>
+              <input matInput formControlName="phone">
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>{{ 'employee.form.emergency.email' | translate }}</mat-label>
+              <input matInput formControlName="email" type="email">
+            </mat-form-field>
+
+            <mat-form-field class="full-width">
+              <mat-label>{{ 'employee.form.emergency.address' | translate }}</mat-label>
+              <textarea matInput formControlName="address" rows="2"></textarea>
+            </mat-form-field>
+          </div>
+
+          <!-- Contract Information -->
+          <div class="section">
+            <h3>{{ 'employee.form.contract.title' | translate }}</h3>
+            <mat-form-field>
+              <mat-label>{{ 'employee.form.contract.type' | translate }}</mat-label>
+              <mat-select formControlName="contractType">
+                <mat-option value="FULL_TIME">{{ 'employee.form.contract.type.fullTime' | translate }}</mat-option>
+                <mat-option value="PART_TIME">{{ 'employee.form.contract.type.partTime' | translate }}</mat-option>
+                <mat-option value="CONTRACTOR">{{ 'employee.form.contract.type.contractor' | translate }}</mat-option>
+                <mat-option value="INTERN">{{ 'employee.form.contract.type.intern' | translate }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>{{ 'employee.form.contract.duration' | translate }}</mat-label>
+              <input matInput type="number" formControlName="contractDuration">
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>{{ 'employee.form.contract.startDate' | translate }}</mat-label>
+              <input matInput [matDatepicker]="contractStartDatePicker" formControlName="contractStartDate">
+              <mat-datepicker-toggle matSuffix [for]="contractStartDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #contractStartDatePicker></mat-datepicker>
+            </mat-form-field>
+          </div>
+
+          <!-- Additional Information -->
+          <div class="section">
+            <h3>{{ 'employee.form.additional.title' | translate }}</h3>
+            <mat-form-field class="full-width">
+              <mat-label>{{ 'employee.form.additional.remarks' | translate }}</mat-label>
+              <textarea matInput formControlName="remarks" rows="3"></textarea>
+            </mat-form-field>
+
+            <mat-slide-toggle formControlName="isActive" color="primary">
+              {{ 'employee.form.additional.status' | translate }}
+            </mat-slide-toggle>
+          </div>
+        </div>
+      </mat-dialog-content>
+
+      <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close type="button">{{ 'employee.actions.cancel' | translate }}</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="!employeeForm.valid">
+          {{ 'employee.actions.save' | translate }}
+        </button>
+      </mat-dialog-actions>
+    </form>
+  </mat-tab>
+
+  <mat-tab [label]="'employee.tabs.education' | translate">
+    <div class="education-tab">
+      <div class="education-header">
+        <h3>{{ 'employee.education.title' | translate }}</h3>
+        <button mat-raised-button color="primary" (click)="onAddEducation()" *ngIf="data.mode === 'edit'">
+          {{ 'employee.education.actions.add' | translate }}
+        </button>
       </div>
 
-      <!-- Department & Position -->
-      <div class="section">
-        <h3>{{ 'employee.form.department.title' | translate }}</h3>
-        <mat-form-field>
-          <mat-label>{{ 'employee.form.department.department' | translate }}</mat-label>
-          <mat-select formControlName="department" required>
-            <mat-option *ngFor="let dept of departments" [value]="dept">
-              {{dept.name}} ({{dept.code}})
-            </mat-option>
-          </mat-select>
-          <mat-error *ngIf="employeeForm.get('department')?.errors?.['required']">
-            {{ 'employee.validation.required.department' | translate }}
-          </mat-error>
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>{{ 'employee.form.department.position' | translate }}</mat-label>
-          <input matInput formControlName="position" required>
-          <mat-error *ngIf="employeeForm.get('position')?.errors?.['required']">
-            {{ 'employee.validation.required.position' | translate }}
-          </mat-error>
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>{{ 'employee.form.department.hireDate' | translate }}</mat-label>
-          <input matInput [matDatepicker]="hireDatePicker" formControlName="hireDate" required>
-          <mat-datepicker-toggle matSuffix [for]="hireDatePicker"></mat-datepicker-toggle>
-          <mat-datepicker #hireDatePicker></mat-datepicker>
-          <mat-error *ngIf="employeeForm.get('hireDate')?.errors?.['required']">
-            {{ 'employee.validation.required.hireDate' | translate }}
-          </mat-error>
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>{{ 'employee.form.department.leaveDate' | translate }}</mat-label>
-          <input matInput [matDatepicker]="leaveDatePicker" formControlName="leaveDate">
-          <mat-datepicker-toggle matSuffix [for]="leaveDatePicker"></mat-datepicker-toggle>
-          <mat-datepicker #leaveDatePicker></mat-datepicker>
-        </mat-form-field>
+      <div class="loading-spinner" *ngIf="isLoadingEducations">
+        <mat-spinner diameter="40"></mat-spinner>
       </div>
 
-      <!-- Personal Information -->
-      <div class="section">
-        <h3>{{ 'employee.form.personal.title' | translate }}</h3>
-        <mat-form-field>
-          <mat-label>{{ 'employee.form.personal.birthday' | translate }}</mat-label>
-          <input matInput [matDatepicker]="birthdayPicker" formControlName="birthday">
-          <mat-datepicker-toggle matSuffix [for]="birthdayPicker"></mat-datepicker-toggle>
-          <mat-datepicker #birthdayPicker></mat-datepicker>
-        </mat-form-field>
+      <mat-table [dataSource]="educations" class="education-table" [hidden]="isLoadingEducations">
+        <!-- School Column -->
+        <ng-container matColumnDef="school">
+          <mat-header-cell *matHeaderCellDef>{{ 'employee.education.table.school' | translate }}</mat-header-cell>
+          <mat-cell *matCellDef="let education">{{education.school}}</mat-cell>
+        </ng-container>
 
-        <mat-form-field>
-          <mat-label>{{ 'employee.form.personal.gender' | translate }}</mat-label>
-          <mat-select formControlName="gender">
-            <mat-option value="MALE">{{ 'employee.form.personal.gender.male' | translate }}</mat-option>
-            <mat-option value="FEMALE">{{ 'employee.form.personal.gender.female' | translate }}</mat-option>
-            <mat-option value="OTHER">{{ 'employee.form.personal.gender.other' | translate }}</mat-option>
-          </mat-select>
-        </mat-form-field>
+        <!-- Major Column -->
+        <ng-container matColumnDef="major">
+          <mat-header-cell *matHeaderCellDef>{{ 'employee.education.table.major' | translate }}</mat-header-cell>
+          <mat-cell *matCellDef="let education">{{education.major}}</mat-cell>
+        </ng-container>
 
-        <mat-form-field>
-          <mat-label>{{ 'employee.form.personal.ethnicity' | translate }}</mat-label>
-          <input matInput formControlName="ethnicity">
-        </mat-form-field>
+        <!-- Degree Column -->
+        <ng-container matColumnDef="degree">
+          <mat-header-cell *matHeaderCellDef>{{ 'employee.education.table.degree' | translate }}</mat-header-cell>
+          <mat-cell *matCellDef="let education">{{ 'employee.education.form.degreecombo.' + education.degree.toLowerCase() | translate }}</mat-cell>
+        </ng-container>
 
-        <mat-form-field>
-          <mat-label>{{ 'employee.form.personal.idType' | translate }}</mat-label>
-          <mat-select formControlName="idType">
-            <mat-option value="ID_CARD">{{ 'employee.form.personal.idTypeCell.idCard' | translate }}</mat-option>
-            <mat-option value="PASSPORT">{{ 'employee.form.personal.idTypeCell.passport' | translate }}</mat-option>
-            <mat-option value="OTHER">{{ 'employee.form.personal.idTypeCell.other' | translate }}</mat-option>
-          </mat-select>
-        </mat-form-field>
+        <!-- Start Date Column -->
+        <ng-container matColumnDef="startDate">
+          <mat-header-cell *matHeaderCellDef>{{ 'employee.education.table.startDate' | translate }}</mat-header-cell>
+          <mat-cell *matCellDef="let education">{{education.startDate | date}}</mat-cell>
+        </ng-container>
 
-        <mat-form-field>
-          <mat-label>{{ 'employee.form.personal.idNumber' | translate }}</mat-label>
-          <input matInput formControlName="idNumber" required>
-          <mat-error *ngIf="employeeForm.get('idNumber')?.errors?.['required']">
-            {{ 'employee.validation.required.idNumber' | translate }}
-          </mat-error>
-        </mat-form-field>
+        <!-- End Date Column -->
+        <ng-container matColumnDef="endDate">
+          <mat-header-cell *matHeaderCellDef>{{ 'employee.education.table.endDate' | translate }}</mat-header-cell>
+          <mat-cell *matCellDef="let education">{{education.endDate | date}}</mat-cell>
+        </ng-container>
+
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+          <mat-header-cell *matHeaderCellDef>{{ 'employee.education.table.actions' | translate }}</mat-header-cell>
+          <mat-cell *matCellDef="let education">
+            <button mat-icon-button (click)="onViewEducation(education)">
+              <mat-icon>visibility</mat-icon>
+            </button>
+            <button mat-icon-button (click)="onEditEducation(education)" *ngIf="data.mode === 'edit'">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="onDeleteEducation(education)" *ngIf="data.mode === 'edit'">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+
+      <div class="no-data-message" *ngIf="!isLoadingEducations && educations.data.length === 0">
+        {{ 'employee.education.noData' | translate }}
       </div>
 
-      <!-- Emergency Contact -->
-      <div class="section" formGroupName="emergencyContact">
-        <h3>{{ 'employee.form.emergency.title' | translate }}</h3>
-        
-        <mat-form-field class="full-width">
-          <mat-label>{{ 'employee.form.emergency.person' | translate }}</mat-label>
-          <input type="text"
-                matInput
-                [formControlName]="'person'"
-                [matAutocomplete]="personAuto"
-                (input)="onSearchPerson($event)">
-          <mat-autocomplete #personAuto="matAutocomplete" 
-                          [displayWith]="displayPersonFn.bind(this)"
-                          (optionSelected)="onPersonSelected($event.option.value)">
-            <mat-option *ngFor="let person of filteredPersons" [value]="person">
-              {{person.firstName}} {{person.lastName}} ({{person.phone}})
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>{{ 'employee.form.emergency.name' | translate }}</mat-label>
-          <input matInput formControlName="firstName">
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>{{ 'employee.form.emergency.phone' | translate }}</mat-label>
-          <input matInput formControlName="phone">
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>{{ 'employee.form.emergency.email' | translate }}</mat-label>
-          <input matInput formControlName="email" type="email">
-        </mat-form-field>
-
-        <mat-form-field class="full-width">
-          <mat-label>{{ 'employee.form.emergency.address' | translate }}</mat-label>
-          <textarea matInput formControlName="address" rows="2"></textarea>
-        </mat-form-field>
-      </div>
-
-      <!-- Contract Information -->
-      <div class="section">
-        <h3>{{ 'employee.form.contract.title' | translate }}</h3>
-        <mat-form-field>
-          <mat-label>{{ 'employee.form.contract.type' | translate }}</mat-label>
-          <mat-select formControlName="contractType">
-            <mat-option value="FULL_TIME">{{ 'employee.form.contract.type.fullTime' | translate }}</mat-option>
-            <mat-option value="PART_TIME">{{ 'employee.form.contract.type.partTime' | translate }}</mat-option>
-            <mat-option value="CONTRACTOR">{{ 'employee.form.contract.type.contractor' | translate }}</mat-option>
-            <mat-option value="INTERN">{{ 'employee.form.contract.type.intern' | translate }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>{{ 'employee.form.contract.duration' | translate }}</mat-label>
-          <input matInput type="number" formControlName="contractDuration">
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>{{ 'employee.form.contract.startDate' | translate }}</mat-label>
-          <input matInput [matDatepicker]="contractStartDatePicker" formControlName="contractStartDate">
-          <mat-datepicker-toggle matSuffix [for]="contractStartDatePicker"></mat-datepicker-toggle>
-          <mat-datepicker #contractStartDatePicker></mat-datepicker>
-        </mat-form-field>
-      </div>
-
-      <!-- Additional Information -->
-      <div class="section">
-        <h3>{{ 'employee.form.additional.title' | translate }}</h3>
-        <mat-form-field class="full-width">
-          <mat-label>{{ 'employee.form.additional.remarks' | translate }}</mat-label>
-          <textarea matInput formControlName="remarks" rows="3"></textarea>
-        </mat-form-field>
-
-        <mat-slide-toggle formControlName="isActive" color="primary">
-          {{ 'employee.form.additional.status' | translate }}
-        </mat-slide-toggle>
-      </div>
+      <mat-paginator [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons></mat-paginator>
     </div>
-  </mat-dialog-content>
+  </mat-tab>
 
-  <mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close type="button">{{ 'employee.actions.cancel' | translate }}</button>
-    <button mat-raised-button color="primary" type="submit" [disabled]="!employeeForm.valid">
-      {{(data.mode === 'edit' ? 'employee.actions.save' : 'employee.actions.ok') | translate}}
-    </button>
-  </mat-dialog-actions>
-</form>
+  <mat-tab label="{{ 'employee.jobHistory.tab' | translate }}">
+    <div class="job-history-tab">
+      <div class="job-history-header">
+        <h3>{{ 'employee.jobHistory.title' | translate }}</h3>
+        <button mat-raised-button color="primary" (click)="onAddJobHistory()" *ngIf="data.mode === 'edit'">
+          {{ 'employee.jobHistory.button.add' | translate }}
+        </button>
+      </div>
+      
+      <div class="loading-spinner" *ngIf="isLoadingJobHistory">
+        <mat-spinner diameter="40"></mat-spinner>
+      </div>
+      
+      <mat-table [dataSource]="jobHistories" class="job-history-table" [hidden]="isLoadingJobHistory">
+        <ng-container matColumnDef="companyName">
+          <th mat-header-cell *matHeaderCellDef>{{ 'employee.jobHistory.companyName' | translate }}</th>
+          <td mat-cell *matCellDef="let history">{{history.companyName}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="position">
+          <th mat-header-cell *matHeaderCellDef>{{ 'employee.jobHistory.position' | translate }}</th>
+          <td mat-cell *matCellDef="let history">{{history.position}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="startDate">
+          <th mat-header-cell *matHeaderCellDef>{{ 'employee.jobHistory.startDate' | translate }}</th>
+          <td mat-cell *matCellDef="let history">{{history.startDate | date}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="endDate">
+          <th mat-header-cell *matHeaderCellDef>{{ 'employee.jobHistory.endDate' | translate }}</th>
+          <td mat-cell *matCellDef="let history">{{history.endDate | date}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="remarks">
+          <th mat-header-cell *matHeaderCellDef>{{ 'employee.jobHistory.remarks' | translate }}</th>
+          <td mat-cell *matCellDef="let history">{{history.remarks}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>{{ 'employee.jobHistory.table.actions' | translate }}</th>
+          <td mat-cell *matCellDef="let history" class="action-cell">
+            <div class="action-buttons">
+              <button mat-icon-button (click)="onViewJobHistory(history)" *ngIf="data.mode === 'view'"
+                      matTooltip="{{ 'employee.jobHistory.actions.view' | translate }}">
+                <mat-icon>visibility</mat-icon>
+              </button>
+              <button mat-icon-button (click)="onEditJobHistory(history)" *ngIf="data.mode === 'edit'"
+                      matTooltip="{{ 'employee.jobHistory.actions.edit' | translate }}">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button (click)="onDeleteJobHistory(history)" *ngIf="data.mode === 'edit'"
+                      matTooltip="{{ 'employee.jobHistory.actions.delete' | translate }}"
+                      color="warn">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="jobHistoryColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: jobHistoryColumns;"></tr>
+      </mat-table>
+
+      <div class="no-data-message" *ngIf="!isLoadingJobHistory && jobHistories.data.length === 0">
+        {{ 'employee.jobHistory.noData' | translate }}
+      </div>
+
+      <mat-paginator [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons></mat-paginator>
+    </div>
+  </mat-tab>
+</mat-tab-group>

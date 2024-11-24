@@ -11,7 +11,7 @@ export class TokenRefreshService implements OnDestroy {
   private readonly REFRESH_URL = 'http://localhost:8080/api/auth/refresh';
   private refreshSubscription?: Subscription;
   // 设置刷新间隔为token过期时间的3/4
-  private readonly REFRESH_INTERVAL = 45 * 60 * 1000; // 45分钟，假设token有效期为1小时
+  private readonly REFRESH_INTERVAL = 15 * 60 * 1000; // 45分钟，假设token有效期为1小时
 
   constructor(
     private http: HttpClient,

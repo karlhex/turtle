@@ -17,7 +17,6 @@ import com.fwai.turtle.persistence.mapper.EmployeeAttendanceMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.fwai.turtle.common.Result;
 
 import java.util.List;
 
@@ -33,7 +32,7 @@ public class EmployeeAttendanceServiceImpl implements EmployeeAttendanceService 
         private EmployeeAttendanceMapper attendanceMapper;
 
         @Transactional
-    public Result<EmployeeAttendanceDTO> add(Long employeeId, EmployeeAttendanceDTO attendanceDTO) {
+    public EmployeeAttendanceDTO add(Long employeeId, EmployeeAttendanceDTO attendanceDTO) {
         // 检查是否已存在当天的考勤记录
         if (attendanceRepository.existsByEmployeeIdAndAttendanceDate(
                 employeeId, attendanceDTO.getAttendanceDate())) {
@@ -52,11 +51,11 @@ public class EmployeeAttendanceServiceImpl implements EmployeeAttendanceService 
         attendance.setEmployeeId(employee.getId());
         attendance = attendanceRepository.save(attendance);
         
-        return Result.success(attendanceMapper.toDTO(attendance));
+        return attendanceMapper.toDTO(attendance);
     }
 
     @Transactional
-    public Result<EmployeeAttendanceDTO> update(Long employeeId, Long attendanceId, 
+    public EmployeeAttendanceDTO update(Long employeeId, Long attendanceId, 
             EmployeeAttendanceDTO attendanceDTO) {
         EmployeeAttendance attendance = attendanceRepository.findById(attendanceId)
             .orElseThrow(() -> new ResourceNotFoundException("考勤记录不存在"));
@@ -78,19 +77,18 @@ public class EmployeeAttendanceServiceImpl implements EmployeeAttendanceService 
         attendance.setRemarks(attendanceDTO.getRemarks());
         
         attendance = attendanceRepository.save(attendance);
-        return Result.success(attendanceMapper.toDTO(attendance));
+        return attendanceMapper.toDTO(attendance);
     }
 
-    public Result<List<EmployeeAttendanceDTO>> getByEmployeeId(Long employeeId) {
-        List<EmployeeAttendanceDTO> attendances = attendanceRepository.findByEmployeeId(employeeId)
+    public List<EmployeeAttendanceDTO> getByEmployeeId(Long employeeId) {
+        return attendanceRepository.findByEmployeeId(employeeId)
             .stream()
             .map(attendanceMapper::toDTO)
             .collect(Collectors.toList());
-        return Result.success(attendances);
     }
 
     @Transactional
-    public Result<Void> delete(Long employeeId, Long attendanceId) {
+    public void delete(Long employeeId, Long attendanceId) {
         EmployeeAttendance attendance = attendanceRepository.findById(attendanceId)
             .orElseThrow(() -> new ResourceNotFoundException("考勤记录不存在"));
         
@@ -99,7 +97,5 @@ public class EmployeeAttendanceServiceImpl implements EmployeeAttendanceService 
         }
 
         attendanceRepository.delete(attendance);
-        return Result.success(null);
     }
-
 }

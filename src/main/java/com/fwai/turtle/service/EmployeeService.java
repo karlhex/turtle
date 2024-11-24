@@ -6,7 +6,6 @@ import com.fwai.turtle.persistence.entity.Employee;
 import com.fwai.turtle.persistence.mapper.EmployeeMapper;
 import com.fwai.turtle.persistence.repository.EmployeeRepository;
 import com.fwai.turtle.common.PageResponse;
-import com.fwai.turtle.common.Result;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,18 +31,18 @@ public class EmployeeService {
     private final EmployeeMapper employeeMapper;
 
     @Transactional
-    public Result<EmployeeDTO> create(EmployeeDTO employeeDTO) {
+    public EmployeeDTO create(EmployeeDTO employeeDTO) {
         Employee employee = employeeMapper.toEntity(employeeDTO);
         if (employeeRepository.existsByEmployeeNumber(employee.getEmployeeNumber())) {
             throw new DuplicateRecordException("员工编号已存在");
         }
 
         employee = employeeRepository.save(employee);
-        return Result.success(employeeMapper.toDTO(employee));
+        return employeeMapper.toDTO(employee);
     }
 
     @Transactional
-    public Result<EmployeeDTO> update(Long id, EmployeeDTO employeeDTO) {
+    public EmployeeDTO update(Long id, EmployeeDTO employeeDTO) {
         log.debug("update employee: {}", employeeDTO);
         Employee employee = employeeRepository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("员工不存在"));
@@ -51,16 +50,15 @@ public class EmployeeService {
         employeeMapper.updateEntity(employeeDTO, employee);
         employee = employeeRepository.save(employee);
         log.debug("update employee: {}", employee);
-        return Result.success(employeeMapper.toDTO(employee));
+        return employeeMapper.toDTO(employee);
     }
-
-    public Result<EmployeeDTO> getById(Long id) {
+    public EmployeeDTO getById(Long id) {
         Employee employee = employeeRepository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("员工不存在"));
-        return Result.success(employeeMapper.toDTO(employee));
+        return employeeMapper.toDTO(employee);
     }
 
-    public Result<PageResponse<EmployeeDTO>> getAll(int page, int size, String sortBy, String direction) {
+    public PageResponse<EmployeeDTO> getAll(int page, int size, String sortBy, String direction) {
         Sort sort = Sort.by(Sort.Direction.fromString(direction), sortBy);
         Pageable pageable = PageRequest.of(page, size, sort);
         
@@ -69,18 +67,16 @@ public class EmployeeService {
             .map(employeeMapper::toDTO)
             .collect(Collectors.toList());
         
-        PageResponse<EmployeeDTO> pageResponse = PageResponse.of(
+        return PageResponse.of(
             employeeDTOs,
             employeePage.getNumber(),
             employeePage.getSize(),
             employeePage.getTotalElements(),
             employeePage.getTotalPages()
         );
-        
-        return Result.success(pageResponse);
     }
 
-    public Result<PageResponse<EmployeeDTO>> search(String query, int page, int size) {
+    public PageResponse<EmployeeDTO> search(String query, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Employee> employeePage;
         
@@ -95,23 +91,20 @@ public class EmployeeService {
             .map(employeeMapper::toDTO)
             .collect(Collectors.toList());
         
-        PageResponse<EmployeeDTO> pageResponse = PageResponse.of(
+        return PageResponse.of(
             employeeDTOs,
             employeePage.getNumber(),
             employeePage.getSize(),
             employeePage.getTotalElements(),
             employeePage.getTotalPages()
         );
-        
-        return Result.success(pageResponse);
     }
 
     @Transactional
-    public Result<Void> delete(Long id) {
+    public void delete(Long id) {
         if (!employeeRepository.existsById(id)) {
             throw new ResourceNotFoundException("员工不存在");
         }
         employeeRepository.deleteById(id);
-        return Result.success(null);
     }
 }

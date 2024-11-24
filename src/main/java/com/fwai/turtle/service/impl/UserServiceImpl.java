@@ -60,9 +60,28 @@ public class UserServiceImpl implements UserService {
   @Override
   public Optional<User> findByUsername(String username) {
     try {
-      return userRepository.findByUsername(username);
+      log.info("Finding user by username: {}", username);
+      Optional<User> userOpt = userRepository.findByUsername(username);
+      
+      if (userOpt.isPresent()) {
+        User user = userOpt.get();
+        log.info("Found userOpt: {}", userOpt);
+        log.info("Found user: {}", user);
+        log.info("User roles: {}", user.getRoles());
+        if (user.getRoles() != null) {
+          user.getRoles().forEach(role -> {
+            log.info("Role: {}, ID: {}, Name: {}", role, role.getId(), role.getName());
+          });
+        } else {
+          log.warn("User roles is null");
+        }
+      } else {
+        log.warn("User not found with username: {}", username);
+      }
+      
+      return userOpt;
     } catch (Exception e) {
-      e.printStackTrace();
+      log.error("Error finding user by username: {}", username, e);
       return Optional.empty();
     }
   }

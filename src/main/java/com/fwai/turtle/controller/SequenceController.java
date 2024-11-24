@@ -1,6 +1,6 @@
 package com.fwai.turtle.controller;
 
-import com.fwai.turtle.common.Result;
+import com.fwai.turtle.common.ApiResponse;
 import com.fwai.turtle.service.SequenceService;
 
 import lombok.RequiredArgsConstructor;
@@ -26,9 +26,9 @@ public class SequenceController {
      * @return 格式化后的序号
      */
     @GetMapping("/next")
-    public Result<String> getNextSequence(@RequestParam String type) {
+    public ApiResponse<String> getNextSequence(@RequestParam String type) {
         log.debug("getNextSequence: {}", type);
         String nextSequence = sequenceService.getNextSequence(type);
-        return Result.success(nextSequence);
+        return ApiResponse.ok(nextSequence);
     }
 }

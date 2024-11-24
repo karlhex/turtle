@@ -37,28 +37,31 @@ public class JwtTokenServiceImpl implements JwtTokenService {
     private long jwtExpiration;
 
     public String createToken(String username, Set<Role> roles) {
+        log.info(" user {} secretKey {} expiration {} roles {}", username, secretKey, jwtExpiration, roles);
 
-        log.info(" user {} secretKey {} expiration {}", username, secretKey, jwtExpiration);
-
-        // 输入验证
         if (username == null || username.trim().isEmpty()) {
             throw new IllegalArgumentException("用户名不能为空");
         }
-        // 优化：只调用一次System.currentTimeMillis()
+
         long currentTimeMillis = System.currentTimeMillis();
         Date issuedAt = new Date(currentTimeMillis);
         Date expiration = new Date(currentTimeMillis + jwtExpiration * 60 * 24);
 
+        // Convert roles to a list of role names
+        Set<String> roleNames = roles.stream()
+                .map(role -> role.getName().name())
+                .collect(java.util.stream.Collectors.toSet());
+
         try {
             return Jwts.builder()
                     .subject(username)
-                    .claim("roles", roles)
+                    .claim("roles", String.join(",", roleNames))
                     .issuedAt(issuedAt)
                     .expiration(expiration)
                     .issuer(jwtIssuer)
                     .signWith(getSecetKey()).compact();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Failed to create token", e);
             throw new RuntimeException("token生成失败");
         }
     }

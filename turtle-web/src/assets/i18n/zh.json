@@ -43,6 +43,11 @@
       "active": "在职",
       "inactive": "离职"
     },
+    "tabs": {
+      "basic": "基本信息",
+      "education": "教育经历",
+      "jobHistory": "工作经历"
+    },
     "form": {
       "basic": {
         "title": "基本信息",
@@ -61,7 +66,11 @@
       "personal": {
         "title": "个人信息",
         "birthday": "出生日期",
-        "gender": "性别",
+        "gender": {
+          "male": "男",
+          "female": "女",
+          "other": "其他"
+        },
         "idNumber": "身份证号",
         "ethnicity": "民族",
         "idType": "证件类型",
@@ -81,7 +90,12 @@
       },
       "contract": {
         "title": "合同信息",
-        "type": "合同类型",
+        "type": {
+          "fullTime": "全职",
+          "partTime": "兼职",
+          "contractor": "外包",
+          "intern": "实习"
+        },
         "duration": "合同期限(月)",
         "startDate": "合同开始日期"
       },
@@ -89,6 +103,93 @@
         "title": "备注",
         "remarks": "备注信息",
         "status": "在职状态"
+      }
+    },
+    "education": {
+      "title": "教育经历",
+      "actions": {
+        "add": "添加教育经历",
+        "edit": "编辑教育经历",
+        "view": "查看教育经历",
+        "save": "保存",
+        "update": "更新",
+        "delete": "删除",
+        "cancel": "取消"
+      },
+      "form": {
+        "school": "学校/院校",
+        "major": "专业/学科",
+        "degree": "学历",
+        "startDate": "开始日期",
+        "endDate": "结束日期",
+        "certificateNumber": "证书编号",
+        "isHighestDegree": "最高学历",
+        "remarks": "备注",
+        "degreecombo": {
+          "bachelor": "本科",
+          "master": "硕士",
+          "doctor": "博士",
+          "other": "其他"
+        }
+      },
+      "validation": {
+        "required": {
+          "school": "请输入学校名称",
+          "major": "请输入专业",
+          "degree": "请选择学历",
+          "startDate": "请选择开始日期"
+        }
+      },
+      "table": {
+        "school": "学校",
+        "major": "专业",
+        "degree": "学历",
+        "startDate": "开始日期",
+        "endDate": "结束日期",
+        "actions": "操作"
+      }
+    },
+    "jobHistory": {
+      "tab": "工作经历",
+      "title": "工作经历",
+      "dialog": {
+        "edit": "编辑工作经历",
+        "view": "查看工作经历",
+        "add": "添加工作经历"
+      },
+      "companyName": "公司名称",
+      "department": "所在部门",
+      "position": "担任职位",
+      "startDate": "入职日期",
+      "endDate": "离职日期",
+      "jobDescription": "工作职责",
+      "achievements": "工作业绩",
+      "leavingReason": "离职原因",
+      "referenceContact": "证明人联系方式",
+      "remarks": "备注说明",
+      "button": {
+        "add": "添加工作经历",
+        "edit": "编辑",
+        "delete": "删除",
+        "save": "保存",
+        "cancel": "取消",
+        "close": "关闭"
+      },
+      "table": {
+        "companyName": "公司",
+        "department": "部门",
+        "position": "职位",
+        "duration": "任职时间",
+        "actions": "操作"
+      },
+      "validation": {
+        "companyNameRequired": "请输入公司名称",
+        "departmentRequired": "请输入所在部门",
+        "positionRequired": "请输入担任职位",
+        "startDateRequired": "请选择入职日期",
+        "endDateInvalid": "离职日期必须晚于入职日期",
+        "descriptionMaxLength": "工作职责不能超过500个字符",
+        "achievementsMaxLength": "工作业绩不能超过500个字符"
       }
     },
     "validation": {
@@ -144,6 +245,147 @@
       "deleteSuccess": "删除成功",
       "deleteConfirm": "确定要删除此部门吗？",
       "error": "操作失败"
+    }
+  },
+  "position": {
+    "title": "职位管理",
+    "search": {
+      "label": "搜索职位",
+      "placeholder": "按职位名称或部门搜索"
+    },
+    "list": {
+      "title": "职位名称",
+      "department": "所属部门",
+      "description": "职位描述",
+      "requirements": "任职要求",
+      "salary": "薪资范围",
+      "actions": "操作"
+    },
+    "dialog": {
+      "add": "添加职位",
+      "edit": "编辑职位",
+      "title": "职位名称",
+      "department": "所属部门",
+      "description": "职位描述",
+      "requirements": "任职要求",
+      "salaryMin": "最低薪资",
+      "salaryMax": "最高薪资",
+      "titleRequired": "请输入职位名称",
+      "departmentRequired": "请选择所属部门"
+    },
+    "button": {
+      "add": "添加职位",
+      "edit": "编辑",
+      "delete": "删除",
+      "save": "保存",
+      "cancel": "取消"
+    },
+    "message": {
+      "saveSuccess": "保存成功",
+      "deleteSuccess": "删除成功",
+      "deleteConfirm": "确定要删除此职位吗？"
+    }
+  },
+  "attendance": {
+    "title": "考勤管理",
+    "search": {
+      "label": "搜索考勤",
+      "placeholder": "按员工或日期搜索"
+    },
+    "list": {
+      "employee": "员工",
+      "date": "日期",
+      "checkIn": "签到时间",
+      "checkOut": "签退时间",
+      "duration": "工作时长",
+      "status": "状态",
+      "actions": "操作"
+    },
+    "status": {
+      "present": "正常",
+      "absent": "缺勤",
+      "late": "迟到",
+      "early": "早退"
+    },
+    "button": {
+      "checkIn": "签到",
+      "checkOut": "签退",
+      "export": "导出"
+    }
+  },
+  "payroll": {
+    "title": "工资管理",
+    "search": {
+      "label": "搜索工资记录",
+      "placeholder": "按员工或期间搜索"
+    },
+    "list": {
+      "employee": "员工",
+      "period": "工资期间",
+      "basicSalary": "基本工资",
+      "bonus": "奖金",
+      "deductions": "扣除项",
+      "netSalary": "实发工资",
+      "status": "状态",
+      "actions": "操作"
+    },
+    "status": {
+      "pending": "待处理",
+      "processed": "已处理",
+      "paid": "已发放"
+    },
+    "button": {
+      "generate": "生成工资单",
+      "process": "处理",
+      "export": "导出"
+    }
+  },
+  "education": {
+    "title": "教育背景",
+    "list": {
+      "school": "学校/院校",
+      "major": "专业/学科",
+      "degree": "学历",
+      "startDate": "开始日期",
+      "endDate": "结束日期",
+      "gpa": "绩点",
+      "description": "描述",
+      "actions": "操作"
+    },
+    "dialog": {
+      "add": "添加教育经历",
+      "edit": "编辑教育经历",
+      "school": "学校/院校名称",
+      "major": "专业/学科",
+      "degree": "学历",
+      "startDate": "开始日期",
+      "endDate": "结束日期",
+      "gpa": "绩点",
+      "description": "描述",
+      "schoolRequired": "请输入学校名称",
+      "majorRequired": "请输入专业",
+      "degreeRequired": "请选择学历",
+      "startDateRequired": "请选择开始日期"
+    },
+    "degree": {
+      "bachelor": "本科",
+      "master": "硕士",
+      "phd": "博士",
+      "associate": "专科",
+      "diploma": "职业文凭",
+      "other": "其他"
+    },
+    "button": {
+      "add": "添加教育经历",
+      "edit": "编辑",
+      "delete": "删除",
+      "save": "保存",
+      "cancel": "取消"
+    },
+    "message": {
+      "saveSuccess": "保存成功",
+      "deleteSuccess": "删除成功",
+      "deleteConfirm": "确定要删除此教育经历吗？"
     }
   },
   "common": {
