@@ -36,17 +36,28 @@ export class LoginComponent implements OnInit {
       this.loading = true;
       this.error = '';
       
+      console.log('Attempting login with:', {
+        username: this.loginForm.value.username,
+        password: '***'
+      });
+      
       this.authService.login(this.loginForm.value).subscribe({
-        next: () => {
+        next: (response) => {
           this.loading = false;
-          // Navigation is now handled in the auth service
-          console.log("success");
+          console.log('Login response:', response);
+          if (!response || !response.data || !response.data.token) {
+            this.error = 'Invalid response from server';
+            console.error('Invalid response:', response);
+          }
         },
         error: (error) => {
           this.loading = false;
+          console.error('Login error:', error);
           this.error = error.error?.message || 'Login failed. Please try again.';
         }
       });
+    } else {
+      console.log('Form is invalid:', this.loginForm.errors);
     }
   }
 }

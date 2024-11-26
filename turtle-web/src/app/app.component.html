@@ -52,6 +52,11 @@
           <mat-icon matListItemIcon>event_note</mat-icon>
           <span matListItemTitle *ngIf="!isMenuCollapsed">{{ 'app.menu.attendance' | translate }}</span>
         </a>
+        <mat-divider></mat-divider>
+        <a mat-list-item routerLink="/users" routerLinkActive="active">
+          <mat-icon matListItemIcon>manage_accounts</mat-icon>
+          <span matListItemTitle *ngIf="!isMenuCollapsed">{{ 'app.menu.users' | translate }}</span>
+        </a>
       </mat-nav-list>
     </mat-sidenav>
 

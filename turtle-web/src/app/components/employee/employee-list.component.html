@@ -1,118 +1,112 @@
-<div class="employee-list-container">
-  <div class="header">
-    <h1>{{ 'employee.title' | translate }}</h1>
-    <div class="actions">
-      <mat-form-field class="search-field" appearance="outline">
-        <mat-label>{{ 'employee.search.label' | translate }}</mat-label>
-        <input matInput 
-               [placeholder]="'employee.search.placeholder' | translate" 
-               (input)="onSearch($event)"
-               [value]="searchQuery">
-        <mat-icon matSuffix>search</mat-icon>
-      </mat-form-field>
-      <button mat-raised-button 
-              color="primary" 
-              (click)="onAdd()"
-              class="add-button">
+<div class="container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>{{ 'employee.title' | translate }}</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <!-- Search and Filter -->
+      <div class="search-container">
+        <mat-form-field appearance="outline">
+          <mat-label>{{ 'employee.search.label' | translate }}</mat-label>
+          <input matInput (input)="onSearch($event)" placeholder="'employee.search.placeholder' | translate">
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+      </div>
+
+      <!-- Loading Progress Bar -->
+      <mat-progress-bar *ngIf="isLoading" mode="indeterminate"></mat-progress-bar>
+
+      <!-- Employee Table -->
+      <table mat-table [dataSource]="dataSource" matSort (matSortChange)="onSortChange($event)">
+        <!-- Employee Number Column -->
+        <ng-container matColumnDef="employeeNumber">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'employee.list.id' | translate }}</th>
+          <td mat-cell *matCellDef="let employee">{{employee.employeeNumber}}</td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'employee.list.name' | translate }}</th>
+          <td mat-cell *matCellDef="let employee">{{employee.name}}</td>
+        </ng-container>
+
+        <!-- Email Column -->
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'employee.list.email' | translate }}</th>
+          <td mat-cell *matCellDef="let employee">{{employee.email}}</td>
+        </ng-container>
+
+        <!-- Department Column -->
+        <ng-container matColumnDef="department">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'employee.list.department' | translate }}</th>
+          <td mat-cell *matCellDef="let employee">{{getDepartmentName(employee)}}</td>
+        </ng-container>
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="position">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'employee.list.position' | translate }}</th>
+          <td mat-cell *matCellDef="let employee">{{employee.position}}</td>
+        </ng-container>
+
+        <!-- Hire Date Column -->
+        <ng-container matColumnDef="hireDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'employee.list.hireDate' | translate }}</th>
+          <td mat-cell *matCellDef="let employee">{{employee.hireDate | date}}</td>
+        </ng-container>
+
+        <!-- Status Column -->
+        <ng-container matColumnDef="isActive">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'employee.list.status' | translate }}</th>
+          <td mat-cell *matCellDef="let employee">
+            <span class="status-chip" [ngClass]="getStatusChipClass(employee.isActive)">
+              {{ employee.isActive ? ('employee.status.active' | translate) : ('employee.status.inactive' | translate) }}
+            </span>
+          </td>
+        </ng-container>
+
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>{{ 'employee.list.actions' | translate }}</th>
+          <td mat-cell *matCellDef="let employee">
+            <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="操作菜单">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item (click)="onView(employee)">
+                <mat-icon>visibility</mat-icon>
+                {{ 'employee.actions.view' | translate }}
+              </button>
+              <button mat-menu-item (click)="onEdit(employee)">
+                <mat-icon>edit</mat-icon>
+                {{ 'employee.actions.edit' | translate }}
+              </button>
+              <button mat-menu-item (click)="onDelete(employee)" color="warn">
+                <mat-icon color="warn">delete</mat-icon>
+                {{ 'employee.actions.delete' | translate }}
+              </button>
+            </mat-menu>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+      <!-- Paginator -->
+      <mat-paginator [length]="totalElements"
+                     [pageSize]="pageSize"
+                     [pageSizeOptions]="[5, 10, 25, 50]"
+                     (page)="onPageChange($event)">
+      </mat-paginator>
+    </mat-card-content>
+
+    <!-- Add Employee Button -->
+    <mat-card-actions>
+      <button mat-raised-button color="primary" (click)="onAdd()">
         <mat-icon>add</mat-icon>
         {{ 'employee.actions.add' | translate }}
       </button>
-    </div>
-  </div>
-
-  <div class="table-container mat-elevation-z8">
-    <mat-progress-bar *ngIf="isLoading" mode="indeterminate"></mat-progress-bar>
-    <table mat-table [dataSource]="dataSource" matSort (matSortChange)="onSortChange($event)">
-      
-      <!-- Employee Number Column -->
-      <ng-container matColumnDef="employeeNumber">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'employee.list.id' | translate }}</th>
-        <td mat-cell *matCellDef="let employee">{{employee.employeeNumber}}</td>
-      </ng-container>
-
-      <!-- Name Column -->
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'employee.list.name' | translate }}</th>
-        <td mat-cell *matCellDef="let employee">{{employee.name}}</td>
-      </ng-container>
-
-      <!-- Email Column -->
-      <ng-container matColumnDef="email">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'employee.list.email' | translate }}</th>
-        <td mat-cell *matCellDef="let employee">{{employee.email}}</td>
-      </ng-container>
-
-      <!-- Department Column -->
-      <ng-container matColumnDef="department">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'employee.list.department' | translate }}</th>
-        <td mat-cell *matCellDef="let employee">{{getDepartmentName(employee)}}</td>
-      </ng-container>
-
-      <!-- Position Column -->
-      <ng-container matColumnDef="position">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'employee.list.position' | translate }}</th>
-        <td mat-cell *matCellDef="let employee">{{employee.position}}</td>
-      </ng-container>
-
-      <!-- Hire Date Column -->
-      <ng-container matColumnDef="hireDate">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'employee.list.hireDate' | translate }}</th>
-        <td mat-cell *matCellDef="let employee">{{employee.hireDate | date}}</td>
-      </ng-container>
-
-      <!-- Status Column -->
-      <ng-container matColumnDef="isActive">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'employee.list.status' | translate }}</th>
-        <td mat-cell *matCellDef="let employee">
-          <span class="status-chip" [ngClass]="getStatusChipClass(employee.isActive)">
-            {{ employee.isActive ? ('employee.status.active' | translate) : ('employee.status.inactive' | translate) }}
-          </span>
-        </td>
-      </ng-container>
-
-      <!-- Actions Column -->
-      <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef>{{ 'employee.list.actions' | translate }}</th>
-        <td mat-cell *matCellDef="let employee" class="actions-cell">
-          <div class="action-buttons">
-            <button mat-icon-button 
-                    color="primary" 
-                    (click)="onView(employee)"
-                    [matTooltip]="'employee.actions.view' | translate">
-              <mat-icon>visibility</mat-icon>
-            </button>
-            <button mat-icon-button 
-                    color="primary" 
-                    (click)="onEdit(employee)"
-                    [matTooltip]="'employee.actions.edit' | translate">
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button mat-icon-button 
-                    color="warn" 
-                    (click)="onDelete(employee)"
-                    [matTooltip]="'employee.actions.delete' | translate">
-              <mat-icon>delete</mat-icon>
-            </button>
-          </div>
-        </td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
-      <!-- Row shown when there is no matching data -->
-      <tr class="mat-row" *matNoDataRow>
-        <td class="mat-cell" colspan="8">
-          {{ 'employee.list.noResults' | translate }}{{searchQuery ? ' ' + ('employee.list.matching' | translate) + ' "' + searchQuery + '"' : ''}}
-        </td>
-      </tr>
-    </table>
-
-    <mat-paginator 
-      [length]="totalElements"
-      [pageSize]="pageSize"
-      [pageSizeOptions]="[5, 10, 25, 50]"
-      (page)="onPageChange($event)">
-    </mat-paginator>
-  </div>
+    </mat-card-actions>
+  </mat-card>
 </div>

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { Employee } from '../../services/employee.service';
 import { DepartmentService, Department } from '../../services/department.service';
 import { PersonService, Person } from '../../services/person.service';
@@ -104,21 +105,22 @@ export class EmployeeDialogComponent implements OnInit, AfterViewInit {
     });
   }
 
-  onSearchPerson(event: any): void {
-    const query = event.target.value;
-    if (query.length >= 2) {
-      this.searchPersons$.next(query);
+  handleInput(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.value.length >= 2) {
+      this.searchPersons$.next(input.value);
     } else {
       this.filteredPersons = [];
     }
   }
 
-  displayPersonFn(person: Person | null): string {
+  displayPersonFn = (person: Person | null): string => {
     if (!person) return '';
     return `${person.firstName} ${person.lastName}`;
   }
 
-  onPersonSelected(person: Person): void {
+  handleOptionSelected(event: MatAutocompleteSelectedEvent): void {
+    const person = event.option.value as Person;
     const emergencyContact = this.employeeForm.get('emergencyContact');
     if (emergencyContact && person) {
       emergencyContact.patchValue({

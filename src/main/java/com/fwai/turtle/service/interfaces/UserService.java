@@ -1,5 +1,6 @@
 package com.fwai.turtle.service.interfaces;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.fwai.turtle.persistence.entity.User;
@@ -17,4 +18,7 @@ public interface UserService {
 
   public User destroyUser(User user);
 
+  public List<User> findAll();
+
+  public List<User> findUnmappedUsers();
 }

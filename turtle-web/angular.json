@@ -58,7 +58,15 @@
               "src/styles.scss",
               "src/assets/styles/material-icons.css"
             ],
-            "scripts": []
+            "scripts": [],
+            "optimization": {
+              "fonts": false,
+              "styles": {
+                "minify": true,
+                "inlineCritical": false
+              }
+            },
+            "sourceMap": true
           },
           "configurations": {
             "production": {
@@ -74,6 +82,13 @@
                   "maximumError": "4kb"
                 }
               ],
+              "optimization": {
+                "fonts": false,
+                "styles": {
+                  "minify": true,
+                  "inlineCritical": false
+                }
+              },
               "outputHashing": "all",
               "fileReplacements": [
                 {

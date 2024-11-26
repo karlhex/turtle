@@ -4,6 +4,8 @@ import { LoginComponent } from './components/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { EmployeeListComponent } from './components/employee/employee-list.component';
 import { DepartmentListComponent } from './components/department/department-list.component';
+import { UserManagementComponent } from './components/user-management/user-management.component';
+import { UserEmployeeMappingComponent } from './components/user-employee-mapping/user-employee-mapping.component';
 import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
@@ -16,6 +18,8 @@ const routes: Routes = [
       { path: 'dashboard', component: DashboardComponent },
       { path: 'employees', component: EmployeeListComponent },
       { path: 'departments', component: DepartmentListComponent },
+      { path: 'users', component: UserManagementComponent },
+      { path: 'user-employee-mapping', component: UserEmployeeMappingComponent },
       // Placeholder routes for future implementation
       { path: 'positions', component: DashboardComponent },
       { path: 'attendance', component: DashboardComponent },

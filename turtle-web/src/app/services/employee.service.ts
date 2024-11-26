@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApiResponse, PageResponse } from '../core/models/api.model';
 import { AuthService } from './auth.service';
+import { environment } from '../../environments/environment';
 
 export interface Employee {
   id?: number;
@@ -41,12 +42,17 @@ export interface Employee {
   providedIn: 'root'
 })
 export class EmployeeService {
-  private readonly API_URL = 'http://localhost:8080/api/employees';
+  private readonly API_URL = `${environment.apiUrl}/employees`;
 
   constructor(
     private http: HttpClient,
     private authService: AuthService
   ) { }
+
+  getUnmappedEmployees(): Observable<ApiResponse<Employee[]>> {
+    const headers = this.getHeaders();
+    return this.http.get<ApiResponse<Employee[]>>(`${this.API_URL}/unmapped`, { headers });
+  }
 
   private getHeaders(): HttpHeaders {
     const token = this.authService.getToken();
@@ -95,8 +101,8 @@ export class EmployeeService {
     return this.http.put<ApiResponse<Employee>>(`${this.API_URL}/${id}`, employee, { headers });
   }
 
-  deleteEmployee(id: number): Observable<ApiResponse<void>> {
+  deleteEmployee(id: number): Observable<void> {
     const headers = this.getHeaders();
-    return this.http.delete<ApiResponse<void>>(`${this.API_URL}/${id}`, { headers });
+    return this.http.delete<void>(`${this.API_URL}/${id}`, { headers });
   }
 }

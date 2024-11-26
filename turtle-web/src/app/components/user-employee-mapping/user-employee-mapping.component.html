@@ -1,0 +1,85 @@
+<div class="container" [class.dialog-mode]="!!currentUser">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        <ng-container *ngIf="currentUser">
+          用户 "{{currentUser.username}}" 的员工关联
+        </ng-container>
+        <ng-container *ngIf="!currentUser">
+          用户-员工关联管理
+        </ng-container>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <!-- 创建新关联 -->
+      <div class="mapping-form">
+        <mat-form-field appearance="outline" *ngIf="!currentUser">
+          <mat-label>选择用户</mat-label>
+          <mat-select [(ngModel)]="selectedUser">
+            <mat-option [value]="null">请选择用户</mat-option>
+            <mat-option *ngFor="let user of unmappedUsers" [value]="user.id">
+              {{user.username}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>选择员工</mat-label>
+          <mat-select [(ngModel)]="selectedEmployee">
+            <mat-option [value]="null">请选择员工</mat-option>
+            <mat-option *ngFor="let employee of unmappedEmployees" [value]="employee.id">
+              {{employee.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" (click)="createMapping()" 
+          [disabled]="(!selectedUser && !currentUser) || !selectedEmployee || loading">
+          <mat-icon>link</mat-icon>
+          创建关联
+        </button>
+      </div>
+
+      <!-- 现有关联列表 -->
+      <div class="mapping-table">
+        <table mat-table [dataSource]="mappings">
+          <ng-container matColumnDef="username" *ngIf="!currentUser">
+            <th mat-header-cell *matHeaderCellDef>用户名</th>
+            <td mat-cell *matCellDef="let mapping">{{mapping.username}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="email" *ngIf="!currentUser">
+            <th mat-header-cell *matHeaderCellDef>邮箱</th>
+            <td mat-cell *matCellDef="let mapping">{{mapping.userEmail}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="employee">
+            <th mat-header-cell *matHeaderCellDef>员工姓名</th>
+            <td mat-cell *matCellDef="let mapping">{{mapping.employeeName}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>操作</th>
+            <td mat-cell *matCellDef="let mapping">
+              <button mat-icon-button color="warn" (click)="deleteMapping(mapping)" [disabled]="loading" matTooltip="删除关联">
+                <mat-icon>link_off</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <div class="no-data" *ngIf="!loading && mappings && mappings.length === 0">
+          暂无关联数据
+        </div>
+
+        <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+      </div>
+    </mat-card-content>
+    <mat-card-actions align="end" *ngIf="currentUser">
+      <button mat-button (click)="close()">关闭</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

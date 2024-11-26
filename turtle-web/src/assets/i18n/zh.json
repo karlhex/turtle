@@ -9,6 +9,7 @@
       "attendance": "考勤管理",
       "leave": "请假管理",
       "payroll": "工资管理",
+      "users": "用户管理",
       "logout": "退出登录"
     }
   },

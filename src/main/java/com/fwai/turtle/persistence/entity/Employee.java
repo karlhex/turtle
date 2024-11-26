@@ -92,6 +92,10 @@ public class Employee {
     @Column(unique = true)
     private String idNumber;                // 证件号码
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;            // 关联用户账号
+
     @OneToMany(mappedBy = "employeeId", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<EmployeeEducation> educations; // 教育经历
 

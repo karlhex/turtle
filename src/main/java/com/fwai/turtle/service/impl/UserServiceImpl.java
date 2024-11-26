@@ -8,6 +8,7 @@ import com.fwai.turtle.service.interfaces.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.fwai.turtle.persistence.entity.Role;
@@ -108,6 +109,31 @@ public class UserServiceImpl implements UserService {
       return userRepository.save(user);
     } catch (Exception e) {
       throw e;
+    }
+  }
+
+  @Override
+  public List<User> findAll() {
+    try {
+      List<User> users = userRepository.findAll();
+      log.info("findAll: retrieved {} users", users.size());
+      return users;
+    } catch (Exception e) {
+      log.error("Error retrieving all users", e);
+      return List.of(); // Return empty list instead of null
+    }
+  }
+
+  @Override
+  public List<User> findUnmappedUsers() {
+    try {
+      // This assumes you have a method in UserRepository to find unmapped users
+      List<User> users = userRepository.findUnmappedUsers();
+      log.info("findUnmappedUsers: retrieved {} unmapped users", users.size());
+      return users;
+    } catch (Exception e) {
+      log.error("Error retrieving unmapped users", e);
+      return List.of();
     }
   }
 }

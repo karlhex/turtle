@@ -32,7 +32,7 @@
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>{{ 'employee.jobHistory.startDate' | translate }}</mat-label>
         <input matInput [matDatepicker]="startDatePicker" formControlName="startDate" required>
-        <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker-toggle matIconSuffix [for]="startDatePicker"></mat-datepicker-toggle>
         <mat-datepicker #startDatePicker></mat-datepicker>
         <mat-error *ngIf="jobHistoryForm.get('startDate')?.hasError('required')">
           {{ 'employee.jobHistory.validation.startDateRequired' | translate }}
@@ -42,7 +42,7 @@
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>{{ 'employee.jobHistory.endDate' | translate }}</mat-label>
         <input matInput [matDatepicker]="endDatePicker" formControlName="endDate">
-        <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker-toggle matIconSuffix [for]="endDatePicker"></mat-datepicker-toggle>
         <mat-datepicker #endDatePicker></mat-datepicker>
       </mat-form-field>
 

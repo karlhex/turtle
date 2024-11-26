@@ -132,12 +132,12 @@
               <mat-label>{{ 'employee.form.emergency.person' | translate }}</mat-label>
               <input type="text"
                     matInput
-                    [formControlName]="'person'"
                     [matAutocomplete]="personAuto"
-                    (input)="onSearchPerson($event)">
+                    (input)="handleInput($event)"
+                    formControlName="person">
               <mat-autocomplete #personAuto="matAutocomplete" 
-                              [displayWith]="displayPersonFn.bind(this)"
-                              (optionSelected)="onPersonSelected($event.option.value)">
+                              [displayWith]="displayPersonFn"
+                              (optionSelected)="handleOptionSelected($event)">
                 <mat-option *ngFor="let person of filteredPersons" [value]="person">
                   {{person.firstName}} {{person.lastName}} ({{person.phone}})
                 </mat-option>
@@ -287,7 +287,7 @@
     </div>
   </mat-tab>
 
-  <mat-tab label="{{ 'employee.jobHistory.tab' | translate }}">
+  <mat-tab [label]="'employee.tabs.jobHistory' | translate">
     <div class="job-history-tab">
       <div class="job-history-header">
         <h3>{{ 'employee.jobHistory.title' | translate }}</h3>

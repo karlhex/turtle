@@ -5,26 +5,32 @@ import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { TokenRefreshService } from './token-refresh.service';
 import { TokenStorageService } from './token-storage.service';
+import { environment } from '../../environments/environment';
 
 export interface SigninRequest {
   username: string;
   password: string;
 }
 
-export interface SigninResponse {
+export interface ApiResponse<T> {
   code: number;
-  data: {
-    id: number;
-    token: string;
-    message?: string;
-  }
+  message?: string;
+  data: T;
 }
+
+export interface SigninData {
+  id: number;
+  token: string;
+  message?: string;
+}
+
+export type SigninResponse = ApiResponse<SigninData>;
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly API_URL = 'http://localhost:8080/api/auth';
+  private readonly API_URL = `${environment.apiUrl}/auth`;
   private userSubject = new BehaviorSubject<SigninResponse | null>(null);
   
   constructor(
@@ -38,11 +44,11 @@ export class AuthService {
     const userId = this.tokenStorage.getUserId();
     if (token && userId) {
       this.userSubject.next({
-        code: 400,
+        code: 200,
         data: {
           id: parseInt(userId),
           token
-        },
+        }
       });
       // Start token refresh timer if user is logged in
       this.tokenRefreshService.startRefreshTimer();
@@ -50,12 +56,13 @@ export class AuthService {
   }
 
   login(credentials: SigninRequest): Observable<SigninResponse> {
+    console.log('signin url', `${this.API_URL}/signin`);
     return this.http.post<SigninResponse>(`${this.API_URL}/signin`, credentials)
       .pipe(
         tap(response => {
-          console.log(response);
+          console.log('Server response:', response);
 
-          if (response && response.data.token) {
+          if (response && response.code === 200 && response.data && response.data.token) {
             // Store token and user info
             this.tokenStorage.setToken(response.data.token);
             this.tokenStorage.setUserId(response.data.id.toString());
@@ -64,6 +71,9 @@ export class AuthService {
             this.tokenRefreshService.startRefreshTimer();           
             // Navigate to dashboard
             this.router.navigate(['/dashboard']);
+          } else {
+            console.error('Invalid response format:', response);
+            throw new Error('Invalid response from server');
           }
         })
       );

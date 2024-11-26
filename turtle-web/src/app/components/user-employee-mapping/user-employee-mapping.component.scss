@@ -1,0 +1,86 @@
+.container {
+  padding: 20px;
+
+  &.dialog-mode {
+    padding: 0;
+  }
+
+  mat-card {
+    margin-bottom: 20px;
+  }
+
+  .mapping-form {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+
+    mat-form-field {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    button {
+      height: 56px;
+      min-width: 120px;
+    }
+  }
+
+  .mapping-table {
+    position: relative;
+    margin-top: 16px;
+
+    table {
+      width: 100%;
+    }
+
+    .mat-mdc-row:hover {
+      background-color: rgba(0, 0, 0, 0.04);
+    }
+
+    .loading-spinner {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+      background: rgba(255, 255, 255, 0.8);
+      padding: 20px;
+      border-radius: 4px;
+    }
+
+    .no-data {
+      text-align: center;
+      padding: 20px;
+      color: rgba(0, 0, 0, 0.54);
+    }
+
+    mat-progress-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+  }
+
+  .mat-mdc-header-cell {
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.87);
+  }
+
+  .mat-column-actions {
+    width: 80px;
+    text-align: center;
+  }
+}
+
+// Dialog mode styles
+:host ::ng-deep .mat-mdc-dialog-container {
+  .dialog-mode {
+    .mat-mdc-card {
+      box-shadow: none;
+      border-radius: 0;
+    }
+  }
+}

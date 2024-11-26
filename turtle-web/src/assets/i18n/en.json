@@ -9,6 +9,7 @@
       "attendance": "Attendance",
       "leave": "Leave Management",
       "payroll": "Payroll",
+      "users": "Users",
       "logout": "Logout"
     }
   },

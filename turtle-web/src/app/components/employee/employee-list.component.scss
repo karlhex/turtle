@@ -1,18 +1,82 @@
-.employee-list-container {
-  padding: 24px;
+.container {
+  padding: 20px;
 
   mat-card {
-    .mat-mdc-card-header {
-      padding: 16px;
+    margin-bottom: 20px;
+  }
+
+  .search-container {
+    margin-bottom: 16px;
+
+    mat-form-field {
+      width: 100%;
+      max-width: 500px;
+    }
+  }
+
+  table {
+    width: 100%;
+  }
+
+  .mat-mdc-header-cell {
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.87);
+  }
+
+  .mat-mdc-row:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+  }
+
+  .status-chip {
+    padding: 4px 8px;
+    border-radius: 16px;
+    font-size: 12px;
+    font-weight: 500;
+
+    &.active {
+      background-color: #e8f5e9;
+      color: #2e7d32;
     }
 
-    mat-card-header {
-      margin-bottom: 20px;
+    &.inactive {
+      background-color: #ffebee;
+      color: #c62828;
     }
+  }
 
-    mat-card-content {
-      padding: 0 16px 16px 16px;
+  mat-paginator {
+    margin-top: 16px;
+  }
+
+  mat-card-actions {
+    padding: 16px;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .loading-container {
+    position: relative;
+    min-height: 200px;
+
+    mat-progress-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
     }
+  }
+
+  .mat-column-actions {
+    width: 100px;
+    text-align: center;
+  }
+
+  .mat-column-employeeNumber {
+    width: 120px;
+  }
+
+  .mat-column-isActive {
+    width: 100px;
   }
 
   .header {
@@ -42,78 +106,24 @@
     }
   }
 
-  .table-container {
-    position: relative;
-    min-height: 200px;
-    overflow: auto;
+  .no-data-message {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+    color: rgba(0, 0, 0, 0.54);
 
-    table {
-      width: 100%;
-
-      .mat-mdc-row {
-        &:hover {
-          background-color: rgba(0, 0, 0, 0.04);
-        }
-      }
-
-      .mat-column-actions {
-        width: 160px;
-        text-align: center;
-        padding: 0 8px;
-
-        .actions-cell {
-          padding: 0;
-        }
-
-        .action-buttons {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          gap: 4px;
-
-          button {
-            margin: 0;
-          }
-        }
-      }
-
-      .mat-column-isActive {
-        width: 120px;
-        text-align: center;
-      }
-
-      .mat-column-employeeNumber {
-        width: 100px;
-      }
-
-      .mat-column-hireDate {
-        width: 120px;
-      }
-
-      td.mat-cell {
-        padding: 16px;
-      }
+    mat-icon {
+      margin-right: 8px;
     }
+  }
 
-    .no-data-message {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 32px;
-      color: rgba(0, 0, 0, 0.54);
-
-      mat-icon {
-        margin-right: 8px;
-      }
-    }
-
-    .no-data {
-      display: flex;
-      justify-content: center;
-      padding: 20px;
-      font-style: italic;
-      color: rgba(0, 0, 0, 0.54);
-    }
+  .no-data {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    font-style: italic;
+    color: rgba(0, 0, 0, 0.54);
   }
 
   ::ng-deep {
@@ -123,25 +133,6 @@
       .mat-icon {
         color: #f44336;
       }
-    }
-  }
-
-  // Status chip styles
-  .status-chip {
-    padding: 4px 12px;
-    border-radius: 16px;
-    font-size: 12px;
-    font-weight: 500;
-    text-transform: uppercase;
-
-    &.status-active {
-      background-color: #e8f5e9;
-      color: #2e7d32;
-    }
-
-    &.status-inactive {
-      background-color: #fafafa;
-      color: #616161;
     }
   }
 
