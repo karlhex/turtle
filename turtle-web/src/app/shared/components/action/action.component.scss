@@ -1,0 +1,11 @@
+.action-container {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  
+  button {
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.04);
+    }
+  }
+}

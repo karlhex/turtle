@@ -66,21 +66,12 @@
       <!-- Actions Column -->
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef>{{ 'department.list.actions' | translate }}</th>
-        <td mat-cell *matCellDef="let department" class="actions-cell">
-          <div class="action-buttons">
-            <button mat-icon-button 
-                    color="primary" 
-                    (click)="onEdit(department)"
-                    [matTooltip]="'department.button.edit' | translate">
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button mat-icon-button 
-                    color="warn" 
-                    (click)="onDelete(department)"
-                    [matTooltip]="'department.button.delete' | translate">
-              <mat-icon>delete</mat-icon>
-            </button>
-          </div>
+        <td mat-cell *matCellDef="let department">
+          <app-action
+            [canView]="false"
+            (edit)="onEdit(department)"
+            (delete)="onDelete(department)">
+          </app-action>
         </td>
       </ng-container>
 

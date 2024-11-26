@@ -38,17 +38,13 @@
 
         <!-- Actions Column -->
         <ng-container matColumnDef="actions">
-          <th mat-header-cell *matHeaderCellDef> 操作 </th>
+          <th mat-header-cell *matHeaderCellDef>{{ 'user.list.actions' | translate }}</th>
           <td mat-cell *matCellDef="let user">
-            <button mat-icon-button color="primary" (click)="showEditModal(user)" matTooltip="编辑用户">
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button mat-icon-button color="accent" (click)="showEmployeeMapping(user)" matTooltip="员工关联">
-              <mat-icon>link</mat-icon>
-            </button>
-            <button mat-icon-button color="warn" (click)="confirmDelete(user)" matTooltip="删除用户">
-              <mat-icon>delete</mat-icon>
-            </button>
+            <app-action
+              [canView]="false"
+              (edit)="showEditModal(user)"
+              (delete)="confirmDelete(user)">
+            </app-action>
           </td>
         </ng-container>
 

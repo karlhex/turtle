@@ -261,17 +261,16 @@
 
         <!-- Actions Column -->
         <ng-container matColumnDef="actions">
-          <mat-header-cell *matHeaderCellDef>{{ 'employee.education.table.actions' | translate }}</mat-header-cell>
+          <mat-header-cell *matHeaderCellDef>{{ 'employee.education.list.actions' | translate }}</mat-header-cell>
           <mat-cell *matCellDef="let education">
-            <button mat-icon-button (click)="onViewEducation(education)">
-              <mat-icon>visibility</mat-icon>
-            </button>
-            <button mat-icon-button (click)="onEditEducation(education)" *ngIf="data.mode === 'edit'">
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button mat-icon-button color="warn" (click)="onDeleteEducation(education)" *ngIf="data.mode === 'edit'">
-              <mat-icon>delete</mat-icon>
-            </button>
+            <app-action
+              [canView]="true"
+              [canEdit]="data.mode === 'edit'"
+              [canDelete]="data.mode === 'edit'"
+              (view)="onViewEducation(education)"
+              (edit)="onEditEducation(education)"
+              (delete)="onDeleteEducation(education)">
+            </app-action>
           </mat-cell>
         </ng-container>
 
@@ -327,23 +326,16 @@
         </ng-container>
 
         <ng-container matColumnDef="actions">
-          <th mat-header-cell *matHeaderCellDef>{{ 'employee.jobHistory.table.actions' | translate }}</th>
-          <td mat-cell *matCellDef="let history" class="action-cell">
-            <div class="action-buttons">
-              <button mat-icon-button (click)="onViewJobHistory(history)" *ngIf="data.mode === 'view'"
-                      matTooltip="{{ 'employee.jobHistory.actions.view' | translate }}">
-                <mat-icon>visibility</mat-icon>
-              </button>
-              <button mat-icon-button (click)="onEditJobHistory(history)" *ngIf="data.mode === 'edit'"
-                      matTooltip="{{ 'employee.jobHistory.actions.edit' | translate }}">
-                <mat-icon>edit</mat-icon>
-              </button>
-              <button mat-icon-button (click)="onDeleteJobHistory(history)" *ngIf="data.mode === 'edit'"
-                      matTooltip="{{ 'employee.jobHistory.actions.delete' | translate }}"
-                      color="warn">
-                <mat-icon>delete</mat-icon>
-              </button>
-            </div>
+          <th mat-header-cell *matHeaderCellDef>{{ 'employee.jobHistory.list.actions' | translate }}</th>
+          <td mat-cell *matCellDef="let jobHistory">
+            <app-action
+              [canView]="true"
+              [canEdit]="data.mode === 'edit'"
+              [canDelete]="data.mode === 'edit'"
+              (view)="onViewJobHistory(jobHistory)"
+              (edit)="onEditJobHistory(jobHistory)"
+              (delete)="onDeleteJobHistory(jobHistory)">
+            </app-action>
           </td>
         </ng-container>
 
