@@ -379,6 +379,46 @@
       "deleteConfirm": "Are you sure you want to delete this education record?"
     }
   },
+  "user": {
+    "title": "User Management",
+    "search": {
+      "placeholder": "Search by username or email"
+    },
+    "list": {
+      "id": "ID",
+      "username": "Username",
+      "email": "Email",
+      "roles": "Roles",
+      "actions": "Actions"
+    },
+    "dialog": {
+      "create": "Create User",
+      "edit": "Edit User",
+      "delete": "Delete User",
+      "deleteConfirm": "Are you sure you want to delete this user?"
+    },
+    "form": {
+      "username": "Username",
+      "email": "Email",
+      "password": "Password",
+      "roles": "Roles"
+    },
+    "validation": {
+      "required": {
+        "username": "Username is required",
+        "email": "Email is required",
+        "password": "Password is required",
+        "roles": "At least one role must be selected"
+      },
+      "email": "Please enter a valid email address"
+    },
+    "messages": {
+      "createSuccess": "User created successfully",
+      "updateSuccess": "User updated successfully",
+      "deleteSuccess": "User deleted successfully",
+      "error": "An error occurred"
+    }
+  },
   "common": {
     "button": {
       "confirm": "Confirm",

@@ -1,26 +1,10 @@
-<div class="department-list-container">
-  <div class="header">
-    <h1>{{ 'department.title' | translate }}</h1>
-    <div class="actions">
-      <mat-form-field class="search-field" appearance="outline">
-        <mat-label>{{ 'department.search.label' | translate }}</mat-label>
-        <input matInput 
-               placeholder="'department.search.placeholder' | translate" 
-               (input)="onSearch($event)"
-               [value]="searchQuery">
-        <mat-icon matSuffix>search</mat-icon>
-      </mat-form-field>
-      <button mat-raised-button 
-              color="primary" 
-              (click)="onAdd()"
-              class="add-button">
-        <mat-icon>add</mat-icon>
-        {{ 'department.button.add' | translate }}
-      </button>
-    </div>
-  </div>
-
-  <div class="table-container mat-elevation-z8">
+<app-base-list
+  [title]="'department.title' | translate"
+  [placeholder]="'department.search.placeholder' | translate"
+  (search)="onSearchChange($event)"
+  (add)="onAdd()">
+  
+  <div class="table-container">
     <mat-progress-bar *ngIf="isLoading" mode="indeterminate"></mat-progress-bar>
     <table mat-table [dataSource]="dataSource" matSort>
       <!-- Name Column -->
@@ -93,4 +77,4 @@
       (page)="onPageChange($event)">
     </mat-paginator>
   </div>
-</div>
+</app-base-list>

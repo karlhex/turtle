@@ -1,115 +1,133 @@
-<div class="container">
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>用户管理</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <!-- User Table -->
-      <table mat-table [dataSource]="users" matSort>
-        <!-- ID Column -->
-        <ng-container matColumnDef="id">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
-          <td mat-cell *matCellDef="let user"> {{user.id}} </td>
-        </ng-container>
+<app-base-list
+  [title]="'user.title' | translate"
+  [placeholder]="'user.search.placeholder' | translate"
+  (search)="handleSearch($event)"
+  (add)="showCreateModal()">
 
-        <!-- Username Column -->
-        <ng-container matColumnDef="username">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> 用户名 </th>
-          <td mat-cell *matCellDef="let user"> {{user.username}} </td>
-        </ng-container>
+  <div class="table-container">
+    <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
 
-        <!-- Email Column -->
-        <ng-container matColumnDef="email">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> 邮箱 </th>
-          <td mat-cell *matCellDef="let user"> {{user.email}} </td>
-        </ng-container>
+    <table mat-table [dataSource]="users" matSort (matSortChange)="onSortChange($event)">
+      <!-- ID Column -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'user.list.id' | translate }}</th>
+        <td mat-cell *matCellDef="let user">{{user.id}}</td>
+      </ng-container>
 
-        <!-- Roles Column -->
-        <ng-container matColumnDef="roles">
-          <th mat-header-cell *matHeaderCellDef> 角色 </th>
-          <td mat-cell *matCellDef="let user">
-            <mat-chip-listbox aria-label="User roles">
-              <mat-chip *ngFor="let role of user.roleNames" color="primary" selected>
-                {{role}}
-              </mat-chip>
-            </mat-chip-listbox>
-          </td>
-        </ng-container>
+      <!-- Username Column -->
+      <ng-container matColumnDef="username">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'user.list.username' | translate }}</th>
+        <td mat-cell *matCellDef="let user">{{user.username}}</td>
+      </ng-container>
 
-        <!-- Actions Column -->
-        <ng-container matColumnDef="actions">
-          <th mat-header-cell *matHeaderCellDef>{{ 'user.list.actions' | translate }}</th>
-          <td mat-cell *matCellDef="let user">
-            <app-action
-              [canView]="false"
-              (edit)="showEditModal(user)"
-              (delete)="confirmDelete(user)">
-            </app-action>
-          </td>
-        </ng-container>
+      <!-- Email Column -->
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'user.list.email' | translate }}</th>
+        <td mat-cell *matCellDef="let user">{{user.email}}</td>
+      </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="['id', 'username', 'email', 'roles', 'actions']"></tr>
-        <tr mat-row *matRowDef="let row; columns: ['id', 'username', 'email', 'roles', 'actions'];"></tr>
-      </table>
+      <!-- Roles Column -->
+      <ng-container matColumnDef="roles">
+        <th mat-header-cell *matHeaderCellDef>{{ 'user.list.roles' | translate }}</th>
+        <td mat-cell *matCellDef="let user">
+          <mat-chip-listbox aria-label="User roles">
+            <mat-chip *ngFor="let role of user.roleNames" color="primary" selected>
+              {{role}}
+            </mat-chip>
+          </mat-chip-listbox>
+        </td>
+      </ng-container>
 
-      <!-- Loading Spinner -->
-      <div class="loading-spinner" *ngIf="loading">
-        <mat-spinner diameter="40"></mat-spinner>
-      </div>
+      <!-- Actions Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>{{ 'user.list.actions' | translate }}</th>
+        <td mat-cell *matCellDef="let user">
+          <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Actions">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="showEditModal(user)">
+              <mat-icon>edit</mat-icon>
+              <span>{{ 'user.dialog.edit' | translate }}</span>
+            </button>
+            <button mat-menu-item (click)="confirmDelete(user)">
+              <mat-icon>delete</mat-icon>
+              <span>{{ 'user.dialog.delete' | translate }}</span>
+            </button>
+            <button mat-menu-item (click)="showEmployeeMapping(user)">
+              <mat-icon>link</mat-icon>
+              <span>{{ 'user.actions.mapEmployee' | translate }}</span>
+            </button>
+          </mat-menu>
+        </td>
+      </ng-container>
 
-      <!-- Add User Button -->
-      <div class="action-buttons">
-        <button mat-raised-button color="primary" (click)="showCreateModal()">
-          <mat-icon>add</mat-icon>
-          新建用户
-        </button>
-      </div>
-    </mat-card-content>
-  </mat-card>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
 
-  <mat-dialog-content *ngIf="isModalVisible">
-    <form [formGroup]="userForm">
-      <mat-form-field appearance="outline">
-        <mat-label>用户名</mat-label>
+    <mat-paginator
+      [length]="totalElements"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="[5, 10, 25, 100]"
+      (page)="onPageChange($event)"
+      aria-label="Select page">
+    </mat-paginator>
+  </div>
+</app-base-list>
+
+<!-- User Form Dialog -->
+<div class="modal" *ngIf="isModalVisible">
+  <div class="modal-content">
+    <h2>{{ modalTitle | translate }}</h2>
+    <form [formGroup]="userForm" (ngSubmit)="saveUser()">
+      <mat-form-field>
+        <mat-label>{{ 'user.form.username' | translate }}</mat-label>
         <input matInput formControlName="username" required>
         <mat-error *ngIf="userForm.get('username')?.hasError('required')">
-          用户名是必填项
+          {{ 'user.validation.required.username' | translate }}
         </mat-error>
       </mat-form-field>
 
-      <mat-form-field appearance="outline">
-        <mat-label>邮箱</mat-label>
+      <mat-form-field>
+        <mat-label>{{ 'user.form.email' | translate }}</mat-label>
         <input matInput formControlName="email" required type="email">
         <mat-error *ngIf="userForm.get('email')?.hasError('required')">
-          邮箱是必填项
+          {{ 'user.validation.required.email' | translate }}
         </mat-error>
         <mat-error *ngIf="userForm.get('email')?.hasError('email')">
-          请输入有效的邮箱地址
+          {{ 'user.validation.email' | translate }}
         </mat-error>
       </mat-form-field>
 
-      <mat-form-field appearance="outline">
-        <mat-label>密码</mat-label>
-        <input matInput formControlName="password" [required]="!userForm.get('id')?.value" type="password">
+      <mat-form-field>
+        <mat-label>{{ 'user.form.password' | translate }}</mat-label>
+        <input matInput formControlName="password" required type="password">
         <mat-error *ngIf="userForm.get('password')?.hasError('required')">
-          密码是必填项
+          {{ 'user.validation.required.password' | translate }}
         </mat-error>
-        <div *ngIf="userForm.get('id')?.value" class="ant-form-item-extra">
-          留空表示不修改密码
-        </div>
       </mat-form-field>
 
-      <mat-form-field appearance="outline">
-        <mat-label>角色</mat-label>
+      <mat-form-field>
+        <mat-label>{{ 'user.form.roles' | translate }}</mat-label>
         <mat-select formControlName="roleNames" multiple required>
           <mat-option *ngFor="let role of availableRoles" [value]="role">
             {{role}}
           </mat-option>
         </mat-select>
         <mat-error *ngIf="userForm.get('roleNames')?.hasError('required')">
-          请选择至少一个角色
+          {{ 'user.validation.required.roles' | translate }}
         </mat-error>
       </mat-form-field>
+
+      <div class="button-group">
+        <button mat-button type="button" (click)="isModalVisible = false">
+          {{ 'common.button.cancel' | translate }}
+        </button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="!userForm.valid">
+          {{ 'common.button.confirm' | translate }}
+        </button>
+      </div>
     </form>
-  </mat-dialog-content>
+  </div>
 </div>

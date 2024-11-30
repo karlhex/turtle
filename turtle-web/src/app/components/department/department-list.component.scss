@@ -1,85 +1,69 @@
-.department-list-container {
-  padding: 24px;
-  
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 24px;
+.table-container {
+  position: relative;
+  min-height: 200px;
+  overflow: auto;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 0;
+  width: 100%;
+  box-sizing: border-box;
 
-    h1 {
-      margin: 0;
-      font-size: 24px;
-      font-weight: 500;
+  table {
+    width: 100%;
+
+    .mat-header-row {
+      background-color: #fafafa;
+      height: 32px;
     }
 
-    .actions {
-      display: flex;
-      gap: 16px;
-      align-items: center;
+    .mat-row {
+      height: 32px;
+    }
 
-      .search-field {
-        width: 300px;
-      }
+    .mat-header-cell {
+      color: rgba(0, 0, 0, 0.85);
+      font-weight: 500;
+      font-size: 14px;
+      padding: 4px 24px;
+    }
 
-      .add-button {
-        height: 48px;
-      }
+    .mat-cell {
+      color: rgba(0, 0, 0, 0.65);
+      font-size: 14px;
+      padding: 4px 24px;
+    }
+
+    .mat-column-actions {
+      width: 120px;
+      text-align: center;
+      padding: 4px 24px;
     }
   }
 
-  .table-container {
-    position: relative;
-    min-height: 200px;
-    overflow: auto;
+  .mat-row:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+  }
 
-    table {
-      width: 100%;
-
-      .mat-column-actions {
-        width: 120px;
-        text-align: center;
-        padding: 0 8px;
-
-        .actions-cell {
-          padding: 0;
-        }
-
-        .action-buttons {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          gap: 4px;
-
-          button {
-            margin: 0;
-          }
-        }
-      }
-
-      .mat-column-isActive {
-        width: 120px;
-        text-align: center;
-      }
-    }
+  mat-paginator {
+    border-top: 1px solid rgba(0, 0, 0, 0.12);
   }
 }
 
 .status-chip {
-  padding: 4px 12px;
+  padding: 2px 8px;
   border-radius: 16px;
   font-size: 12px;
   font-weight: 500;
-  text-transform: uppercase;
 
   &.status-active {
-    background-color: #e8f5e9;
-    color: #2e7d32;
+    background-color: #e6f7ed;
+    color: #52c41a;
   }
 
   &.status-inactive {
-    background-color: #fafafa;
-    color: #616161;
+    background-color: #fff1f0;
+    color: #ff4d4f;
   }
 }
 
@@ -88,8 +72,4 @@ mat-progress-bar {
   top: 0;
   left: 0;
   right: 0;
-}
-
-.mat-cell {
-  padding: 16px;
 }

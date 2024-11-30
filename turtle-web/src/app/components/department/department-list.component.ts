@@ -57,6 +57,11 @@ export class DepartmentListComponent implements OnInit {
     this.searchSubject.next(value);
   }
 
+  onSearchChange(searchText: string) {
+    this.searchQuery = searchText;
+    this.searchSubject.next(searchText);
+  }
+
   onPageChange(event: PageEvent) {
     this.pageSize = event.pageSize;
     this.pageIndex = event.pageIndex;

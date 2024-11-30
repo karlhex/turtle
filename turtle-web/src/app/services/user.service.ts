@@ -37,8 +37,12 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
-  getUsers(): Observable<ApiResponse<User[]>> {
-    return this.http.get<ApiResponse<User[]>>(this.API_URL);
+  getUsers(page: number = 0, pageSize: number = 10, sort?: { sortBy: string; direction: 'ASC' | 'DESC' }): Observable<ApiResponse<any>> {
+    let url = `${this.API_URL}?page=${page}&size=${pageSize}`;
+    if (sort) {
+      url += `&sort=${sort.sortBy},${sort.direction}`;
+    }
+    return this.http.get<ApiResponse<any>>(url);
   }
 
   getUser(id: number): Observable<ApiResponse<User>> {
@@ -59,5 +63,10 @@ export class UserService {
 
   createUser(user: CreateUserDto): Observable<ApiResponse<User>> {
     return this.http.post<ApiResponse<User>>(this.API_URL, user);
+  }
+
+  searchUsers(query: string, page: number = 0, pageSize: number = 10): Observable<ApiResponse<any>> {
+    const url = `${this.API_URL}/search?query=${encodeURIComponent(query)}&page=${page}&size=${pageSize}`;
+    return this.http.get<ApiResponse<any>>(url);
   }
 }

@@ -5,7 +5,6 @@ import com.fwai.turtle.exception.ResourceNotFoundException;
 import com.fwai.turtle.persistence.entity.Employee;
 import com.fwai.turtle.persistence.mapper.EmployeeMapper;
 import com.fwai.turtle.persistence.repository.EmployeeRepository;
-import com.fwai.turtle.common.PageResponse;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,9 +16,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 import com.fwai.turtle.exception.DuplicateRecordException;
 
@@ -58,25 +54,15 @@ public class EmployeeService {
         return employeeMapper.toDTO(employee);
     }
 
-    public PageResponse<EmployeeDTO> getAll(int page, int size, String sortBy, String direction) {
+    public Page<EmployeeDTO> getAll(int page, int size, String sortBy, String direction) {
         Sort sort = Sort.by(Sort.Direction.fromString(direction), sortBy);
         Pageable pageable = PageRequest.of(page, size, sort);
         
         Page<Employee> employeePage = employeeRepository.findAll(pageable);
-        List<EmployeeDTO> employeeDTOs = employeePage.getContent().stream()
-            .map(employeeMapper::toDTO)
-            .collect(Collectors.toList());
-        
-        return PageResponse.of(
-            employeeDTOs,
-            employeePage.getNumber(),
-            employeePage.getSize(),
-            employeePage.getTotalElements(),
-            employeePage.getTotalPages()
-        );
+        return employeePage.map(employeeMapper::toDTO);
     }
-
-    public PageResponse<EmployeeDTO> search(String query, int page, int size) {
+        
+    public Page<EmployeeDTO> search(String query, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Employee> employeePage;
         
@@ -87,17 +73,7 @@ public class EmployeeService {
             employeePage = employeeRepository.findAll(pageable);
         }
         
-        List<EmployeeDTO> employeeDTOs = employeePage.getContent().stream()
-            .map(employeeMapper::toDTO)
-            .collect(Collectors.toList());
-        
-        return PageResponse.of(
-            employeeDTOs,
-            employeePage.getNumber(),
-            employeePage.getSize(),
-            employeePage.getTotalElements(),
-            employeePage.getTotalPages()
-        );
+        return employeePage.map(employeeMapper::toDTO);
     }
 
     @Transactional

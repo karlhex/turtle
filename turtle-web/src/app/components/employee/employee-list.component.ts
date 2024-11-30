@@ -90,9 +90,8 @@ export class EmployeeListComponent implements OnInit {
     this.isLoading = false;
   }
 
-  onSearch(event: Event) {
-    const target = event.target as HTMLInputElement;
-    this.searchQuery = target.value;
+  onSearch(searchText: string) {
+    this.searchQuery = searchText;
     this.loadEmployees(0);
     if (this.paginator) {
       this.paginator.firstPage();
@@ -108,25 +107,22 @@ export class EmployeeListComponent implements OnInit {
     this.loadEmployees(0);
   }
 
-  onAdd() {
+  openAddDialog(): void {
     const dialogRef = this.dialog.open(EmployeeDialogComponent, {
-      width: '50%',
-      data: {
-        employee: {},
-        mode: 'edit'
-      }
+      width: '600px',
+      data: { mode: 'add' }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.employeeService.createEmployee(result).subscribe({
           next: () => {
-            this.snackBar.open('Employee created successfully', 'Close', {
+            this.loadEmployees();
+            this.snackBar.open('Employee added successfully', 'Close', {
               duration: 3000,
               horizontalPosition: 'center',
               verticalPosition: 'top',
             });
-            this.loadEmployees(0);
           },
           error: (error) => {
             this.handleError(error);
@@ -136,35 +132,31 @@ export class EmployeeListComponent implements OnInit {
     });
   }
 
-  onView(employee: Employee) {
-    this.dialog.open(EmployeeDialogComponent, {
-      width: '50%',
-      data: {
-        employee,
-        mode: 'view'
-      }
-    });
-  }
+  openEditDialog(employee: Employee): void {
+    if (!employee.id) {
+      this.snackBar.open('Cannot edit employee: Missing ID', 'Close', {
+        duration: 3000,
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+      });
+      return;
+    }
 
-  onEdit(employee: Employee) {
     const dialogRef = this.dialog.open(EmployeeDialogComponent, {
-      width: '50%',
-      data: {
-        employee,
-        mode: 'edit'
-      }
+      width: '600px',
+      data: { mode: 'edit', employee }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.employeeService.updateEmployee(employee.id!, result).subscribe({
+        this.employeeService.updateEmployee(employee.id as number, result).subscribe({
           next: () => {
+            this.loadEmployees();
             this.snackBar.open('Employee updated successfully', 'Close', {
               duration: 3000,
               horizontalPosition: 'center',
               verticalPosition: 'top',
             });
-            this.loadEmployees(this.paginator?.pageIndex || 0);
           },
           error: (error) => {
             this.handleError(error);
@@ -174,16 +166,25 @@ export class EmployeeListComponent implements OnInit {
     });
   }
 
-  onDelete(employee: Employee) {
-    if (confirm(`Are you sure you want to delete employee ${employee.name}?`)) {
-      this.employeeService.deleteEmployee(employee.id!).subscribe({
+  deleteEmployee(employee: Employee): void {
+    if (!employee.id) {
+      this.snackBar.open('Cannot delete employee: Missing ID', 'Close', {
+        duration: 3000,
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+      });
+      return;
+    }
+
+    if (confirm('Are you sure you want to delete this employee?')) {
+      this.employeeService.deleteEmployee(employee.id as number).subscribe({
         next: () => {
+          this.loadEmployees();
           this.snackBar.open('Employee deleted successfully', 'Close', {
             duration: 3000,
             horizontalPosition: 'center',
             verticalPosition: 'top',
           });
-          this.loadEmployees(this.paginator?.pageIndex || 0);
         },
         error: (error) => {
           this.handleError(error);

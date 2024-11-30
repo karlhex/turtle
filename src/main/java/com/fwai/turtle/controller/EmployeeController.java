@@ -1,7 +1,7 @@
 package com.fwai.turtle.controller;
 
 import com.fwai.turtle.common.ApiResponse;
-import com.fwai.turtle.common.PageResponse;
+import org.springframework.data.domain.Page;
 import com.fwai.turtle.dto.EmployeeDTO;
 import com.fwai.turtle.dto.EmployeeEducationDTO;
 import com.fwai.turtle.dto.EmployeeJobHistoryDTO;
@@ -50,7 +50,7 @@ public class EmployeeController {
     }
 
     @GetMapping
-    public ApiResponse<PageResponse<EmployeeDTO>> getAll(
+    public ApiResponse<Page<EmployeeDTO>> getAll(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "id") String sortBy,
@@ -59,7 +59,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/search")
-    public ApiResponse<PageResponse<EmployeeDTO>> search(
+    public ApiResponse<Page<EmployeeDTO>> search(
             @RequestParam String query,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {

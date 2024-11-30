@@ -6,6 +6,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { ConfirmDialogComponent } from '../components/confirmdialog/confirm-dialog.component';
 import { ActionComponent } from './components/action/action.component';
+import { BaseListComponent } from './components/base-list/base-list.component';
 
 // Material Modules
 import { MatCardModule } from '@angular/material/card';
@@ -79,7 +80,8 @@ const SHARED_MODULES = [
 @NgModule({
   declarations: [
     ConfirmDialogComponent,
-    ActionComponent
+    ActionComponent,
+    BaseListComponent
   ],
   imports: [
     ...SHARED_MODULES
@@ -87,7 +89,8 @@ const SHARED_MODULES = [
   exports: [
     ...SHARED_MODULES,
     ConfirmDialogComponent,
-    ActionComponent
+    ActionComponent,
+    BaseListComponent
   ]
 })
 export class SharedModule { }

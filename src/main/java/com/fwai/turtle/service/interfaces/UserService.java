@@ -1,24 +1,21 @@
 package com.fwai.turtle.service.interfaces;
 
-import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import com.fwai.turtle.dto.UserDTO;
 import com.fwai.turtle.persistence.entity.User;
 
 public interface UserService {
-  public Optional<User> findByUsername(String username);
-
-  public Optional<User> findByEmail(String email);
-
-  public Optional<User> findById(Long id);
-
-  public User newUser(User user);
-
-  public User updateUser(User user);
-
-  public User destroyUser(User user);
-
-  public List<User> findAll();
-
-  public List<User> findUnmappedUsers();
+    Optional<User> findByEmail(String email);
+    Optional<User> findById(Long id);
+    Optional<User> findByUsername(String username);
+    User newUser(User user);
+    User updateUser(User user);
+    User destroyUser(User user);
+    Page<UserDTO> findAll(Pageable pageable);
+    Page<UserDTO> findUnmappedUsers(Pageable pageable);
+    Page<UserDTO> searchUsers(String query, Pageable pageable);
 }

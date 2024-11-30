@@ -1,11 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatSort, Sort } from '@angular/material/sort';
 import { ConfirmDialogComponent } from '../confirmdialog/confirm-dialog.component';
 import { User, UserService } from '../../services/user.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { UserEmployeeMappingComponent } from '../user-employee-mapping/user-employee-mapping.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-user-management',
@@ -20,12 +23,19 @@ export class UserManagementComponent implements OnInit {
   loading = false;
   availableRoles = ['ROLE_USER', 'ROLE_ADMIN'];
   displayedColumns: string[] = ['id', 'username', 'email', 'roles', 'actions'];
+  totalElements = 0;
+  pageSize = 10;
+  searchQuery = '';
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
   constructor(
     private userService: UserService,
     private fb: FormBuilder,
     private snackBar: MatSnackBar,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private translate: TranslateService
   ) {
     this.createForm();
   }
@@ -44,45 +54,144 @@ export class UserManagementComponent implements OnInit {
     });
   }
 
-  loadUsers(): void {
+  loadUsers(page: number = 0): void {
     this.loading = true;
-    this.userService.getUsers().subscribe({
-      next: (response) => {
-        this.users = response.data;
-        this.loading = false;
-      },
-      error: (error: HttpErrorResponse) => {
-        this.loading = false;
-        this.snackBar.open('加载用户列表失败', '关闭', {
-          duration: 3000,
-          horizontalPosition: 'center',
-          verticalPosition: 'top'
+    const sort = this.sort?.active ? {
+      sortBy: this.sort.active,
+      direction: this.sort.direction.toUpperCase() as 'ASC' | 'DESC'
+    } : undefined;
+
+    if (this.searchQuery) {
+      this.userService.searchUsers(this.searchQuery, page, this.pageSize).subscribe({
+        next: (response) => {
+          this.handleUserResponse(response);
+        },
+        error: (error) => {
+          this.handleError(error);
+        }
+      });
+    } else {
+      this.userService.getUsers(page, this.pageSize, sort).subscribe({
+        next: (response) => {
+          this.handleUserResponse(response);
+        },
+        error: (error) => {
+          this.handleError(error);
+        }
+      });
+    }
+  }
+
+  private handleUserResponse(response: any): void {
+    if (response.data) {
+      this.users = response.data.content;
+      this.totalElements = response.data.totalElements;
+    }
+    this.loading = false;
+  }
+
+  private handleError(error: any): void {
+    console.error('Error:', error);
+    this.snackBar.open(this.translate.instant('user.messages.error'), 'Close', {
+      duration: 3000,
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+    });
+    this.loading = false;
+  }
+
+  public handleSearch(searchText: string): void {
+    console.log('Search triggered:', searchText);
+    this.searchQuery = searchText;
+    this.loadUsers(0);
+    if (this.paginator) {
+      this.paginator.firstPage();
+    }
+  }
+
+  onSortChange(sort: Sort): void {
+    this.loadUsers(this.paginator?.pageIndex || 0);
+  }
+
+  onPageChange(event: PageEvent): void {
+    this.loadUsers(event.pageIndex);
+  }
+
+  showCreateModal(): void {
+    this.userForm.reset();
+    this.userForm.get('roleNames')?.setValue([]);
+    this.isModalVisible = true;
+    this.modalTitle = 'user.dialog.create';
+  }
+
+  showEditModal(user: User): void {
+    this.userForm.patchValue({
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      roleNames: user.roleNames,
+      password: ''
+    });
+    this.isModalVisible = true;
+    this.modalTitle = 'user.dialog.edit';
+  }
+
+  confirmDelete(user: User): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        title: 'user.dialog.delete',
+        message: 'user.dialog.deleteConfirm',
+        confirmText: 'common.button.confirm',
+        cancelText: 'common.button.cancel'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && user.id) {
+        this.userService.deleteUser(user.id as number).subscribe({
+          next: () => {
+            this.loadUsers();
+            this.snackBar.open(this.translate.instant('user.messages.deleteSuccess'), 'Close', {
+              duration: 3000,
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+            });
+          },
+          error: (error) => {
+            this.handleError(error);
+          }
         });
       }
     });
   }
 
-  showCreateModal(): void {
-    this.modalTitle = '新建用户';
-    this.userForm.reset();
-    this.userForm.patchValue({
-      roleNames: ['ROLE_USER'] // Default role for new users
-    });
-    this.userForm.get('password')?.setValidators([Validators.required]);
-    this.isModalVisible = true;
-  }
+  saveUser(): void {
+    if (this.userForm.valid) {
+      const userData = this.userForm.value;
+      const operation = userData.id
+        ? this.userService.updateUser(userData.id, userData)
+        : this.userService.createUser(userData);
 
-  showEditModal(user: User): void {
-    this.modalTitle = '编辑用户';
-    this.userForm.patchValue({
-      id: user.id,
-      username: user.username,
-      email: user.email,
-      roleNames: user.roleNames || []
-    });
-    this.userForm.get('password')?.clearValidators();
-    this.userForm.get('password')?.updateValueAndValidity();
-    this.isModalVisible = true;
+      operation.subscribe({
+        next: () => {
+          this.loadUsers();
+          this.isModalVisible = false;
+          this.snackBar.open(
+            this.translate.instant(userData.id ? 'user.messages.updateSuccess' : 'user.messages.createSuccess'),
+            'Close',
+            {
+              duration: 3000,
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+            }
+          );
+        },
+        error: (error) => {
+          this.handleError(error);
+        }
+      });
+    }
   }
 
   showEmployeeMapping(user: User): void {
@@ -93,74 +202,12 @@ export class UserManagementComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.snackBar.open('员工关联已更新', '关闭', {
+        this.snackBar.open('Employee mapping updated successfully', 'Close', {
           duration: 3000,
           horizontalPosition: 'center',
-          verticalPosition: 'top'
+          verticalPosition: 'top',
         });
       }
     });
-  }
-
-  confirmDelete(user: User): void {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      data: {
-        title: '确认删除',
-        message: `确定要删除用户 ${user.username} 吗？`
-      }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.loading = true;
-        this.userService.deleteUser(user.id).subscribe({
-          next: () => {
-            this.loading = false;
-            this.loadUsers();
-            this.snackBar.open('删除成功', '关闭', { duration: 3000 });
-          },
-          error: (error: HttpErrorResponse) => {
-            this.loading = false;
-            this.snackBar.open('删除失败', '关闭', { duration: 3000 });
-          }
-        });
-      }
-    });
-  }
-
-  handleOk(): void {
-    if (this.userForm.valid) {
-      this.loading = true;
-      const userData = this.userForm.value;
-      const operation = userData.id
-        ? this.userService.updateUser(userData.id, userData)
-        : this.userService.createUser(userData);
-
-      operation.subscribe({
-        next: () => {
-          this.loading = false;
-          this.isModalVisible = false;
-          this.loadUsers();
-          this.snackBar.open(
-            userData.id ? '更新成功' : '创建成功',
-            '关闭',
-            { duration: 3000 }
-          );
-        },
-        error: (error: HttpErrorResponse) => {
-          this.loading = false;
-          this.snackBar.open(
-            userData.id ? '更新失败' : '创建失败',
-            '关闭',
-            { duration: 3000 }
-          );
-        }
-      });
-    }
-  }
-
-  handleCancel(): void {
-    this.isModalVisible = false;
-    this.userForm.reset();
   }
 }
