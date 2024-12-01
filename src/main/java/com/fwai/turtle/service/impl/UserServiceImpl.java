@@ -13,10 +13,8 @@ import com.fwai.turtle.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.List;
 import java.util.Optional;
 
-import com.fwai.turtle.persistence.entity.Role;
 import com.fwai.turtle.persistence.entity.User;
 import com.fwai.turtle.persistence.repository.UserRepository;
 

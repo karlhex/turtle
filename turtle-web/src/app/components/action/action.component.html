@@ -1,0 +1,11 @@
+<div class="action-container">
+  <button mat-icon-button *ngIf="canView" (click)="onView()" [matTooltip]="'common.action.view' | translate">
+    <mat-icon>visibility</mat-icon>
+  </button>
+  <button mat-icon-button *ngIf="canEdit" (click)="onEdit()" [matTooltip]="'common.action.edit' | translate">
+    <mat-icon>edit</mat-icon>
+  </button>
+  <button mat-icon-button *ngIf="canDelete" (click)="onDelete()" [matTooltip]="'common.action.delete' | translate" color="warn">
+    <mat-icon>delete</mat-icon>
+  </button>
+</div>

@@ -1,15 +1,11 @@
 package com.fwai.turtle.persistence.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Column;
-import jakarta.persistence.Table;
+import com.fwai.turtle.common.entity.BaseEntity;
+import jakarta.persistence.*;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import lombok.EqualsAndHashCode;
+
+import java.math.BigDecimal;
 
 /**
  * Person entity
@@ -17,22 +13,45 @@ import lombok.Builder;
  */
 @Data
 @Entity
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "bank_accounts")
-public class BankAccount {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+@EqualsAndHashCode(callSuper = true)
+public class BankAccount extends BaseEntity {
 
-    @Column
-    private String holderName;
+    @Column(nullable = false)
+    private String name;
 
-    @Column
-    private String accountNumber;
+    @Column(name = "account_no", nullable = false, unique = true)
+    private String accountNo;
 
-    @Column
+    @Column(name = "bank_name", nullable = false)
     private String bankName;
 
-} 
+    @Column(nullable = false, precision = 19, scale = 4)
+    private BigDecimal balance;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "currency_id", nullable = false)
+    private Currency currency;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private BankAccountType type;
+
+    @Column(name = "bank_branch")
+    private String bankBranch;
+
+    @Column
+    private String description;
+
+    @Column
+    private Boolean active = true;
+
+    @Column(name = "swift_code")
+    private String swiftCode;
+
+    @Column(name = "contact_person")
+    private String contactPerson;
+
+    @Column(name = "contact_phone")
+    private String contactPhone;
+}

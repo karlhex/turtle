@@ -7,9 +7,10 @@
       "departments": "Departments",
       "positions": "Positions",
       "attendance": "Attendance",
-      "leave": "Leave Management",
+      "leave": "Leave",
       "payroll": "Payroll",
       "users": "Users",
+      "contracts": "Contracts",
       "logout": "Logout"
     }
   },
@@ -114,7 +115,6 @@
       "form": {
         "school": "School/Institution",
         "major": "Major/Field of Study",
-        "degree": "Degree",
         "startDate": "Start Date",
         "endDate": "End Date",
         "certificateNumber": "Certificate Number",
@@ -419,7 +419,45 @@
       "error": "An error occurred"
     }
   },
+  "contract": {
+    "title": "Contract Management",
+    "search": {
+      "placeholder": "Search by contract number or name"
+    },
+    "list": {
+      "contractNo": "Contract No",
+      "contractName": "Contract Name",
+      "contractType": "Type",
+      "status": "Status",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "amount": "Amount",
+      "currency": "Currency",
+      "actions": "Actions",
+      "noResults": "No contracts found"
+    },
+    "type": {
+      "PURCHASE": "Purchase",
+      "SERVICE": "Service",
+      "LEASE": "Lease"
+    },
+    "status": {
+      "DRAFT": "Draft",
+      "ACTIVE": "Active",
+      "EXPIRED": "Expired",
+      "TERMINATED": "Terminated"
+    }
+  },
   "common": {
+    "action": {
+      "add": "Add",
+      "edit": "Edit",
+      "view": "View",
+      "delete": "Delete",
+      "save": "Save",
+      "cancel": "Cancel",
+      "ok": "OK"
+    },
     "button": {
       "confirm": "Confirm",
       "cancel": "Cancel"

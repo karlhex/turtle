@@ -10,6 +10,7 @@
       "leave": "请假管理",
       "payroll": "工资管理",
       "users": "用户管理",
+      "contracts": "合同管理",
       "logout": "退出登录"
     }
   },
@@ -429,7 +430,45 @@
       "error": "操作失败"
     }
   },
+  "contract": {
+    "title": "合同管理",
+    "search": {
+      "placeholder": "搜索合同编号或名称"
+    },
+    "list": {
+      "contractNo": "合同编号",
+      "contractName": "合同名称",
+      "contractType": "合同类型",
+      "status": "状态",
+      "startDate": "开始日期",
+      "endDate": "结束日期",
+      "amount": "金额",
+      "currency": "币种",
+      "actions": "操作",
+      "noResults": "没有找到合同"
+    },
+    "type": {
+      "PURCHASE": "采购合同",
+      "SERVICE": "服务合同",
+      "LEASE": "租赁合同"
+    },
+    "status": {
+      "DRAFT": "草稿",
+      "ACTIVE": "生效",
+      "EXPIRED": "过期",
+      "TERMINATED": "终止"
+    }
+  },
   "common": {
+    "action": {
+      "add": "添加",
+      "view": "查看",
+      "edit": "编辑",
+      "delete": "删除",
+      "save": "保存",
+      "cancel": "取消",
+      "ok": "确定"
+    },    
     "button": {
       "confirm": "确定",
       "cancel": "取消"

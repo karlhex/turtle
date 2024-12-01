@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ApiResponse, PageResponse } from '../core/models/api.model';
+import { ApiResponse, PageResponse } from '../models/api.model';
 
 export interface Department {
   id?: number;

@@ -6,16 +6,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { LoginComponent } from './components/login/login.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { EmployeeListComponent } from './components/employee/employee-list.component';
-import { EmployeeDialogComponent } from './components/employee/employee-dialog.component';
-import { DepartmentListComponent } from './components/department/department-list.component';
-import { DepartmentDialogComponent } from './components/department/department-dialog.component';
-import { EducationDialogComponent } from './components/employee/education-dialog.component';
-import { JobHistoryDialogComponent } from './components/employee/job-history-dialog.component';
-import { UserManagementComponent } from './components/user-management/user-management.component';
-import { UserEmployeeMappingComponent } from './components/user-employee-mapping/user-employee-mapping.component';
+import { LoginComponent } from './pages/login/login.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { EmployeeDialogComponent } from './pages/employee/employee-dialog.component';
+import { DepartmentDialogComponent } from './pages/department/department-dialog.component';
+import { EducationDialogComponent } from './pages/employee/education-dialog.component';
+import { JobHistoryDialogComponent } from './pages/employee/job-history-dialog.component';
 
 // Services and Interceptors
 import { AuthInterceptor } from './interceptors/auth.interceptor';
@@ -26,6 +22,14 @@ import { SharedModule } from './shared/shared.module';
 // Translation
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+
+// Standalone Components
+import { DepartmentListComponent } from './pages/department/department-list.component';
+import { UserManagementComponent } from './pages/user-management/user-management.component';
+import { UserEmployeeMappingComponent } from './pages/user-employee-mapping/user-employee-mapping.component';
+import { EmployeeListComponent } from './pages/employee/employee-list.component';
+import { ActionComponent } from './components/action/action.component';
+import { BaseListComponent } from './components/base-list/base-list.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -39,14 +43,15 @@ export function HttpLoaderFactory(http: HttpClient) {
     DashboardComponent,
     EmployeeListComponent,
     EmployeeDialogComponent,
-    DepartmentListComponent,
     DepartmentDialogComponent,
     EducationDialogComponent,
     JobHistoryDialogComponent,
+    DepartmentListComponent,
     UserManagementComponent,
     UserEmployeeMappingComponent
   ],
   imports: [
+    ActionComponent,
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
@@ -61,7 +66,9 @@ export function HttpLoaderFactory(http: HttpClient) {
         useFactory: HttpLoaderFactory,
         deps: [HttpClient]
       }
-    })
+    }),
+    // Standalone Components
+    BaseListComponent
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }

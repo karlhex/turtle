@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './components/login/login.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { EmployeeListComponent } from './components/employee/employee-list.component';
-import { DepartmentListComponent } from './components/department/department-list.component';
-import { UserManagementComponent } from './components/user-management/user-management.component';
-import { UserEmployeeMappingComponent } from './components/user-employee-mapping/user-employee-mapping.component';
+import { LoginComponent } from './pages/login/login.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { EmployeeListComponent } from './pages/employee/employee-list.component';
+import { DepartmentListComponent } from './pages/department/department-list.component';
+import { UserManagementComponent } from './pages/user-management/user-management.component';
+import { UserEmployeeMappingComponent } from './pages/user-employee-mapping/user-employee-mapping.component';
 import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ApiResponse } from '../core/models/api.model';
+import { ApiResponse } from '../models/api.model';
 import { environment } from '../../environments/environment';
 
 export interface EmployeeEducation {
