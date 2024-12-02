@@ -2,8 +2,21 @@
 ** Introduction
 Turtle is a application to help the company to manage their business. Use MVC pattern. The frontend is written in AngularJS. The backend is written in JAVA.
 
-** Installation
+This is the first project that I try to use AI IDE like Cursor and WindSurf to help me coding.
 
-** Usage
+I will write the bro and cons of the AI tools and the process of using them.
 
-** Contributing
+** Features
+- Employee Management
+- Contract Management
+- Invoice Management
+- Inventory Management
+
+** Journal
+- 2024-12-01: re construct the directory structure
+- 2024-12-01: After using WindSurf for several days, I've discovered some issues, including:
+    1. Each generated program has a different style, requiring many adjustments
+    2. When AI tries to fix errors, it may introduce more problems
+    3. In the process of fixing errors, original code often gets modified, leading to unexpected consequences
+    4. The code is quite redundant, feeling like it just works but isn't particularly well-optimized
+- 2024-12-01: I try to maintain a template, I had ask WindSurf to help me, but it was making more problems, so I have to write by myself.
