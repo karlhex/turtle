@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
-import { MatPaginator, PageEvent, MatPaginatorModule } from '@angular/material/paginator';
+import { PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { Employee, EmployeeService } from '../../services/employee.service';
+import { Employee, EmployeeService } from '@services/employee.service';
 import { EmployeeDialogComponent } from './employee-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -30,7 +30,6 @@ export class EmployeeListComponent implements OnInit {
   isLoading = false;
   searchQuery = '';
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
   constructor(
@@ -94,9 +93,7 @@ export class EmployeeListComponent implements OnInit {
   onSearch(searchText: string) {
     this.searchQuery = searchText;
     this.loadEmployees(0);
-    if (this.paginator) {
-      this.paginator.firstPage();
-    }
+
   }
 
   onPageChange(event: PageEvent) {

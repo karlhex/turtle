@@ -1,11 +1,15 @@
 <app-base-list
   [title]="'employee.title' | translate"
   [placeholder]="'employee.search.placeholder' | translate"
+  [loading] = isLoading
+  [totalElements] = totalElements
+  [pageSize] = pageSize
   (search)="onSearch($event)"
-  (add)="openAddDialog()">
+  (add)="openAddDialog()"
+  (page)="onPageChange($event)"
+  >
 
   <div class="table-container">
-    <mat-progress-bar *ngIf="isLoading" mode="indeterminate"></mat-progress-bar>
 
     <table mat-table [dataSource]="dataSource" matSort (matSortChange)="onSortChange($event)">
       <!-- Employee Number Column -->
@@ -70,11 +74,6 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
 
-    <mat-paginator
-      [length]="totalElements"
-      [pageSize]="pageSize"
-      [pageSizeOptions]="[5, 10, 25, 100]"
-      (page)="onPageChange($event)">
-    </mat-paginator>
+
   </div>
 </app-base-list>

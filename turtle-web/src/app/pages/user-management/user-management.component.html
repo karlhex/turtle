@@ -1,12 +1,14 @@
 <app-base-list
   [title]="'user.title' | translate"
   [placeholder]="'user.search.placeholder' | translate"
+  [loading] = isLoading
+  [totalElements] = totalElements
+  [pageSize] = pageSize
+  (page)="onPageChange($event)"
   (search)="handleSearch($event)"
   (add)="showCreateModal()">
 
   <div class="table-container">
-    <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
-
     <table mat-table [dataSource]="users" matSort (matSortChange)="onSortChange($event)">
       <!-- ID Column -->
       <ng-container matColumnDef="id">
@@ -66,13 +68,6 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
 
-    <mat-paginator
-      [length]="totalElements"
-      [pageSize]="pageSize"
-      [pageSizeOptions]="[5, 10, 25, 100]"
-      (page)="onPageChange($event)"
-      aria-label="Select page">
-    </mat-paginator>
   </div>
 </app-base-list>
 

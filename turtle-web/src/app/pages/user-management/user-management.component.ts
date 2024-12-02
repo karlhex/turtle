@@ -34,7 +34,7 @@ export class UserManagementComponent implements OnInit {
   userForm!: FormGroup;
   isModalVisible = false;
   modalTitle = '';
-  loading = false;
+  isLoading = false;
   availableRoles = ['ROLE_USER', 'ROLE_ADMIN'];
   displayedColumns: string[] = ['id', 'username', 'email', 'roles', 'actions'];
   totalElements = 0;
@@ -69,7 +69,7 @@ export class UserManagementComponent implements OnInit {
   }
 
   loadUsers(page: number = 0): void {
-    this.loading = true;
+    this.isLoading = true;
     const sort = this.sort?.active ? {
       sortBy: this.sort.active,
       direction: this.sort.direction.toUpperCase() as 'ASC' | 'DESC'
@@ -101,7 +101,7 @@ export class UserManagementComponent implements OnInit {
       this.users = response.data.content;
       this.totalElements = response.data.totalElements;
     }
-    this.loading = false;
+    this.isLoading = false;
   }
 
   private handleError(error: any): void {
@@ -111,7 +111,7 @@ export class UserManagementComponent implements OnInit {
       horizontalPosition: 'center',
       verticalPosition: 'top',
     });
-    this.loading = false;
+    this.isLoading = false;
   }
 
   public handleSearch(searchText: string): void {

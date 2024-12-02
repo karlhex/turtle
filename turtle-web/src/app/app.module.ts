@@ -30,6 +30,7 @@ import { UserEmployeeMappingComponent } from './pages/user-employee-mapping/user
 import { EmployeeListComponent } from './pages/employee/employee-list.component';
 import { ActionComponent } from './components/action/action.component';
 import { BaseListComponent } from './components/base-list/base-list.component';
+import { BaseDialogComponent } from '@components/base-dialog/base-dialog.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -48,7 +49,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     JobHistoryDialogComponent,
     DepartmentListComponent,
     UserManagementComponent,
-    UserEmployeeMappingComponent
+    UserEmployeeMappingComponent,
+    BaseDialogComponent,
+    BaseListComponent
   ],
   imports: [
     ActionComponent,
@@ -66,9 +69,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         useFactory: HttpLoaderFactory,
         deps: [HttpClient]
       }
-    }),
-    // Standalone Components
-    BaseListComponent
+    })
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
