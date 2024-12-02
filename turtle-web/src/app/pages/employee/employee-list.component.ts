@@ -4,9 +4,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { Employee, EmployeeService } from '@services/employee.service';
+import { EmployeeService } from '@services/employee.service';
 import { EmployeeDialogComponent } from './employee-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Employee } from '@models/employee.model';
 
 @Component({
   selector: 'app-employee-list',
@@ -112,9 +113,11 @@ export class EmployeeListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
       if (result) {
         this.employeeService.createEmployee(result).subscribe({
-          next: () => {
+          next: (response) => {
+            console.log(response);
             this.loadEmployees();
             this.snackBar.open('Employee added successfully', 'Close', {
               duration: 3000,

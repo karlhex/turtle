@@ -95,9 +95,9 @@
             <mat-form-field>
               <mat-label>{{ 'employee.form.personal.gender' | translate }}</mat-label>
               <mat-select formControlName="gender">
-                <mat-option value="MALE">{{ 'employee.form.personal.gender.male' | translate }}</mat-option>
-                <mat-option value="FEMALE">{{ 'employee.form.personal.gender.female' | translate }}</mat-option>
-                <mat-option value="OTHER">{{ 'employee.form.personal.gender.other' | translate }}</mat-option>
+                <mat-option *ngFor="let gender of genders" [value]="gender">
+                  {{ 'employee.form.personal.gender.' + gender.toLowerCase() | translate }}
+                </mat-option>
               </mat-select>
             </mat-form-field>
 
@@ -171,16 +171,16 @@
             <mat-form-field>
               <mat-label>{{ 'employee.form.contract.type' | translate }}</mat-label>
               <mat-select formControlName="contractType">
-                <mat-option value="FULL_TIME">{{ 'employee.form.contract.type.fullTime' | translate }}</mat-option>
-                <mat-option value="PART_TIME">{{ 'employee.form.contract.type.partTime' | translate }}</mat-option>
-                <mat-option value="CONTRACTOR">{{ 'employee.form.contract.type.contractor' | translate }}</mat-option>
-                <mat-option value="INTERN">{{ 'employee.form.contract.type.intern' | translate }}</mat-option>
+                <mat-option *ngFor="let type of contractTypes" [value]="type">
+                  {{ 'employee.form.contract.type.' + type.toLowerCase() | translate }}
+                </mat-option>
               </mat-select>
             </mat-form-field>
 
             <mat-form-field>
               <mat-label>{{ 'employee.form.contract.duration' | translate }}</mat-label>
               <input matInput type="number" formControlName="contractDuration">
+              <mat-hint>{{ 'employee.form.contract.durationHint' | translate }}</mat-hint>
             </mat-form-field>
 
             <mat-form-field>

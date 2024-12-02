@@ -29,7 +29,13 @@
       "@pages/*":[
         "src/app/pages/*" ],
       "@services/*":[
-        "src/app/services/*" ]
+        "src/app/services/*" ],
+      "@models/*":[
+        "src/app/models/*" ],
+      "@shared/*":[
+        "src/app/shared/*" ],
+      "@types/*":[
+        "src/app/types/*" ]
     }
   },
   "angularCompilerOptions": {

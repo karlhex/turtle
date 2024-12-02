@@ -20,10 +20,12 @@ public interface ContractMapper {
     @Mapping(source = "currency.code", target = "currencyCode")
     @Mapping(source = "items", target = "items")
     @Mapping(source = "downPayments", target = "downPayments")
+    @Mapping(source = "project.id", target = "projectId")
     ContractDTO toDTO(Contract contract);
 
     @Mapping(target = "currency", ignore = true)
     @Mapping(target = "items", ignore = true)
     @Mapping(target = "downPayments", ignore = true)
+    @Mapping(target = "project", ignore = true)
     Contract toEntity(ContractDTO dto);
 }

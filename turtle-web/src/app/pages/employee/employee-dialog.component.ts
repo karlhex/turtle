@@ -4,7 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dial
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { Employee } from '../../services/employee.service';
+import { Employee } from '@models/employee.model';
 import { DepartmentService, Department } from '../../services/department.service';
 import { PersonService, Person } from '../../services/person.service';
 import { EmployeeEducationService, EmployeeEducation } from '../../services/employee-education.service';
@@ -15,7 +15,8 @@ import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { EmployeeJobHistoryService, EmployeeJobHistory } from '../../services/employee-job-history.service';
 import { JobHistoryDialogComponent } from './job-history-dialog.component';
-import { ActionComponent } from 'src/app/components/action/action.component';
+import { ContractType } from '../../types/contract-type.enum';
+import { Gender } from '../../types/gender.enum';
 
 @Component({
   selector: 'app-employee-dialog',
@@ -28,6 +29,8 @@ export class EmployeeDialogComponent implements OnInit, AfterViewInit {
   departments: Department[] = [];
   filteredPersons: Person[] = [];
   private searchPersons$ = new Subject<string>();
+  contractTypes = Object.values(ContractType);  
+  genders = Object.values(Gender);  
 
   // Education tab
   educations = new MatTableDataSource<EmployeeEducation>([]);
@@ -76,7 +79,7 @@ export class EmployeeDialogComponent implements OnInit, AfterViewInit {
           // After departments are loaded, find and set the correct department
           if (this.data.employee && this.data.employee.department) {
             const selectedDepartment = this.departments.find(
-              dept => dept.id === this.data.employee.department.id
+              dept => dept.id === this.data?.employee?.department?.id
             );
             if (selectedDepartment) {
               this.employeeForm.patchValue({ department: selectedDepartment });
@@ -150,13 +153,12 @@ export class EmployeeDialogComponent implements OnInit, AfterViewInit {
       ethnicity: [''],
       idType: [''],
       idNumber: ['', [Validators.required]],
-      contractType: [''],
+      contractType: [null],
       contractDuration: [null],
       contractStartDate: [null],
       remarks: [''],
       isActive: [''],
       emergencyContact: this.fb.group({
-        person: [null],
         firstName: [''],
         lastName: [''],
         phone: [''],
@@ -229,7 +231,7 @@ export class EmployeeDialogComponent implements OnInit, AfterViewInit {
     this.isLoadingJobHistory = true;
     this.jobHistoryService.getJobHistory(this.data.employee.id).subscribe({
       next: (response) => {
-        if (response.data) {
+        if (response.code === 200 && response.data) {
           this.jobHistories.data = response.data;
         }
         this.isLoadingJobHistory = false;
@@ -257,10 +259,13 @@ export class EmployeeDialogComponent implements OnInit, AfterViewInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
+        console.log(result);
+        /*
         const employeeId = this.data.employee.id!;
         this.educationService.addEducation(employeeId, result).subscribe({
           next: (response) => {
-            if (response.data) {
+            console.log(response);
+            if (response.code === 200 && response.data) {
               this.loadEducations();
             }
           },
@@ -268,6 +273,11 @@ export class EmployeeDialogComponent implements OnInit, AfterViewInit {
             console.error('Error adding education:', error);
           }
         });
+        */
+       if (!this.data.employee.educations) {
+        this.data.employee.educations = [];
+      }
+      this.data.employee.educations.push(result);
       }
     });
   }
@@ -299,7 +309,7 @@ export class EmployeeDialogComponent implements OnInit, AfterViewInit {
       if (result && employeeId && educationId) {
         this.educationService.updateEducation(employeeId, educationId, result).subscribe({
           next: (response) => {
-            if (response.data) {
+            if (response.code === 200 && response.data) {
               this.loadEducations();
             }
           },

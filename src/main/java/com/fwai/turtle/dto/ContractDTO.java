@@ -29,6 +29,7 @@ public class ContractDTO {
     private String currencyCode;  // 币种代码，用于显示
     private ContractStatus status;
     private String projectNo;
+    private Long projectId;
     private String description;
     private String remarks;
     private String paymentTerms;

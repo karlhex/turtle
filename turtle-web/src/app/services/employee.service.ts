@@ -4,39 +4,7 @@ import { Observable } from 'rxjs';
 import { ApiResponse, PageResponse } from '../models/api.model';
 import { AuthService } from './auth.service';
 import { environment } from '../../environments/environment';
-
-export interface Employee {
-  id?: number;
-  name: string;
-  employeeNumber: string;
-  email: string;
-  phone?: string;
-  department: {
-    id: number;
-    name: string;
-  };
-  position: string;
-  isActive: boolean;
-  hireDate: string;
-  leaveDate?: string;
-  remarks?: string;
-  emergencyContact?: {
-    id?: number;
-    firstName: string;
-    lastName: string;
-    address: string;
-    email: string;
-    phone: string;
-  };
-  birthday?: string;
-  gender?: string;
-  ethnicity?: string;
-  contractType?: string;
-  contractDuration?: number;
-  contractStartDate?: string;
-  idType?: string;
-  idNumber: string;
-}
+import { Employee, EmployeeEducation, EmployeeAttendance, EmployeeLeave } from '../models/employee.model';
 
 @Injectable({
   providedIn: 'root'

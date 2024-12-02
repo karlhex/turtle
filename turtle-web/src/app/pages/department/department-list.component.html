@@ -1,11 +1,15 @@
 <app-base-list
   [title]="'department.title' | translate"
   [placeholder]="'department.search.placeholder' | translate"
+  [loading] = isLoading
+  [totalElements] = totalElements
+  [pageSize] = pageSize
+  
+  (page)="onPageChange($event)"
   (search)="onSearchChange($event)"
   (add)="onAdd()">
   
   <div class="table-container">
-    <mat-progress-bar *ngIf="isLoading" mode="indeterminate"></mat-progress-bar>
     <table mat-table [dataSource]="dataSource" matSort>
       <!-- Name Column -->
       <ng-container matColumnDef="name">
@@ -70,11 +74,5 @@
       </tr>
     </table>
 
-    <mat-paginator 
-      [length]="totalElements"
-      [pageSize]="pageSize"
-      [pageSizeOptions]="[5, 10, 25, 50]"
-      (page)="onPageChange($event)">
-    </mat-paginator>
   </div>
 </app-base-list>

@@ -5,7 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { UserEmployeeMappingService, UserEmployeeMapping } from '../../services/user-employee-mapping.service';
 import { UserService, User } from '../../services/user.service';
-import { EmployeeService, Employee } from '../../services/employee.service';
+import { EmployeeService } from '../../services/employee.service';
 import { ConfirmDialogComponent, ConfirmDialogData } from '../../components/confirmdialog/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { finalize } from 'rxjs/operators';
@@ -21,6 +21,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActionComponent } from '../../components/action/action.component';
+ import { Employee } from '@models/employee.model';
 
 @Component({
   selector: 'app-user-employee-mapping',
