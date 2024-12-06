@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import com.fwai.turtle.common.ApiResponse;
 import com.fwai.turtle.dto.ProductDTO;
-import com.fwai.turtle.persistence.entity.ProductType;
 import com.fwai.turtle.service.interfaces.ProductService;
+import com.fwai.turtle.types.ProductType;
 
 @RestController
 @RequestMapping("/api/products")

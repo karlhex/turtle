@@ -6,6 +6,10 @@ import { EmployeeListComponent } from './pages/employee/employee-list.component'
 import { DepartmentListComponent } from './pages/department/department-list.component';
 import { UserManagementComponent } from './pages/user-management/user-management.component';
 import { UserEmployeeMappingComponent } from './pages/user-employee-mapping/user-employee-mapping.component';
+import { ContractListComponent } from './pages/contract/contract-list.component';
+import { CurrencyListComponent } from './pages/currency/currency-list.component';
+import { TaxInfoListComponent } from './pages/tax-info/tax-info-list.component';
+import { CompanyListComponent } from './pages/company/company-list.component';
 import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
@@ -20,6 +24,10 @@ const routes: Routes = [
       { path: 'departments', component: DepartmentListComponent },
       { path: 'users', component: UserManagementComponent },
       { path: 'user-employee-mapping', component: UserEmployeeMappingComponent },
+      { path: 'contracts', component: ContractListComponent },
+      { path: 'currencies', component: CurrencyListComponent },
+      { path: 'tax-infos', component: TaxInfoListComponent },
+      { path: 'companies', component: CompanyListComponent },
       // Placeholder routes for future implementation
       { path: 'positions', component: DashboardComponent },
       { path: 'attendance', component: DashboardComponent },

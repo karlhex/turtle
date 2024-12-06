@@ -1,7 +1,8 @@
 package com.fwai.turtle.persistence.repository;
 
 import com.fwai.turtle.persistence.entity.ContractDownPayment;
-import com.fwai.turtle.persistence.entity.DebitCreditType;
+import com.fwai.turtle.types.DebitCreditType;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

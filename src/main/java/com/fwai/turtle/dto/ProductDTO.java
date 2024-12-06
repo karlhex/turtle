@@ -1,8 +1,9 @@
 package com.fwai.turtle.dto;
 
-import com.fwai.turtle.persistence.entity.ProductType;
 import lombok.Data;
 import java.time.LocalDateTime;
+
+import com.fwai.turtle.types.ProductType;
 
 @Data
 public class ProductDTO {

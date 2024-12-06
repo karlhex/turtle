@@ -3,14 +3,20 @@
     "title": "Turtle HR Management System",
     "menu": {
       "dashboard": "Dashboard",
+      "hr": "Human Resources",
       "employees": "Employees",
       "departments": "Departments",
       "positions": "Positions",
       "attendance": "Attendance",
       "leave": "Leave",
       "payroll": "Payroll",
-      "users": "Users",
+      "contract_management": "Contract Management",
       "contracts": "Contracts",
+      "currencies": "Currencies",
+      "tax_info": "Tax Information",
+      "system": "System",
+      "users": "Users",
+      "company": "Company Management",
       "logout": "Logout"
     }
   },
@@ -419,6 +425,31 @@
       "error": "An error occurred"
     }
   },
+  "company": {
+    "title": "Company Management",
+    "add_title": "Add Company",
+    "edit_title": "Edit Company",
+    "confirm_delete": "Are you sure you want to delete this company?",
+    "delete_success": "Company deleted successfully",
+    "create_success": "Company created successfully",
+    "update_success": "Company updated successfully",
+    "status_updated": "Company status updated successfully",
+    "fields": {
+      "fullName": "Full Name",
+      "shortName": "Short Name",
+      "address": "Address",
+      "phone": "Phone",
+      "email": "Email",
+      "website": "Website",
+      "remarks": "Remarks"
+    },
+    "errors": {
+      "fullName_required": "Full name is required",
+      "address_required": "Address is required",
+      "phone_required": "Phone is required",
+      "email_invalid": "Please enter a valid email address"
+    }
+  },
   "contract": {
     "title": "Contract Management",
     "search": {
@@ -448,6 +479,21 @@
       "TERMINATED": "Terminated"
     }
   },
+  "enum": {
+    "contract": {
+      "status": {
+        "PENDING_SIGNATURE": "Pending Signature",
+        "IN_PROGRESS": "In Progress",
+        "COMPLETED": "Completed",
+        "CANCELLED": "Cancelled",
+        "SUSPENDED": "Suspended"
+      },
+      "type": {
+        "PURCHASE": "Purchase Contract",
+        "SALES": "Sales Contract"
+      }
+    }
+  },
   "common": {
     "action": {
       "add": "Add",
@@ -462,5 +508,69 @@
       "confirm": "Confirm",
       "cancel": "Cancel"
     }
+  },
+  "currency": {
+    "title": "Currency Management",
+    "search": {
+      "placeholder": "Search currency code or name"
+    },
+    "list": {
+      "code": "Currency Code",
+      "name": "Currency Name",
+      "symbol": "Symbol",
+      "decimalPlaces": "Decimal Places",
+      "exchangeRate": "Exchange Rate",
+      "status": "Status",
+      "isBaseCurrency": "Base Currency",
+      "actions": "Actions",
+      "noData": "No currencies found"
+    },
+    "dialog": {
+      "add": "Add Currency",
+      "edit": "Edit Currency",
+      "delete": "Delete Currency",
+      "code": "Currency Code",
+      "codePlaceholder": "Enter currency code",
+      "codeHint": "e.g., CNY, USD, EUR",
+      "codeRequired": "Currency code is required",
+      "codeMaxLength": "Currency code cannot exceed 3 characters",
+      "name": "Currency Name",
+      "namePlaceholder": "Enter currency name",
+      "nameRequired": "Currency name is required",
+      "nameMaxLength": "Currency name cannot exceed 50 characters",
+      "symbol": "Currency Symbol",
+      "symbolPlaceholder": "Enter currency symbol",
+      "symbolRequired": "Currency symbol is required",
+      "symbolMaxLength": "Currency symbol cannot exceed 5 characters",
+      "decimalPlaces": "Decimal Places",
+      "decimalPlacesRequired": "Decimal places is required",
+      "decimalPlacesMin": "Decimal places cannot be less than 0",
+      "decimalPlacesMax": "Decimal places cannot exceed 4",
+      "country": "Country/Region",
+      "countryPlaceholder": "Enter country/region",
+      "countryMaxLength": "Country/region name cannot exceed 50 characters",
+      "exchangeRate": "Exchange Rate",
+      "exchangeRatePlaceholder": "Enter exchange rate",
+      "exchangeRateHint": "Rate relative to base currency",
+      "exchangeRateMin": "Exchange rate must be greater than 0",
+      "active": "Active Status"
+    },
+    "action": {
+      "setAsBase": "Set as Base Currency"
+    },
+    "message": {
+      "createSuccess": "Currency created successfully",
+      "updateSuccess": "Currency updated successfully",
+      "deleteSuccess": "Currency deleted successfully",
+      "setBaseSuccess": "Base currency set successfully",
+      "deleteConfirm": "Are you sure you want to delete this currency?",
+      "cannotDeleteBase": "Cannot delete base currency"
+    }
+  },
+  "ERROR": {
+    "LOAD_COMPANIES": "Failed to load companies",
+    "SAVE_COMPANY": "Failed to save company",
+    "DELETE_COMPANY": "Failed to delete company",
+    "UPDATE_STATUS": "Failed to update company status"
   }
 }

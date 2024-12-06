@@ -31,6 +31,15 @@ import { EmployeeListComponent } from './pages/employee/employee-list.component'
 import { ActionComponent } from './components/action/action.component';
 import { BaseListComponent } from './components/base-list/base-list.component';
 import { BaseDialogComponent } from '@components/base-dialog/base-dialog.component';
+import { ContractListComponent } from './pages/contract/contract-list.component';
+import { ContractDialogComponent } from './pages/contract/contract-dialog.component';
+import { CurrencyListComponent } from './pages/currency/currency-list.component';
+import { CurrencyDialogComponent } from './pages/currency/currency-dialog.component';
+import { TaxInfoListComponent } from './pages/tax-info/tax-info-list.component';
+import { TaxInfoDialogComponent } from './pages/tax-info/tax-info-dialog.component';
+import { SidebarMenuComponent } from './components/sidebar-menu/sidebar-menu.component';
+import { CompanyDialogComponent } from '@pages/company/company-dialog.component';
+import { CompanyListComponent } from '@pages/company/company-list.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -42,7 +51,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     AppComponent,
     LoginComponent,
     DashboardComponent,
-    EmployeeListComponent,
     EmployeeDialogComponent,
     DepartmentDialogComponent,
     EducationDialogComponent,
@@ -50,8 +58,18 @@ export function HttpLoaderFactory(http: HttpClient) {
     DepartmentListComponent,
     UserManagementComponent,
     UserEmployeeMappingComponent,
+    EmployeeListComponent,
+    BaseListComponent,
     BaseDialogComponent,
-    BaseListComponent
+    ContractListComponent,
+    ContractDialogComponent,
+    CurrencyListComponent,
+    CurrencyDialogComponent,
+    TaxInfoListComponent,
+    TaxInfoDialogComponent,
+    SidebarMenuComponent,
+    CompanyDialogComponent,
+    CompanyListComponent
   ],
   imports: [
     ActionComponent,

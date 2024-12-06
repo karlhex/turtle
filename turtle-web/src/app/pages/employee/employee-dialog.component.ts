@@ -15,7 +15,7 @@ import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { EmployeeJobHistoryService, EmployeeJobHistory } from '../../services/employee-job-history.service';
 import { JobHistoryDialogComponent } from './job-history-dialog.component';
-import { ContractType } from '../../types/contract-type.enum';
+import { EmployeeContractType } from '../../types/employee-contract-type.enum';
 import { Gender } from '../../types/gender.enum';
 
 @Component({
@@ -29,7 +29,7 @@ export class EmployeeDialogComponent implements OnInit, AfterViewInit {
   departments: Department[] = [];
   filteredPersons: Person[] = [];
   private searchPersons$ = new Subject<string>();
-  contractTypes = Object.values(ContractType);  
+  contractTypes = Object.values(EmployeeContractType);  
   genders = Object.values(Gender);  
 
   // Education tab

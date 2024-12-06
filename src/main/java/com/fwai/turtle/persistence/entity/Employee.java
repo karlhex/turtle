@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.fwai.turtle.types.ContractType;
+import com.fwai.turtle.types.EmployeeContractType;
 import com.fwai.turtle.types.Gender;
 import com.fwai.turtle.types.IdType;
 
@@ -77,7 +77,7 @@ public class Employee {
 
     @Column
     @Enumerated(EnumType.STRING)
-    private ContractType contractType;      // 合同类型
+    private EmployeeContractType contractType;      // 合同类型
 
     @Column
     private Integer contractDuration;       // 合同期限(月)

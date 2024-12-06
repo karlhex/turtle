@@ -1,0 +1,59 @@
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+}
+
+.mat-column-actions {
+  width: 100px;
+  text-align: center;
+}
+
+.mat-column-active,
+.mat-column-isBaseCurrency {
+  width: 100px;
+  text-align: center;
+}
+
+.mat-column-code,
+.mat-column-symbol,
+.mat-column-decimalPlaces,
+.mat-column-exchangeRate {
+  width: 120px;
+}
+
+.status-chip {
+  padding: 4px 8px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status-active {
+  background-color: #e6f4ea;
+  color: #1e8e3e;
+}
+
+.status-inactive {
+  background-color: #fce8e6;
+  color: #d93025;
+}
+
+.mat-cell {
+  padding: 8px 16px;
+}
+
+.mat-header-cell {
+  padding: 8px 16px;
+  font-weight: 500;
+}
+
+.no-data {
+  padding: 16px;
+  text-align: center;
+  font-style: italic;
+  color: rgba(0, 0, 0, 0.54);
+}

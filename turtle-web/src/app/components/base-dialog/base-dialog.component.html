@@ -1,14 +1,40 @@
-<div class="base-dialog">
-  <div class="dialog-header">
+<div class="base-dialog" [attr.aria-label]="data.ariaLabel" (keydown)="onKeydown($event)" role="dialog">
+  <!-- Header -->
+  <div class="dialog-header" *ngIf="data.title || data.showCloseButton">
     <h2 mat-dialog-title>{{data.title}}</h2>
-    <button mat-icon-button (click)="onClose()">
+    <button *ngIf="data.showCloseButton" 
+            mat-icon-button 
+            (click)="onClose()"
+            [disabled]="data.loading"
+            aria-label="Close dialog">
       <mat-icon>close</mat-icon>
     </button>
   </div>
 
+  <!-- Content with loading overlay -->
   <mat-dialog-content>
     <div class="dialog-content">
+      <div class="loading-overlay" *ngIf="data.loading">
+        <mat-spinner diameter="40"></mat-spinner>
+      </div>
       <ng-container *ngTemplateOutlet="data.content"></ng-container>
     </div>
   </mat-dialog-content>
+
+  <!-- Footer with action buttons -->
+  <mat-dialog-actions *ngIf="data.buttons?.length" align="end">
+    <ng-container *ngFor="let button of data.buttons">
+      <button mat-button
+              [ngClass]="getButtonClass(button)"
+              (click)="button.onClick()"
+              [disabled]="button.disabled || data.loading">
+        <mat-icon *ngIf="button.icon">{{button.icon}}</mat-icon>
+        <mat-spinner *ngIf="button.loading" 
+                    diameter="20" 
+                    class="button-spinner">
+        </mat-spinner>
+        {{button.label}}
+      </button>
+    </ng-container>
+  </mat-dialog-actions>
 </div>

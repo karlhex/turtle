@@ -4,7 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.fwai.turtle.dto.ProductDTO;
-import com.fwai.turtle.persistence.entity.ProductType;
+import com.fwai.turtle.types.ProductType;
 
 public interface ProductService {
     ProductDTO create(ProductDTO productDTO);

@@ -5,16 +5,18 @@ import com.fwai.turtle.dto.ContractItemDTO;
 import com.fwai.turtle.exception.ResourceNotFoundException;
 import com.fwai.turtle.persistence.entity.Contract;
 import com.fwai.turtle.persistence.entity.ContractItem;
-import com.fwai.turtle.persistence.entity.ContractStatus;
-import com.fwai.turtle.persistence.entity.ContractType;
 import com.fwai.turtle.persistence.entity.Currency;
 import com.fwai.turtle.persistence.entity.Product;
 import com.fwai.turtle.persistence.mapper.ContractItemMapper;
 import com.fwai.turtle.persistence.mapper.ContractMapper;
 import com.fwai.turtle.persistence.repository.ContractRepository;
+import com.fwai.turtle.persistence.repository.CompanyRepository;
 import com.fwai.turtle.persistence.repository.CurrencyRepository;
 import com.fwai.turtle.persistence.repository.ProductRepository;
 import com.fwai.turtle.service.interfaces.ContractService;
+import com.fwai.turtle.types.ContractStatus;
+import com.fwai.turtle.types.ContractType;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,6 +33,7 @@ import java.util.stream.Collectors;
 public class ContractServiceImpl implements ContractService {
     private final ContractRepository contractRepository;
     private final CurrencyRepository currencyRepository;
+    private final CompanyRepository companyRepository;
     private final ContractMapper contractMapper;
     private final ContractItemMapper contractItemMapper;
     private final ProductRepository productRepository;
@@ -46,11 +49,20 @@ public class ContractServiceImpl implements ContractService {
             throw new IllegalArgumentException("合同编号已存在: " + contractDTO.getContractNo());
         }
 
+
+        // Validate buyer company exists
+        companyRepository.findById(contractDTO.getBuyerCompany().getId())
+            .orElseThrow(() -> new ResourceNotFoundException("买方公司不存在"));
+
+        // Validate seller company exists
+        companyRepository.findById(contractDTO.getSellerCompany().getId())
+            .orElseThrow(() -> new ResourceNotFoundException("卖方公司不存在"));
+
         Contract contract = contractMapper.toEntity(contractDTO);
         
         // 设置币种
-        Currency currency = currencyRepository.findById(contractDTO.getCurrencyId())
-                .orElseThrow(() -> new ResourceNotFoundException("Currency", "id", contractDTO.getCurrencyId()));
+        Currency currency = currencyRepository.findById(contractDTO.getCurrency().getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Currency", "id", contractDTO.getCurrency().getId()));
         contract.setCurrency(currency);
 
         contract = contractRepository.save(contract);
@@ -60,20 +72,28 @@ public class ContractServiceImpl implements ContractService {
     @Override
     public ContractDTO update(Long id, ContractDTO contractDTO) {
         Contract existingContract = contractRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Contract", "id", id));
+                .orElseThrow(() -> new ResourceNotFoundException("合同不存在"));
 
-        // 检查合同编号是否被其他合同使用
-        if (!existingContract.getContractNo().equals(contractDTO.getContractNo()) &&
-            contractRepository.existsByContractNo(contractDTO.getContractNo())) {
+        // Check if contract number is changed and if the new number already exists
+        if (!existingContract.getContractNo().equals(contractDTO.getContractNo())
+                && contractRepository.existsByContractNo(contractDTO.getContractNo())) {
             throw new IllegalArgumentException("合同编号已存在: " + contractDTO.getContractNo());
         }
+
+        // Validate buyer company exists
+        companyRepository.findById(contractDTO.getBuyerCompany().getId())
+            .orElseThrow(() -> new ResourceNotFoundException("买方公司不存在"));
+
+        // Validate seller company exists
+        companyRepository.findById(contractDTO.getSellerCompany().getId())
+            .orElseThrow(() -> new ResourceNotFoundException("卖方公司不存在"));
 
         Contract contract = contractMapper.toEntity(contractDTO);
         contract.setId(id);
 
         // 设置币种
-        Currency currency = currencyRepository.findById(contractDTO.getCurrencyId())
-                .orElseThrow(() -> new ResourceNotFoundException("Currency", "id", contractDTO.getCurrencyId()));
+        Currency currency = currencyRepository.findById(contractDTO.getCurrency().getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Currency", "id", contractDTO.getCurrency().getId()));
         contract.setCurrency(currency);
 
         contract = contractRepository.save(contract);

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/user-employee-mappings")
+@RequestMapping("/api/user-employee-mappings")
 @RequiredArgsConstructor
 public class UserEmployeeMappingController {
     private final UserEmployeeMappingService mappingService;

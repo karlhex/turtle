@@ -1,6 +1,8 @@
 package com.fwai.turtle.persistence.entity;
 
 import com.fwai.turtle.common.entity.BaseEntity;
+import com.fwai.turtle.types.DebitCreditType;
+
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

@@ -24,7 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/employees")
+@RequestMapping("/api/employees")
 public class EmployeeController {
     private final EmployeeService employeeService;
     private final IEmployeeEducationService employeeEducationService;

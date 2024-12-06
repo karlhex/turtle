@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.fwai.turtle.persistence.entity.Product;
-import com.fwai.turtle.persistence.entity.ProductType;
+import com.fwai.turtle.types.ProductType;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {

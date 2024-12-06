@@ -2,8 +2,9 @@ package com.fwai.turtle.controller;
 
 import com.fwai.turtle.common.ApiResponse;
 import com.fwai.turtle.dto.ContractDownPaymentDTO;
-import com.fwai.turtle.persistence.entity.DebitCreditType;
 import com.fwai.turtle.service.interfaces.ContractDownPaymentService;
+import com.fwai.turtle.types.DebitCreditType;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

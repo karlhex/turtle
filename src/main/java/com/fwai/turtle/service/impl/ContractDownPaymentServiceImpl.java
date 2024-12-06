@@ -5,12 +5,13 @@ import com.fwai.turtle.exception.ResourceNotFoundException;
 import com.fwai.turtle.persistence.entity.Contract;
 import com.fwai.turtle.persistence.entity.ContractDownPayment;
 import com.fwai.turtle.persistence.entity.Currency;
-import com.fwai.turtle.persistence.entity.DebitCreditType;
 import com.fwai.turtle.persistence.mapper.ContractDownPaymentMapper;
 import com.fwai.turtle.persistence.repository.ContractDownPaymentRepository;
 import com.fwai.turtle.persistence.repository.ContractRepository;
 import com.fwai.turtle.persistence.repository.CurrencyRepository;
 import com.fwai.turtle.service.interfaces.ContractDownPaymentService;
+import com.fwai.turtle.types.DebitCreditType;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

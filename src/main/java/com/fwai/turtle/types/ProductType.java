@@ -1,4 +1,4 @@
-package com.fwai.turtle.persistence.entity;
+package com.fwai.turtle.types;
 
 public enum ProductType {
     SOFTWARE("软件产品"),

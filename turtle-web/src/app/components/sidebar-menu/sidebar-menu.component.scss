@@ -1,0 +1,116 @@
+.sidebar-menu {
+  .menu-item {
+    display: flex;
+    align-items: center;
+    height: 48px;
+    padding: 0 16px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.04);
+    }
+
+    &.active {
+      background-color: rgba(0, 0, 0, 0.04);
+    }
+
+    &.expanded {
+      background-color: rgba(0, 0, 0, 0.02);
+    }
+
+    .menu-icon {
+      margin-right: 16px;
+      font-size: 24px;
+      width: 24px;
+      height: 24px;
+    }
+
+    .menu-title {
+      flex: 1;
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .expand-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+      transition: transform 0.3s ease;
+    }
+
+    &.expanded .expand-icon {
+      transform: rotate(180deg);
+    }
+  }
+
+  .submenu {
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    max-height: 0;
+
+    &.expanded {
+      max-height: 500px; // Adjust based on your needs
+    }
+
+    &.collapsed {
+      display: none;
+    }
+
+    .submenu-item {
+      padding-left: 32px;
+      background-color: rgba(0, 0, 0, 0.01);
+      font-size: 14px;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.04);
+      }
+
+      &.active {
+        background-color: rgba(0, 0, 0, 0.06);
+      }
+
+      mat-icon {
+        margin-right: 8px;
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+      }
+
+      .mat-mdc-list-item-title {
+        font-size: 13.33px; // 16px * 0.833 (20% smaller than parent)
+        font-weight: normal;
+      }
+    }
+  }
+
+  mat-divider {
+    margin: 8px 0;
+  }
+}
+
+:host ::ng-deep {
+  .mat-mdc-list-item {
+    height: 48px !important;
+    padding: 0 16px !important;
+
+    .mdc-list-item__content {
+      padding: 0 !important;
+    }
+
+    .mat-mdc-list-item-title {
+      margin-right: 8px;
+    }
+
+    .mdc-list-item__start {
+      margin-right: 16px !important;
+    }
+
+    .mdc-list-item__end {
+      margin-left: 0 !important;
+    }
+  }
+}

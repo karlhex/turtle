@@ -1,7 +1,8 @@
 package com.fwai.turtle.service.interfaces;
 
 import com.fwai.turtle.dto.ContractDownPaymentDTO;
-import com.fwai.turtle.persistence.entity.DebitCreditType;
+import com.fwai.turtle.types.DebitCreditType;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

@@ -3,9 +3,10 @@ package com.fwai.turtle.controller;
 import com.fwai.turtle.common.ApiResponse;
 import com.fwai.turtle.dto.ContractDTO;
 import com.fwai.turtle.dto.ContractItemDTO;
-import com.fwai.turtle.persistence.entity.ContractStatus;
-import com.fwai.turtle.persistence.entity.ContractType;
 import com.fwai.turtle.service.interfaces.ContractService;
+import com.fwai.turtle.types.ContractStatus;
+import com.fwai.turtle.types.ContractType;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +24,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/contracts")
+@RequestMapping("/api/contracts")
 @RequiredArgsConstructor
 public class ContractController {
     private final ContractService contractService;

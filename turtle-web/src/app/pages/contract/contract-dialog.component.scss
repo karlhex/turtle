@@ -1,0 +1,42 @@
+.form-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  padding: 16px;
+  max-height: 70vh;
+  overflow-y: auto;
+
+  h3 {
+    grid-column: 1 / -1;
+    margin: 16px 0 8px;
+    color: rgba(0, 0, 0, 0.87);
+    font-size: 16px;
+    font-weight: 500;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    padding-bottom: 8px;
+  }
+
+  .full-width {
+    grid-column: 1 / -1;
+  }
+
+  mat-form-field {
+    width: 100%;
+  }
+}
+
+mat-dialog-content {
+  padding: 0;
+  min-width: 800px;
+  max-height: 80vh;
+}
+
+mat-dialog-actions {
+  padding: 16px;
+  margin: 0;
+}
+
+.mat-progress-spinner {
+  display: inline-block;
+  margin-right: 8px;
+}

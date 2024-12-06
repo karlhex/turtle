@@ -1,12 +1,13 @@
 package com.fwai.turtle.dto;
 
-import com.fwai.turtle.persistence.entity.ProjectStatus;
 import lombok.Data;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.fwai.turtle.types.ProjectStatus;
 
 @Data
 public class ProjectDTO {

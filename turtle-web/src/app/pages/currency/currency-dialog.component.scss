@@ -1,0 +1,41 @@
+.currency-dialog {
+  padding: 16px;
+  
+  .form-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 8px 0;
+  }
+
+  .full-width {
+    width: 100%;
+  }
+
+  .toggle-field {
+    margin: 8px 0;
+  }
+
+  mat-dialog-content {
+    min-width: 400px;
+    max-height: 80vh;
+  }
+
+  mat-dialog-actions {
+    padding: 16px 0 0;
+    margin: 0;
+  }
+
+  .mat-mdc-form-field {
+    margin-bottom: 8px;
+  }
+
+  input[type="number"] {
+    -moz-appearance: textfield;
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  }
+}

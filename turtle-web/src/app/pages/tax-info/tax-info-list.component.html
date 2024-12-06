@@ -1,0 +1,69 @@
+<app-base-list
+  [title]="'税务信息管理'"
+  [placeholder]="'搜索税务信息...'"
+  [loading]="loading"
+  [pageSize]="pageSize"
+  [totalElements]="totalElements"
+  (search)="onSearch($event)"
+  (add)="onAdd()"
+  (page)="onPageChange($event)">
+
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z1 w-full">
+    <!-- 公司全称 -->
+    <ng-container matColumnDef="fullName">
+      <th mat-header-cell *matHeaderCellDef>公司全称</th>
+      <td mat-cell *matCellDef="let element">{{element.fullName}}</td>
+    </ng-container>
+
+    <!-- 税号 -->
+    <ng-container matColumnDef="taxNo">
+      <th mat-header-cell *matHeaderCellDef>税号</th>
+      <td mat-cell *matCellDef="let element">{{element.taxNo}}</td>
+    </ng-container>
+
+    <!-- 开户行 -->
+    <ng-container matColumnDef="bankName">
+      <th mat-header-cell *matHeaderCellDef>开户行</th>
+      <td mat-cell *matCellDef="let element">{{element.bankName}}</td>
+    </ng-container>
+
+    <!-- 银行账号 -->
+    <ng-container matColumnDef="bankAccount">
+      <th mat-header-cell *matHeaderCellDef>银行账号</th>
+      <td mat-cell *matCellDef="let element">{{element.bankAccount}}</td>
+    </ng-container>
+
+    <!-- 电话 -->
+    <ng-container matColumnDef="phone">
+      <th mat-header-cell *matHeaderCellDef>电话</th>
+      <td mat-cell *matCellDef="let element">{{element.phone}}</td>
+    </ng-container>
+
+    <!-- 状态 -->
+    <ng-container matColumnDef="active">
+      <th mat-header-cell *matHeaderCellDef>状态</th>
+      <td mat-cell *matCellDef="let element">
+        <mat-slide-toggle
+          [checked]="element.active"
+          (change)="onToggleStatus(element)"
+          color="primary">
+        </mat-slide-toggle>
+      </td>
+    </ng-container>
+
+    <!-- 操作 -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>操作</th>
+      <td mat-cell *matCellDef="let element">
+        <app-action
+        [canView]="false"
+        (edit)="onEdit(element)"
+        (delete)="onDelete(element)">
+        </app-action>         
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</app-base-list>

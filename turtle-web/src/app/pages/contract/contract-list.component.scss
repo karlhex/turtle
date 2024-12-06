@@ -1,0 +1,38 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+table {
+  width: 100%;
+}
+
+.mat-column-actions {
+  width: 60px;
+  text-align: center;
+}
+
+.mat-column-status {
+  width: 120px;
+}
+
+.mat-column-amount {
+  width: 120px;
+  text-align: right;
+}
+
+.mat-column-currency {
+  width: 80px;
+}
+
+.mat-column-startDate,
+.mat-column-endDate {
+  width: 120px;
+}
+
+::ng-deep {
+  .mat-chip.mat-standard-chip {
+    min-height: 24px;
+    font-size: 12px;
+  }
+}

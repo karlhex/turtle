@@ -10,10 +10,10 @@ import com.fwai.turtle.dto.ProductDTO;
 import com.fwai.turtle.exception.DuplicateRecordException;
 import com.fwai.turtle.exception.ResourceNotFoundException;
 import com.fwai.turtle.persistence.entity.Product;
-import com.fwai.turtle.persistence.entity.ProductType;
 import com.fwai.turtle.persistence.mapper.ProductMapper;
 import com.fwai.turtle.persistence.repository.ProductRepository;
 import com.fwai.turtle.service.interfaces.ProductService;
+import com.fwai.turtle.types.ProductType;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

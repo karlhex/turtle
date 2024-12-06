@@ -1,8 +1,9 @@
 package com.fwai.turtle.persistence.repository;
 
 import com.fwai.turtle.persistence.entity.Contract;
-import com.fwai.turtle.persistence.entity.ContractStatus;
-import com.fwai.turtle.persistence.entity.ContractType;
+import com.fwai.turtle.types.ContractStatus;
+import com.fwai.turtle.types.ContractType;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -23,7 +24,10 @@ public interface ContractRepository extends JpaRepository<Contract, Long> {
     @Query("SELECT c FROM Contract c WHERE " +
            "(:contractNo IS NULL OR c.contractNo LIKE %:contractNo%) AND " +
            "(:title IS NULL OR c.title LIKE %:title%) AND " +
-           "(:company IS NULL OR c.buyerCompany LIKE %:company% OR c.sellerCompany LIKE %:company%) AND " +
+           "(:company IS NULL OR c.buyerCompany.fullName LIKE %:company% OR " +
+           "c.buyerCompany.shortName LIKE %:company% OR " +
+           "c.sellerCompany.fullName LIKE %:company% OR " +
+           "c.sellerCompany.shortName LIKE %:company%) AND " +
            "(:type IS NULL OR c.type = :type) AND " +
            "(:status IS NULL OR c.status = :status) AND " +
            "(:projectNo IS NULL OR c.projectNo LIKE %:projectNo%)")

@@ -1,9 +1,16 @@
 package com.fwai.turtle.types;
 
 public enum ContractType {
-    FIXED_TERM,         // 固定期限
-    NON_FIXED_TERM,     // 无固定期限
-    INTERNSHIP,         // 实习
-    PART_TIME,          // 兼职
-    PROBATION          // 试用期
-} 
+    PURCHASE("采购合同"),
+    SALES("销售合同");
+
+    private final String description;
+
+    ContractType(String description) {
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+}

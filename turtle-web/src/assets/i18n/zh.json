@@ -3,14 +3,20 @@
     "title": "乌龟人力资源管理系统",
     "menu": {
       "dashboard": "仪表盘",
+      "hr": "人力资源",
       "employees": "员工管理",
       "departments": "部门管理",
       "positions": "职位管理",
       "attendance": "考勤管理",
       "leave": "请假管理",
       "payroll": "工资管理",
-      "users": "用户管理",
+      "contract_management": "合同管理",
       "contracts": "合同管理",
+      "currencies": "货币管理",
+      "tax_info": "税务信息",
+      "system": "系统管理",
+      "users": "用户管理",
+      "company": "公司管理",
       "logout": "退出登录"
     }
   },
@@ -459,6 +465,21 @@
       "TERMINATED": "终止"
     }
   },
+  "enum": {
+    "contract": {
+      "status": {
+        "PENDING_SIGNATURE": "等待签署",
+        "IN_PROGRESS": "执行中",
+        "COMPLETED": "已结束",
+        "CANCELLED": "已取消",
+        "SUSPENDED": "已挂起"
+      },
+      "type": {
+        "PURCHASE": "采购合同",
+        "SALES": "销售合同"
+      }
+    }
+  },
   "common": {
     "action": {
       "add": "添加",
@@ -477,5 +498,73 @@
       "active": "启用",
       "inactive": "禁用"
     }
+  },
+  "currency": {
+    "title": "货币管理",
+    "search": {
+      "placeholder": "搜索货币代码或名称"
+    },
+    "list": {
+      "code": "货币代码",
+      "name": "货币名称",
+      "symbol": "货币符号",
+      "decimalPlaces": "小数位数",
+      "exchangeRate": "汇率",
+      "status": "状态",
+      "isBaseCurrency": "基准货币",
+      "actions": "操作",
+      "noData": "没有找到货币"
+    },
+    "dialog": {
+      "add": "新增货币",
+      "edit": "编辑货币",
+      "delete": "删除货币",
+      "code": "货币代码",
+      "codePlaceholder": "请输入货币代码",
+      "codeHint": "例如: CNY, USD, EUR",
+      "codeRequired": "货币代码不能为空",
+      "codeMaxLength": "货币代码不能超过3个字符",
+      "name": "货币名称",
+      "namePlaceholder": "请输入货币名称",
+      "nameRequired": "货币名称不能为空",
+      "nameMaxLength": "货币名称不能超过50个字符",
+      "symbol": "货币符号",
+      "symbolPlaceholder": "请输入货币符号",
+      "symbolRequired": "货币符号不能为空",
+      "symbolMaxLength": "货币符号不能超过5个字符",
+      "decimalPlaces": "小数位数",
+      "decimalPlacesRequired": "小数位数不能为空",
+      "decimalPlacesMin": "小数位数不能小于0",
+      "decimalPlacesMax": "小数位数不能大于4",
+      "country": "使用国家/地区",
+      "countryPlaceholder": "请输入使用国家/地区",
+      "countryMaxLength": "国家/地区名称不能超过50个字符",
+      "exchangeRate": "汇率",
+      "exchangeRatePlaceholder": "请输入汇率",
+      "exchangeRateHint": "相对于基准货币的汇率",
+      "exchangeRateMin": "汇率必须大于0",
+      "active": "启用状态"
+    },
+    "action": {
+      "setAsBase": "设为基准货币"
+    },
+    "message": {
+      "createSuccess": "货币创建成功",
+      "updateSuccess": "货币更新成功",
+      "deleteSuccess": "货币删除成功",
+      "setBaseSuccess": "基准货币设置成功",
+      "deleteConfirm": "确定要删除该货币吗？",
+      "cannotDeleteBase": "不能删除基准货币"
+    }
+  },
+  "company": {
+    "title": "公司管理",
+    "add_title": "新增公司",
+    "edit_title": "编辑公司",
+    "confirm_delete": "确定要删除该公司吗？",
+    "delete_success": "删除公司成功",
+    "create_success": "创建公司成功",
+    "update_success": "更新公司成功",
+    "status_updated": "公司状态已更新"
   }
 }

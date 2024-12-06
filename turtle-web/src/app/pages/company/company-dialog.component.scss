@@ -1,0 +1,43 @@
+.company-dialog {
+  .form-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 20px 0;
+  }
+
+  .w-full {
+    width: 100%;
+  }
+
+  mat-dialog-actions {
+    padding: 16px 24px;
+    margin-bottom: 0;
+
+    button {
+      min-width: 80px;
+      position: relative;
+
+      mat-spinner {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      span {
+        opacity: 1;
+        transition: opacity 0.2s;
+      }
+
+      &:disabled span {
+        opacity: 0;
+      }
+    }
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+}

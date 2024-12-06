@@ -14,7 +14,7 @@ import com.fwai.turtle.service.interfaces.AuthService;
 import com.fwai.turtle.common.ApiResponse;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class AuthController {
 
   @Autowired

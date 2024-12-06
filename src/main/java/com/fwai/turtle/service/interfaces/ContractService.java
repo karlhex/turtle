@@ -2,8 +2,9 @@ package com.fwai.turtle.service.interfaces;
 
 import com.fwai.turtle.dto.ContractDTO;
 import com.fwai.turtle.dto.ContractItemDTO;
-import com.fwai.turtle.persistence.entity.ContractStatus;
-import com.fwai.turtle.persistence.entity.ContractType;
+import com.fwai.turtle.types.ContractStatus;
+import com.fwai.turtle.types.ContractType;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

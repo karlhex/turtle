@@ -1,11 +1,12 @@
 package com.fwai.turtle.dto;
 
-import com.fwai.turtle.persistence.entity.DebitCreditType;
 import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import com.fwai.turtle.types.DebitCreditType;
 
 @Data
 public class ContractDownPaymentDTO {

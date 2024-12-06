@@ -1,4 +1,4 @@
-package com.fwai.turtle.persistence.entity;
+package com.fwai.turtle.types;
 
 public enum ContractStatus {
     PENDING_SIGNATURE("等待签署"),

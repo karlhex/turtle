@@ -2,8 +2,9 @@ package com.fwai.turtle.controller;
 
 import com.fwai.turtle.common.ApiResponse;
 import com.fwai.turtle.dto.ProjectDTO;
-import com.fwai.turtle.persistence.entity.ProjectStatus;
 import com.fwai.turtle.service.interfaces.ProjectService;
+import com.fwai.turtle.types.ProjectStatus;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,6 +41,11 @@ public class ProjectController {
             @RequestParam(required = false, defaultValue = "") String projectName,
             Pageable pageable) {
         return ApiResponse.ok(projectService.search(projectName, pageable));
+    }
+
+    @GetMapping
+    public ApiResponse<Page<ProjectDTO>> getAllProjects(Pageable pageable) {
+        return ApiResponse.ok(projectService.findAll(pageable));
     }
 
     @DeleteMapping("/{id}")

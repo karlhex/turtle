@@ -29,40 +29,7 @@
 
   <mat-sidenav-container class="sidenav-container">
     <mat-sidenav #sidenav mode="side" opened [class.collapsed]="isMenuCollapsed" class="sidenav">
-      <mat-nav-list>
-        <a mat-list-item routerLink="/dashboard" routerLinkActive="active">
-          <mat-icon matListItemIcon>dashboard</mat-icon>
-          <span matListItemTitle *ngIf="!isMenuCollapsed">{{ 'app.menu.dashboard' | translate }}</span>
-        </a>
-        <a mat-list-item routerLink="/employees" routerLinkActive="active">
-          <mat-icon matListItemIcon>people</mat-icon>
-          <span matListItemTitle *ngIf="!isMenuCollapsed">{{ 'app.menu.employees' | translate }}</span>
-        </a>
-        <mat-divider></mat-divider>
-        <a mat-list-item routerLink="/departments" routerLinkActive="active">
-          <mat-icon matListItemIcon>business</mat-icon>
-          <span matListItemTitle *ngIf="!isMenuCollapsed">{{ 'app.menu.departments' | translate }}</span>
-        </a>
-        <a mat-list-item routerLink="/positions" routerLinkActive="active">
-          <mat-icon matListItemIcon>work</mat-icon>
-          <span matListItemTitle *ngIf="!isMenuCollapsed">{{ 'app.menu.positions' | translate }}</span>
-        </a>
-        <mat-divider></mat-divider>
-        <a mat-list-item routerLink="/attendance" routerLinkActive="active">
-          <mat-icon matListItemIcon>event_note</mat-icon>
-          <span matListItemTitle *ngIf="!isMenuCollapsed">{{ 'app.menu.attendance' | translate }}</span>
-        </a>
-        <mat-divider></mat-divider>
-        <a mat-list-item routerLink="/contracts" routerLinkActive="active">
-          <mat-icon matListItemIcon>description</mat-icon>
-          <span matListItemTitle *ngIf="!isMenuCollapsed">{{ 'app.menu.contracts' | translate }}</span>
-        </a>
-        <mat-divider></mat-divider>
-        <a mat-list-item routerLink="/users" routerLinkActive="active">
-          <mat-icon matListItemIcon>manage_accounts</mat-icon>
-          <span matListItemTitle *ngIf="!isMenuCollapsed">{{ 'app.menu.users' | translate }}</span>
-        </a>
-      </mat-nav-list>
+      <app-sidebar-menu [isCollapsed]="isMenuCollapsed" (menuToggled)="toggleMenu()"></app-sidebar-menu>
     </mat-sidenav>
 
     <mat-sidenav-content>

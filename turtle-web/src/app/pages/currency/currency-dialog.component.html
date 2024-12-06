@@ -1,0 +1,120 @@
+<div class="currency-dialog">
+  <h2 mat-dialog-title>
+    {{ (isEditMode ? 'currency.dialog.edit' : 'currency.dialog.add') | translate }}
+  </h2>
+  
+  <form [formGroup]="currencyForm" (ngSubmit)="onSubmit()">
+    <mat-dialog-content>
+      <div class="form-fields">
+        <!-- Currency Code -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>{{ 'currency.dialog.code' | translate }}</mat-label>
+          <input matInput 
+                 formControlName="code" 
+                 placeholder="{{ 'currency.dialog.codePlaceholder' | translate }}"
+                 required>
+          <mat-hint>{{ 'currency.dialog.codeHint' | translate }}</mat-hint>
+          <mat-error *ngIf="currencyForm.get('code')?.hasError('required')">
+            {{ 'currency.dialog.codeRequired' | translate }}
+          </mat-error>
+          <mat-error *ngIf="currencyForm.get('code')?.hasError('maxlength')">
+            {{ 'currency.dialog.codeMaxLength' | translate }}
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Currency Name -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>{{ 'currency.dialog.name' | translate }}</mat-label>
+          <input matInput 
+                 formControlName="name" 
+                 placeholder="{{ 'currency.dialog.namePlaceholder' | translate }}"
+                 required>
+          <mat-error *ngIf="currencyForm.get('name')?.hasError('required')">
+            {{ 'currency.dialog.nameRequired' | translate }}
+          </mat-error>
+          <mat-error *ngIf="currencyForm.get('name')?.hasError('maxlength')">
+            {{ 'currency.dialog.nameMaxLength' | translate }}
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Currency Symbol -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>{{ 'currency.dialog.symbol' | translate }}</mat-label>
+          <input matInput 
+                 formControlName="symbol" 
+                 placeholder="{{ 'currency.dialog.symbolPlaceholder' | translate }}"
+                 required>
+          <mat-error *ngIf="currencyForm.get('symbol')?.hasError('required')">
+            {{ 'currency.dialog.symbolRequired' | translate }}
+          </mat-error>
+          <mat-error *ngIf="currencyForm.get('symbol')?.hasError('maxlength')">
+            {{ 'currency.dialog.symbolMaxLength' | translate }}
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Decimal Places -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>{{ 'currency.dialog.decimalPlaces' | translate }}</mat-label>
+          <input matInput 
+                 type="number"
+                 formControlName="decimalPlaces" 
+                 required>
+          <mat-error *ngIf="currencyForm.get('decimalPlaces')?.hasError('required')">
+            {{ 'currency.dialog.decimalPlacesRequired' | translate }}
+          </mat-error>
+          <mat-error *ngIf="currencyForm.get('decimalPlaces')?.hasError('min')">
+            {{ 'currency.dialog.decimalPlacesMin' | translate }}
+          </mat-error>
+          <mat-error *ngIf="currencyForm.get('decimalPlaces')?.hasError('max')">
+            {{ 'currency.dialog.decimalPlacesMax' | translate }}
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Country -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>{{ 'currency.dialog.country' | translate }}</mat-label>
+          <input matInput 
+                 formControlName="country" 
+                 placeholder="{{ 'currency.dialog.countryPlaceholder' | translate }}">
+          <mat-error *ngIf="currencyForm.get('country')?.hasError('maxlength')">
+            {{ 'currency.dialog.countryMaxLength' | translate }}
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Exchange Rate -->
+        <mat-form-field appearance="outline" class="full-width" *ngIf="!isEditMode">
+          <mat-label>{{ 'currency.dialog.exchangeRate' | translate }}</mat-label>
+          <input matInput 
+                 type="number"
+                 formControlName="exchangeRate"
+                 placeholder="{{ 'currency.dialog.exchangeRatePlaceholder' | translate }}">
+          <mat-hint>{{ 'currency.dialog.exchangeRateHint' | translate }}</mat-hint>
+          <mat-error *ngIf="currencyForm.get('exchangeRate')?.hasError('min')">
+            {{ 'currency.dialog.exchangeRateMin' | translate }}
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Active Status -->
+        <div class="toggle-field">
+          <mat-slide-toggle formControlName="active" color="primary">
+            {{ 'currency.dialog.active' | translate }}
+          </mat-slide-toggle>
+        </div>
+      </div>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+      <button mat-button 
+              type="button"
+              (click)="onCancel()">
+        {{ 'common.button.cancel' | translate }}
+      </button>
+      <button mat-raised-button 
+              color="primary"
+              type="submit"
+              [disabled]="!currencyForm.valid">
+        {{ 'common.button.save' | translate }}
+      </button>
+    </mat-dialog-actions>
+  </form>
+</div>

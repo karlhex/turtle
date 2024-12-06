@@ -32,10 +32,9 @@ public class SecurityConfiguration {
   private CorsConfig corsConfig;
 
   private static final String[] AUTH_WHITELIST = {
-      "/auth/**",
+      "/api/auth/**",
       "/h2-console/**",
-      "/hello",
-      "/employees/**"
+      "/hello"
   };
 
   @Bean

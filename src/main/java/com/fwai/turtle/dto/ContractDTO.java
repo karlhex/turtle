@@ -1,7 +1,5 @@
 package com.fwai.turtle.dto;
 
-import com.fwai.turtle.persistence.entity.ContractStatus;
-import com.fwai.turtle.persistence.entity.ContractType;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -10,13 +8,16 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fwai.turtle.types.ContractStatus;
+import com.fwai.turtle.types.ContractType;
+
 @Data
 public class ContractDTO {
     private Long id;
     private String contractNo;
     private String title;
-    private String buyerCompany;
-    private String sellerCompany;
+    private CompanyDTO buyerCompany;
+    private CompanyDTO sellerCompany;
     private ContractType type;
     private LocalDate signingDate;
     private LocalDate startDate;
@@ -25,8 +26,7 @@ public class ContractDTO {
     private String contactPhone;
     private String contactEmail;
     private BigDecimal totalAmount;
-    private Long currencyId;
-    private String currencyCode;  // 币种代码，用于显示
+    private CurrencyDTO currency;
     private ContractStatus status;
     private String projectNo;
     private Long projectId;

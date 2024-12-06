@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Contract } from '../models/contract.model';
 import { environment } from '../../environments/environment';
 import { Page } from '../models/page.model';
+import { ApiResponse } from '../models/api.model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class ContractService {
 
   constructor(private http: HttpClient) {}
 
-  getContracts(params: { page: number; size: number; search?: string }): Observable<Page<Contract>> {
+  getContracts(params: { page: number; size: number; search?: string }): Observable<ApiResponse<Page<Contract>>> {
     let httpParams = new HttpParams()
       .set('page', params.page.toString())
       .set('size', params.size.toString());
@@ -22,22 +23,22 @@ export class ContractService {
       httpParams = httpParams.set('search', params.search);
     }
 
-    return this.http.get<Page<Contract>>(this.apiUrl, { params: httpParams });
+    return this.http.get<ApiResponse<Page<Contract>>>(this.apiUrl, { params: httpParams });
   }
 
-  getContract(id: number): Observable<Contract> {
-    return this.http.get<Contract>(`${this.apiUrl}/${id}`);
+  getContract(id: number): Observable<ApiResponse<Contract>> {
+    return this.http.get<ApiResponse<Contract>>(`${this.apiUrl}/${id}`);
   }
 
-  createContract(contract: Contract): Observable<Contract> {
-    return this.http.post<Contract>(this.apiUrl, contract);
+  createContract(contract: Contract): Observable<ApiResponse<Contract>> {
+    return this.http.post<ApiResponse<Contract>>(this.apiUrl, contract);
   }
 
-  updateContract(id: number, contract: Contract): Observable<Contract> {
-    return this.http.put<Contract>(`${this.apiUrl}/${id}`, contract);
+  updateContract(id: number, contract: Contract): Observable<ApiResponse<Contract>> {
+    return this.http.put<ApiResponse<Contract>>(`${this.apiUrl}/${id}`, contract);
   }
 
-  deleteContract(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  deleteContract(id: number): Observable<ApiResponse<void>> {
+    return this.http.delete<ApiResponse<void>>(`${this.apiUrl}/${id}`);
   }
 }

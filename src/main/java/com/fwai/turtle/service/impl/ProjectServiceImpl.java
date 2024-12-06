@@ -5,16 +5,18 @@ import com.fwai.turtle.exception.DuplicateRecordException;
 import com.fwai.turtle.exception.ResourceNotFoundException;
 import com.fwai.turtle.persistence.entity.Employee;
 import com.fwai.turtle.persistence.entity.Project;
-import com.fwai.turtle.persistence.entity.ProjectStatus;
 import com.fwai.turtle.persistence.mapper.ProjectMapper;
 import com.fwai.turtle.persistence.repository.EmployeeRepository;
 import com.fwai.turtle.persistence.repository.ProjectRepository;
 import com.fwai.turtle.service.interfaces.ProjectService;
+import com.fwai.turtle.types.ProjectStatus;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 
 @Service
 @RequiredArgsConstructor
@@ -104,5 +106,12 @@ public class ProjectServiceImpl implements ProjectService {
         project.setStatus(newStatus);
         project = projectRepository.save(project);
         return projectMapper.toDTO(project);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<ProjectDTO> findAll(Pageable pageable) {
+        return projectRepository.findAll(pageable)
+                .map(projectMapper::toDTO);
     }
 }

@@ -1,0 +1,73 @@
+<div class="company-dialog">
+  <h2 mat-dialog-title>{{ data.mode === 'create' ? '新增公司' : '编辑公司' }}</h2>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <mat-dialog-content>
+      <div class="form-fields">
+        <!-- 公司全称 -->
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>公司全称</mat-label>
+          <input matInput formControlName="fullName" required>
+          <mat-error *ngIf="form.get('fullName')?.hasError('required')">
+            请输入公司全称
+          </mat-error>
+        </mat-form-field>
+
+        <!-- 公司简称 -->
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>公司简称</mat-label>
+          <input matInput formControlName="shortName">
+        </mat-form-field>
+
+        <!-- 地址 -->
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>地址</mat-label>
+          <input matInput formControlName="address" required>
+          <mat-error *ngIf="form.get('address')?.hasError('required')">
+            请输入地址
+          </mat-error>
+        </mat-form-field>
+
+        <!-- 电话 -->
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>电话</mat-label>
+          <input matInput formControlName="phone" required>
+          <mat-error *ngIf="form.get('phone')?.hasError('required')">
+            请输入电话
+          </mat-error>
+        </mat-form-field>
+
+        <!-- 邮箱 -->
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>邮箱</mat-label>
+          <input matInput formControlName="email" type="email">
+          <mat-error *ngIf="form.get('email')?.hasError('email')">
+            请输入有效的邮箱地址
+          </mat-error>
+        </mat-form-field>
+
+        <!-- 网站 -->
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>网站</mat-label>
+          <input matInput formControlName="website">
+        </mat-form-field>
+
+        <!-- 备注 -->
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>备注</mat-label>
+          <textarea matInput formControlName="remarks" rows="3"></textarea>
+        </mat-form-field>
+      </div>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+      <button mat-button type="button" [disabled]="loading" (click)="onCancel()">
+        取消
+      </button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid || loading">
+        <mat-spinner diameter="20" *ngIf="loading"></mat-spinner>
+        <span>{{ loading ? '保存中...' : '保存' }}</span>
+      </button>
+    </mat-dialog-actions>
+  </form>
+</div>

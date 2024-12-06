@@ -1,6 +1,5 @@
 .base-dialog {
-  width: 70vw;  // 70% of viewport width
-  height: 80vh; // 80% of viewport height
+  position: relative;
   
   .dialog-header {
     display: flex;
@@ -17,15 +16,103 @@
   }
 
   .dialog-content {
-    height: calc(80vh - 64px); // Subtract header height
+    position: relative;
     padding: 24px;
     overflow-y: auto;
+
+    .loading-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255, 255, 255, 0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+  }
+
+  mat-dialog-actions {
+    padding: 8px 24px;
+    border-top: 1px solid rgba(0, 0, 0, 0.12);
+    margin: 0;
+
+    button {
+      margin-left: 8px;
+      position: relative;
+
+      .button-spinner {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      &:disabled {
+        cursor: not-allowed;
+      }
+    }
   }
 }
 
-// Override Material Dialog default width
-::ng-deep .mat-dialog-container {
-  padding: 0 !important;
-  max-width: none !important;
-  max-height: none !important;
+// Dialog size variants
+::ng-deep {
+  .dialog-small {
+    max-width: 400px !important;
+    width: 90vw;
+
+    .mat-dialog-container {
+      max-height: 80vh;
+    }
+  }
+
+  .dialog-medium {
+    max-width: 600px !important;
+    width: 90vw;
+
+    .mat-dialog-container {
+      max-height: 80vh;
+    }
+  }
+
+  .dialog-large {
+    max-width: 900px !important;
+    width: 90vw;
+
+    .mat-dialog-container {
+      max-height: 90vh;
+    }
+  }
+
+  .dialog-full {
+    max-width: 95vw !important;
+    width: 95vw;
+
+    .mat-dialog-container {
+      max-height: 95vh;
+    }
+  }
+
+  // Remove default padding
+  .mat-dialog-container {
+    padding: 0 !important;
+    overflow: hidden;
+  }
+
+  // Accessibility improvements
+  .custom-dialog-container {
+    outline: none;
+  }
+}
+
+// Animation for loading spinner
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.loading-overlay {
+  animation: fadeIn 0.3s ease-in-out;
 }

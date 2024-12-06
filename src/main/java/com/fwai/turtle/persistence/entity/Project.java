@@ -1,6 +1,8 @@
 package com.fwai.turtle.persistence.entity;
 
 import com.fwai.turtle.common.entity.BaseEntity;
+import com.fwai.turtle.types.ProjectStatus;
+
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -38,6 +40,6 @@ public class Project extends BaseEntity {
     @Column(name = "remarks")
     private String remarks;  // 备注
 
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "projectId", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Contract> contracts = new ArrayList<>();  // 关联的合同列表
 }

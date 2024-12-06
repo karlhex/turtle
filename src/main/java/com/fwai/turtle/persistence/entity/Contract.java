@@ -1,6 +1,9 @@
 package com.fwai.turtle.persistence.entity;
 
 import com.fwai.turtle.common.entity.BaseEntity;
+import com.fwai.turtle.types.ContractStatus;
+import com.fwai.turtle.types.ContractType;
+
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -22,11 +25,13 @@ public class Contract extends BaseEntity {
     @Column(nullable = false)
     private String title;  // 标题
 
-    @Column(name = "buyer_company", nullable = false)
-    private String buyerCompany;  // 买方公司
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "buyer_company_id", nullable = false)
+    private Company buyerCompany;  // 买方公司
 
-    @Column(name = "seller_company", nullable = false)
-    private String sellerCompany;  // 卖方公司
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "seller_company_id", nullable = false)
+    private Company sellerCompany;  // 卖方公司
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -50,9 +55,8 @@ public class Contract extends BaseEntity {
     @Column(name = "contact_email")
     private String contactEmail;  // 联系邮箱
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "project_id")
-    private Project project;  // 关联的项目
+    @Column(name = "project_id")
+    private Long projectId;  // 关联的项目
 
     @Column(name = "total_amount", nullable = false, precision = 19, scale = 2)
     private BigDecimal totalAmount;  // 合同总金额
