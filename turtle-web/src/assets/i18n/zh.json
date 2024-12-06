@@ -12,6 +12,7 @@
       "payroll": "工资管理",
       "contract_management": "合同管理",
       "contracts": "合同管理",
+      "products": "产品管理",
       "currencies": "货币管理",
       "tax_info": "税务信息",
       "system": "系统管理",
@@ -566,5 +567,25 @@
     "create_success": "创建公司成功",
     "update_success": "更新公司成功",
     "status_updated": "公司状态已更新"
+  },
+  "product": {
+    "title": "产品管理",
+    "add_title": "新增产品",
+    "edit_title": "编辑产品",
+    "confirm_delete": "确定要删除该产品吗？",
+    "search": {
+      "placeholder": "搜索产品名称或型号"
+    },
+    "fields": {
+      "name": "名称",
+      "modelNumber": "型号",
+      "price": "价格",
+      "description": "描述",
+      "active": "启用"
+    },
+    "validation": {
+      "name": "名称不能为空",
+      "price": "价格必须大于或等于0"
+    }
   }
 }

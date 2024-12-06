@@ -51,4 +51,10 @@ public interface CompanyService {
      * 切换公司启用状态
      */
     CompanyDTO toggleStatus(Long id);
+
+    /**
+     * Get all active companies
+     * 获取所有启用的公司
+     */
+    List<CompanyDTO> getAllActive();
 }

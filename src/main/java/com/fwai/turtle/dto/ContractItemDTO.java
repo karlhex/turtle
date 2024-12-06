@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 public class ContractItemDTO {
     private Long id;
     private Long contractId;
-    private Long productId;
+    private ProductDTO product;
     private String productName;  // 产品名称，用于显示
     private String modelNumber;  // 型号
     private Integer quantity;    // 数量

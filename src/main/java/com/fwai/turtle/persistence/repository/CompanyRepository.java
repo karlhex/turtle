@@ -30,7 +30,7 @@ public interface CompanyRepository extends JpaRepository<Company, Long>, JpaSpec
            "LOWER(c.address) LIKE LOWER(CONCAT('%', :query, '%')) OR " +
            "LOWER(c.phone) LIKE LOWER(CONCAT('%', :query, '%')) OR " +
            "LOWER(c.email) LIKE LOWER(CONCAT('%', :query, '%'))")
-    List<Company> searchByKeyword(@Param("query") String query);
+    List<Company> searchCompanies(@Param("query") String query);
 
     /**
      * Check if company exists by full name
@@ -43,4 +43,10 @@ public interface CompanyRepository extends JpaRepository<Company, Long>, JpaSpec
      * 根据启用状态查找公司
      */
     List<Company> findByActive(Boolean active);
+
+    /**
+     * Find all active companies
+     * 获取所有启用状态的公司
+     */
+    List<Company> findByActiveTrue();
 }

@@ -40,6 +40,10 @@ import { TaxInfoDialogComponent } from './pages/tax-info/tax-info-dialog.compone
 import { SidebarMenuComponent } from './components/sidebar-menu/sidebar-menu.component';
 import { CompanyDialogComponent } from '@pages/company/company-dialog.component';
 import { CompanyListComponent } from '@pages/company/company-list.component';
+import { ContractItemDialogComponent } from '@pages/contract/contract-item-dialog.component';
+import { ContractItemListComponent } from '@pages/contract/contract-item-list.component';
+import { ProductListComponent } from './pages/product/product-list.component';
+import { ProductDialogComponent } from './pages/product/product-dialog.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -63,13 +67,17 @@ export function HttpLoaderFactory(http: HttpClient) {
     BaseDialogComponent,
     ContractListComponent,
     ContractDialogComponent,
+    ContractItemDialogComponent,
+    ContractItemListComponent,
     CurrencyListComponent,
     CurrencyDialogComponent,
     TaxInfoListComponent,
     TaxInfoDialogComponent,
     SidebarMenuComponent,
     CompanyDialogComponent,
-    CompanyListComponent
+    CompanyListComponent,
+    ProductListComponent,
+    ProductDialogComponent
   ],
   imports: [
     ActionComponent,

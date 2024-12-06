@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.fwai.turtle.service.interfaces.UserService;
 import com.fwai.turtle.dto.UserDTO;
-import com.fwai.turtle.mapper.UserMapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.Optional;
 
 import com.fwai.turtle.persistence.entity.User;
+import com.fwai.turtle.persistence.mapper.UserMapper;
 import com.fwai.turtle.persistence.repository.UserRepository;
 
 @Slf4j

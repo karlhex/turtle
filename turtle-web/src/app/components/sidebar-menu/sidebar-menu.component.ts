@@ -63,6 +63,11 @@ export class SidebarMenuComponent {
           route: '/contracts'
         },
         {
+          title: 'app.menu.products',
+          icon: 'inventory_2',
+          route: '/products'
+        },
+        {
           title: 'app.menu.currencies',
           icon: 'attach_money',
           route: '/currencies'

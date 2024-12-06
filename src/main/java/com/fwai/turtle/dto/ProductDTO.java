@@ -10,7 +10,7 @@ public class ProductDTO {
     private Long id;
     private String name;
     private String modelNumber;
-    private String manufacturer;
+    private CompanyDTO manufacturer;
     private ProductType type;
     private String unit;
     private String description;

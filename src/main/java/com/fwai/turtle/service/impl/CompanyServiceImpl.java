@@ -91,6 +91,14 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    public List<CompanyDTO> getAllActive() {
+        return companyRepository.findByActiveTrue()
+                .stream()
+                .map(companyMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public CompanyDTO toggleStatus(Long id) {
         Company company = companyRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Company not found with id: " + id));

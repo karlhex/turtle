@@ -1,0 +1,99 @@
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <h2 mat-dialog-title>添加产品</h2>
+
+  <mat-dialog-content>
+    <div class="row">
+      <!-- Product Selection -->
+      <div class="col-12 mb-3">
+        <mat-form-field class="w-100" appearance="outline">
+          <mat-label>产品</mat-label>
+          <input type="text"
+                 matInput
+                 formControlName="product"
+                 [matAutocomplete]="auto"
+                 placeholder="选择产品">
+          <mat-autocomplete #auto="matAutocomplete" 
+                          [displayWith]="displayProductFn"
+                          (optionSelected)="onProductSelected($event.option.value)">
+            <mat-option *ngFor="let product of filteredProducts | async" [value]="product">
+              {{product.name}} ({{product.modelNumber || '无型号'}})
+            </mat-option>
+          </mat-autocomplete>
+          <mat-error *ngIf="form.get('product')?.hasError('required')">
+            请选择产品
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- Quantity -->
+      <div class="col-md-6 mb-3">
+        <mat-form-field class="w-100">
+          <mat-label>数量</mat-label>
+          <input matInput
+                 type="number"
+                 formControlName="quantity"
+                 min="1">
+          <mat-error *ngIf="form.get('quantity')?.hasError('required')">
+            请输入数量
+          </mat-error>
+          <mat-error *ngIf="form.get('quantity')?.hasError('min')">
+            数量必须大于0
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- Unit Price -->
+      <div class="col-md-6 mb-3">
+        <mat-form-field class="w-100">
+          <mat-label>单价</mat-label>
+          <input matInput
+                 type="number"
+                 formControlName="unitPrice"
+                 min="0">
+          <mat-error *ngIf="form.get('unitPrice')?.hasError('required')">
+            请输入单价
+          </mat-error>
+          <mat-error *ngIf="form.get('unitPrice')?.hasError('min')">
+            单价不能为负数
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- Model Number -->
+      <div class="col-md-6 mb-3">
+        <mat-form-field class="w-100">
+          <mat-label>型号</mat-label>
+          <input matInput
+                 formControlName="modelNumber"
+                 placeholder="产品型号">
+        </mat-form-field>
+      </div>
+
+      <!-- Remarks -->
+      <div class="col-12">
+        <mat-form-field class="w-100">
+          <mat-label>备注</mat-label>
+          <textarea matInput
+                    formControlName="remarks"
+                    rows="3"
+                    placeholder="添加备注信息"></textarea>
+        </mat-form-field>
+      </div>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button
+            type="button"
+            [disabled]="loading"
+            (click)="cancel()">
+      取消
+    </button>
+    <button mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="!form.valid || loading">
+      确定
+    </button>
+  </mat-dialog-actions>
+</form>

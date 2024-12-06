@@ -10,6 +10,7 @@ import { ContractListComponent } from './pages/contract/contract-list.component'
 import { CurrencyListComponent } from './pages/currency/currency-list.component';
 import { TaxInfoListComponent } from './pages/tax-info/tax-info-list.component';
 import { CompanyListComponent } from './pages/company/company-list.component';
+import { ProductListComponent } from './pages/product/product-list.component';
 import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
@@ -28,6 +29,7 @@ const routes: Routes = [
       { path: 'currencies', component: CurrencyListComponent },
       { path: 'tax-infos', component: TaxInfoListComponent },
       { path: 'companies', component: CompanyListComponent },
+      { path: 'products', component: ProductListComponent },
       // Placeholder routes for future implementation
       { path: 'positions', component: DashboardComponent },
       { path: 'attendance', component: DashboardComponent },

@@ -19,8 +19,9 @@ public class Product extends BaseEntity {
     @Column(name = "model_number", nullable = false)
     private String modelNumber;  // 产品型号
 
-    @Column(name = "manufacturer", nullable = false)
-    private String manufacturer;  // 生产公司
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "manufacturer_id", nullable = false)
+    private Company manufacturer;  // 生产公司
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

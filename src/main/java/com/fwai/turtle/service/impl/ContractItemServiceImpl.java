@@ -1,6 +1,7 @@
 package com.fwai.turtle.service.impl;
 
 import com.fwai.turtle.dto.ContractItemDTO;
+import com.fwai.turtle.dto.ProductDTO;
 import com.fwai.turtle.exception.ResourceNotFoundException;
 import com.fwai.turtle.persistence.entity.Contract;
 import com.fwai.turtle.persistence.entity.ContractItem;
@@ -38,8 +39,8 @@ public class ContractItemServiceImpl implements ContractItemService {
         contractItem.setContract(contract);
         
         // 设置产品
-        Product product = productRepository.findById(contractItemDTO.getProductId())
-                .orElseThrow(() -> new ResourceNotFoundException("Product", "id", contractItemDTO.getProductId()));
+        Product product = productRepository.findById(contractItemDTO.getProduct().getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Product", "id", contractItemDTO.getProduct().getId()));
         contractItem.setProduct(product);
 
         contractItem = contractItemRepository.save(contractItem);
@@ -51,17 +52,18 @@ public class ContractItemServiceImpl implements ContractItemService {
         ContractItem existingItem = contractItemRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("ContractItem", "id", id));
 
-        ContractItem contractItem = contractItemMapper.toEntity(contractItemDTO);
-        contractItem.setId(id);
-        contractItem.setContract(existingItem.getContract());  // 保持原有合同关联
+        // 更新基本信息
+        contractItemMapper.toEntity(contractItemDTO);
+        
+        // 更新产品信息（如果有变化）
+        if (!existingItem.getProduct().getId().equals(contractItemDTO.getProduct().getId())) {
+            Product product = productRepository.findById(contractItemDTO.getProduct().getId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Product", "id", contractItemDTO.getProduct().getId()));
+            existingItem.setProduct(product);
+        }
 
-        // 设置产品
-        Product product = productRepository.findById(contractItemDTO.getProductId())
-                .orElseThrow(() -> new ResourceNotFoundException("Product", "id", contractItemDTO.getProductId()));
-        contractItem.setProduct(product);
-
-        contractItem = contractItemRepository.save(contractItem);
-        return contractItemMapper.toDTO(contractItem);
+        existingItem = contractItemRepository.save(existingItem);
+        return contractItemMapper.toDTO(existingItem);
     }
 
     @Override
@@ -73,7 +75,6 @@ public class ContractItemServiceImpl implements ContractItemService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public ContractItemDTO getById(Long id) {
         ContractItem contractItem = contractItemRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("ContractItem", "id", id));
@@ -81,7 +82,6 @@ public class ContractItemServiceImpl implements ContractItemService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<ContractItemDTO> getByContractId(Long contractId) {
         return contractItemRepository.findByContractId(contractId).stream()
                 .map(contractItemMapper::toDTO)

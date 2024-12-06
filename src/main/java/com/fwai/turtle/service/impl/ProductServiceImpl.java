@@ -11,7 +11,9 @@ import com.fwai.turtle.exception.DuplicateRecordException;
 import com.fwai.turtle.exception.ResourceNotFoundException;
 import com.fwai.turtle.persistence.entity.Product;
 import com.fwai.turtle.persistence.mapper.ProductMapper;
+import com.fwai.turtle.persistence.entity.Company;
 import com.fwai.turtle.persistence.repository.ProductRepository;
+import com.fwai.turtle.persistence.repository.CompanyRepository;
 import com.fwai.turtle.service.interfaces.ProductService;
 import com.fwai.turtle.types.ProductType;
 
@@ -24,6 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
+    private final CompanyRepository companyRepository;
     private final ProductMapper productMapper;
 
     @Override
@@ -33,7 +36,16 @@ public class ProductServiceImpl implements ProductService {
             throw new DuplicateRecordException("相同名称和型号的产品已存在");
         }
 
+        // Verify manufacturer exists
+        if (productDTO.getManufacturer() == null || productDTO.getManufacturer().getId() == null) {
+            throw new IllegalArgumentException("制造商信息不能为空");
+        }
+        
+        Company manufacturer = companyRepository.findById(productDTO.getManufacturer().getId())
+            .orElseThrow(() -> new ResourceNotFoundException("制造商不存在"));
+
         Product product = productMapper.toEntity(productDTO);
+        product.setManufacturer(manufacturer);
         product = productRepository.save(product);
         return productMapper.toDTO(product);
     }
@@ -53,9 +65,57 @@ public class ProductServiceImpl implements ProductService {
             }
         }
 
-        productMapper.updateEntity(productDTO, product);
+        // Verify manufacturer exists
+        if (productDTO.getManufacturer() == null || productDTO.getManufacturer().getId() == null) {
+            throw new IllegalArgumentException("制造商信息不能为空");
+        }
+        
+        Company manufacturer = companyRepository.findById(productDTO.getManufacturer().getId())
+            .orElseThrow(() -> new ResourceNotFoundException("制造商不存在"));
+
+        productMapper.updateEntityFromDTO(productDTO, product);
+        product.setManufacturer(manufacturer);
         product = productRepository.save(product);
         return productMapper.toDTO(product);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<ProductDTO> search(String query, Pageable pageable) {
+        if (!StringUtils.hasText(query)) {
+            return getAll(pageable);
+        }
+        return productRepository.searchProducts(query, pageable)
+                .map(productMapper::toDTO);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public ProductDTO getById(Long id) {
+        return productRepository.findById(id)
+                .map(productMapper::toDTO)
+                .orElseThrow(() -> new ResourceNotFoundException("产品不存在"));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<ProductDTO> getAll(Pageable pageable) {
+        return productRepository.findAll(pageable)
+                .map(productMapper::toDTO);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<ProductDTO> getAllActive(Pageable pageable) {
+        return productRepository.findByActive(true, pageable)
+                .map(productMapper::toDTO);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<ProductDTO> getByType(ProductType type, Pageable pageable) {
+        return productRepository.findByType(type, pageable)
+                .map(productMapper::toDTO);
     }
 
     @Override
@@ -65,39 +125,6 @@ public class ProductServiceImpl implements ProductService {
             throw new ResourceNotFoundException("产品不存在");
         }
         productRepository.deleteById(id);
-    }
-
-    @Override
-    public ProductDTO getById(Long id) {
-        Product product = productRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("产品不存在"));
-        return productMapper.toDTO(product);
-    }
-
-    @Override
-    public Page<ProductDTO> getAll(Pageable pageable) {
-        return productRepository.findAll(pageable).map(productMapper::toDTO);
-    }
-
-    @Override
-    public Page<ProductDTO> getAllActive(Pageable pageable) {
-        return productRepository.findByActive(true, pageable).map(productMapper::toDTO);
-    }
-
-    @Override
-    public Page<ProductDTO> search(String query, Pageable pageable) {
-        if (!StringUtils.hasText(query)) {
-            return getAll(pageable);
-        }
-        
-        return productRepository.findByNameContainingIgnoreCaseOrModelNumberContainingIgnoreCaseOrManufacturerContainingIgnoreCase(
-                query, query, query, pageable)
-                .map(productMapper::toDTO);
-    }
-
-    @Override
-    public Page<ProductDTO> getByType(ProductType type, Pageable pageable) {
-        return productRepository.findByType(type, pageable).map(productMapper::toDTO);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.fwai.turtle.mapper;
+package com.fwai.turtle.persistence.mapper;
 
 import java.util.List;
 import java.util.stream.Collectors;

@@ -4,6 +4,7 @@ import com.fwai.turtle.dto.ContractDTO;
 import com.fwai.turtle.persistence.entity.Contract;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 @Mapper(
     componentModel = "spring",
@@ -29,4 +30,11 @@ public interface ContractMapper {
     @Mapping(target = "buyerCompany", ignore = false)
     @Mapping(target = "sellerCompany", ignore = false)
     Contract toEntity(ContractDTO dto);
+
+    @Mapping(target = "currency", ignore = true)
+    @Mapping(target = "items", ignore = true)
+    @Mapping(target = "downPayments", ignore = true)
+    @Mapping(target = "buyerCompany", ignore = false)
+    @Mapping(target = "sellerCompany", ignore = false)
+    void updateEntityFromDTO(ContractDTO dto, @MappingTarget Contract contract);
 }

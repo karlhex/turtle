@@ -2,6 +2,8 @@ package com.fwai.turtle.service.impl;
 
 import com.fwai.turtle.dto.ContractDTO;
 import com.fwai.turtle.dto.ContractItemDTO;
+import com.fwai.turtle.dto.CurrencyDTO;
+import com.fwai.turtle.dto.ProductDTO;
 import com.fwai.turtle.exception.ResourceNotFoundException;
 import com.fwai.turtle.persistence.entity.Contract;
 import com.fwai.turtle.persistence.entity.ContractItem;
@@ -16,6 +18,7 @@ import com.fwai.turtle.persistence.repository.ProductRepository;
 import com.fwai.turtle.service.interfaces.ContractService;
 import com.fwai.turtle.types.ContractStatus;
 import com.fwai.turtle.types.ContractType;
+import com.fwai.turtle.dto.CompanyDTO;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -72,32 +75,62 @@ public class ContractServiceImpl implements ContractService {
     @Override
     public ContractDTO update(Long id, ContractDTO contractDTO) {
         Contract existingContract = contractRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("合同不存在"));
+                .orElseThrow(() -> new ResourceNotFoundException("Contract", "id", id));
 
-        // Check if contract number is changed and if the new number already exists
-        if (!existingContract.getContractNo().equals(contractDTO.getContractNo())
-                && contractRepository.existsByContractNo(contractDTO.getContractNo())) {
+        // 检查合同编号是否已存在（如果有变化）
+        if (!existingContract.getContractNo().equals(contractDTO.getContractNo()) &&
+            contractRepository.existsByContractNo(contractDTO.getContractNo())) {
             throw new IllegalArgumentException("合同编号已存在: " + contractDTO.getContractNo());
         }
 
-        // Validate buyer company exists
-        companyRepository.findById(contractDTO.getBuyerCompany().getId())
-            .orElseThrow(() -> new ResourceNotFoundException("买方公司不存在"));
+        // 更新合同基本信息
+        contractMapper.updateEntityFromDTO(contractDTO, existingContract);
 
-        // Validate seller company exists
-        companyRepository.findById(contractDTO.getSellerCompany().getId())
-            .orElseThrow(() -> new ResourceNotFoundException("卖方公司不存在"));
+        // 更新关联的公司信息
+        CompanyDTO buyerCompany = contractDTO.getBuyerCompany();
+        if (buyerCompany != null) {
+            existingContract.setBuyerCompany(companyRepository.findById(buyerCompany.getId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Company", "id", buyerCompany.getId())));
+        }
+        CompanyDTO sellerCompany = contractDTO.getSellerCompany();
+        if (sellerCompany != null) {
+            existingContract.setSellerCompany(companyRepository.findById(sellerCompany.getId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Company", "id", sellerCompany.getId())));
+        }
 
-        Contract contract = contractMapper.toEntity(contractDTO);
-        contract.setId(id);
 
-        // 设置币种
-        Currency currency = currencyRepository.findById(contractDTO.getCurrency().getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Currency", "id", contractDTO.getCurrency().getId()));
-        contract.setCurrency(currency);
+        // 更新货币信息
+        CurrencyDTO currency = contractDTO.getCurrency();
+        if (currency!= null) {
+            existingContract.setCurrency(currencyRepository.findById(currency.getId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Currency", "id", currency.getId())));
+        }
 
-        contract = contractRepository.save(contract);
-        return contractMapper.toDTO(contract);
+        // 更新合同明细
+        if (contractDTO.getItems() != null) {
+            // Clear existing items and add new ones
+            existingContract.getItems().clear();
+            
+            List<ContractItem> updatedItems = contractDTO.getItems().stream()
+                    .map(itemDTO -> {
+                        ContractItem item = contractItemMapper.toEntity(itemDTO);
+                        item.setContract(existingContract);
+                        
+                        // 设置产品
+                        if (itemDTO.getProduct() != null && itemDTO.getProduct().getId() != null) {
+                            Product product = productRepository.findById(itemDTO.getProduct().getId())
+                                    .orElseThrow(() -> new ResourceNotFoundException("Product", "id", itemDTO.getProduct().getId()));
+                            item.setProduct(product);
+                        }
+                        return item;
+                    })
+                    .collect(Collectors.toList());
+            
+            existingContract.getItems().addAll(updatedItems);
+        }
+
+        Contract savedContract = contractRepository.save(existingContract);
+        return contractMapper.toDTO(savedContract);
     }
 
     @Override
@@ -180,9 +213,11 @@ public class ContractServiceImpl implements ContractService {
         ContractItem item = contractItemMapper.toEntity(itemDTO);
         
         // 设置产品
-        Product product = productRepository.findById(itemDTO.getProductId())
-                .orElseThrow(() -> new ResourceNotFoundException("Product", "id", itemDTO.getProductId()));
-        item.setProduct(product);
+        if (itemDTO.getProduct() != null && itemDTO.getProduct().getId() != null) {
+            Product product = productRepository.findById(itemDTO.getProduct().getId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Product", "id", itemDTO.getProduct().getId()));
+            item.setProduct(product);
+        }
         
         // 设置合同关联
         item.setContract(contract);
@@ -208,9 +243,11 @@ public class ContractServiceImpl implements ContractService {
         updatedItem.setContract(contract);
 
         // 设置产品
-        Product product = productRepository.findById(itemDTO.getProductId())
-                .orElseThrow(() -> new ResourceNotFoundException("Product", "id", itemDTO.getProductId()));
-        updatedItem.setProduct(product);
+        if (itemDTO.getProduct() != null && itemDTO.getProduct().getId() != null) {
+            Product product = productRepository.findById(itemDTO.getProduct().getId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Product", "id", itemDTO.getProduct().getId()));
+            updatedItem.setProduct(product);
+        }
 
         // 替换原有项目
         contract.getItems().remove(existingItem);
@@ -258,9 +295,11 @@ public class ContractServiceImpl implements ContractService {
             item.setContract(contract);
 
             // 设置产品
-            Product product = productRepository.findById(itemDTO.getProductId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Product", "id", itemDTO.getProductId()));
-            item.setProduct(product);
+            if (itemDTO.getProduct() != null && itemDTO.getProduct().getId() != null) {
+                Product product = productRepository.findById(itemDTO.getProduct().getId())
+                        .orElseThrow(() -> new ResourceNotFoundException("Product", "id", itemDTO.getProduct().getId()));
+                item.setProduct(product);
+            }
 
             contract.getItems().add(item);
         }

@@ -94,7 +94,17 @@ public class CompanyController {
      */
     @PutMapping("/{id}/toggle-status")
     public ResponseEntity<ApiResponse<CompanyDTO>> toggleStatus(@PathVariable Long id) {
-        CompanyDTO company = companyService.toggleStatus(id);
-        return ResponseEntity.ok(ApiResponse.ok(company));
+        CompanyDTO updatedCompany = companyService.toggleStatus(id);
+        return ResponseEntity.ok(ApiResponse.ok(updatedCompany));
+    }
+
+    /**
+     * Get all active companies
+     * 获取所有启用状态的公司
+     */
+    @GetMapping("/active")
+    public ResponseEntity<ApiResponse<List<CompanyDTO>>> getAllActive() {
+        List<CompanyDTO> activeCompanies = companyService.getAllActive();
+        return ResponseEntity.ok(ApiResponse.ok(activeCompanies));
     }
 }

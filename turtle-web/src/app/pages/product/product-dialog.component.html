@@ -1,0 +1,87 @@
+<h2 mat-dialog-title>{{ isEdit ? '编辑产品' : '新建产品' }}</h2>
+
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <mat-dialog-content>
+    <div class="form-container">
+      <mat-form-field appearance="outline">
+        <mat-label>产品名称</mat-label>
+        <input matInput formControlName="name" required>
+        <mat-error *ngIf="form.get('name')?.hasError('required')">
+          请输入产品名称
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>型号</mat-label>
+        <input matInput formControlName="modelNumber">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>制造商</mat-label>
+        <input type="text" matInput formControlName="manufacturer" 
+               [matAutocomplete]="auto" required>
+        <mat-autocomplete #auto="matAutocomplete" 
+                         [displayWith]="displayCompany">
+          <mat-option *ngFor="let company of filteredCompanies | async" 
+                     [value]="company">
+            {{company.fullName}}
+          </mat-option>
+        </mat-autocomplete>
+        <mat-error *ngIf="form.get('manufacturer')?.hasError('required')">
+          请选择制造商
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>产品类型</mat-label>
+        <mat-select formControlName="type" required>
+          <mat-option value="HARDWARE">硬件</mat-option>
+          <mat-option value="SOFTWARE">软件</mat-option>
+          <mat-option value="SERVICE">服务</mat-option>
+        </mat-select>
+        <mat-error *ngIf="form.get('type')?.hasError('required')">
+          请选择产品类型
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>单位</mat-label>
+        <input matInput formControlName="unit" required>
+        <mat-error *ngIf="form.get('unit')?.hasError('required')">
+          请输入单位
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>描述</mat-label>
+        <textarea matInput formControlName="description" rows="3"></textarea>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>规格参数</mat-label>
+        <textarea matInput formControlName="specifications" rows="3"></textarea>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>备注</mat-label>
+        <textarea matInput formControlName="remarks" rows="3"></textarea>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>质保期（天）</mat-label>
+        <input matInput type="number" formControlName="warrantyPeriod">
+      </mat-form-field>
+
+      <mat-slide-toggle formControlName="active" color="primary">
+        启用
+      </mat-slide-toggle>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button type="button" (click)="cancel()">取消</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="loading">
+      {{ isEdit ? '保存' : '创建' }}
+    </button>
+  </mat-dialog-actions>
+</form>

@@ -49,6 +49,10 @@ export class CompanyService {
     return this.http.put<ApiResponse<Company>>(`${this.apiUrl}/${id}/toggle-status`, {});
   }
 
+  getAllActive(): Observable<ApiResponse<Company[]>> {
+    return this.http.get<ApiResponse<Company[]>>(`${this.apiUrl}/active`);
+  }
+
   searchCompanies(query: string): Observable<ApiResponse<Company[]>> {
     const params = new HttpParams().set('query', query);
     return this.http.get<ApiResponse<Company[]>>(`${this.apiUrl}/search`, { params });
