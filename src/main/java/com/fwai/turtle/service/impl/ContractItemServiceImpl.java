@@ -1,7 +1,6 @@
 package com.fwai.turtle.service.impl;
 
 import com.fwai.turtle.dto.ContractItemDTO;
-import com.fwai.turtle.dto.ProductDTO;
 import com.fwai.turtle.exception.ResourceNotFoundException;
 import com.fwai.turtle.persistence.entity.Contract;
 import com.fwai.turtle.persistence.entity.ContractItem;

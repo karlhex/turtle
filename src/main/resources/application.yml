@@ -1,3 +1,8 @@
+app:
+  name: "Turtle"
+  version: "1.0.0"
+  upload:
+    dir: /tmp
 spring:
   jackson:
     date-format: yyyy-MM-dd

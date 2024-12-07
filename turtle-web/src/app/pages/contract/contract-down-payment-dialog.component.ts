@@ -6,7 +6,21 @@ import { Currency } from '../../models/currency.model';
 import { DebitCreditType } from '../../types/debit-credit-type.enum';
 
 interface DialogData {
+  id?: number;
   contractId?: number;
+  contractNo?: string;
+  currencyId?: number;
+  currencyCode?: string;
+  amount?: number;
+  debitCreditType?: DebitCreditType;
+  plannedDate?: Date;
+  actualDate?: Date;
+  paymentStatus?: boolean;
+  paymentInstruction?: string;
+  bankAccountNo?: string;
+  bankName?: string;
+  accountName?: string;
+  remarks?: string;
   currency: Currency;
 }
 
@@ -25,18 +39,23 @@ export class ContractDownPaymentDialogComponent {
     private dialogRef: MatDialogRef<ContractDownPaymentDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData
   ) {
+    console.log("Dialog data:", data);
     this.form = this.fb.group({
+      id: [data.id],
       contractId: [data.contractId],
-      paymentInstruction: ['', [Validators.required]],
-      debitCreditType: [DebitCreditType.DEBIT, [Validators.required]],
-      plannedDate: [null, [Validators.required]],
-      actualDate: [null],
-      amount: [0, [Validators.required, Validators.min(0)]],
-      bankAccountNo: [''],
-      bankName: [''],
-      accountName: [''],
-      remarks: [''],
-      paymentStatus: [false]
+      contractNo: [data.contractNo],
+      currencyId: [data.currencyId],
+      currencyCode: [data.currencyCode],
+      amount: [data.amount || null, [Validators.required, Validators.min(0)]],
+      debitCreditType: [data.debitCreditType || DebitCreditType.DEBIT, [Validators.required]],
+      plannedDate: [data.plannedDate || null, [Validators.required]],
+      actualDate: [data.actualDate],
+      paymentStatus: [data.paymentStatus || false],
+      paymentInstruction: [data.paymentInstruction || '', [Validators.required]],
+      bankAccountNo: [data.bankAccountNo || ''],
+      bankName: [data.bankName || ''],
+      accountName: [data.accountName || ''],
+      remarks: [data.remarks || '']
     });
   }
 

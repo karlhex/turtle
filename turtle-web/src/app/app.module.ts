@@ -81,10 +81,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     CompanyDialogComponent,
     CompanyListComponent,
     ProductListComponent,
-    ProductDialogComponent
-  ],
+    ProductDialogComponent,
+    ActionComponent],
   imports: [
-    ActionComponent,
+
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,

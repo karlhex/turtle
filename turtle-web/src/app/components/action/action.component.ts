@@ -9,14 +9,6 @@ import { TranslateModule } from '@ngx-translate/core';
   selector: 'app-action',
   templateUrl: './action.component.html',
   styleUrls: ['./action.component.scss'],
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatButtonModule,
-    MatIconModule,
-    MatTooltipModule,
-    TranslateModule
-  ]
 })
 export class ActionComponent {
   @Input() canView: boolean = true;

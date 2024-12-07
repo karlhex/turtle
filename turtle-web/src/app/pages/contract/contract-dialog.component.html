@@ -1,222 +1,289 @@
 <h2 mat-dialog-title>{{ isEdit ? '编辑合同' : '新建合同' }}</h2>
 
-<form [formGroup]="form" (ngSubmit)="submit()">
-  <mat-dialog-content>
+<mat-dialog-content>
+  <div [formGroup]="form">
     <mat-tab-group>
       <!-- Contract Details Tab -->
       <mat-tab label="合同详情">
         <div class="form-container">
           <!-- 基本信息 -->
           <h3>基本信息</h3>
-          <mat-form-field appearance="outline">
-            <mat-label>合同编号</mat-label>
-            <input matInput formControlName="contractNo" required>
-            <mat-error *ngIf="form.get('contractNo')?.hasError('required')">
-              请输入合同编号
-            </mat-error>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label>标题</mat-label>
-            <input matInput formControlName="title" required>
-            <mat-error *ngIf="form.get('title')?.hasError('required')">
-              请输入标题
-            </mat-error>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label>买方公司</mat-label>
-            <input type="text" matInput formControlName="buyerCompany" [matAutocomplete]="buyerAuto" required>
-            <mat-autocomplete #buyerAuto="matAutocomplete" [displayWith]="displayCompany">
-              <mat-option *ngFor="let company of filteredBuyerCompanies | async" [value]="company">
-                {{ company.fullName }}
-                <small *ngIf="company.shortName"> ({{ company.shortName }})</small>
-              </mat-option>
-            </mat-autocomplete>
-            <mat-error *ngIf="form.get('buyerCompany')?.hasError('required')">
-              请选择买方公司
-            </mat-error>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label>卖方公司</mat-label>
-            <input type="text" matInput formControlName="sellerCompany" [matAutocomplete]="sellerAuto" required>
-            <mat-autocomplete #sellerAuto="matAutocomplete" [displayWith]="displayCompany">
-              <mat-option *ngFor="let company of filteredSellerCompanies | async" [value]="company">
-                {{ company.fullName }}
-                <small *ngIf="company.shortName"> ({{ company.shortName }})</small>
-              </mat-option>
-            </mat-autocomplete>
-            <mat-error *ngIf="form.get('sellerCompany')?.hasError('required')">
-              请选择卖方公司
-            </mat-error>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label>合同类型</mat-label>
-            <mat-select formControlName="type" required>
-              <mat-option *ngFor="let type of contractTypes" [value]="type">
-                {{ 'enum.contract.type.' +  type | translate }}
-              </mat-option>
-            </mat-select>
-            <mat-error *ngIf="form.get('type')?.hasError('required')">
-              请选择合同类型
-            </mat-error>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label>合同状态</mat-label>
-            <mat-select formControlName="status" required>
-              <mat-option *ngFor="let status of contractStatuses" [value]="status">
-                {{ 'enum.contract.status.' + status | translate }}
-              </mat-option>
-            </mat-select>
-            <mat-error *ngIf="form.get('status')?.hasError('required')">
-              请选择合同状态
-            </mat-error>
-          </mat-form-field>
+          <div class="form-section">
+            <div class="grid-container">
+              <div class="grid-item">
+                <mat-form-field appearance="outline">
+                  <mat-label>合同编号</mat-label>
+                  <input matInput formControlName="contractNo" required>
+                  <mat-error *ngIf="form.get('contractNo')?.hasError('required')">
+                    请输入合同编号
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="grid-item">
+                <mat-form-field appearance="outline">
+                  <mat-label>标题</mat-label>
+                  <input matInput formControlName="title" required>
+                  <mat-error *ngIf="form.get('title')?.hasError('required')">
+                    请输入标题
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="grid-container">
+              <div class="grid-item">
+                <mat-form-field appearance="outline">
+                  <mat-label>买方公司</mat-label>
+                  <input type="text" matInput formControlName="buyerCompany" [matAutocomplete]="buyerAuto" required>
+                  <mat-autocomplete #buyerAuto="matAutocomplete" [displayWith]="displayCompany">
+                    <mat-option *ngFor="let company of filteredBuyerCompanies | async" [value]="company">
+                      {{ company.fullName }}
+                      <small *ngIf="company.shortName"> ({{ company.shortName }})</small>
+                    </mat-option>
+                  </mat-autocomplete>
+                  <mat-error *ngIf="form.get('buyerCompany')?.hasError('required')">
+                    请选择买方公司
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="grid-item">
+                <mat-form-field appearance="outline">
+                  <mat-label>卖方公司</mat-label>
+                  <input type="text" matInput formControlName="sellerCompany" [matAutocomplete]="sellerAuto" required>
+                  <mat-autocomplete #sellerAuto="matAutocomplete" [displayWith]="displayCompany">
+                    <mat-option *ngFor="let company of filteredSellerCompanies | async" [value]="company">
+                      {{ company.fullName }}
+                      <small *ngIf="company.shortName"> ({{ company.shortName }})</small>
+                    </mat-option>
+                  </mat-autocomplete>
+                  <mat-error *ngIf="form.get('sellerCompany')?.hasError('required')">
+                    请选择卖方公司
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="grid-container">
+              <div class="grid-item">
+                <mat-form-field appearance="outline">
+                  <mat-label>合同类型</mat-label>
+                  <mat-select formControlName="type" required>
+                    <mat-option *ngFor="let type of contractTypes" [value]="type">
+                      {{ 'enum.contract.type.' +  type | translate }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="form.get('type')?.hasError('required')">
+                    请选择合同类型
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="grid-item">
+                <mat-form-field appearance="outline">
+                  <mat-label>合同状态</mat-label>
+                  <mat-select formControlName="status" required>
+                    <mat-option *ngFor="let status of contractStatuses" [value]="status">
+                      {{ 'enum.contract.status.' + status | translate }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="form.get('status')?.hasError('required')">
+                    请选择合同状态
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
 
           <!-- 日期信息 -->
           <h3>日期信息</h3>
-          <mat-form-field appearance="outline">
-            <mat-label>签署日期</mat-label>
-            <input matInput [matDatepicker]="signingPicker" formControlName="signingDate" required>
-            <mat-datepicker-toggle matSuffix [for]="signingPicker"></mat-datepicker-toggle>
-            <mat-datepicker #signingPicker></mat-datepicker>
-            <mat-error *ngIf="form.get('signingDate')?.hasError('required')">
-              请选择签署日期
-            </mat-error>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label>开始日期</mat-label>
-            <input matInput [matDatepicker]="startPicker" formControlName="startDate" required>
-            <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
-            <mat-datepicker #startPicker></mat-datepicker>
-            <mat-error *ngIf="form.get('startDate')?.hasError('required')">
-              请选择开始日期
-            </mat-error>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label>结束日期</mat-label>
-            <input matInput [matDatepicker]="endPicker" formControlName="endDate" required>
-            <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
-            <mat-datepicker #endPicker></mat-datepicker>
-            <mat-error *ngIf="form.get('endDate')?.hasError('required')">
-              请选择结束日期
-            </mat-error>
-          </mat-form-field>
+          <div class="form-section">
+            <div class="grid-container">
+              <div class="grid-item">
+                <mat-form-field appearance="outline">
+                  <mat-label>签署日期</mat-label>
+                  <input matInput [matDatepicker]="signingPicker" formControlName="signingDate" required>
+                  <mat-datepicker-toggle matSuffix [for]="signingPicker"></mat-datepicker-toggle>
+                  <mat-datepicker #signingPicker></mat-datepicker>
+                  <mat-error *ngIf="form.get('signingDate')?.hasError('required')">
+                    请选择签署日期
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="grid-item">
+                <mat-form-field appearance="outline">
+                  <mat-label>开始日期</mat-label>
+                  <input matInput [matDatepicker]="startPicker" formControlName="startDate" required>
+                  <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+                  <mat-datepicker #startPicker></mat-datepicker>
+                  <mat-error *ngIf="form.get('startDate')?.hasError('required')">
+                    请选择开始日期
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="grid-container">
+              <div class="grid-item">
+                <mat-form-field appearance="outline">
+                  <mat-label>结束日期</mat-label>
+                  <input matInput [matDatepicker]="endPicker" formControlName="endDate" required>
+                  <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+                  <mat-datepicker #endPicker></mat-datepicker>
+                  <mat-error *ngIf="form.get('endDate')?.hasError('required')">
+                    请选择结束日期
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
 
           <!-- 联系信息 -->
           <h3>联系信息</h3>
-          <mat-form-field appearance="outline">
-            <mat-label>联系人</mat-label>
-            <input matInput formControlName="contactPerson" required>
-            <mat-error *ngIf="form.get('contactPerson')?.hasError('required')">
-              请输入联系人
-            </mat-error>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label>联系电话</mat-label>
-            <input matInput formControlName="contactPhone">
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label>联系邮箱</mat-label>
-            <input matInput formControlName="contactEmail" type="email">
-          </mat-form-field>
+          <div class="form-section">
+            <div class="grid-container">
+              <div class="grid-item">
+                <mat-form-field appearance="outline">
+                  <mat-label>联系人</mat-label>
+                  <input matInput formControlName="contactPerson" required>
+                  <mat-error *ngIf="form.get('contactPerson')?.hasError('required')">
+                    请输入联系人
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="grid-item">
+                <mat-form-field appearance="outline">
+                  <mat-label>联系电话</mat-label>
+                  <input matInput formControlName="contactPhone">
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="grid-container">
+              <div class="grid-item">
+                <mat-form-field appearance="outline">
+                  <mat-label>联系邮箱</mat-label>
+                  <input matInput formControlName="contactEmail" type="email">
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
 
           <!-- 项目信息 -->
           <h3>项目信息</h3>
-          <mat-form-field appearance="outline">
-            <mat-label>关联项目</mat-label>
-            <mat-select formControlName="projectId">
-              <mat-option *ngFor="let project of projects" [value]="project.id">
-                {{project.projectName}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label>项目编号</mat-label>
-            <input matInput formControlName="projectNo">
-          </mat-form-field>
+          <div class="form-section">
+            <div class="grid-container">
+              <div class="grid-item">
+                <mat-form-field appearance="outline">
+                  <mat-label>关联项目</mat-label>
+                  <mat-select formControlName="projectId">
+                    <mat-option *ngFor="let project of projects" [value]="project.id">
+                      {{project.projectName}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="grid-item">
+                <mat-form-field appearance="outline">
+                  <mat-label>项目编号</mat-label>
+                  <input matInput formControlName="projectNo">
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
 
           <!-- 金额信息 -->
           <h3>金额信息</h3>
-          <mat-form-field appearance="outline">
-            <mat-label>合同金额</mat-label>
-            <input matInput type="number" formControlName="totalAmount" required>
-            <mat-error *ngIf="form.get('totalAmount')?.hasError('required')">
-              请输入合同金额
-            </mat-error>
-            <mat-error *ngIf="form.get('totalAmount')?.hasError('min')">
-              金额不能小于0
-            </mat-error>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label>币种</mat-label>
-            <mat-select formControlName="currency" required>
-              <mat-option *ngFor="let currency of currencies" [value]="currency">
-                {{currency.code}} - {{currency.name}}
-              </mat-option>
-            </mat-select>
-            <mat-error *ngIf="form.get('currency')?.hasError('required')">
-              请选择币种
-            </mat-error>
-          </mat-form-field>
+          <div class="form-section">
+            <div class="grid-container">
+              <div class="grid-item">
+                <mat-form-field appearance="outline">
+                  <mat-label>合同金额</mat-label>
+                  <input matInput type="number" formControlName="totalAmount" required>
+                  <mat-error *ngIf="form.get('totalAmount')?.hasError('required')">
+                    请输入合同金额
+                  </mat-error>
+                  <mat-error *ngIf="form.get('totalAmount')?.hasError('min')">
+                    金额不能小于0
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="grid-item">
+                <mat-form-field appearance="outline">
+                  <mat-label>币种</mat-label>
+                  <mat-select formControlName="currency" required>
+                    <mat-option *ngFor="let currency of currencies" [value]="currency">
+                      {{currency.code}} - {{currency.name}}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="form.get('currency')?.hasError('required')">
+                    请选择币种
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
 
           <!-- 条款信息 -->
           <h3>条款信息</h3>
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>付款条款</mat-label>
-            <textarea matInput formControlName="paymentTerms" rows="3"></textarea>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>交付条款</mat-label>
-            <textarea matInput formControlName="deliveryTerms" rows="3"></textarea>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>质保条款</mat-label>
-            <textarea matInput formControlName="warrantyTerms" rows="3"></textarea>
-          </mat-form-field>
+          <div class="form-section">
+            <div class="grid-container">
+              <div class="grid-item full-width">
+                <mat-form-field appearance="outline">
+                  <mat-label>付款条款</mat-label>
+                  <textarea matInput formControlName="paymentTerms" rows="3"></textarea>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="grid-container">
+              <div class="grid-item full-width">
+                <mat-form-field appearance="outline">
+                  <mat-label>交付条款</mat-label>
+                  <textarea matInput formControlName="deliveryTerms" rows="3"></textarea>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="grid-container">
+              <div class="grid-item full-width">
+                <mat-form-field appearance="outline">
+                  <mat-label>质保条款</mat-label>
+                  <textarea matInput formControlName="warrantyTerms" rows="3"></textarea>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
 
           <!-- 其他信息 -->
           <h3>其他信息</h3>
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>合同描述</mat-label>
-            <textarea matInput formControlName="description" rows="3"></textarea>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>备注</mat-label>
-            <textarea matInput formControlName="remarks" rows="3"></textarea>
-          </mat-form-field>
+          <div class="form-section">
+            <div class="grid-container">
+              <div class="grid-item full-width">
+                <mat-form-field appearance="outline">
+                  <mat-label>合同描述</mat-label>
+                  <textarea matInput formControlName="description" rows="3"></textarea>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="grid-container">
+              <div class="grid-item full-width">
+                <mat-form-field appearance="outline">
+                  <mat-label>备注</mat-label>
+                  <textarea matInput formControlName="remarks" rows="3"></textarea>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
         </div>
       </mat-tab>
-      
+
       <!-- Contract Items Tab -->
       <mat-tab label="{{ 'contract.items.tab' | translate }}">
         <div class="contract-items-container">
-          <div class="header">
-            <h3 class="section-title">{{ 'contract.items.title' | translate }}</h3>
-            <div class="actions">
-              <button mat-raised-button color="primary" type="button" (click)="addContractItem()">
-                {{ 'contract.items.add' | translate }}
-              </button>
-            </div>
+          <div class="action-bar">
+            <button mat-raised-button color="primary" (click)="addContractItem()">
+              <mat-icon>add</mat-icon>
+              添加产品
+            </button>
           </div>
-               
           <app-contract-item-list
             [items]="contractItems"
             [currency]="form.get('currency')?.value"
-            (itemDeleted)="onContractItemDeleted($event)"
-            (itemEdited)="onContractItemEdited($event)">
+            (itemEdited)="editContractItem($event)"
+            (itemDeleted)="deleteContractItem($event)">
           </app-contract-item-list>
         </div>
       </mat-tab>
@@ -239,14 +306,18 @@
         </div>
       </mat-tab>
     </mat-tab-group>
-  </mat-dialog-content>
+  </div>
+</mat-dialog-content>
 
-  <mat-dialog-actions align="end">
-    <button mat-button type="button" (click)="cancel()">取消</button>
-    <button mat-raised-button color="primary" type="submit" [disabled]="loading">
-      <mat-progress-spinner *ngIf="loading" diameter="20" mode="indeterminate">
-      </mat-progress-spinner>
-      <span>{{ isEdit ? '更新' : '创建' }}</span>
-    </button>
-  </mat-dialog-actions>
-</form>
+<mat-dialog-actions align="end">
+  <button mat-button type="button" (click)="cancel()">取消</button>
+  <button mat-raised-button 
+          color="primary" 
+          type="button" 
+          [disabled]="loading || !form.valid" 
+          (click)="submit()">
+    <mat-progress-spinner *ngIf="loading" diameter="20" mode="indeterminate">
+    </mat-progress-spinner>
+    <span>{{ isEdit ? '更新' : '创建' }}</span>
+  </button>
+</mat-dialog-actions>

@@ -1,6 +1,6 @@
 package com.fwai.turtle.persistence.entity;
 
-import com.fwai.turtle.common.entity.BaseEntity;
+import com.fwai.turtle.common.BaseEntity;
 import com.fwai.turtle.types.BankAccountType;
 
 import jakarta.persistence.*;

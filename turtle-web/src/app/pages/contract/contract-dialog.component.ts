@@ -193,27 +193,39 @@ export class ContractDialogComponent implements OnInit {
     }
   }
 
-  onContractItemEdited(item: ContractItem): void {
+  deleteContractItem(item: ContractItem): void {
+    const index = this.contractItems.findIndex(i => i.id === item.id);
+    if (index !== -1) {
+      this.contractItems.splice(index, 1);
+      this.contractItems = [...this.contractItems];
+    }
+  }
+
+  editContractItem(item: ContractItem): void {
     const dialogRef = this.dialog.open(ContractItemDialogComponent, {
       width: '600px',
       data: {
         currency: this.form.get('currency')?.value,
-        item: item
+        ...item
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        const index = this.contractItems.findIndex(i => i === item);
-        if (index > -1) {
+        const index = this.contractItems.findIndex(i => i.id === item.id);
+        if (index !== -1) {
           this.contractItems[index] = result;
+        } else {
+          this.contractItems.push(result);
         }
+        this.contractItems = [...this.contractItems];
       }
     });
   }
 
   openDownPaymentDialog(downPayment?: ContractDownPayment): void {
     const dialogRef = this.dialog.open(ContractDownPaymentDialogComponent, {
+      width: '600px',
       data: {
         contractId: this.form.get('id')?.value,
         currency: this.form.get('currency')?.value,
@@ -223,7 +235,7 @@ export class ContractDialogComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        const index = this.contractDownPayments.findIndex(dp => dp === downPayment);
+        const index = this.contractDownPayments.findIndex(dp => dp.id === downPayment?.id);
         if (index !== -1) {
           this.contractDownPayments[index] = result;
         } else {
@@ -234,23 +246,12 @@ export class ContractDialogComponent implements OnInit {
     });
   }
 
-  deleteDownPayment(downPayment: ContractDownPayment): void {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      data: {
-        title: this.translate.instant('contract.downPayment.delete.title'),
-        message: this.translate.instant('contract.downPayment.delete.message')
-      }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        const index = this.contractDownPayments.indexOf(downPayment);
-        if (index !== -1) {
-          this.contractDownPayments.splice(index, 1);
-          this.contractDownPayments = [...this.contractDownPayments];
-        }
-      }
-    });
+  deleteDownPayment(item: ContractDownPayment): void {
+    const index = this.contractDownPayments.findIndex(dp => dp.id === item.id);
+    if (index !== -1) {
+      this.contractDownPayments.splice(index, 1);
+      this.contractDownPayments = [...this.contractDownPayments];
+    }
   }
 
   onDownPaymentStatusChanged(event: {item: ContractDownPayment, status: boolean}): void {

@@ -1,0 +1,54 @@
+<div class="file-upload-container">
+  <!-- Upload Button -->
+  <div class="upload-button-container">
+    <button mat-raised-button color="primary" (click)="fileInput.click()">
+      <mat-icon>cloud_upload</mat-icon>
+      上传文件
+    </button>
+    <input
+      #fileInput
+      type="file"
+      (change)="onFileSelected($event)"
+      [style.display]="'none'"
+    >
+  </div>
+
+  <!-- File List -->
+  <div class="file-list" *ngIf="files.length > 0">
+    <mat-list>
+      <mat-list-item *ngFor="let file of files">
+        <mat-icon mat-list-icon [ngSwitch]="file.fileType">
+          <ng-container [ngSwitch]="file.fileType">
+            <ng-container *ngSwitchCase="'DOCUMENT'">description</ng-container>
+            <ng-container *ngSwitchCase="'IMAGE'">image</ng-container>
+            <ng-container *ngSwitchCase="'VIDEO'">video_library</ng-container>
+            <ng-container *ngSwitchCase="'AUDIO'">audiotrack</ng-container>
+            <ng-container *ngSwitchDefault>insert_drive_file</ng-container>
+          </ng-container>
+        </mat-icon>
+        
+        <div mat-line class="file-name">{{ file.originalName }}</div>
+        <div mat-line class="file-info">
+          <span>{{ file.fileSize | fileSize }}</span>
+          <span>{{ file.uploadTime | date:'yyyy-MM-dd HH:mm' }}</span>
+        </div>
+        
+        <div class="file-actions">
+          <button mat-icon-button (click)="downloadFile(file.id)" matTooltip="下载">
+            <mat-icon>download</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="deleteFile(file.id)" matTooltip="删除">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </mat-list-item>
+    </mat-list>
+  </div>
+
+  <!-- Upload Progress -->
+  <mat-progress-bar
+    *ngIf="uploading"
+    mode="indeterminate"
+    class="upload-progress">
+  </mat-progress-bar>
+</div>

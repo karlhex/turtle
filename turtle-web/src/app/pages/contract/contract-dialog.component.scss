@@ -35,17 +35,46 @@
 
 .form-container {
   padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
 
   h3 {
-    margin: 16px 0 8px;
+    margin-top: 24px;
+    margin-bottom: 16px;
     color: rgba(0, 0, 0, 0.87);
+  }
+
+  .form-section {
+    margin-bottom: 24px;
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+
+      @media (min-width: 768px) {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .grid-item {
+      grid-column: span 1;
+    }
+
+    .full-width {
+      grid-column: 1 / -1;
+    }
   }
 
   mat-form-field {
     width: 100%;
+  }
+}
+
+.contract-items-container,
+.contract-down-payments-container {
+  padding: 16px;
+
+  .action-bar {
+    margin-bottom: 16px;
   }
 }
 
@@ -69,4 +98,9 @@ mat-dialog-actions {
   display: block;
   width: 800px;
   max-width: 90vw;
+}
+
+// 标签页内容区域的样式
+::ng-deep .mat-tab-body-content {
+  padding: 16px;
 }

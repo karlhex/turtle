@@ -1,10 +1,11 @@
 package com.fwai.turtle.persistence.entity;
 
-import com.fwai.turtle.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.Comment;
+
+import com.fwai.turtle.common.BaseEntity;
 
 /**
  * 流水号实体

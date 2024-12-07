@@ -1,4 +1,4 @@
-package com.fwai.turtle.common.entity;
+package com.fwai.turtle.common;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;

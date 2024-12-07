@@ -15,7 +15,7 @@
           <mat-autocomplete #auto="matAutocomplete" 
                           [displayWith]="displayProductFn"
                           (optionSelected)="onProductSelected($event.option.value)">
-            <mat-option *ngFor="let product of filteredProducts | async" [value]="product">
+            <mat-option *ngFor="let product of filteredProducts$ | async" [value]="product">
               {{product.name}} ({{product.modelNumber || '无型号'}})
             </mat-option>
           </mat-autocomplete>
