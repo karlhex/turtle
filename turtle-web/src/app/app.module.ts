@@ -44,6 +44,8 @@ import { ContractItemDialogComponent } from '@pages/contract/contract-item-dialo
 import { ContractItemListComponent } from '@pages/contract/contract-item-list.component';
 import { ProductListComponent } from './pages/product/product-list.component';
 import { ProductDialogComponent } from './pages/product/product-dialog.component';
+import { ContractDownPaymentDialogComponent } from '@pages/contract/contract-down-payment-dialog.component';
+import { ContractDownPaymentListComponent } from '@pages/contract/contract-down-payment-list.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -69,6 +71,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     ContractDialogComponent,
     ContractItemDialogComponent,
     ContractItemListComponent,
+    ContractDownPaymentDialogComponent,
+    ContractDownPaymentListComponent,
     CurrencyListComponent,
     CurrencyDialogComponent,
     TaxInfoListComponent,

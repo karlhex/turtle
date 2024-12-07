@@ -20,6 +20,8 @@ import { ContractItem } from '../../models/contract-item.model';
 import { ContractItemDialogComponent } from './contract-item-dialog.component';
 import { ConfirmDialogComponent } from '@components/confirmdialog/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { ContractDownPayment } from '../../models/contract-down-payment.model';
+import { ContractDownPaymentDialogComponent } from './contract-down-payment-dialog.component';
 
 @Component({
   selector: 'app-contract-dialog',
@@ -38,7 +40,9 @@ export class ContractDialogComponent implements OnInit {
   filteredBuyerCompanies!: Observable<Company[]>;
   filteredSellerCompanies!: Observable<Company[]>;
   contractItems: ContractItem[] = [];
+  contractDownPayments: ContractDownPayment[] = [];
   displayedColumns: string[] = ['name', 'quantity', 'unitPrice', 'amount', 'actions'];
+  displayedDownPaymentColumns: string[] = ['paymentInstruction', 'debitCreditType', 'amount', 'plannedDate', 'actualDate', 'paymentStatus', 'actions'];
 
   constructor(
     private fb: FormBuilder,
@@ -81,6 +85,9 @@ export class ContractDialogComponent implements OnInit {
     // Initialize items if editing
     if (data.items) {
       this.contractItems = [...data.items];
+    }
+    if (data.downPayments) {
+      this.contractDownPayments = [...data.downPayments];
     }
   }
 
@@ -205,11 +212,65 @@ export class ContractDialogComponent implements OnInit {
     });
   }
 
+  openDownPaymentDialog(downPayment?: ContractDownPayment): void {
+    const dialogRef = this.dialog.open(ContractDownPaymentDialogComponent, {
+      data: {
+        contractId: this.form.get('id')?.value,
+        currency: this.form.get('currency')?.value,
+        ...downPayment
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const index = this.contractDownPayments.findIndex(dp => dp === downPayment);
+        if (index !== -1) {
+          this.contractDownPayments[index] = result;
+        } else {
+          this.contractDownPayments.push(result);
+        }
+        this.contractDownPayments = [...this.contractDownPayments];
+      }
+    });
+  }
+
+  deleteDownPayment(downPayment: ContractDownPayment): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: this.translate.instant('contract.downPayment.delete.title'),
+        message: this.translate.instant('contract.downPayment.delete.message')
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const index = this.contractDownPayments.indexOf(downPayment);
+        if (index !== -1) {
+          this.contractDownPayments.splice(index, 1);
+          this.contractDownPayments = [...this.contractDownPayments];
+        }
+      }
+    });
+  }
+
+  onDownPaymentStatusChanged(event: {item: ContractDownPayment, status: boolean}): void {
+    const index = this.contractDownPayments.findIndex(dp => dp === event.item);
+    if (index !== -1) {
+      this.contractDownPayments[index] = {
+        ...this.contractDownPayments[index],
+        paymentStatus: event.status,
+        actualDate: event.status ? new Date() : undefined
+      };
+      this.contractDownPayments = [...this.contractDownPayments];
+    }
+  }
+
   submit(): void {
     if (this.form.valid) {
       this.loading = true;
       const formValue = this.form.value;
       formValue.items = this.contractItems;
+      formValue.downPayments = this.contractDownPayments;
       const request = this.isEdit
         ? this.contractService.updateContract(formValue.id!, formValue)
         : this.contractService.createContract(formValue);

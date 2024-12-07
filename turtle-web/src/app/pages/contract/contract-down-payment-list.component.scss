@@ -1,0 +1,29 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.mat-column-actions {
+  width: 100px;
+  text-align: center;
+}
+
+.mat-column-paymentStatus {
+  width: 100px;
+  text-align: center;
+}
+
+.mat-column-amount {
+  width: 150px;
+  text-align: right;
+}
+
+.mat-column-plannedDate,
+.mat-column-actualDate {
+  width: 120px;
+}
+
+.mat-column-debitCreditType {
+  width: 100px;
+  text-align: center;
+}

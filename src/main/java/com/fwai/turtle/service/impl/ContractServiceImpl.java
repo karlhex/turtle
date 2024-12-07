@@ -3,13 +3,14 @@ package com.fwai.turtle.service.impl;
 import com.fwai.turtle.dto.ContractDTO;
 import com.fwai.turtle.dto.ContractItemDTO;
 import com.fwai.turtle.dto.CurrencyDTO;
-import com.fwai.turtle.dto.ProductDTO;
 import com.fwai.turtle.exception.ResourceNotFoundException;
 import com.fwai.turtle.persistence.entity.Contract;
 import com.fwai.turtle.persistence.entity.ContractItem;
+import com.fwai.turtle.persistence.entity.ContractDownPayment;
 import com.fwai.turtle.persistence.entity.Currency;
 import com.fwai.turtle.persistence.entity.Product;
 import com.fwai.turtle.persistence.mapper.ContractItemMapper;
+import com.fwai.turtle.persistence.mapper.ContractDownPaymentMapper;
 import com.fwai.turtle.persistence.mapper.ContractMapper;
 import com.fwai.turtle.persistence.repository.ContractRepository;
 import com.fwai.turtle.persistence.repository.CompanyRepository;
@@ -39,6 +40,7 @@ public class ContractServiceImpl implements ContractService {
     private final CompanyRepository companyRepository;
     private final ContractMapper contractMapper;
     private final ContractItemMapper contractItemMapper;
+    private final ContractDownPaymentMapper contractDownPaymentMapper;
     private final ProductRepository productRepository;
 
     @Override
@@ -98,7 +100,6 @@ public class ContractServiceImpl implements ContractService {
                     .orElseThrow(() -> new ResourceNotFoundException("Company", "id", sellerCompany.getId())));
         }
 
-
         // 更新货币信息
         CurrencyDTO currency = contractDTO.getCurrency();
         if (currency!= null) {
@@ -127,6 +128,29 @@ public class ContractServiceImpl implements ContractService {
                     .collect(Collectors.toList());
             
             existingContract.getItems().addAll(updatedItems);
+        }
+
+        // 更新首付款信息
+        if (contractDTO.getDownPayments() != null) {
+            // Clear existing down payments and add new ones
+            existingContract.getDownPayments().clear();
+            
+            List<ContractDownPayment> updatedDownPayments = contractDTO.getDownPayments().stream()
+                    .map(downPaymentDTO -> {
+                        ContractDownPayment downPayment = contractDownPaymentMapper.toEntity(downPaymentDTO);
+                        downPayment.setContract(existingContract);
+                        
+                        // 设置币种
+                        if (downPaymentDTO.getCurrencyId() != null) {
+                            Currency downPaymentCurrency = currencyRepository.findById(downPaymentDTO.getCurrencyId())
+                                    .orElseThrow(() -> new ResourceNotFoundException("Currency", "id", downPaymentDTO.getCurrencyId()));
+                            downPayment.setCurrency(downPaymentCurrency);
+                        }
+                        return downPayment;
+                    })
+                    .collect(Collectors.toList());
+            
+            existingContract.getDownPayments().addAll(updatedDownPayments);
         }
 
         Contract savedContract = contractRepository.save(existingContract);

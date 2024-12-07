@@ -464,6 +464,33 @@
       "ACTIVE": "生效",
       "EXPIRED": "过期",
       "TERMINATED": "终止"
+    },
+    "items": {
+      "tab": "合同明细",
+      "title": "合同明细列表",
+      "add": "添加明细"
+    },
+    "downPayment": {
+      "tab": "付款计划",
+      "dialog": {
+        "title": "付款计划详情"
+      },
+      "add": "添加付款计划",
+      "paymentInstruction": "付款说明",
+      "debitCreditType": "借贷类型",
+      "plannedDate": "计划日期",
+      "actualDate": "实际日期",
+      "amount": "金额",
+      "bankAccountNo": "银行账号",
+      "bankName": "开户行",
+      "accountName": "账户名称",
+      "paymentStatus": "付款状态",
+      "remarks": "备注",
+      "paymentCompleted": "已完成付款",
+      "delete": {
+        "title": "删除确认",
+        "message": "确定要删除这笔付款记录吗？"
+      }
     }
   },
   "enum": {
@@ -479,6 +506,12 @@
         "PURCHASE": "采购合同",
         "SALES": "销售合同"
       }
+    },
+    "debitCredit": {
+      "type": {
+        "DEBIT": "借",
+        "CREDIT": "贷"
+      }
     }
   },
   "common": {
@@ -490,7 +523,7 @@
       "save": "保存",
       "cancel": "取消",
       "ok": "确定"
-    },    
+    },
     "button": {
       "confirm": "确定",
       "cancel": "取消"
@@ -498,7 +531,10 @@
     "status": {
       "active": "启用",
       "inactive": "禁用"
-    }
+    },
+    "actions": "操作",
+    "save": "保存",
+    "cancel": "取消"
   },
   "currency": {
     "title": "货币管理",

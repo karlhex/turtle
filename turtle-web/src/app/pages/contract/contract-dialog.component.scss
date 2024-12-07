@@ -23,33 +23,31 @@
   }
 }
 
-  .form-container {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-    padding: 16px;
-    max-height: 70vh;
-    overflow-y: auto;
+.contract-down-payments-container {
+  padding: 16px;
 
-    h3 {
-      grid-column: 1 / -1;
-      margin: 16px 0 8px;
-      color: rgba(0, 0, 0, 0.87);
-      font-size: 16px;
-      font-weight: 500;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-      padding-bottom: 8px;
-    }
+  .action-bar {
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: flex-end;
+  }
+}
 
-    .full-width {
-      grid-column: 1 / -1;
-    }
+.form-container {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 
-    mat-form-field {
-      width: 100%;
-    }
+  h3 {
+    margin: 16px 0 8px;
+    color: rgba(0, 0, 0, 0.87);
   }
 
+  mat-form-field {
+    width: 100%;
+  }
+}
 
 mat-dialog-content {
   padding: 0;
@@ -65,4 +63,10 @@ mat-dialog-actions {
 .mat-progress-spinner {
   display: inline-block;
   margin-right: 8px;
+}
+
+:host {
+  display: block;
+  width: 800px;
+  max-width: 90vw;
 }

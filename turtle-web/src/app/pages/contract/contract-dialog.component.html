@@ -201,13 +201,13 @@
       </mat-tab>
       
       <!-- Contract Items Tab -->
-      <mat-tab label="合同明细">
+      <mat-tab label="{{ 'contract.items.tab' | translate }}">
         <div class="contract-items-container">
           <div class="header">
-            <h3 class="section-title">合同明细列表</h3>
+            <h3 class="section-title">{{ 'contract.items.title' | translate }}</h3>
             <div class="actions">
               <button mat-raised-button color="primary" type="button" (click)="addContractItem()">
-                添加明细
+                {{ 'contract.items.add' | translate }}
               </button>
             </div>
           </div>
@@ -218,6 +218,24 @@
             (itemDeleted)="onContractItemDeleted($event)"
             (itemEdited)="onContractItemEdited($event)">
           </app-contract-item-list>
+        </div>
+      </mat-tab>
+
+      <!-- Contract Down Payments Tab -->
+      <mat-tab label="{{ 'contract.downPayment.tab' | translate }}">
+        <div class="contract-down-payments-container">
+          <div class="action-bar">
+            <button mat-raised-button color="primary" type="button" (click)="openDownPaymentDialog()">
+              {{ 'contract.downPayment.add' | translate }}
+            </button>
+          </div>
+          <app-contract-down-payment-list
+            [items]="contractDownPayments"
+            [currency]="form.get('currency')?.value"
+            (itemEdited)="openDownPaymentDialog($event)"
+            (itemDeleted)="deleteDownPayment($event)"
+            (paymentStatusChanged)="onDownPaymentStatusChanged($event)">
+          </app-contract-down-payment-list>
         </div>
       </mat-tab>
     </mat-tab-group>

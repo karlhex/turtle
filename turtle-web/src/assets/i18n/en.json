@@ -478,6 +478,33 @@
       "ACTIVE": "Active",
       "EXPIRED": "Expired",
       "TERMINATED": "Terminated"
+    },
+    "items": {
+      "tab": "Contract Items",
+      "title": "Contract Item List",
+      "add": "Add Item"
+    },
+    "downPayment": {
+      "tab": "Payment Plan",
+      "dialog": {
+        "title": "Payment Plan Details"
+      },
+      "add": "Add Payment Plan",
+      "paymentInstruction": "Payment Instruction",
+      "debitCreditType": "Debit/Credit Type",
+      "plannedDate": "Planned Date",
+      "actualDate": "Actual Date",
+      "amount": "Amount",
+      "bankAccountNo": "Bank Account No.",
+      "bankName": "Bank Name",
+      "accountName": "Account Name",
+      "paymentStatus": "Payment Status",
+      "remarks": "Remarks",
+      "paymentCompleted": "Payment Completed",
+      "delete": {
+        "title": "Delete Confirmation",
+        "message": "Are you sure you want to delete this payment record?"
+      }
     }
   },
   "enum": {
@@ -492,6 +519,12 @@
       "type": {
         "PURCHASE": "Purchase Contract",
         "SALES": "Sales Contract"
+      }
+    },
+    "debitCredit": {
+      "type": {
+        "DEBIT": "Debit",
+        "CREDIT": "Credit"
       }
     }
   },
@@ -508,7 +541,10 @@
     "button": {
       "confirm": "Confirm",
       "cancel": "Cancel"
-    }
+    },
+    "actions": "Actions",
+    "save": "Save",
+    "cancel": "Cancel"
   },
   "currency": {
     "title": "Currency Management",
