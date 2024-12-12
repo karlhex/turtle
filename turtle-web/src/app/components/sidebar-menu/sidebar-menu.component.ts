@@ -48,12 +48,6 @@ export class SidebarMenuComponent {
       divider: true
     },
     {
-      title: 'app.menu.attendance',
-      icon: 'event_note',
-      route: '/attendance',
-      divider: true
-    },
-    {
       title: 'app.menu.contract_management',
       icon: 'description',
       children: [
@@ -63,14 +57,14 @@ export class SidebarMenuComponent {
           route: '/contracts'
         },
         {
+          title: 'app.menu.projects',
+          icon: 'calendar_today',
+          route: '/projects'
+        },
+        {
           title: 'app.menu.products',
           icon: 'inventory_2',
           route: '/products'
-        },
-        {
-          title: 'app.menu.currencies',
-          icon: 'attach_money',
-          route: '/currencies'
         },
         {
           title: 'app.menu.company',
@@ -81,6 +75,23 @@ export class SidebarMenuComponent {
           title: 'app.menu.tax_info',
           icon: 'receipt',
           route: '/tax-infos'
+        }
+      ],
+      divider: true
+    },
+    {
+      title: 'app.menu.financial',
+      icon: 'account_balance',
+      children: [
+        {
+          title: 'app.menu.bank_accounts',
+          icon: 'account_balance_wallet',
+          route: '/bank-accounts'
+        },
+        {
+          title: 'app.menu.currencies',
+          icon: 'currency_exchange',
+          route: '/currencies'
         }
       ],
       divider: true

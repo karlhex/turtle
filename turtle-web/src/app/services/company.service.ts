@@ -57,4 +57,8 @@ export class CompanyService {
     const params = new HttpParams().set('query', query);
     return this.http.get<ApiResponse<Company[]>>(`${this.apiUrl}/search`, { params });
   }
+
+  setPrimaryCompany(id: number): Observable<Company> {
+    return this.http.put<Company>(`${this.apiUrl}/${id}/set-primary`, {});
+  }
 }

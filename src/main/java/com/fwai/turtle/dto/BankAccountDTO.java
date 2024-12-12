@@ -17,6 +17,7 @@ public class BankAccountDTO {
     private String bankName;        // 银行名称
     private BigDecimal balance;     // 余额
     private CurrencyDTO currency;   // 币种
+    private Long companyId;     // 所属公司
     private BankAccountType type;   // 账户类型
     private String bankBranch;      // 开户行支行
     private String description;     // 描述

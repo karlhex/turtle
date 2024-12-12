@@ -6,11 +6,10 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
-@Mapper(componentModel = "spring", uses = {ContractMapper.class})
+@Mapper(componentModel = "spring", uses = {ContractMapper.class, EmployeeMapper.class})
 public interface ProjectMapper {
     
-    @Mapping(target = "managerId", source = "manager.id")
-    @Mapping(target = "managerName", source = "manager.name")
+    @Mapping(target = "manager", source = "manager")
     ProjectDTO toDTO(Project project);
 
     @Mapping(target = "manager", ignore = true)

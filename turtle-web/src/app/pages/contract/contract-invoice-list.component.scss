@@ -1,0 +1,16 @@
+.invoice-list {
+  padding: 16px;
+
+  .mat-elevation-z1 {
+    width: 100%;
+  }
+
+  table {
+    width: 100%;
+  }
+
+  .mat-column-actions {
+    width: 100px;
+    text-align: center;
+  }
+}

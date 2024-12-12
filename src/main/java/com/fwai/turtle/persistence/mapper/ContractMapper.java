@@ -12,13 +12,15 @@ import org.mapstruct.MappingTarget;
         ContractItemMapper.class,
         ContractDownPaymentMapper.class,
         CurrencyMapper.class,
-        CompanyMapper.class
+        CompanyMapper.class,
+        InvoiceMapper.class
     }
 )
 public interface ContractMapper {
     @Mapping(source = "currency", target = "currency")
     @Mapping(source = "items", target = "items")
     @Mapping(source = "downPayments", target = "downPayments")
+    @Mapping(source = "invoices", target = "invoices")
     @Mapping(source = "projectId", target = "projectId")
     @Mapping(source = "buyerCompany", target = "buyerCompany")
     @Mapping(source = "sellerCompany", target = "sellerCompany")
@@ -27,6 +29,7 @@ public interface ContractMapper {
     @Mapping(target = "currency", ignore = true)
     @Mapping(target = "items", ignore = true)
     @Mapping(target = "downPayments", ignore = true)
+    @Mapping(target = "invoices", ignore = true)
     @Mapping(target = "buyerCompany", ignore = false)
     @Mapping(target = "sellerCompany", ignore = false)
     Contract toEntity(ContractDTO dto);
@@ -34,6 +37,7 @@ public interface ContractMapper {
     @Mapping(target = "currency", ignore = true)
     @Mapping(target = "items", ignore = true)
     @Mapping(target = "downPayments", ignore = true)
+    @Mapping(target = "invoices", ignore = true)
     @Mapping(target = "buyerCompany", ignore = false)
     @Mapping(target = "sellerCompany", ignore = false)
     void updateEntityFromDTO(ContractDTO dto, @MappingTarget Contract contract);

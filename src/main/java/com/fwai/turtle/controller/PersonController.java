@@ -52,6 +52,12 @@ public class PersonController {
         return ResponseEntity.ok(ApiResponse.ok(updatedPerson));
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<ApiResponse<List<PersonDTO>>> getAllPersons() {
+        List<PersonDTO> persons = personService.getAllPersons();
+        return ResponseEntity.ok(ApiResponse.ok(persons));
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> deletePerson(@PathVariable Long id) {
         personService.deletePerson(id);

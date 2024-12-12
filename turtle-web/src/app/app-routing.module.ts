@@ -11,6 +11,8 @@ import { CurrencyListComponent } from './pages/currency/currency-list.component'
 import { TaxInfoListComponent } from './pages/tax-info/tax-info-list.component';
 import { CompanyListComponent } from './pages/company/company-list.component';
 import { ProductListComponent } from './pages/product/product-list.component';
+import { ProjectListComponent } from './pages/project/project-list.component';
+import { BankAccountListComponent } from './pages/bank-account/bank-account-list.component';
 import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
@@ -30,6 +32,8 @@ const routes: Routes = [
       { path: 'tax-infos', component: TaxInfoListComponent },
       { path: 'companies', component: CompanyListComponent },
       { path: 'products', component: ProductListComponent },
+      { path: 'projects', component: ProjectListComponent },
+      { path: 'bank-accounts', component: BankAccountListComponent },
       // Placeholder routes for future implementation
       { path: 'positions', component: DashboardComponent },
       { path: 'attendance', component: DashboardComponent },

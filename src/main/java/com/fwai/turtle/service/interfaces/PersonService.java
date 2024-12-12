@@ -12,4 +12,5 @@ public interface PersonService {
     PersonDTO createPerson(PersonDTO personDTO);
     PersonDTO updatePerson(Long id, PersonDTO personDTO);
     void deletePerson(Long id);
+    List<PersonDTO> getAllPersons();
 }

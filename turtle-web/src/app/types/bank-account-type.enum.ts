@@ -1,6 +1,6 @@
 export enum BankAccountType {
-  CHECKING = 'CHECKING',   // 活期账户
-  SAVINGS = 'SAVINGS',     // 储蓄账户
-  CREDIT = 'CREDIT',       // 信用账户
-  INVESTMENT = 'INVESTMENT' // 投资账户
+  COMPANY_BASIC = 'COMPANY_BASIC',     // 公司基本账户
+  COMPANY_GENERAL = 'COMPANY_GENERAL', // 公司往来账户
+  COMPANY_OTHER = 'COMPANY_OTHER',     // 其他公司账户
+  PERSONAL = 'PERSONAL'                // 个人账户
 }

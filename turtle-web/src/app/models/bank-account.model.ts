@@ -8,6 +8,7 @@ export interface BankAccount {
   bankName: string;        // 银行名称
   balance: number;         // 余额
   currency: Currency;      // 币种
+  companyId: number;       // 所属公司ID
   type: BankAccountType;   // 账户类型
   bankBranch: string;      // 开户行支行
   description?: string;    // 描述

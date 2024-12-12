@@ -46,4 +46,10 @@ public interface ContractRepository extends JpaRepository<Contract, Long> {
     List<Contract> findByEndDateBefore(LocalDate date);
 
     List<Contract> findByStartDateBetween(LocalDate startDate, LocalDate endDate);
+
+    @Query("SELECT DISTINCT i.contract FROM Invoice i WHERE i.invoiceNo = :invoiceNo")
+    List<Contract> findByInvoiceNo(@Param("invoiceNo") String invoiceNo);
+
+    @Query("SELECT i.contract FROM Invoice i WHERE i.id = :invoiceId")
+    Optional<Contract> findByInvoiceId(@Param("invoiceId") Long invoiceId);
 }

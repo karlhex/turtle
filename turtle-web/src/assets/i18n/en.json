@@ -12,7 +12,10 @@
       "payroll": "Payroll",
       "contract_management": "Contract Management",
       "contracts": "Contracts",
+      "projects": "Projects",
       "products": "Products",
+      "financial": "Financial Management",
+      "bank_accounts": "Bank Accounts",
       "currencies": "Currencies",
       "tax_info": "Tax Information",
       "system": "System",
@@ -452,44 +455,80 @@
     }
   },
   "contract": {
-    "title": "Contract Management",
-    "search": {
-      "placeholder": "Search by contract number or name"
-    },
-    "list": {
-      "contractNo": "Contract No",
-      "contractName": "Contract Name",
-      "contractType": "Type",
-      "status": "Status",
-      "startDate": "Start Date",
-      "endDate": "End Date",
-      "amount": "Amount",
-      "currency": "Currency",
-      "actions": "Actions",
-      "noResults": "No contracts found"
-    },
-    "type": {
-      "PURCHASE": "Purchase",
-      "SERVICE": "Service",
-      "LEASE": "Lease"
-    },
-    "status": {
-      "DRAFT": "Draft",
-      "ACTIVE": "Active",
-      "EXPIRED": "Expired",
-      "TERMINATED": "Terminated"
+    "title": "Contract Information",
+    "contractNo": "Contract Number",
+    "title": "Contract Name",
+    "type": "Contract Type",
+    "purchaseTotal": "Purchase Contract Total",
+    "purchasePaid": "Purchase Paid Amount",
+    "salesTotal": "Sales Contract Total",
+    "salesPaid": "Sales Paid Amount",
+    "total": "Total",
+    "dialog": {
+      "title": {
+        "create": "Create Contract",
+        "edit": "Edit Contract"
+      },
+      "sections": {
+        "basic": "Basic Information",
+        "dates": "Date Information",
+        "contact": "Contact Information",
+        "project": "Project Information",
+        "amount": "Amount Information"
+      },
+      "fields": {
+        "contractNo": "Contract No.",
+        "title": "Title",
+        "buyerCompany": "Buyer Company",
+        "sellerCompany": "Seller Company",
+        "type": "Contract Type",
+        "status": "Contract Status",
+        "signingDate": "Signing Date",
+        "startDate": "Start Date",
+        "endDate": "End Date",
+        "contactPerson": "Contact Person",
+        "contactPhone": "Contact Phone",
+        "contactEmail": "Contact Email",
+        "project": "Related Project",
+        "projectNo": "Project No.",
+        "totalAmount": "Contract Amount",
+        "currency": "Currency",
+        "description": "Description",
+        "remarks": "Remarks",
+        "paymentTerms": "Payment Terms",
+        "deliveryTerms": "Delivery Terms",
+        "warrantyTerms": "Warranty Terms",
+        "filePath": "Contract File"
+      },
+      "validation": {
+        "contractNo": "Contract number is required",
+        "title": "Title is required",
+        "buyerCompany": "Buyer company is required",
+        "sellerCompany": "Seller company is required",
+        "type": "Contract type is required",
+        "status": "Contract status is required",
+        "signingDate": "Signing date is required",
+        "startDate": "Start date is required",
+        "endDate": "End date is required",
+        "contactPerson": "Contact person is required",
+        "totalAmount": {
+          "required": "Contract amount is required",
+          "min": "Amount cannot be less than 0"
+        }
+      }
     },
     "items": {
       "tab": "Contract Items",
-      "title": "Contract Item List",
-      "add": "Add Item"
+      "add": "Add Item",
+      "edit": "Edit Item",
+      "delete": "Delete Item"
     },
     "downPayment": {
-      "tab": "Payment Plan",
-      "dialog": {
-        "title": "Payment Plan Details"
-      },
-      "add": "Add Payment Plan",
+      "tab": "Down Payment",
+      "add": "Add Down Payment",
+      "edit": "Edit Down Payment",
+      "delete": "Delete Down Payment",
+      "title": "Down Payment",
       "paymentInstruction": "Payment Instruction",
       "debitCreditType": "Debit/Credit Type",
       "plannedDate": "Planned Date",
@@ -497,14 +536,8 @@
       "amount": "Amount",
       "bankAccountNo": "Bank Account No.",
       "bankName": "Bank Name",
-      "accountName": "Account Name",
       "paymentStatus": "Payment Status",
-      "remarks": "Remarks",
-      "paymentCompleted": "Payment Completed",
-      "delete": {
-        "title": "Delete Confirmation",
-        "message": "Are you sure you want to delete this payment record?"
-      }
+      "remarks": "Remarks"
     }
   },
   "enum": {
@@ -526,6 +559,28 @@
         "DEBIT": "Debit",
         "CREDIT": "Credit"
       }
+    },
+    "project": {
+      "status": {
+        "NOT_STARTED": "Not Started",
+        "IN_PROGRESS": "In Progress",
+        "COMPLETED": "Completed",
+        "ON_HOLD": "On Hold",
+        "CANCELLED": "Cancelled"
+      }
+    },
+    "invoice": {
+      "type": {
+        "VAT_NORMAL": "VAT Normal Invoice",
+        "VAT_SPECIAL": "VAT Special Invoice",
+        "VAT_ELECTRONIC": "VAT Electronic Invoice"
+      }
+    },
+    "bank_account_type": {
+      "COMPANY_BASIC": "Company Basic Account",
+      "COMPANY_GENERAL": "Company General Account",
+      "COMPANY_OTHER": "Other Company Account",
+      "PERSONAL": "Personal Account"
     }
   },
   "common": {
@@ -624,10 +679,102 @@
       "price": "Price must be greater than or equal to 0"
     }
   },
+  "project": {
+    "title": "Project Management",
+    "search": {
+      "placeholder": "Search project number or name"
+    },
+    "actions": {
+      "add": "Add Project",
+      "edit": "Edit Project",
+      "delete": "Delete Project",
+      "save": "Save",
+      "cancel": "Cancel"
+    },
+    "dialog": {
+      "create": "Create Project",
+      "edit": "Edit Project",
+      "basicInfo": "Basic Information",
+      "contracts": "Contract Information",
+      "projectNo": "Project Number",
+      "projectName": "Project Name",
+      "status": "Project Status",
+      "manager": "Project Manager",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "remarks": "Remarks"
+    },
+    "validation": {
+      "required": {
+        "projectNo": "Project number is required",
+        "projectName": "Project name is required",
+        "status": "Project status is required",
+        "manager": "Project manager is required",
+        "startDate": "Start date is required",
+        "endDate": "End date is required"
+      }
+    }
+  },
+  "invoice": {
+    "title": "Invoice Management",
+    "tab": "Invoice Information",
+    "add": "Add Invoice",
+    "add_title": "Add New Invoice",
+    "edit_title": "Edit Invoice",
+    "delete_confirm": "Are you sure you want to delete this invoice?",
+    "no": "Invoice Number",
+    "type": "Invoice Type",
+    "amount": "Amount",
+    "tax_rate": "Tax Rate",
+    "tax_amount": "Tax Amount",
+    "total_amount": "Total Amount",
+    "invoice_date": "Invoice Date",
+    "buyer_tax_info": "Buyer Tax Information",
+    "seller_tax_info": "Seller Tax Information",
+    "batch_no": "Batch Number",
+    "verification_code": "Verification Code",
+    "machine_code": "Machine Code",
+    "cancelled": "Cancelled",
+    "cancel_date": "Cancel Date",
+    "remarks": "Remarks",
+    "type": {
+      "VAT_SPECIAL": "VAT Special Invoice",
+      "VAT_NORMAL": "VAT Normal Invoice",
+      "VAT_ELECTRONIC": "VAT Electronic Invoice"
+    }
+  },
   "ERROR": {
     "LOAD_COMPANIES": "Failed to load companies",
     "SAVE_COMPANY": "Failed to save company",
     "DELETE_COMPANY": "Failed to delete company",
     "UPDATE_STATUS": "Failed to update company status"
+  },
+  "bank_account": {
+    "title": "Bank Account Management",
+    "create": "Create Bank Account",
+    "edit": "Edit Bank Account",
+    "fields": {
+      "name": "Account Name",
+      "accountNo": "Account Number",
+      "bankName": "Bank Name",
+      "bankBranch": "Bank Branch",
+      "balance": "Balance",
+      "company": "Company",
+      "currency": "Currency",
+      "type": "Account Type",
+      "swiftCode": "SWIFT Code",
+      "contactPerson": "Contact Person",
+      "contactPhone": "Contact Phone",
+      "description": "Description",
+      "active": "Active"
+    }
+  },
+  "enum": {
+    "bank_account_type": {
+      "COMPANY_BASIC": "Company Basic Account",
+      "COMPANY_GENERAL": "Company General Account",
+      "COMPANY_OTHER": "Other Company Account",
+      "PERSONAL": "Personal Account"
+    }
   }
 }

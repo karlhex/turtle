@@ -12,7 +12,10 @@
       "payroll": "工资管理",
       "contract_management": "合同管理",
       "contracts": "合同管理",
+      "projects": "项目管理",
       "products": "产品管理",
+      "financial": "财务管理",
+      "bank_accounts": "银行账户",
       "currencies": "货币管理",
       "tax_info": "税务信息",
       "system": "系统管理",
@@ -438,44 +441,79 @@
     }
   },
   "contract": {
-    "title": "合同管理",
-    "search": {
-      "placeholder": "搜索合同编号或名称"
-    },
-    "list": {
-      "contractNo": "合同编号",
-      "contractName": "合同名称",
-      "contractType": "合同类型",
-      "status": "状态",
-      "startDate": "开始日期",
-      "endDate": "结束日期",
-      "amount": "金额",
-      "currency": "币种",
-      "actions": "操作",
-      "noResults": "没有找到合同"
-    },
-    "type": {
-      "PURCHASE": "采购合同",
-      "SERVICE": "服务合同",
-      "LEASE": "租赁合同"
-    },
-    "status": {
-      "DRAFT": "草稿",
-      "ACTIVE": "生效",
-      "EXPIRED": "过期",
-      "TERMINATED": "终止"
+    "title": "合同信息",
+    "contractNo": "合同编号",
+    "type": "合同类型",
+    "purchaseTotal": "采购合同总额",
+    "purchasePaid": "采购已付金额",
+    "salesTotal": "销售合同总额",
+    "salesPaid": "销售已付金额",
+    "total": "合计",
+    "dialog": {
+      "title": {
+        "create": "新建合同",
+        "edit": "编辑合同"
+      },
+      "sections": {
+        "basic": "基本信息",
+        "dates": "日期信息",
+        "contact": "联系信息",
+        "project": "项目信息",
+        "amount": "金额信息"
+      },
+      "fields": {
+        "contractNo": "合同编号",
+        "title": "标题",
+        "buyerCompany": "买方公司",
+        "sellerCompany": "卖方公司",
+        "type": "合同类型",
+        "status": "合同状态",
+        "signingDate": "签署日期",
+        "startDate": "开始日期",
+        "endDate": "结束日期",
+        "contactPerson": "联系人",
+        "contactPhone": "联系电话",
+        "contactEmail": "联系邮箱",
+        "project": "关联项目",
+        "projectNo": "项目编号",
+        "totalAmount": "合同金额",
+        "currency": "币种",
+        "description": "描述",
+        "remarks": "备注",
+        "paymentTerms": "付款条件",
+        "deliveryTerms": "交付条件",
+        "warrantyTerms": "质保条件",
+        "filePath": "合同文件"
+      },
+      "validation": {
+        "contractNo": "请输入合同编号",
+        "title": "请输入标题",
+        "buyerCompany": "请选择买方公司",
+        "sellerCompany": "请选择卖方公司",
+        "type": "请选择合同类型",
+        "status": "请选择合同状态",
+        "signingDate": "请选择签署日期",
+        "startDate": "请选择开始日期",
+        "endDate": "请选择结束日期",
+        "contactPerson": "请输入联系人",
+        "totalAmount": {
+          "required": "请输入合同金额",
+          "min": "金额不能小于0"
+        }
+      }
     },
     "items": {
       "tab": "合同明细",
-      "title": "合同明细列表",
-      "add": "添加明细"
+      "add": "添加明细",
+      "edit": "编辑明细",
+      "delete": "删除明细"
     },
     "downPayment": {
-      "tab": "付款计划",
-      "dialog": {
-        "title": "付款计划详情"
-      },
-      "add": "添加付款计划",
+      "tab": "首付款信息",
+      "add": "添加首付款",
+      "edit": "编辑首付款",
+      "delete": "删除首付款",
+      "title": "首付款",
       "paymentInstruction": "付款说明",
       "debitCreditType": "借贷类型",
       "plannedDate": "计划日期",
@@ -483,14 +521,8 @@
       "amount": "金额",
       "bankAccountNo": "银行账号",
       "bankName": "开户行",
-      "accountName": "账户名称",
       "paymentStatus": "付款状态",
-      "remarks": "备注",
-      "paymentCompleted": "已完成付款",
-      "delete": {
-        "title": "删除确认",
-        "message": "确定要删除这笔付款记录吗？"
-      }
+      "remarks": "备注"
     }
   },
   "enum": {
@@ -512,6 +544,28 @@
         "DEBIT": "借",
         "CREDIT": "贷"
       }
+    },
+    "project": {
+      "status": {
+        "NOT_STARTED": "未开始",
+        "IN_PROGRESS": "进行中",
+        "COMPLETED": "已完成",
+        "ON_HOLD": "已暂停",
+        "CANCELLED": "已取消"
+      }
+    },
+    "invoice": {
+      "type": {
+        "VAT_NORMAL": "增值税普通发票",
+        "VAT_SPECIAL": "增值税专用发票",
+        "VAT_ELECTRONIC": "增值税电子发票"
+      }
+    },
+    "bank_account_type": {
+      "COMPANY_BASIC": "公司基本账户",
+      "COMPANY_GENERAL": "公司往来账户",
+      "COMPANY_OTHER": "其他公司账户",
+      "PERSONAL": "个人账户"
     }
   },
   "common": {
@@ -622,6 +676,85 @@
     "validation": {
       "name": "名称不能为空",
       "price": "价格必须大于或等于0"
+    }
+  },
+  "project": {
+    "title": "项目管理",
+    "search": {
+      "placeholder": "搜索项目编号或名称"
+    },
+    "actions": {
+      "add": "添加项目",
+      "edit": "编辑项目",
+      "delete": "删除项目",
+      "save": "保存",
+      "cancel": "取消"
+    },
+    "dialog": {
+      "create": "创建项目",
+      "edit": "编辑项目",
+      "basicInfo": "基本信息",
+      "contracts": "合同信息",
+      "projectNo": "项目编号",
+      "projectName": "项目名称",
+      "status": "项目状态",
+      "manager": "项目经理",
+      "startDate": "开始日期",
+      "endDate": "结束日期",
+      "remarks": "备注"
+    },
+    "validation": {
+      "required": {
+        "projectNo": "项目编号不能为空",
+        "projectName": "项目名称不能为空",
+        "status": "项目状态不能为空",
+        "manager": "项目经理不能为空",
+        "startDate": "开始日期不能为空",
+        "endDate": "结束日期不能为空"
+      }
+    }
+  },
+  "invoice": {
+    "title": "发票管理",
+    "tab": "发票信息",
+    "add": "添加发票",
+    "add_title": "新增发票",
+    "edit_title": "编辑发票",
+    "delete_confirm": "确定要删除这张发票吗？",
+    "no": "发票号码",
+    "type": "发票类型",
+    "amount": "金额",
+    "tax_rate": "税率",
+    "tax_amount": "税额",
+    "total_amount": "总金额",
+    "invoice_date": "发票日期",
+    "buyer": "购方",
+    "seller": "销方",
+    "batch_no": "发票批次号",
+    "verification_code": "校验码",
+    "machine_code": "机器编号",
+    "cancelled": "已作废",
+    "cancel_date": "作废日期",
+    "remarks": "备注"
+  },
+  "bank_account": {
+    "title": "银行账户管理",
+    "create": "新增银行账户",
+    "edit": "编辑银行账户",
+    "fields": {
+      "name": "账户名称",
+      "accountNo": "账号",
+      "bankName": "银行名称",
+      "bankBranch": "开户行支行",
+      "balance": "余额",
+      "company": "所属公司",
+      "currency": "币种",
+      "type": "账户类型",
+      "swiftCode": "SWIFT代码",
+      "contactPerson": "联系人",
+      "contactPhone": "联系电话",
+      "description": "描述",
+      "active": "启用"
     }
   }
 }

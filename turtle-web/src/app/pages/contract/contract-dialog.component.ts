@@ -15,13 +15,16 @@ import { Project } from '../../models/project.model';
 import { Company } from '../../models/company.model';
 import { ApiResponse } from '../../models/api.model';
 import { Page } from '../../models/page.model';
-import { Observable, map, startWith } from 'rxjs';
+import { Observable, buffer, map, startWith } from 'rxjs';
 import { ContractItem } from '../../models/contract-item.model';
 import { ContractItemDialogComponent } from './contract-item-dialog.component';
 import { ConfirmDialogComponent } from '@components/confirmdialog/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ContractDownPayment } from '../../models/contract-down-payment.model';
 import { ContractDownPaymentDialogComponent } from './contract-down-payment-dialog.component';
+import { ContractInvoiceDialogComponent } from './contract-invoice-dialog.component';
+import { Invoice } from '@app/models/invoice.model';
+import { BuiltinType } from '@angular/compiler';
 
 @Component({
   selector: 'app-contract-dialog',
@@ -37,6 +40,7 @@ export class ContractDialogComponent implements OnInit {
   currencies: Currency[] = [];
   projects: Project[] = [];
   companies: Company[] = [];
+  contractInvoices: Invoice[] = [];
   filteredBuyerCompanies!: Observable<Company[]>;
   filteredSellerCompanies!: Observable<Company[]>;
   contractItems: ContractItem[] = [];
@@ -88,6 +92,10 @@ export class ContractDialogComponent implements OnInit {
     }
     if (data.downPayments) {
       this.contractDownPayments = [...data.downPayments];
+    }
+
+    if (data.invoices) {
+      this.contractInvoices = [...data.invoices];
     }
   }
 
@@ -233,6 +241,8 @@ export class ContractDialogComponent implements OnInit {
       }
     });
 
+    
+
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         const index = this.contractDownPayments.findIndex(dp => dp.id === downPayment?.id);
@@ -242,6 +252,52 @@ export class ContractDialogComponent implements OnInit {
           this.contractDownPayments.push(result);
         }
         this.contractDownPayments = [...this.contractDownPayments];
+      }
+    });
+  }
+
+  openInvoiceDialog(item?: Invoice) {
+    const dialogRef = this.dialog.open(ContractInvoiceDialogComponent, {
+      width: '800px',
+      data: {
+        item,
+        buyer: this.form.get('buyerCompany')?.value,
+        seller: this.form.get('sellerCompany')?.value, 
+        currency: this.form.get('currency')?.value
+      }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        if (item) {
+          const index = this.contractInvoices.findIndex(i => i === item);
+          if (index !== -1) {
+            this.contractInvoices[index] = result;
+          }
+        } else {
+          this.contractInvoices.push(result);
+        }
+        this.contractInvoices = [...this.contractInvoices];
+      }
+    });
+  }
+  
+  deleteInvoice(item: Invoice) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        title: this.translate.instant('common.dialog.confirm'),
+        message: this.translate.instant('contract.invoice.delete_confirm')
+      }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const index = this.contractInvoices.findIndex(i => i === item);
+        if (index !== -1) {
+          this.contractInvoices.splice(index, 1);
+          this.contractInvoices = [...this.contractInvoices];
+        }
       }
     });
   }
@@ -272,6 +328,8 @@ export class ContractDialogComponent implements OnInit {
       const formValue = this.form.value;
       formValue.items = this.contractItems;
       formValue.downPayments = this.contractDownPayments;
+      formValue.invoices = this.contractInvoices;
+      
       const request = this.isEdit
         ? this.contractService.updateContract(formValue.id!, formValue)
         : this.contractService.createContract(formValue);

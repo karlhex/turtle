@@ -6,6 +6,9 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Company entity
  * 公司信息表
@@ -34,9 +37,11 @@ public class Company extends BaseEntity {
     @Column
     private String website;  // 公司网站
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "bank_account_id")
-    private BankAccount bankAccount;  // 公司收款账号
+    @Column(name = "is_primary")
+    private Boolean isPrimary = false;  // 主公司标志
+
+    @OneToMany(mappedBy = "companyId", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BankAccount> bankAccounts = new ArrayList<>();  // 公司银行账户
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "tax_info_id")

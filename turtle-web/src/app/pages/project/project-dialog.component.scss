@@ -1,0 +1,76 @@
+.form-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  padding: 1rem;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+
+    // 让备注跨越两列
+    .full-width {
+      grid-column: 1 / -1;
+    }
+  }
+
+  mat-form-field {
+    width: 100%;
+  }
+
+  textarea {
+    min-height: 100px;
+  }
+}
+
+.contracts-container {
+  padding: 1rem;
+  
+  table {
+    width: 100%;
+    margin-top: 1rem;
+  }
+
+  .mat-column-title {
+    min-width: 300px;
+  }
+
+  .mat-column-type {
+    min-width: 150px;
+  }
+
+  .mat-column-purchaseTotal,
+  .mat-column-purchasePaid,
+  .mat-column-salesTotal,
+  .mat-column-salesPaid {
+    min-width: 150px;
+    text-align: right;
+    
+    .mat-cell,
+    .mat-footer-cell {
+      padding-right: 24px;
+    }
+  }
+
+  .mat-footer-row {
+    font-weight: bold;
+  }
+}
+
+:host ::ng-deep {
+  .mat-dialog-content {
+    max-height: calc(80vh - 120px);
+    padding: 0;
+  }
+
+  .mat-tab-body-content {
+    padding: 1rem;
+  }
+
+  .mat-tab-group {
+    height: 100%;
+  }
+
+  .mat-tab-body-wrapper {
+    flex: 1;
+  }
+}

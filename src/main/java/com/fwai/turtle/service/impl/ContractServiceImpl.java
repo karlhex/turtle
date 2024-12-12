@@ -8,14 +8,18 @@ import com.fwai.turtle.persistence.entity.Contract;
 import com.fwai.turtle.persistence.entity.ContractItem;
 import com.fwai.turtle.persistence.entity.ContractDownPayment;
 import com.fwai.turtle.persistence.entity.Currency;
+import com.fwai.turtle.persistence.entity.Invoice;
 import com.fwai.turtle.persistence.entity.Product;
+import com.fwai.turtle.persistence.entity.TaxInfo;
 import com.fwai.turtle.persistence.mapper.ContractItemMapper;
 import com.fwai.turtle.persistence.mapper.ContractDownPaymentMapper;
 import com.fwai.turtle.persistence.mapper.ContractMapper;
+import com.fwai.turtle.persistence.mapper.InvoiceMapper;
 import com.fwai.turtle.persistence.repository.ContractRepository;
 import com.fwai.turtle.persistence.repository.CompanyRepository;
 import com.fwai.turtle.persistence.repository.CurrencyRepository;
 import com.fwai.turtle.persistence.repository.ProductRepository;
+import com.fwai.turtle.persistence.repository.TaxInfoRepository;
 import com.fwai.turtle.service.interfaces.ContractService;
 import com.fwai.turtle.types.ContractStatus;
 import com.fwai.turtle.types.ContractType;
@@ -42,6 +46,8 @@ public class ContractServiceImpl implements ContractService {
     private final ContractItemMapper contractItemMapper;
     private final ContractDownPaymentMapper contractDownPaymentMapper;
     private final ProductRepository productRepository;
+    private final InvoiceMapper invoiceMapper;
+    private final TaxInfoRepository taxInfoRepository;
 
     @Override
     public Page<ContractDTO> findAll(Pageable pageable) {
@@ -151,6 +157,37 @@ public class ContractServiceImpl implements ContractService {
                     .collect(Collectors.toList());
             
             existingContract.getDownPayments().addAll(updatedDownPayments);
+        }
+
+        // 更新发票信息
+        if (contractDTO.getInvoices() != null) {
+            // Clear existing invoices and add new ones
+            existingContract.getInvoices().clear();
+            
+            List<Invoice> updatedInvoices = contractDTO.getInvoices().stream()
+                    .map(invoiceDTO -> {
+                        Invoice invoice = invoiceMapper.toEntity(invoiceDTO);
+                        invoice.setContract(existingContract);
+                        
+                        // 设置买方税务信息
+                        if (invoiceDTO.getBuyerTaxInfo() != null && invoiceDTO.getBuyerTaxInfo().getId() != null) {
+                            TaxInfo buyerTaxInfo = taxInfoRepository.findById(invoiceDTO.getBuyerTaxInfo().getId())
+                                    .orElseThrow(() -> new ResourceNotFoundException("TaxInfo", "id", invoiceDTO.getBuyerTaxInfo().getId()));
+                            invoice.setBuyerTaxInfo(buyerTaxInfo);
+                        }
+                        
+                        // 设置卖方税务信息
+                        if (invoiceDTO.getSellerTaxInfo() != null && invoiceDTO.getSellerTaxInfo().getId() != null) {
+                            TaxInfo sellerTaxInfo = taxInfoRepository.findById(invoiceDTO.getSellerTaxInfo().getId())
+                                    .orElseThrow(() -> new ResourceNotFoundException("TaxInfo", "id", invoiceDTO.getSellerTaxInfo().getId()));
+                            invoice.setSellerTaxInfo(sellerTaxInfo);
+                        }
+                        
+                        return invoice;
+                    })
+                    .collect(Collectors.toList());
+            
+            existingContract.getInvoices().addAll(updatedInvoices);
         }
 
         Contract savedContract = contractRepository.save(existingContract);
@@ -329,6 +366,23 @@ public class ContractServiceImpl implements ContractService {
         }
 
         contract = contractRepository.save(contract);
+        return contractMapper.toDTO(contract);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ContractDTO> getContractsByInvoiceNo(String invoiceNo) {
+        // Implement the method to retrieve contracts by invoice number
+        return contractRepository.findByInvoiceNo(invoiceNo)
+            .stream()
+            .map(contractMapper::toDTO)
+            .collect(Collectors.toList());
+    }
+
+    @Override
+    public ContractDTO getContractByInvoiceId(Long invoiceId) {
+        Contract contract = contractRepository.findByInvoiceId(invoiceId)
+            .orElseThrow(() -> new ResourceNotFoundException("Contract not found for invoice ID: " + invoiceId));
         return contractMapper.toDTO(contract);
     }
 }

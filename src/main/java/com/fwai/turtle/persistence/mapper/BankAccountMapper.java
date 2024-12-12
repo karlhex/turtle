@@ -44,14 +44,5 @@ public interface BankAccountMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
-    BankAccount toBankAccount(BankAccount bankAccount);
-    
-    /**
-     * Update bank account entity
-     * 更新银行账户实体对象
-     */
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "createdAt", ignore = true)
-    @Mapping(target = "updatedAt", ignore = true)
-    void updateBankAccount(BankAccount source, @MappingTarget BankAccount target);
+    BankAccount copy(BankAccount source);
 }

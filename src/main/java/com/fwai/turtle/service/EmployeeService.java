@@ -19,6 +19,9 @@ import org.springframework.util.StringUtils;
 
 import com.fwai.turtle.exception.DuplicateRecordException;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -74,6 +77,20 @@ public class EmployeeService {
         }
         
         return employeePage.map(employeeMapper::toDTO);
+    }
+
+    public List<EmployeeDTO> getUnmappedEmployees() {
+        List<Employee> employees = employeeRepository.findByUserIsNull();
+        return employees.stream()
+                .map(employeeMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<EmployeeDTO> getActiveEmployees() {
+        List<Employee> employees = employeeRepository.findByIsActive(true);
+        return employees.stream()
+                .map(employeeMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Transactional

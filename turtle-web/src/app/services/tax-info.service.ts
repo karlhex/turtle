@@ -48,4 +48,8 @@ export class TaxInfoService {
   toggleStatus(id: number): Observable<ApiResponse<TaxInfo>> {
     return this.http.put<ApiResponse<TaxInfo>>(`${this.apiUrl}/${id}/toggle-status`, {});
   }
+
+  getAllActive(): Observable<ApiResponse<TaxInfo[]>> {
+    return this.http.get<ApiResponse<TaxInfo[]>>(`${this.apiUrl}/active`);
+  }
 }

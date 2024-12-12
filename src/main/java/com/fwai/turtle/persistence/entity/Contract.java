@@ -96,6 +96,9 @@ public class Contract extends BaseEntity {
     @OneToMany(mappedBy = "contract", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ContractDownPayment> downPayments = new ArrayList<>();  // 合同首付款列表
 
+    @OneToMany(mappedBy = "contract", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Invoice> invoices = new ArrayList<>();  // 关联发票
+
     @PrePersist
     @PreUpdate
     private void validateDates() {

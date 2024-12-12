@@ -3,6 +3,7 @@ package com.fwai.turtle.service.interfaces;
 import com.fwai.turtle.dto.TaxInfoDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import java.util.List;
 
 public interface TaxInfoService {
     
@@ -35,6 +36,11 @@ public interface TaxInfoService {
      * 切换税务信息状态
      */
     TaxInfoDTO toggleStatus(Long id);
+
+    /**
+     * 获取所有启用的税务信息
+     */
+    List<TaxInfoDTO> getAllActiveTaxInfos();
 
     /**
      * 搜索税务信息

@@ -42,12 +42,17 @@ public interface ContractService {
     
     ContractDTO updateStatus(Long id, ContractStatus newStatus);
 
+    List<ContractDTO> getContractsByInvoiceNo(String invoiceNo);
+
     // Contract Items management
     ContractDTO addContractItem(Long contractId, ContractItemDTO itemDTO);
     
     ContractDTO updateContractItem(Long contractId, Long itemId, ContractItemDTO itemDTO);
     
     ContractDTO removeContractItem(Long contractId, Long itemId);
+
+    // Invoice management
+    ContractDTO getContractByInvoiceId(Long invoiceId);
     
     List<ContractItemDTO> getContractItems(Long contractId);
     

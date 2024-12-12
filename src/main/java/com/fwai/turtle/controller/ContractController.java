@@ -103,6 +103,16 @@ public class ContractController {
         return ApiResponse.ok(contractService.getExpiredContracts(date));
     }
 
+    @GetMapping("/invoice/no/{invoiceNo}")
+    public ApiResponse<List<ContractDTO>> getContractsByInvoiceNo(@PathVariable String invoiceNo) {
+        return ApiResponse.ok(contractService.getContractsByInvoiceNo(invoiceNo));
+    }
+
+    @GetMapping("/invoice/{invoiceId}")
+    public ApiResponse<ContractDTO> getContractByInvoiceId(@PathVariable Long invoiceId) {
+        return ApiResponse.ok(contractService.getContractByInvoiceId(invoiceId));
+    }
+
     @GetMapping("/date-range")
     public ApiResponse<List<ContractDTO>> getContractsByDateRange(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
@@ -142,7 +152,7 @@ public class ContractController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ApiResponse<ContractDTO> removeContractItem(
             @PathVariable Long contractId,
-            @PathVariable Long itemId
+            @PathVariable Long itemId   
     ) {
         return ApiResponse.ok(contractService.removeContractItem(contractId, itemId));
     }

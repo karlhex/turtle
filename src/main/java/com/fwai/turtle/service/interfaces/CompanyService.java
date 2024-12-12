@@ -1,6 +1,7 @@
 package com.fwai.turtle.service.interfaces;
 
 import com.fwai.turtle.dto.CompanyDTO;
+import com.fwai.turtle.dto.BankAccountDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import java.util.List;
@@ -50,7 +51,37 @@ public interface CompanyService {
      * Toggle company active status
      * 切换公司启用状态
      */
-    CompanyDTO toggleStatus(Long id);
+    CompanyDTO toggleCompanyStatus(Long id);
+
+    /**
+     * Get the primary company
+     * 获取主公司
+     */
+    CompanyDTO getPrimaryCompany();
+
+    /**
+     * Set a company as primary
+     * 设置主公司
+     */
+    CompanyDTO setPrimaryCompany(Long id);
+
+    /**
+     * Get all bank accounts for a company
+     * 获取公司的所有银行账户
+     */
+    List<BankAccountDTO> getCompanyBankAccounts(Long id);
+
+    /**
+     * Add a bank account to a company
+     * 为公司添加银行账户
+     */
+    CompanyDTO addBankAccount(Long id, BankAccountDTO bankAccountDTO);
+
+    /**
+     * Remove a bank account from a company
+     * 移除公司的银行账户
+     */
+    void removeBankAccount(Long companyId, Long bankAccountId);
 
     /**
      * Get all active companies

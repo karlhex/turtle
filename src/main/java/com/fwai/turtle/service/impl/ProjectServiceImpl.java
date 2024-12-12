@@ -17,7 +17,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
+/**
+ * @author fwai
+ * @since 2022/1/11
+ */
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -36,8 +39,8 @@ public class ProjectServiceImpl implements ProjectService {
         Project project = projectMapper.toEntity(projectDTO);
         
         // 设置项目负责人
-        Employee manager = employeeRepository.findById(projectDTO.getManagerId())
-                .orElseThrow(() -> new ResourceNotFoundException("Employee", "id", projectDTO.getManagerId()));
+        Employee manager = employeeRepository.findById(projectDTO.getManager().getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Employee", "id", projectDTO.getManager().getId()));
         project.setManager(manager);
 
         project = projectRepository.save(project);
@@ -58,9 +61,9 @@ public class ProjectServiceImpl implements ProjectService {
         projectMapper.updateEntity(projectDTO, existingProject);
 
         // 更新项目负责人
-        if (projectDTO.getManagerId() != null) {
-            Employee manager = employeeRepository.findById(projectDTO.getManagerId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Employee", "id", projectDTO.getManagerId()));
+        if (projectDTO.getManager() != null) {
+            Employee manager = employeeRepository.findById(projectDTO.getManager().getId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Employee", "id", projectDTO.getManager().getId()));
             existingProject.setManager(manager);
         }
 

@@ -12,8 +12,8 @@ export interface Project {
   manager: Employee;      // 项目负责员工
   remarks?: string;       // 备注
   contracts?: Contract[]; // 关联的合同列表
-  createdTime?: Date;
-  updatedTime?: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface ProjectQuery {

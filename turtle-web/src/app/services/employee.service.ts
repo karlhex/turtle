@@ -22,6 +22,11 @@ export class EmployeeService {
     return this.http.get<ApiResponse<Employee[]>>(`${this.API_URL}/unmapped`, { headers });
   }
 
+  getActiveEmployees(): Observable<ApiResponse<Employee[]>> {
+    const headers = this.getHeaders();
+    return this.http.get<ApiResponse<Employee[]>>(`${this.API_URL}/active`, { headers });
+  }
+
   private getHeaders(): HttpHeaders {
     const token = this.authService.getToken();
     return new HttpHeaders().set('Authorization', `Bearer ${token}`);

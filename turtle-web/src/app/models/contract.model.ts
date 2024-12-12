@@ -4,6 +4,7 @@ import { ContractStatus } from '../types/contract-status.enum';
 import { ContractType } from '../types/contract-type.enum';
 import { Currency } from './currency.model';
 import { Company } from './company.model';
+import { Invoice } from './invoice.model';
 
 export interface Contract {
   id?: number;
@@ -31,6 +32,7 @@ export interface Contract {
   filePath?: string;
   items?: ContractItem[];
   downPayments?: ContractDownPayment[];
+  invoices?: Invoice[];
   createdTime?: Date;
   updatedTime?: Date;
 }

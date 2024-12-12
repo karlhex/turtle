@@ -41,4 +41,5 @@ public class ContractDTO {
 
     private List<ContractItemDTO> items = new ArrayList<>();  // 合同产品列表
     private List<ContractDownPaymentDTO> downPayments = new ArrayList<>();  // 合同首付款列表
+    private List<InvoiceDTO> invoices = new ArrayList<>();  // 关联发票列表
 }

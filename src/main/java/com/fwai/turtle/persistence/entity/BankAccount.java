@@ -35,6 +35,9 @@ public class BankAccount extends BaseEntity {
     @JoinColumn(name = "currency_id", nullable = false)
     private Currency currency;
 
+    @Column(name = "company_id")
+    private Long companyId;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private BankAccountType type;

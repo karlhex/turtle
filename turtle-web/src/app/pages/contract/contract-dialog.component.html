@@ -305,6 +305,27 @@
           </app-contract-down-payment-list>
         </div>
       </mat-tab>
+
+      <!-- Contract Invoices Tab -->
+      <mat-tab label="{{ 'invoice.tab' | translate }}" *ngIf="isEdit">
+        <div class="contract-invoices-container">
+          <div class="action-bar">
+            <button mat-raised-button color="primary" type="button" (click)="openInvoiceDialog()">
+              {{ 'invoice.add' | translate }}
+            </button>
+          </div>
+          <app-contract-invoice-list
+            [items]="contractInvoices"
+            [currency]="form.get('currency')?.value"
+            [buyer]="form.get('buyerCompany')?.value"
+            [seller]="form.get('sellerCompany')?.value"
+            [readOnly]="false"
+            (itemEdited)="openInvoiceDialog($event)"
+            (itemDeleted)="deleteInvoice($event)">
+          </app-contract-invoice-list>
+        </div>
+      </mat-tab>
+
     </mat-tab-group>
   </div>
 </mat-dialog-content>

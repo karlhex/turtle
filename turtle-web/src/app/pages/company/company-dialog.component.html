@@ -52,6 +52,38 @@
           <input matInput formControlName="website">
         </mat-form-field>
 
+        <div class="section-title">税务信息</div>
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>税务信息</mat-label>
+          <input type="text" matInput formControlName="taxInfo" [matAutocomplete]="taxInfoAuto">
+          <mat-autocomplete #taxInfoAuto="matAutocomplete" [displayWith]="displayTaxInfo">
+            <mat-option *ngFor="let taxInfo of filteredTaxInfos | async" [value]="taxInfo">
+              {{taxInfo.fullName}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+
+        <div class="section-title">联系人信息</div>
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>商务联系人</mat-label>
+          <input type="text" matInput formControlName="businessContact" [matAutocomplete]="businessContactAuto">
+          <mat-autocomplete #businessContactAuto="matAutocomplete" [displayWith]="displayPerson">
+            <mat-option *ngFor="let person of filteredBusinessContacts | async" [value]="person">
+              {{person.firstName}} {{person.lastName}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>技术联系人</mat-label>
+          <input type="text" matInput formControlName="technicalContact" [matAutocomplete]="technicalContactAuto">
+          <mat-autocomplete #technicalContactAuto="matAutocomplete" [displayWith]="displayPerson">
+            <mat-option *ngFor="let person of filteredTechnicalContacts | async" [value]="person">
+              {{person.firstName}} {{person.lastName}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        
         <!-- 备注 -->
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>备注</mat-label>

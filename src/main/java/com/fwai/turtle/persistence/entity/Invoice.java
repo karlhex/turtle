@@ -9,6 +9,7 @@ import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -49,6 +50,10 @@ public class Invoice extends BaseEntity {
     @Column
     private String remarks;  // 备注
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "contract_id", nullable = false)
+    private Contract contract;  // 关联合同
+
     @Column(name = "invoice_date", nullable = false)
     private LocalDate invoiceDate;  // 开票日期
 
@@ -62,7 +67,7 @@ public class Invoice extends BaseEntity {
     private Boolean cancelled = false;  // 是否作废
 
     @Column(name = "cancel_date")
-    private LocalDate cancelDate;  // 作废日期
+    private LocalDateTime cancelDate;  // 作废日期
 
     @Column(name = "cancel_reason")
     private String cancelReason;  // 作废原因

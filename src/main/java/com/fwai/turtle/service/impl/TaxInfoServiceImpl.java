@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -110,5 +111,13 @@ public class TaxInfoServiceImpl implements TaxInfoService {
     public Page<TaxInfoDTO> searchTaxInfos(String query, Pageable pageable) {
         return taxInfoRepository.search(query, pageable)
                 .map(taxInfoMapper::toDTO);
+    }
+
+    @Override
+    public List<TaxInfoDTO> getAllActiveTaxInfos() {
+        List<TaxInfo> activeTaxInfos = taxInfoRepository.findAllByActive(true);
+        return activeTaxInfos.stream()
+                .map(taxInfoMapper::toDTO)
+                .collect(java.util.stream.Collectors.toList());
     }
 }

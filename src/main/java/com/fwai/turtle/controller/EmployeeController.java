@@ -72,6 +72,16 @@ public class EmployeeController {
         return ApiResponse.ok(null);
     }
 
+    @GetMapping("/unmapped")
+    public ApiResponse<List<EmployeeDTO>> getUnmappedEmployees() {
+        return ApiResponse.ok(employeeService.getUnmappedEmployees());
+    }
+
+    @GetMapping("/active")
+    public ApiResponse<List<EmployeeDTO>> getActiveEmployees() {
+        return ApiResponse.ok(employeeService.getActiveEmployees());
+    }
+
     @PostMapping("/{employeeId}/educations")
     public ApiResponse<EmployeeEducationDTO> addEducation(
             @PathVariable Long employeeId,

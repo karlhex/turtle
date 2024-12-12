@@ -41,4 +41,8 @@ export class ContractService {
   deleteContract(id: number): Observable<ApiResponse<void>> {
     return this.http.delete<ApiResponse<void>>(`${this.apiUrl}/${id}`);
   }
+
+  getContractsByProjectId(projectId: number): Observable<ApiResponse<Contract[]>> {
+    return this.http.get<ApiResponse<Contract[]>>(`${this.apiUrl}/project/${projectId}`);
+  }
 }

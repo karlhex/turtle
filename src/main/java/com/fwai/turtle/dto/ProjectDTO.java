@@ -17,8 +17,7 @@ public class ProjectDTO {
     private LocalDate startDate;
     private LocalDate endDate;
     private ProjectStatus status;
-    private Long managerId;
-    private String managerName;  // 项目负责人姓名，用于显示
+    private EmployeeDTO manager;
     private String remarks;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

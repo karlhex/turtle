@@ -29,7 +29,6 @@ import { UserManagementComponent } from './pages/user-management/user-management
 import { UserEmployeeMappingComponent } from './pages/user-employee-mapping/user-employee-mapping.component';
 import { EmployeeListComponent } from './pages/employee/employee-list.component';
 import { ActionComponent } from './components/action/action.component';
-import { BaseListComponent } from './components/base-list/base-list.component';
 import { BaseDialogComponent } from '@components/base-dialog/base-dialog.component';
 import { ContractListComponent } from './pages/contract/contract-list.component';
 import { ContractDialogComponent } from './pages/contract/contract-dialog.component';
@@ -46,6 +45,14 @@ import { ProductListComponent } from './pages/product/product-list.component';
 import { ProductDialogComponent } from './pages/product/product-dialog.component';
 import { ContractDownPaymentDialogComponent } from '@pages/contract/contract-down-payment-dialog.component';
 import { ContractDownPaymentListComponent } from '@pages/contract/contract-down-payment-list.component';
+import { ProjectDialogComponent } from './pages/project/project-dialog.component';
+import { ProjectListComponent } from './pages/project/project-list.component';
+import { BaseListComponent } from './components/base-list/base-list.component';
+import { PaymentTotalPipe } from './pipes/payment-total.pipe';
+import { ContractInvoiceDialogComponent } from './pages/contract/contract-invoice-dialog.component';
+import { ContractInvoiceListComponent } from './pages/contract/contract-invoice-list.component';
+import { BankAccountDialogComponent } from './pages/bank-account/bank-account-dialog.component';
+import { BankAccountListComponent } from './pages/bank-account/bank-account-list.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -65,7 +72,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     UserManagementComponent,
     UserEmployeeMappingComponent,
     EmployeeListComponent,
-    BaseListComponent,
+    ActionComponent,
     BaseDialogComponent,
     ContractListComponent,
     ContractDialogComponent,
@@ -73,16 +80,24 @@ export function HttpLoaderFactory(http: HttpClient) {
     ContractItemListComponent,
     ContractDownPaymentDialogComponent,
     ContractDownPaymentListComponent,
+    ContractInvoiceDialogComponent,
+    ContractInvoiceListComponent,
     CurrencyListComponent,
     CurrencyDialogComponent,
     TaxInfoListComponent,
     TaxInfoDialogComponent,
+    BankAccountDialogComponent,
+    BankAccountListComponent,
     SidebarMenuComponent,
     CompanyDialogComponent,
     CompanyListComponent,
     ProductListComponent,
     ProductDialogComponent,
-    ActionComponent],
+    ProjectDialogComponent,
+    ProjectListComponent,
+    BaseListComponent,
+    PaymentTotalPipe
+  ],
   imports: [
 
     BrowserModule,

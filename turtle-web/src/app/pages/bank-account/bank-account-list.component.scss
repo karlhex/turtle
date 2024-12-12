@@ -1,0 +1,54 @@
+:host {
+  display: block;
+  padding: 1rem;
+
+  .mat-column-name {
+    min-width: 150px;
+  }
+
+  .mat-column-accountNo {
+    min-width: 180px;
+  }
+
+  .mat-column-bankName {
+    min-width: 150px;
+  }
+
+  .mat-column-bankBranch {
+    min-width: 180px;
+  }
+
+  .mat-column-balance {
+    min-width: 120px;
+    text-align: right;
+    padding-right: 24px;
+  }
+
+  .mat-column-currency {
+    min-width: 100px;
+  }
+
+  .mat-column-type {
+    min-width: 120px;
+  }
+
+  .mat-column-active {
+    width: 80px;
+    text-align: center;
+  }
+
+  .mat-column-actions {
+    width: 60px;
+    text-align: center;
+  }
+
+  .mat-cell {
+    padding: 8px 16px;
+  }
+
+  .mat-header-cell {
+    padding: 8px 16px;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.87);
+  }
+}

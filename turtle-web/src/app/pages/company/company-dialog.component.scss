@@ -10,6 +10,19 @@
     width: 100%;
   }
 
+  .section-title {
+    font-size: 16px;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.87);
+    margin: 16px 0 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  }
+
+  .toggle-controls {
+    padding: 0 4px;
+  }
+  
   mat-dialog-actions {
     padding: 16px 24px;
     margin-bottom: 0;

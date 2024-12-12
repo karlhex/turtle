@@ -26,7 +26,7 @@ export class ProjectService {
       httpParams = httpParams.set('status', params.status);
     }
     if (params.managerId) {
-      httpParams = httpParams.set('managerId', params.managerId.toString());
+      httpParams = httpParams.set('manager.id', params.managerId.toString());
     }
     if (params.startDate) {
       httpParams = httpParams.set('startDate', params.startDate.toISOString().split('T')[0]);

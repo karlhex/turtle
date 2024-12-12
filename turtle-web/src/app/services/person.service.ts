@@ -31,4 +31,8 @@ export class PersonService {
     const params = new HttpParams().set('query', query);
     return this.http.get<ApiResponse<Person[]>>(`${this.API_URL}/search`, { params });
   }
+
+  getAll(): Observable<ApiResponse<Person[]>> {
+    return this.http.get<ApiResponse<Person[]>>(`${this.API_URL}/all`);
+  }
 }

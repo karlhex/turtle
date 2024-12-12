@@ -10,7 +10,8 @@ export interface Company {
   phone: string;           // 公司电话
   email?: string;         // 公司邮件
   website?: string;       // 公司网站
-  bankAccount?: BankAccount;  // 公司收款账号
+  isPrimary?: boolean;    // 主公司标志
+  bankAccounts?: BankAccount[];  // 公司银行账户列表
   taxInfo?: TaxInfo;      // 税务信息
   businessContact?: Person;   // 商务联系人
   technicalContact?: Person;  // 技术联系人

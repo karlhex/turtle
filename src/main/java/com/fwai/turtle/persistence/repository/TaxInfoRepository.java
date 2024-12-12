@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface TaxInfoRepository extends JpaRepository<TaxInfo, Long> {
     
@@ -25,6 +27,11 @@ public interface TaxInfoRepository extends JpaRepository<TaxInfo, Long> {
      * 根据银行账号查询税务信息
      */
     boolean existsByBankAccount(String bankAccount);
+
+    /**
+     * 获取所有启用的税务信息
+     */
+    List<TaxInfo> findAllByActive(Boolean active);
 
     /**
      * 搜索税务信息

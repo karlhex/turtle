@@ -9,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/tax-infos")
 @RequiredArgsConstructor
@@ -44,6 +46,17 @@ public class TaxInfoController {
             Pageable pageable) {
         Page<TaxInfoDTO> page = taxInfoService.searchTaxInfos(query, pageable);
         return ResponseEntity.ok(ApiResponse.ok(page));
+    }
+
+    /**
+     * 获取所有启用的税务信息列表
+     *
+     * @return 所有启用的税务信息列表
+     */
+    @GetMapping("/active")
+    public ResponseEntity<ApiResponse<List<TaxInfoDTO>>> getActiveTaxInfos() {
+        List<TaxInfoDTO> taxInfos = taxInfoService.getAllActiveTaxInfos();
+        return ResponseEntity.ok(ApiResponse.ok(taxInfos));
     }
 
     /**

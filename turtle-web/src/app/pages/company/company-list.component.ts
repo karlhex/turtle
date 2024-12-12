@@ -20,6 +20,7 @@ export class CompanyListComponent implements OnInit {
     'address',
     'phone',
     'email',
+    'isPrimary',
     'active',
     'actions'
   ];
@@ -51,6 +52,7 @@ export class CompanyListComponent implements OnInit {
       })
       .subscribe({
         next: (response) => {
+          console.log("loadCompanies", response);
           this.dataSource.data = response.data.content;
           this.totalElements = response.data.totalElements;
           this.loading = false;
@@ -144,6 +146,31 @@ export class CompanyListComponent implements OnInit {
         );
       }
     });
+  }
+
+  onTogglePrimary(company: Company): void {
+    if (!company.isPrimary) {  // Only allow setting as primary, not unsetting
+      this.loading = true;
+      this.companyService.setPrimaryCompany(company.id!).subscribe({
+        next: () => {
+          this.loadCompanies();
+          this.snackBar.open(
+            this.translate.instant('COMPANY.PRIMARY_UPDATED'),
+            this.translate.instant('COMMON.CLOSE'),
+            { duration: 3000 }
+          );
+        },
+        error: (error) => {
+          console.error('Error updating company primary status:', error);
+          this.snackBar.open(
+            this.translate.instant('COMPANY.UPDATE_ERROR'),
+            this.translate.instant('COMMON.CLOSE'),
+            { duration: 3000 }
+          );
+          this.loading = false;
+        }
+      });
+    }
   }
 
   onPageChange(event: PageEvent): void {
