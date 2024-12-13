@@ -14,7 +14,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fwai.turtle.config.security.SecurityConfiguration;
 import com.fwai.turtle.config.security.UserDetailsServiceImpl;
 import com.fwai.turtle.controller.HelloController;
-import com.fwai.turtle.service.interfaces.JwtTokenService;
 
 @WebMvcTest(controllers = HelloController.class)
 @AutoConfigureMockMvc
@@ -23,9 +22,6 @@ class HelloControllerTest {
 
   @Autowired
   private MockMvc mockMvc;
-
-  @MockBean
-  private JwtTokenService jwtTokenService;
 
   @MockBean
   private UserDetailsServiceImpl userDetailsService;
