@@ -18,18 +18,13 @@ export class EmployeeService {
   ) { }
 
   getUnmappedEmployees(): Observable<ApiResponse<Employee[]>> {
-    const headers = this.getHeaders();
-    return this.http.get<ApiResponse<Employee[]>>(`${this.API_URL}/unmapped`, { headers });
+
+    return this.http.get<ApiResponse<Employee[]>>(`${this.API_URL}/unmapped`, {});
   }
 
   getActiveEmployees(): Observable<ApiResponse<Employee[]>> {
-    const headers = this.getHeaders();
-    return this.http.get<ApiResponse<Employee[]>>(`${this.API_URL}/active`, { headers });
-  }
 
-  private getHeaders(): HttpHeaders {
-    const token = this.authService.getToken();
-    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get<ApiResponse<Employee[]>>(`${this.API_URL}/active`, {});
   }
 
   private getParams(page: number, size: number, sort?: { sortBy?: string; direction?: 'ASC' | 'DESC'; }): HttpParams {
@@ -47,35 +42,29 @@ export class EmployeeService {
   }
 
   getEmployees(page: number = 0, size: number = 10, sort?: { sortBy?: string; direction?: 'ASC' | 'DESC'; }): Observable<ApiResponse<PageResponse<Employee>>> {
-    const headers = this.getHeaders();
     const params = this.getParams(page, size, sort);
-    return this.http.get<ApiResponse<PageResponse<Employee>>>(this.API_URL, { headers, params });
+    return this.http.get<ApiResponse<PageResponse<Employee>>>(this.API_URL, {params });
   }
 
   searchEmployees(query: string, page: number = 0, size: number = 10): Observable<ApiResponse<PageResponse<Employee>>> {
-    const headers = this.getHeaders();
     const params = this.getParams(page, size)
       .set('query', query);
-    return this.http.get<ApiResponse<PageResponse<Employee>>>(`${this.API_URL}/search`, { headers, params });
+    return this.http.get<ApiResponse<PageResponse<Employee>>>(`${this.API_URL}/search`, { params });
   }
 
   getEmployeeById(id: number): Observable<ApiResponse<Employee>> {
-    const headers = this.getHeaders();
-    return this.http.get<ApiResponse<Employee>>(`${this.API_URL}/${id}`, { headers });
+    return this.http.get<ApiResponse<Employee>>(`${this.API_URL}/${id}`, {});
   }
 
   createEmployee(employee: Partial<Employee>): Observable<ApiResponse<Employee>> {
-    const headers = this.getHeaders();
-    return this.http.post<ApiResponse<Employee>>(this.API_URL, employee, { headers });
+    return this.http.post<ApiResponse<Employee>>(this.API_URL, employee, {});
   }
 
   updateEmployee(id: number, employee: Partial<Employee>): Observable<ApiResponse<Employee>> {
-    const headers = this.getHeaders();
-    return this.http.put<ApiResponse<Employee>>(`${this.API_URL}/${id}`, employee, { headers });
+    return this.http.put<ApiResponse<Employee>>(`${this.API_URL}/${id}`, employee, {});
   }
 
   deleteEmployee(id: number): Observable<void> {
-    const headers = this.getHeaders();
-    return this.http.delete<void>(`${this.API_URL}/${id}`, { headers });
+    return this.http.delete<void>(`${this.API_URL}/${id}`, {});
   }
 }

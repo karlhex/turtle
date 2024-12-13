@@ -18,4 +18,5 @@ public interface UserService {
     Page<UserDTO> findAll(Pageable pageable);
     Page<UserDTO> findUnmappedUsers(Pageable pageable);
     Page<UserDTO> searchUsers(String query, Pageable pageable);
+    Optional<User> getCurrentUser();
 }

@@ -9,28 +9,26 @@ import {
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
-import { TokenStorageService } from '../services/token-storage.service';
 import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
   constructor(
     private authService: AuthService,
-    private tokenStorage: TokenStorageService,
     private router: Router
   ) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    // Skip adding token for login request
-    if (request.url.includes('/api/auth/signin')) {
+    // Skip adding credentials for signup request
+    if (request.url.includes('/api/auth/signup')) {
       return next.handle(request);
     }
 
-    const token = this.tokenStorage.getToken();
-    if (token) {
+    const credentials = this.authService.getCredentials();
+    if (credentials) {
       request = request.clone({
         setHeaders: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Basic ${credentials}`
         }
       });
     }

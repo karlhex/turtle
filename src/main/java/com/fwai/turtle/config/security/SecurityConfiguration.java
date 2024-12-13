@@ -11,7 +11,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 
@@ -24,9 +23,6 @@ public class SecurityConfiguration {
 
   @Autowired
   private UserDetailsService userDetailsService;
-
-  @Autowired
-  private JwtAuthenticationFilter jwtAuthenticationFilter;
 
   @Autowired
   private CorsConfig corsConfig;
@@ -44,10 +40,10 @@ public class SecurityConfiguration {
         .authorizeHttpRequests(auth -> {
           auth.requestMatchers(AUTH_WHITELIST).permitAll().anyRequest().authenticated();
         })
+        .httpBasic(httpBasic -> {})
         .sessionManagement(session -> {
           session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        })
-        .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        });
     return http.build();
   }
 

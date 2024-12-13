@@ -32,6 +32,8 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(): void {
+    console.log('Form submitted:', this.loginForm.value);
+    
     if (this.loginForm.valid) {
       this.loading = true;
       this.error = '';
@@ -45,7 +47,7 @@ export class LoginComponent implements OnInit {
         next: (response) => {
           this.loading = false;
           console.log('Login response:', response);
-          if (!response || !response.data || !response.data.token) {
+          if (!response || !response.data || !response.data.id) {
             this.error = 'Invalid response from server';
             console.error('Invalid response:', response);
           }
@@ -53,7 +55,7 @@ export class LoginComponent implements OnInit {
         error: (error) => {
           this.loading = false;
           console.error('Login error:', error);
-          this.error = error.error?.message || 'Login failed. Please try again.';
+          this.error = error.error?.message || 'Login failed. Please check your credentials.';
         }
       });
     } else {

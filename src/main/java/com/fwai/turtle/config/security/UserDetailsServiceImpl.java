@@ -31,7 +31,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     log.debug(user.toString());
 
-    return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(),
+    return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
         getAuthority(user.getRoles()));
   }
 

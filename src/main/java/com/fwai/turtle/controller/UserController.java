@@ -65,6 +65,18 @@ public class UserController {
     return ApiResponse.ok(userService.findUnmappedUsers(PageRequest.of(page, size)));
   }
 
+  @GetMapping("/me")
+  public ApiResponse<UserDTO> getCurrentUser() {
+    log.info("getCurrentUser");
+    return ApiResponse.ok(userService.getCurrentUser()
+        .map(user -> UserDTO.builder()
+            .id(user.getId())
+            .username(user.getUsername())
+            .email(user.getEmail())
+            .build())
+        .orElseThrow(() -> new ResourceNotFoundException("User not found")));
+  }
+
   @PostMapping
   public ApiResponse<User> createUser(@RequestBody User user) {
     log.info("createUser: {}", user);

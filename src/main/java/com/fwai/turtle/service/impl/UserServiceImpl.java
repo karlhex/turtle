@@ -3,6 +3,7 @@ package com.fwai.turtle.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -150,6 +151,20 @@ public class UserServiceImpl implements UserService {
     } catch (Exception e) {
       log.error("Error searching users with query: {}", query, e);
       throw e;
+    }
+  }
+
+  @Override
+  public Optional<User> getCurrentUser() {
+    try {
+      var authentication = SecurityContextHolder.getContext().getAuthentication();
+      if (authentication == null || !authentication.isAuthenticated()) {
+        return Optional.empty();
+      }
+      return findByUsername(authentication.getName());
+    } catch (Exception e) {
+      log.error("Error getting current user", e);
+      return Optional.empty();
     }
   }
 }
