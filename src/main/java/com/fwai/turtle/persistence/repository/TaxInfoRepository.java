@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface TaxInfoRepository extends JpaRepository<TaxInfo, Long> {
@@ -17,6 +18,11 @@ public interface TaxInfoRepository extends JpaRepository<TaxInfo, Long> {
      * 根据启用状态查询税务信息
      */
     Page<TaxInfo> findByActive(Boolean active, Pageable pageable);
+
+    /**
+     * 根据银行账号查询税务信息
+     */
+    Optional<TaxInfo> findByBankAccount(String bankAccount);
 
     /**
      * 根据税号查询税务信息

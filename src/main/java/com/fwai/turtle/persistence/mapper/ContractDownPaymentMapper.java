@@ -4,6 +4,7 @@ import com.fwai.turtle.dto.ContractDownPaymentDTO;
 import com.fwai.turtle.persistence.entity.ContractDownPayment;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")
@@ -19,4 +20,8 @@ public interface ContractDownPaymentMapper {
     @Mapping(target = "contract", ignore = true)
     @Mapping(target = "currency", ignore = true)
     ContractDownPayment toEntity(ContractDownPaymentDTO dto);
+
+    @Mapping(target = "contract", ignore = true)
+    @Mapping(target = "currency", ignore = true)
+    void updateEntityFromDTO(ContractDownPaymentDTO dto, @MappingTarget ContractDownPayment entity);
 }

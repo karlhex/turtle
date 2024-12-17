@@ -20,6 +20,7 @@ import com.fwai.turtle.persistence.repository.CompanyRepository;
 import com.fwai.turtle.persistence.repository.CurrencyRepository;
 import com.fwai.turtle.persistence.repository.ProductRepository;
 import com.fwai.turtle.persistence.repository.TaxInfoRepository;
+import com.fwai.turtle.persistence.repository.InvoiceRepository;
 import com.fwai.turtle.service.interfaces.ContractService;
 import com.fwai.turtle.types.ContractStatus;
 import com.fwai.turtle.types.ContractType;
@@ -33,6 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -48,6 +50,7 @@ public class ContractServiceImpl implements ContractService {
     private final ProductRepository productRepository;
     private final InvoiceMapper invoiceMapper;
     private final TaxInfoRepository taxInfoRepository;
+    private final InvoiceRepository invoiceRepository;
 
     @Override
     public Page<ContractDTO> findAll(Pageable pageable) {
@@ -59,7 +62,6 @@ public class ContractServiceImpl implements ContractService {
         if (contractRepository.existsByContractNo(contractDTO.getContractNo())) {
             throw new IllegalArgumentException("合同编号已存在: " + contractDTO.getContractNo());
         }
-
 
         // Validate buyer company exists
         companyRepository.findById(contractDTO.getBuyerCompany().getId())
@@ -75,6 +77,16 @@ public class ContractServiceImpl implements ContractService {
         Currency currency = currencyRepository.findById(contractDTO.getCurrency().getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Currency", "id", contractDTO.getCurrency().getId()));
         contract.setCurrency(currency);
+
+        // Validate invoice numbers if invoices are present
+        if (contractDTO.getInvoices() != null) {
+            for (var invoiceDTO : contractDTO.getInvoices()) {
+                if (invoiceDTO.getInvoiceNo() != null && 
+                    invoiceRepository.existsByInvoiceNo(invoiceDTO.getInvoiceNo())) {
+                    throw new IllegalArgumentException("发票号码已存在: " + invoiceDTO.getInvoiceNo());
+                }
+            }
+        }
 
         contract = contractRepository.save(contract);
         return contractMapper.toDTO(contract);
@@ -138,56 +150,102 @@ public class ContractServiceImpl implements ContractService {
 
         // 更新首付款信息
         if (contractDTO.getDownPayments() != null) {
-            // Clear existing down payments and add new ones
-            existingContract.getDownPayments().clear();
+            // Keep track of existing down payments to remove
+            Set<Long> updatedDownPaymentIds = contractDTO.getDownPayments().stream()
+                    .map(downPayment -> downPayment.getId())
+                    .filter(downPaymentId -> downPaymentId != null)
+                    .collect(Collectors.toSet());
             
-            List<ContractDownPayment> updatedDownPayments = contractDTO.getDownPayments().stream()
-                    .map(downPaymentDTO -> {
-                        ContractDownPayment downPayment = contractDownPaymentMapper.toEntity(downPaymentDTO);
-                        downPayment.setContract(existingContract);
-                        
-                        // 设置币种
-                        if (downPaymentDTO.getCurrencyId() != null) {
-                            Currency downPaymentCurrency = currencyRepository.findById(downPaymentDTO.getCurrencyId())
-                                    .orElseThrow(() -> new ResourceNotFoundException("Currency", "id", downPaymentDTO.getCurrencyId()));
-                            downPayment.setCurrency(downPaymentCurrency);
-                        }
-                        return downPayment;
-                    })
-                    .collect(Collectors.toList());
+            // Remove down payments that are no longer present
+            existingContract.getDownPayments().removeIf(dp -> !updatedDownPaymentIds.contains(dp.getId()));
             
-            existingContract.getDownPayments().addAll(updatedDownPayments);
+            // Update or add down payments
+            contractDTO.getDownPayments().forEach(downPaymentDTO -> {
+                if (downPaymentDTO.getId() != null) {
+                    // Update existing down payment
+                    existingContract.getDownPayments().stream()
+                            .filter(dp -> dp.getId().equals(downPaymentDTO.getId()))
+                            .findFirst()
+                            .ifPresent(existingDP -> {
+                                contractDownPaymentMapper.updateEntityFromDTO(downPaymentDTO, existingDP);
+                                if (downPaymentDTO.getCurrencyId() != null) {
+                                    Currency downPaymentCurrency = currencyRepository.findById(downPaymentDTO.getCurrencyId())
+                                            .orElseThrow(() -> new ResourceNotFoundException("Currency", "id", downPaymentDTO.getCurrencyId()));
+                                    existingDP.setCurrency(downPaymentCurrency);
+                                }
+                            });
+                } else {
+                    // Add new down payment
+                    ContractDownPayment downPayment = contractDownPaymentMapper.toEntity(downPaymentDTO);
+                    downPayment.setContract(existingContract);
+                    
+                    // Set currency for new down payment
+                    if (downPaymentDTO.getCurrencyId() != null) {
+                        Currency downPaymentCurrency = currencyRepository.findById(downPaymentDTO.getCurrencyId())
+                                .orElseThrow(() -> new ResourceNotFoundException("Currency", "id", downPaymentDTO.getCurrencyId()));
+                        downPayment.setCurrency(downPaymentCurrency);
+                    }
+                    
+                    existingContract.getDownPayments().add(downPayment);
+                }
+            });
         }
 
         // 更新发票信息
         if (contractDTO.getInvoices() != null) {
-            // Clear existing invoices and add new ones
-            existingContract.getInvoices().clear();
+            // Keep track of existing invoices to remove
+            Set<Long> updatedInvoiceIds = contractDTO.getInvoices().stream()
+                    .map(inv -> inv.getId())
+                    .filter(invoiceId -> invoiceId != null)
+                    .collect(Collectors.toSet());
             
-            List<Invoice> updatedInvoices = contractDTO.getInvoices().stream()
-                    .map(invoiceDTO -> {
-                        Invoice invoice = invoiceMapper.toEntity(invoiceDTO);
-                        invoice.setContract(existingContract);
-                        
-                        // 设置买方税务信息
-                        if (invoiceDTO.getBuyerTaxInfo() != null && invoiceDTO.getBuyerTaxInfo().getId() != null) {
-                            TaxInfo buyerTaxInfo = taxInfoRepository.findById(invoiceDTO.getBuyerTaxInfo().getId())
-                                    .orElseThrow(() -> new ResourceNotFoundException("TaxInfo", "id", invoiceDTO.getBuyerTaxInfo().getId()));
-                            invoice.setBuyerTaxInfo(buyerTaxInfo);
-                        }
-                        
-                        // 设置卖方税务信息
-                        if (invoiceDTO.getSellerTaxInfo() != null && invoiceDTO.getSellerTaxInfo().getId() != null) {
-                            TaxInfo sellerTaxInfo = taxInfoRepository.findById(invoiceDTO.getSellerTaxInfo().getId())
-                                    .orElseThrow(() -> new ResourceNotFoundException("TaxInfo", "id", invoiceDTO.getSellerTaxInfo().getId()));
-                            invoice.setSellerTaxInfo(sellerTaxInfo);
-                        }
-                        
-                        return invoice;
-                    })
-                    .collect(Collectors.toList());
+            // Remove invoices that are no longer present
+            existingContract.getInvoices().removeIf(inv -> !updatedInvoiceIds.contains(inv.getId()));
             
-            existingContract.getInvoices().addAll(updatedInvoices);
+            // Update or add invoices
+            contractDTO.getInvoices().forEach(invoiceDTO -> {
+                Invoice invoice;
+                
+                if (invoiceDTO.getId() != null) {
+                    // Update existing invoice
+                    invoice = existingContract.getInvoices().stream()
+                            .filter(inv -> inv.getId().equals(invoiceDTO.getId()))
+                            .findFirst()
+                            .orElseThrow(() -> new ResourceNotFoundException("Invoice", "id", invoiceDTO.getId()));
+                            
+                    // Check for duplicate invoice number only if it changed
+                    if (!invoice.getInvoiceNo().equals(invoiceDTO.getInvoiceNo()) &&
+                        invoiceRepository.existsByInvoiceNo(invoiceDTO.getInvoiceNo())) {
+                        throw new IllegalArgumentException("发票号码已存在: " + invoiceDTO.getInvoiceNo());
+                    }
+                    
+                    invoiceMapper.updateEntityFromDTO(invoiceDTO, invoice);
+                } else {
+                    // Add new invoice
+                    // Check for duplicate invoice number
+                    if (invoiceDTO.getInvoiceNo() != null && 
+                        invoiceRepository.existsByInvoiceNo(invoiceDTO.getInvoiceNo())) {
+                        throw new IllegalArgumentException("发票号码已存在: " + invoiceDTO.getInvoiceNo());
+                    }
+                    
+                    invoice = invoiceMapper.toEntity(invoiceDTO);
+                    invoice.setContract(existingContract);
+                    existingContract.getInvoices().add(invoice);
+                }
+                
+                // Set tax info relationships
+                if (invoiceDTO.getBuyerTaxInfo() != null && invoiceDTO.getBuyerTaxInfo().getId() != null) {
+                    TaxInfo buyerTaxInfo = taxInfoRepository.findById(invoiceDTO.getBuyerTaxInfo().getId())
+                            .orElseThrow(() -> new ResourceNotFoundException("TaxInfo", "id", invoiceDTO.getBuyerTaxInfo().getId()));
+                    invoice.setBuyerTaxInfo(buyerTaxInfo);
+                }
+                
+                if (invoiceDTO.getSellerTaxInfo() != null && invoiceDTO.getSellerTaxInfo().getId() != null) {
+                    TaxInfo sellerTaxInfo = taxInfoRepository.findById(invoiceDTO.getSellerTaxInfo().getId())
+                            .orElseThrow(() -> new ResourceNotFoundException("TaxInfo", "id", invoiceDTO.getSellerTaxInfo().getId()));
+                    invoice.setSellerTaxInfo(sellerTaxInfo);
+                }
+            });
         }
 
         Contract savedContract = contractRepository.save(existingContract);

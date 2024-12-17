@@ -43,7 +43,7 @@ public class Company extends BaseEntity {
     @OneToMany(mappedBy = "companyId", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BankAccount> bankAccounts = new ArrayList<>();  // 公司银行账户
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "tax_info_id")
     private TaxInfo taxInfo;  // 税务信息
 

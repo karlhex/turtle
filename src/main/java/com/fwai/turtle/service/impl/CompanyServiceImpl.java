@@ -21,6 +21,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import com.fwai.turtle.exception.ResourceNotFoundException;
+import com.fwai.turtle.persistence.entity.TaxInfo;
+
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -87,6 +89,24 @@ public class CompanyServiceImpl implements CompanyService {
             throw new IllegalArgumentException("Company with this name already exists");
         }
         Company company = companyMapper.toEntity(companyDTO);
+        
+        // Handle TaxInfo relationship
+        if (companyDTO.getTaxInfo() != null) {
+            if (companyDTO.getTaxInfo().getId() != null) {
+                // If TaxInfo has ID, use existing one
+                company.setTaxInfo(taxInfoRepository.findById(companyDTO.getTaxInfo().getId())
+                        .orElseThrow(() -> new ResourceNotFoundException("TaxInfo", "id", companyDTO.getTaxInfo().getId())));
+            } else {
+                // Check if TaxInfo with same bank account exists
+                String bankAccount = companyDTO.getTaxInfo().getBankAccount();
+                if (bankAccount != null) {
+                    taxInfoRepository.findByBankAccount(bankAccount).ifPresent(existingTaxInfo -> {
+                        throw new IllegalArgumentException("TaxInfo with bank account " + bankAccount + " already exists");
+                    });
+                }
+            }
+        }
+        
         company.setActive(true);
         return companyMapper.toDTO(companyRepository.save(company));
     }
@@ -102,14 +122,35 @@ public class CompanyServiceImpl implements CompanyService {
             throw new IllegalArgumentException("Company with this name already exists");
         }
 
-        companyMapper.updateEntityFromDTO(companyDTO, company);
-
-        // 更新关联的税务信息
-        TaxInfoDTO taxInfo = companyDTO.getTaxInfo();
-        if (taxInfo != null) {
-            company.setTaxInfo(taxInfoRepository.findById(taxInfo.getId())
-                    .orElseThrow(() -> new ResourceNotFoundException("TaxInfo", "id", taxInfo.getId())));
+        // Handle TaxInfo relationship before mapping
+        if (companyDTO.getTaxInfo() != null) {
+            if (companyDTO.getTaxInfo().getId() != null) {
+                // If TaxInfo has ID, use existing one
+                TaxInfoDTO taxInfoDTO = companyDTO.getTaxInfo();
+                TaxInfo existingTaxInfo = taxInfoRepository.findById(taxInfoDTO.getId())
+                        .orElseThrow(() -> new ResourceNotFoundException("TaxInfo", "id", taxInfoDTO.getId()));
+                
+                // Check if bank account is being changed and if it conflicts with another record
+                if (!existingTaxInfo.getBankAccount().equals(taxInfoDTO.getBankAccount())) {
+                    taxInfoRepository.findByBankAccount(taxInfoDTO.getBankAccount())
+                            .filter(other -> !other.getId().equals(existingTaxInfo.getId()))
+                            .ifPresent(conflict -> {
+                                throw new IllegalArgumentException("TaxInfo with bank account " + taxInfoDTO.getBankAccount() + " already exists");
+                            });
+                }
+                company.setTaxInfo(existingTaxInfo);
+            } else {
+                // Check if new TaxInfo's bank account exists
+                String bankAccount = companyDTO.getTaxInfo().getBankAccount();
+                if (bankAccount != null) {
+                    taxInfoRepository.findByBankAccount(bankAccount).ifPresent(existingTaxInfo -> {
+                        throw new IllegalArgumentException("TaxInfo with bank account " + bankAccount + " already exists");
+                    });
+                }
+            }
         }
+
+        companyMapper.updateEntityFromDTO(companyDTO, company);
 
         // 更新关联的联系人信息
         PersonDTO businessContact = companyDTO.getBusinessContact();
