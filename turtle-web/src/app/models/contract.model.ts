@@ -5,6 +5,7 @@ import { ContractType } from '../types/contract-type.enum';
 import { Currency } from './currency.model';
 import { Company } from './company.model';
 import { Invoice } from './invoice.model';
+import { Person } from './person.model';
 
 export interface Contract {
   id?: number;
@@ -16,9 +17,7 @@ export interface Contract {
   signingDate: Date;
   startDate: Date;
   endDate: Date;
-  contactPerson: string;
-  contactPhone?: string;
-  contactEmail?: string;
+  contactPerson?: Person;
   projectId?: number;
   totalAmount: number;
   currency: Currency;

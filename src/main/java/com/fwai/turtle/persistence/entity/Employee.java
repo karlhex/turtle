@@ -61,9 +61,11 @@ public class Employee {
     @Column
     private String remarks;         // 备注
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "emergency_contact_id")
-    private Person emergencyContact;        // 紧急联系人
+    @Column
+    private String emergencyContactName;    // 紧急联系人姓名
+
+    @Column
+    private String emergencyContactPhone;   // 紧急联系人电话
 
     @Column
     private LocalDate birthday;             // 生日

@@ -25,29 +25,54 @@
 .contracts-container {
   padding: 1rem;
   
+  .actions-bar {
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: flex-end;
+  }
+
   table {
     width: 100%;
     margin-top: 1rem;
-  }
 
-  .mat-column-title {
-    min-width: 300px;
-  }
+    .mat-column-actions {
+      width: 48px;
+      text-align: center;
+    }
 
-  .mat-column-type {
-    min-width: 150px;
-  }
+    .mat-column-contractNo {
+      min-width: 120px;
+    }
 
-  .mat-column-purchaseTotal,
-  .mat-column-purchasePaid,
-  .mat-column-salesTotal,
-  .mat-column-salesPaid {
-    min-width: 150px;
-    text-align: right;
-    
-    .mat-cell,
-    .mat-footer-cell {
-      padding-right: 24px;
+    .mat-column-title {
+      min-width: 300px;
+    }
+
+    .mat-column-type {
+      min-width: 150px;
+    }
+
+    .mat-column-purchaseTotal,
+    .mat-column-purchasePaid,
+    .mat-column-salesTotal,
+    .mat-column-salesPaid,
+    .mat-column-totalAmount,
+    .mat-column-paidAmount {
+      min-width: 150px;
+      text-align: right;
+      
+      .mat-cell,
+      .mat-footer-cell {
+        padding-right: 24px;
+      }
+    }
+
+    .mat-column-status {
+      min-width: 100px;
+    }
+
+    td.mat-cell {
+      padding: 8px;
     }
   }
 

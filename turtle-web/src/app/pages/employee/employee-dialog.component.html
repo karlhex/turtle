@@ -125,43 +125,17 @@
           </div>
 
           <!-- Emergency Contact -->
-          <div class="section" formGroupName="emergencyContact">
+          <div class="section">
             <h3>{{ 'employee.form.emergency.title' | translate }}</h3>
             
-            <mat-form-field class="full-width">
-              <mat-label>{{ 'employee.form.emergency.person' | translate }}</mat-label>
-              <input type="text"
-                    matInput
-                    [matAutocomplete]="personAuto"
-                    (input)="handleInput($event)"
-                    formControlName="person">
-              <mat-autocomplete #personAuto="matAutocomplete" 
-                              [displayWith]="displayPersonFn"
-                              (optionSelected)="handleOptionSelected($event)">
-                <mat-option *ngFor="let person of filteredPersons" [value]="person">
-                  {{person.firstName}} {{person.lastName}} ({{person.phone}})
-                </mat-option>
-              </mat-autocomplete>
-            </mat-form-field>
-
             <mat-form-field>
               <mat-label>{{ 'employee.form.emergency.name' | translate }}</mat-label>
-              <input matInput formControlName="firstName">
+              <input matInput formControlName="emergencyContactName">
             </mat-form-field>
 
             <mat-form-field>
               <mat-label>{{ 'employee.form.emergency.phone' | translate }}</mat-label>
-              <input matInput formControlName="phone">
-            </mat-form-field>
-
-            <mat-form-field>
-              <mat-label>{{ 'employee.form.emergency.email' | translate }}</mat-label>
-              <input matInput formControlName="email" type="email">
-            </mat-form-field>
-
-            <mat-form-field class="full-width">
-              <mat-label>{{ 'employee.form.emergency.address' | translate }}</mat-label>
-              <textarea matInput formControlName="address" rows="2"></textarea>
+              <input matInput formControlName="emergencyContactPhone">
             </mat-form-field>
           </div>
 

@@ -1,9 +1,9 @@
 <h2 mat-dialog-title>{{ isEdit ? 'project.dialog.edit' : 'project.dialog.create' | translate }}</h2>
 
-<mat-dialog-content>
-  <mat-tab-group>
-    <mat-tab label="{{ 'project.dialog.basicInfo' | translate }}">
-      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <mat-dialog-content>
+    <mat-tab-group>
+      <mat-tab label="{{ 'project.dialog.basicInfo' | translate }}">
         <div class="form-container">
           <!-- Project No -->
           <mat-form-field appearance="outline">
@@ -82,74 +82,74 @@
             <textarea matInput formControlName="remarks" rows="3"></textarea>
           </mat-form-field>
         </div>
-      </form>
-    </mat-tab>
-    
-    <mat-tab label="{{ 'project.dialog.contracts' | translate }}" *ngIf="isEdit">
-      <div class="contracts-container">
-        <table mat-table [dataSource]="contracts" class="mat-elevation-z8">
-          <!-- Title Column -->
-          <ng-container matColumnDef="title">
-            <th mat-header-cell *matHeaderCellDef>{{ 'contract.title' | translate }}</th>
-            <td mat-cell *matCellDef="let contract">{{contract.title}}</td>
-            <td mat-footer-cell *matFooterCellDef>{{ 'contract.total' | translate }}</td>
-          </ng-container>
+      </mat-tab>
+      
+      <mat-tab label="{{ 'project.dialog.contracts' | translate }}" *ngIf="isEdit">
+        <div class="contracts-container">
+          <table mat-table [dataSource]="contracts" class="mat-elevation-z8">
+            <!-- Title Column -->
+            <ng-container matColumnDef="title">
+              <th mat-header-cell *matHeaderCellDef>{{ 'contract.title' | translate }}</th>
+              <td mat-cell *matCellDef="let contract">{{contract.title}}</td>
+              <td mat-footer-cell *matFooterCellDef>{{ 'contract.total' | translate }}</td>
+            </ng-container>
 
-          <!-- Type Column -->
-          <ng-container matColumnDef="type">
-            <th mat-header-cell *matHeaderCellDef>{{ 'contract.type' | translate }}</th>
-            <td mat-cell *matCellDef="let contract">{{ 'enum.contract.type.' + contract.type | translate }}</td>
-            <td mat-footer-cell *matFooterCellDef></td>
-          </ng-container>
+            <!-- Type Column -->
+            <ng-container matColumnDef="type">
+              <th mat-header-cell *matHeaderCellDef>{{ 'contract.type' | translate }}</th>
+              <td mat-cell *matCellDef="let contract">{{ 'enum.contract.type.' + contract.type | translate }}</td>
+              <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container>
 
-          <!-- Purchase Total Column -->
-          <ng-container matColumnDef="purchaseTotal">
-            <th mat-header-cell *matHeaderCellDef>{{ 'contract.purchaseTotal' | translate }}</th>
-            <td mat-cell *matCellDef="let contract">
-              {{contract.type === contractTypes.PURCHASE ? (contract.totalAmount | number:'1.2-2') : ''}} {{contract.type === contractTypes.PURCHASE ? contract.currency?.code : ''}}
-            </td>
-            <td mat-footer-cell *matFooterCellDef>{{totalsByType[contractTypes.PURCHASE].total | number:'1.2-2'}}</td>
-          </ng-container>
+            <!-- Purchase Total Column -->
+            <ng-container matColumnDef="purchaseTotal">
+              <th mat-header-cell *matHeaderCellDef>{{ 'contract.purchaseTotal' | translate }}</th>
+              <td mat-cell *matCellDef="let contract">
+                {{contract.type === contractTypes.PURCHASE ? (contract.totalAmount | number:'1.2-2') : ''}} {{contract.type === contractTypes.PURCHASE ? contract.currency?.code : ''}}
+              </td>
+              <td mat-footer-cell *matFooterCellDef>{{totalsByType[contractTypes.PURCHASE].total | number:'1.2-2'}}</td>
+            </ng-container>
 
-          <!-- Purchase Paid Column -->
-          <ng-container matColumnDef="purchasePaid">
-            <th mat-header-cell *matHeaderCellDef>{{ 'contract.purchasePaid' | translate }}</th>
-            <td mat-cell *matCellDef="let contract">
-              {{contract.type === contractTypes.PURCHASE ? ((contract.downPayments | paymentTotal) | number:'1.2-2') : ''}} {{contract.type === contractTypes.PURCHASE ? contract.currency?.code : ''}}
-            </td>
-            <td mat-footer-cell *matFooterCellDef>{{totalsByType[contractTypes.PURCHASE].paid | number:'1.2-2'}}</td>
-          </ng-container>
+            <!-- Purchase Paid Column -->
+            <ng-container matColumnDef="purchasePaid">
+              <th mat-header-cell *matHeaderCellDef>{{ 'contract.purchasePaid' | translate }}</th>
+              <td mat-cell *matCellDef="let contract">
+                {{contract.type === contractTypes.PURCHASE ? ((contract.downPayments | paymentTotal) | number:'1.2-2') : ''}} {{contract.type === contractTypes.PURCHASE ? contract.currency?.code : ''}}
+              </td>
+              <td mat-footer-cell *matFooterCellDef>{{totalsByType[contractTypes.PURCHASE].paid | number:'1.2-2'}}</td>
+            </ng-container>
 
-          <!-- Sales Total Column -->
-          <ng-container matColumnDef="salesTotal">
-            <th mat-header-cell *matHeaderCellDef>{{ 'contract.salesTotal' | translate }}</th>
-            <td mat-cell *matCellDef="let contract">
-              {{contract.type === contractTypes.SALES ? (contract.totalAmount | number:'1.2-2') : ''}} {{contract.type === contractTypes.SALES ? contract.currency?.code : ''}}
-            </td>
-            <td mat-footer-cell *matFooterCellDef>{{totalsByType[contractTypes.SALES].total | number:'1.2-2'}}</td>
-          </ng-container>
+            <!-- Sales Total Column -->
+            <ng-container matColumnDef="salesTotal">
+              <th mat-header-cell *matHeaderCellDef>{{ 'contract.salesTotal' | translate }}</th>
+              <td mat-cell *matCellDef="let contract">
+                {{contract.type === contractTypes.SALES ? (contract.totalAmount | number:'1.2-2') : ''}} {{contract.type === contractTypes.SALES ? contract.currency?.code : ''}}
+              </td>
+              <td mat-footer-cell *matFooterCellDef>{{totalsByType[contractTypes.SALES].total | number:'1.2-2'}}</td>
+            </ng-container>
 
-          <!-- Sales Paid Column -->
-          <ng-container matColumnDef="salesPaid">
-            <th mat-header-cell *matHeaderCellDef>{{ 'contract.salesPaid' | translate }}</th>
-            <td mat-cell *matCellDef="let contract">
-              {{contract.type === contractTypes.SALES ? ((contract.downPayments | paymentTotal) | number:'1.2-2') : ''}} {{contract.type === contractTypes.SALES ? contract.currency?.code : ''}}
-            </td>
-            <td mat-footer-cell *matFooterCellDef>{{totalsByType[contractTypes.SALES].paid | number:'1.2-2'}}</td>
-          </ng-container>
+            <!-- Sales Paid Column -->
+            <ng-container matColumnDef="salesPaid">
+              <th mat-header-cell *matHeaderCellDef>{{ 'contract.salesPaid' | translate }}</th>
+              <td mat-cell *matCellDef="let contract">
+                {{contract.type === contractTypes.SALES ? ((contract.downPayments | paymentTotal) | number:'1.2-2') : ''}} {{contract.type === contractTypes.SALES ? contract.currency?.code : ''}}
+              </td>
+              <td mat-footer-cell *matFooterCellDef>{{totalsByType[contractTypes.SALES].paid | number:'1.2-2'}}</td>
+            </ng-container>
 
-          <tr mat-header-row *matHeaderRowDef="['title', 'type', 'purchaseTotal', 'purchasePaid', 'salesTotal', 'salesPaid']"></tr>
-          <tr mat-row *matRowDef="let row; columns: ['title', 'type', 'purchaseTotal', 'purchasePaid', 'salesTotal', 'salesPaid'];"></tr>
-          <tr mat-footer-row *matFooterRowDef="['title', 'type', 'purchaseTotal', 'purchasePaid', 'salesTotal', 'salesPaid']"></tr>
-        </table>
-      </div>
-    </mat-tab>
-  </mat-tab-group>
-</mat-dialog-content>
+            <tr mat-header-row *matHeaderRowDef="['title', 'type', 'purchaseTotal', 'purchasePaid', 'salesTotal', 'salesPaid']"></tr>
+            <tr mat-row *matRowDef="let row; columns: ['title', 'type', 'purchaseTotal', 'purchasePaid', 'salesTotal', 'salesPaid'];"></tr>
+            <tr mat-footer-row *matFooterRowDef="['title', 'type', 'purchaseTotal', 'purchasePaid', 'salesTotal', 'salesPaid']"></tr>
+          </table>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </mat-dialog-content>
 
-<mat-dialog-actions align="end">
-  <button mat-button type="button" (click)="onCancel()">{{ 'project.actions.cancel' | translate }}</button>
-  <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">
-    {{ isEdit ? 'common.action.save' : 'common.action.create' | translate }}
-  </button>
-</mat-dialog-actions>
+  <mat-dialog-actions align="end">
+    <button mat-button type="button" (click)="onCancel()">{{ 'project.actions.cancel' | translate }}</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">
+      {{ isEdit ? 'common.action.save' : 'common.action.create' | translate }}
+    </button>
+  </mat-dialog-actions>
+</form>

@@ -122,9 +122,9 @@
               <div class="grid-item">
                 <mat-form-field appearance="outline">
                   <mat-label>结束日期</mat-label>
-                  <input matInput [matDatepicker]="endPicker" formControlName="endDate" required>
-                  <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
-                  <mat-datepicker #endPicker></mat-datepicker>
+                  <input matInput [matDatepicker]="endDatePicker" formControlName="endDate" required>
+                  <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+                  <mat-datepicker #endDatePicker></mat-datepicker>
                   <mat-error *ngIf="form.get('endDate')?.hasError('required')">
                     请选择结束日期
                   </mat-error>
@@ -138,27 +138,13 @@
           <div class="form-section">
             <div class="grid-container">
               <div class="grid-item">
-                <mat-form-field appearance="outline">
-                  <mat-label>联系人</mat-label>
-                  <input matInput formControlName="contactPerson" required>
-                  <mat-error *ngIf="form.get('contactPerson')?.hasError('required')">
-                    请输入联系人
-                  </mat-error>
-                </mat-form-field>
-              </div>
-              <div class="grid-item">
-                <mat-form-field appearance="outline">
-                  <mat-label>联系电话</mat-label>
-                  <input matInput formControlName="contactPhone">
-                </mat-form-field>
-              </div>
-            </div>
-            <div class="grid-container">
-              <div class="grid-item">
-                <mat-form-field appearance="outline">
-                  <mat-label>联系邮箱</mat-label>
-                  <input matInput formControlName="contactEmail" type="email">
-                </mat-form-field>
+                <app-person-input
+                  formControlName="contactPerson"
+                  [required]="true"
+                  placeholder="联系人"
+                  [persons]="people"
+                  (personAdded)="onPersonAdded($event)">
+                </app-person-input>
               </div>
             </div>
           </div>

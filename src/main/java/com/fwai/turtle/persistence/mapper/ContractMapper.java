@@ -1,7 +1,9 @@
 package com.fwai.turtle.persistence.mapper;
 
 import com.fwai.turtle.dto.ContractDTO;
+import com.fwai.turtle.dto.PersonDTO;
 import com.fwai.turtle.persistence.entity.Contract;
+import com.fwai.turtle.persistence.entity.Person;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -13,7 +15,8 @@ import org.mapstruct.MappingTarget;
         ContractDownPaymentMapper.class,
         CurrencyMapper.class,
         CompanyMapper.class,
-        InvoiceMapper.class
+        InvoiceMapper.class,
+        PersonMapper.class
     }
 )
 public interface ContractMapper {
@@ -24,6 +27,7 @@ public interface ContractMapper {
     @Mapping(source = "projectId", target = "projectId")
     @Mapping(source = "buyerCompany", target = "buyerCompany")
     @Mapping(source = "sellerCompany", target = "sellerCompany")
+    @Mapping(source = "contactPerson", target = "contactPerson")
     ContractDTO toDTO(Contract contract);
 
     @Mapping(target = "currency", ignore = true)
@@ -32,6 +36,7 @@ public interface ContractMapper {
     @Mapping(target = "invoices", ignore = true)
     @Mapping(target = "buyerCompany", ignore = false)
     @Mapping(target = "sellerCompany", ignore = false)
+    @Mapping(target = "contactPerson", ignore = false)
     Contract toEntity(ContractDTO dto);
 
     @Mapping(target = "currency", ignore = true)
@@ -40,5 +45,6 @@ public interface ContractMapper {
     @Mapping(target = "invoices", ignore = true)
     @Mapping(target = "buyerCompany", ignore = false)
     @Mapping(target = "sellerCompany", ignore = false)
+    @Mapping(target = "contactPerson", ignore = false)
     void updateEntityFromDTO(ContractDTO dto, @MappingTarget Contract contract);
 }

@@ -6,7 +6,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { Employee } from '@models/employee.model';
 import { DepartmentService, Department } from '../../services/department.service';
-import { PersonService, Person } from '../../services/person.service';
 import { EmployeeEducationService, EmployeeEducation } from '../../services/employee-education.service';
 import { EducationDialogComponent } from './education-dialog.component';
 import { ConfirmDialogComponent } from '../../components/confirmdialog/confirm-dialog.component';
@@ -27,8 +26,6 @@ import { Gender } from '../../types/gender.enum';
 export class EmployeeDialogComponent implements OnInit, AfterViewInit {
   employeeForm!: FormGroup;
   departments: Department[] = [];
-  filteredPersons: Person[] = [];
-  private searchPersons$ = new Subject<string>();
   contractTypes = Object.values(EmployeeContractType);  
   genders = Object.values(Gender);  
 
@@ -50,13 +47,11 @@ export class EmployeeDialogComponent implements OnInit, AfterViewInit {
     private dialog: MatDialog,
     private dialogRef: MatDialogRef<EmployeeDialogComponent>,
     private departmentService: DepartmentService,
-    private personService: PersonService,
     private educationService: EmployeeEducationService,
     private jobHistoryService: EmployeeJobHistoryService,
     @Inject(MAT_DIALOG_DATA) public data: { employee: Employee; mode: 'view' | 'edit' }
   ) {
     this.initForm();
-    this.setupPersonSearch();
   }
 
   ngOnInit(): void {
@@ -93,60 +88,15 @@ export class EmployeeDialogComponent implements OnInit, AfterViewInit {
     });
   }
 
-  private setupPersonSearch(): void {
-    this.searchPersons$.pipe(
-      debounceTime(300),
-      distinctUntilChanged(),
-      switchMap(query => this.personService.searchPersons(query))
-    ).subscribe({
-      next: (response: ApiResponse<Person[]>) => {
-        if (response.code === 200 && response.data) {
-          this.filteredPersons = response.data;
-        }
-      },
-      error: (error) => {
-        console.error('Error searching persons:', error);
-      }
-    });
-  }
-
-  handleInput(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (input.value.length >= 2) {
-      this.searchPersons$.next(input.value);
-    } else {
-      this.filteredPersons = [];
-    }
-  }
-
-  displayPersonFn = (person: Person | null): string => {
-    if (!person) return '';
-    return `${person.firstName} ${person.lastName}`;
-  }
-
-  handleOptionSelected(event: MatAutocompleteSelectedEvent): void {
-    const person = event.option.value as Person;
-    const emergencyContact = this.employeeForm.get('emergencyContact');
-    if (emergencyContact && person) {
-      emergencyContact.patchValue({
-        firstName: person.firstName,
-        lastName: person.lastName,
-        phone: person.phone,
-        email: person.email,
-        address: person.address
-      });
-    }
-  }
-
   private initForm(): void {
     this.employeeForm = this.fb.group({
       employeeNumber: ['', [Validators.required]],
       name: ['', [Validators.required]],
-      email: ['', [Validators.required, Validators.email]],
+      email: ['', [Validators.email]],
       phone: [''],
-      department: [null, [Validators.required]],
-      position: ['', [Validators.required]],
-      hireDate: [null, [Validators.required]],
+      department: [null],
+      position: [''],
+      hireDate: [null],
       leaveDate: [null],
       birthday: [null],
       gender: [''],
@@ -157,14 +107,9 @@ export class EmployeeDialogComponent implements OnInit, AfterViewInit {
       contractDuration: [null],
       contractStartDate: [null],
       remarks: [''],
-      isActive: [''],
-      emergencyContact: this.fb.group({
-        firstName: [''],
-        lastName: [''],
-        phone: [''],
-        email: [''],
-        address: ['']
-      })
+      isActive: [true],
+      emergencyContactName: [''],
+      emergencyContactPhone: ['']
     });
 
     // Set initial values
@@ -177,7 +122,6 @@ export class EmployeeDialogComponent implements OnInit, AfterViewInit {
       this.employeeForm.disable();
     } else if (this.data.mode === 'edit') {
       this.employeeForm.enable();
-      //this.employeeForm.get('employeeNumber')?.disable();
     }
   }
 
@@ -260,24 +204,10 @@ export class EmployeeDialogComponent implements OnInit, AfterViewInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         console.log(result);
-        /*
-        const employeeId = this.data.employee.id!;
-        this.educationService.addEducation(employeeId, result).subscribe({
-          next: (response) => {
-            console.log(response);
-            if (response.code === 200 && response.data) {
-              this.loadEducations();
-            }
-          },
-          error: (error) => {
-            console.error('Error adding education:', error);
-          }
-        });
-        */
-       if (!this.data.employee.educations) {
-        this.data.employee.educations = [];
-      }
-      this.data.employee.educations.push(result);
+        if (!this.data.employee.educations) {
+          this.data.employee.educations = [];
+        }
+        this.data.employee.educations.push(result);
       }
     });
   }

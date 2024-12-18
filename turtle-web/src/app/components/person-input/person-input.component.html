@@ -1,0 +1,30 @@
+<div class="person-input-container">
+  <mat-form-field appearance="outline" class="person-input">
+    <mat-label>{{ placeholder }}</mat-label>
+    <input matInput
+           [value]="filterValue"
+           [placeholder]="placeholder"
+           [required]="required"
+           (input)="onFilterChange($event)"
+           [matAutocomplete]="auto">
+    <mat-error *ngIf="required && !value">
+      {{ placeholder + '不能为空' }}
+    </mat-error>
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option *ngFor="let person of filteredPersons | async" 
+                  [value]="getPersonDisplayName(person)"
+                  (click)="selectPerson(person)">
+        {{ getPersonDisplayName(person) }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+
+  <button mat-icon-button
+          type="button"
+          color="primary"
+          [disabled]="disabled"
+          (click)="openPersonDialog()"
+          class="add-button">
+    <mat-icon>{{ value ? 'edit' : 'add' }}</mat-icon>
+  </button>
+</div>

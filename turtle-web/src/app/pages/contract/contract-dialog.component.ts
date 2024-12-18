@@ -10,9 +10,11 @@ import { ContractStatus } from '../../types/contract-status.enum';
 import { CurrencyService } from '../../services/currency.service';
 import { ProjectService } from '../../services/project.service';
 import { CompanyService } from '../../services/company.service';
+import { PersonService } from '../../services/person.service';
 import { Currency } from '../../models/currency.model';
 import { Project } from '../../models/project.model';
 import { Company } from '../../models/company.model';
+import { Person } from '../../models/person.model';
 import { ApiResponse } from '../../models/api.model';
 import { Page } from '../../models/page.model';
 import { Observable, buffer, map, startWith } from 'rxjs';
@@ -40,6 +42,7 @@ export class ContractDialogComponent implements OnInit {
   currencies: Currency[] = [];
   projects: Project[] = [];
   companies: Company[] = [];
+  people: Person[] = [];
   contractInvoices: Invoice[] = [];
   filteredBuyerCompanies!: Observable<Company[]>;
   filteredSellerCompanies!: Observable<Company[]>;
@@ -54,6 +57,7 @@ export class ContractDialogComponent implements OnInit {
     private currencyService: CurrencyService,
     private projectService: ProjectService,
     private companyService: CompanyService,
+    private personService: PersonService,
     private dialogRef: MatDialogRef<ContractDialogComponent>,
     private snackBar: MatSnackBar,
     private translate: TranslateService,
@@ -72,8 +76,6 @@ export class ContractDialogComponent implements OnInit {
       startDate: [data.startDate, [Validators.required]],
       endDate: [data.endDate, [Validators.required]],
       contactPerson: [data.contactPerson, [Validators.required]],
-      contactPhone: [data.contactPhone],
-      contactEmail: [data.contactEmail, [Validators.email]],
       projectId: [data.projectId],
       totalAmount: [data.totalAmount, [Validators.required, Validators.min(0)]],
       currency: [data.currency, [Validators.required]],
@@ -103,8 +105,7 @@ export class ContractDialogComponent implements OnInit {
     this.loadCurrencies();
     this.loadProjects();
     this.loadCompanies();
-    
-    // Initialize filtered companies
+    this.loadPeople();
     this.initializeCompanyFilters();
   }
 
@@ -168,6 +169,14 @@ export class ContractDialogComponent implements OnInit {
       error: (error) => {
         this.showError('Error loading companies');
         console.error('Failed to load companies:', error);
+      }
+    });
+  }
+
+  private loadPeople(): void {
+    this.personService.getAll().subscribe(response => {
+      if (response.code === 200) {
+        this.people = response.data;
       }
     });
   }
@@ -320,6 +329,10 @@ export class ContractDialogComponent implements OnInit {
       };
       this.contractDownPayments = [...this.contractDownPayments];
     }
+  }
+
+  onPersonAdded(person: Person): void {
+    this.people = [...this.people, person];
   }
 
   submit(): void {

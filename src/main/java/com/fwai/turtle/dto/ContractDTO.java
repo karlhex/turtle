@@ -22,9 +22,7 @@ public class ContractDTO {
     private LocalDate signingDate;
     private LocalDate startDate;
     private LocalDate endDate;
-    private String contactPerson;
-    private String contactPhone;
-    private String contactEmail;
+    private PersonDTO contactPerson;
     private BigDecimal totalAmount;
     private CurrencyDTO currency;
     private ContractStatus status;

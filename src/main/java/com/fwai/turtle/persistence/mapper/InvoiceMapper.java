@@ -5,7 +5,7 @@ import com.fwai.turtle.persistence.entity.Invoice;
 import org.mapstruct.*;
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {TaxInfoMapper.class})
+@Mapper(componentModel = "spring", uses = {TaxInfoMapper.class,ContractMapper.class}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface InvoiceMapper {
     
     InvoiceDTO toDTO(Invoice invoice);

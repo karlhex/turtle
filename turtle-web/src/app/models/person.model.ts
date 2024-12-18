@@ -4,5 +4,10 @@ export interface Person {
     lastName: string;
     address?: string;
     email?: string;
-    phone?: string;
+    mobilePhone?: string;
+    workPhone?: string;
+    homePhone?: string;
+    companyName?: string;
+    department?: string;
+    position?: string;
 }

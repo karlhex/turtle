@@ -46,14 +46,9 @@ public class Contract extends BaseEntity {
     @Column(name = "end_date", nullable = false)
     private LocalDate endDate;  // 结束日期
 
-    @Column(name = "contact_person", nullable = false)
-    private String contactPerson;  // 联系人
-
-    @Column(name = "contact_phone")
-    private String contactPhone;  // 联系电话
-
-    @Column(name = "contact_email")
-    private String contactEmail;  // 联系邮箱
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "contact_person_id")
+    private Person contactPerson;  // 联系人
 
     @Column(name = "project_id")
     private Long projectId;  // 关联的项目

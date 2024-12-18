@@ -23,8 +23,6 @@ export class CompanyDialogComponent implements OnInit {
   taxInfos: TaxInfo[] = [];
   persons: Person[] = [];
   filteredTaxInfos!: Observable<TaxInfo[]>;
-  filteredBusinessContacts!: Observable<Person[]>;
-  filteredTechnicalContacts!: Observable<Person[]>;
 
   constructor(
     private fb: FormBuilder,
@@ -55,10 +53,7 @@ export class CompanyDialogComponent implements OnInit {
       this.form.patchValue(data.company);
     }
 
-    // Bind the display functions to this context
-    this.displayPerson = this.displayPerson.bind(this);
     this.displayTaxInfo = this.displayTaxInfo.bind(this);
-
     this.setupAutoComplete();
   }
 
@@ -92,24 +87,6 @@ export class CompanyDialogComponent implements OnInit {
         return name ? this._filterTaxInfos(name) : this.taxInfos.slice();
       })
     );
-
-    // Business contact autocomplete
-    this.filteredBusinessContacts = this.form.get('businessContact')!.valueChanges.pipe(
-      startWith(''),
-      map(value => {
-        const name = typeof value === 'string' ? value : this._getPersonFullName(value);
-        return name ? this._filterPersons(name) : this.persons.slice();
-      })
-    );
-
-    // Technical contact autocomplete
-    this.filteredTechnicalContacts = this.form.get('technicalContact')!.valueChanges.pipe(
-      startWith(''),
-      map(value => {
-        const name = typeof value === 'string' ? value : this._getPersonFullName(value);
-        return name ? this._filterPersons(name) : this.persons.slice();
-      })
-    );
   }
 
   private _filterTaxInfos(name: string): TaxInfo[] {
@@ -118,24 +95,12 @@ export class CompanyDialogComponent implements OnInit {
       taxInfo.fullName.toLowerCase().includes(filterValue));
   }
 
-  private _filterPersons(name: string): Person[] {
-    const filterValue = name.toLowerCase();
-    return this.persons.filter(person => 
-      this._getPersonFullName(person).toLowerCase().includes(filterValue));
-  }
-
-  private _getPersonFullName(person: Person): string {
-    return person ? `${person.firstName} ${person.lastName}` : '';
-  }
-
   displayTaxInfo(taxInfo: TaxInfo): string {
     return taxInfo?.fullName || '';
   }
 
-  displayPerson(person: Person | string | null): string {
-    if (!person) return '';
-    if (typeof person === 'string') return person;
-    return this._getPersonFullName(person);
+  onPersonAdded(person: Person): void {
+    this.persons = [...this.persons, person];
   }
 
   onSubmit(): void {

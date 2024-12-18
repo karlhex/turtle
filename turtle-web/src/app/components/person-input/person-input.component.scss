@@ -1,0 +1,13 @@
+.person-input-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  .person-input {
+    flex: 1;
+  }
+
+  .add-button {
+    margin-top: -0.75rem;
+  }
+}

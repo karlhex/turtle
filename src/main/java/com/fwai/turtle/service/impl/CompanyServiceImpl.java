@@ -12,17 +12,18 @@ import com.fwai.turtle.persistence.repository.PersonRepository;
 import com.fwai.turtle.persistence.repository.TaxInfoRepository;
 import com.fwai.turtle.persistence.mapper.CompanyMapper;
 import com.fwai.turtle.persistence.mapper.BankAccountMapper;
+import com.fwai.turtle.persistence.mapper.PersonMapper;
 import com.fwai.turtle.service.interfaces.CompanyService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import com.fwai.turtle.exception.ResourceNotFoundException;
 import com.fwai.turtle.persistence.entity.TaxInfo;
-
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,6 +40,8 @@ public class CompanyServiceImpl implements CompanyService {
     private final TaxInfoRepository taxInfoRepository;
     private final BankAccountMapper bankAccountMapper;
     private final PersonRepository personRepository;
+    @Autowired
+    private PersonMapper personMapper;
 
     @Override
     public Page<CompanyDTO> getCompanies(Pageable pageable, String search, Boolean active) {
@@ -106,6 +109,18 @@ public class CompanyServiceImpl implements CompanyService {
                 }
             }
         }
+
+        // Handle business contact creation
+        PersonDTO businessContact = companyDTO.getBusinessContact();
+        if (businessContact != null && businessContact.getId() == null) {
+            company.setBusinessContact(personRepository.save(personMapper.toEntity(businessContact)));
+        }
+
+        // Handle technical contact creation
+        PersonDTO technicalContact = companyDTO.getTechnicalContact();
+        if (technicalContact != null && technicalContact.getId() == null) {
+            company.setTechnicalContact(personRepository.save(personMapper.toEntity(technicalContact)));
+        }
         
         company.setActive(true);
         return companyMapper.toDTO(companyRepository.save(company));
@@ -152,16 +167,26 @@ public class CompanyServiceImpl implements CompanyService {
 
         companyMapper.updateEntityFromDTO(companyDTO, company);
 
-        // 更新关联的联系人信息
+        // Handle business contact creation/update
         PersonDTO businessContact = companyDTO.getBusinessContact();
         if (businessContact != null) {
-            company.setBusinessContact(personRepository.findById(businessContact.getId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Person", "id", businessContact.getId())));
+            if (businessContact.getId() == null) {
+                company.setBusinessContact(personRepository.save(personMapper.toEntity(businessContact)));
+            } else {
+                company.setBusinessContact(personRepository.findById(businessContact.getId())
+                        .orElseThrow(() -> new ResourceNotFoundException("Person", "id", businessContact.getId())));
+            }
         }
+
+        // Handle technical contact creation/update
         PersonDTO technicalContact = companyDTO.getTechnicalContact();
         if (technicalContact != null) {
-            company.setTechnicalContact(personRepository.findById(technicalContact.getId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Person", "id", technicalContact.getId())));
+            if (technicalContact.getId() == null) {
+                company.setTechnicalContact(personRepository.save(personMapper.toEntity(technicalContact)));
+            } else {
+                company.setTechnicalContact(personRepository.findById(technicalContact.getId())
+                        .orElseThrow(() -> new ResourceNotFoundException("Person", "id", technicalContact.getId())));
+            }
         }
         
         return companyMapper.toDTO(companyRepository.save(company));

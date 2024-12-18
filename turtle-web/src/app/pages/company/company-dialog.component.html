@@ -64,25 +64,21 @@
         </mat-form-field>
 
         <div class="section-title">联系人信息</div>
-        <mat-form-field appearance="outline" class="w-full">
-          <mat-label>商务联系人</mat-label>
-          <input type="text" matInput formControlName="businessContact" [matAutocomplete]="businessContactAuto">
-          <mat-autocomplete #businessContactAuto="matAutocomplete" [displayWith]="displayPerson">
-            <mat-option *ngFor="let person of filteredBusinessContacts | async" [value]="person">
-              {{person.firstName}} {{person.lastName}}
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
+        <app-person-input
+          formControlName="businessContact"
+          [value]="form.get('businessContact')?.value"
+          [persons]="persons"
+          (personAdded)="onPersonAdded($event)"
+          placeholder="商务联系人">
+        </app-person-input>
 
-        <mat-form-field appearance="outline" class="w-full">
-          <mat-label>技术联系人</mat-label>
-          <input type="text" matInput formControlName="technicalContact" [matAutocomplete]="technicalContactAuto">
-          <mat-autocomplete #technicalContactAuto="matAutocomplete" [displayWith]="displayPerson">
-            <mat-option *ngFor="let person of filteredTechnicalContacts | async" [value]="person">
-              {{person.firstName}} {{person.lastName}}
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
+        <app-person-input
+          formControlName="technicalContact"
+          [value]="form.get('technicalContact')?.value"
+          [persons]="persons"
+          (personAdded)="onPersonAdded($event)"
+          placeholder="技术联系人">
+        </app-person-input>
         
         <!-- 备注 -->
         <mat-form-field appearance="outline" class="w-full">

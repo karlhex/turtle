@@ -11,8 +11,7 @@ import org.mapstruct.Named;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
 @Mapper(componentModel = "spring", 
-        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
-        uses = {PersonMapper.class})
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface EmployeeMapper {
 
     @Mapping(target = "department", source = "department", qualifiedByName = "toDepartmentDTO")

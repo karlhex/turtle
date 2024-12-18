@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Project } from '../../models/project.model';
 import { ProjectService } from '../../services/project.service';
 import { ProjectStatus } from '../../types/project-status.enum';
@@ -34,9 +34,11 @@ export class ProjectDialogComponent implements OnInit {
     [ContractType.PURCHASE]: { total: 0, paid: 0 },
     [ContractType.SALES]: { total: 0, paid: 0 }
   };
+  displayedColumns: string[] = ['contractNo', 'title', 'type', 'totalAmount', 'paidAmount', 'status', 'actions'];
 
   constructor(
     private fb: FormBuilder,
+    private dialog: MatDialog,
     private projectService: ProjectService,
     private employeeService: EmployeeService,
     private dialogRef: MatDialogRef<ProjectDialogComponent>,
@@ -66,13 +68,18 @@ export class ProjectDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadEmployees();
+    this.setupEmployeeFilter();
   }
 
   loadEmployees(): void {
-    this.employeeService.getActiveEmployees().subscribe(response => {
-      if (response.code === 200 && response.data) {
-        this.employees = response.data;
-        this.setupEmployeeFilter();
+    this.employeeService.getActiveEmployees().subscribe({
+      next: (response) => {
+        if (response.code === 200 && response.data) {
+          this.employees = response.data;
+        }
+      },
+      error: (error) => {
+        console.error('Error loading employees:', error);
       }
     });
   }
@@ -110,12 +117,15 @@ export class ProjectDialogComponent implements OnInit {
   private setupEmployeeFilter(): void {
     this.filteredEmployees = this.form.get('manager')!.valueChanges.pipe(
       startWith(''),
-      map(value => this._filterEmployees(value))
+      map(value => {
+        const searchValue = typeof value === 'string' ? value : value?.name || '';
+        return this._filterEmployees(searchValue);
+      })
     );
   }
 
-  private _filterEmployees(value: string | Employee): Employee[] {
-    const filterValue = typeof value === 'string' ? value.toLowerCase() : value.name.toLowerCase();
+  private _filterEmployees(value: string): Employee[] {
+    const filterValue = value.toLowerCase();
     return this.employees.filter(employee => 
       employee.name.toLowerCase().includes(filterValue)
     );
@@ -154,5 +164,20 @@ export class ProjectDialogComponent implements OnInit {
 
   onCancel(): void {
     this.dialogRef.close();
+  }
+
+  openContractDialog(): void {
+    // Implement contract dialog opening logic
+    console.log('Opening contract dialog');
+  }
+
+  viewContract(contract: Contract): void {
+    // Implement contract viewing logic
+    console.log('Viewing contract:', contract);
+  }
+
+  editContract(contract: Contract): void {
+    // Implement contract editing logic
+    console.log('Editing contract:', contract);
   }
 }

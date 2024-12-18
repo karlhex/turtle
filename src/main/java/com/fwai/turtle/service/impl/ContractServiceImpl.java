@@ -9,6 +9,7 @@ import com.fwai.turtle.persistence.entity.ContractItem;
 import com.fwai.turtle.persistence.entity.ContractDownPayment;
 import com.fwai.turtle.persistence.entity.Currency;
 import com.fwai.turtle.persistence.entity.Invoice;
+import com.fwai.turtle.persistence.entity.Person;
 import com.fwai.turtle.persistence.entity.Product;
 import com.fwai.turtle.persistence.entity.TaxInfo;
 import com.fwai.turtle.persistence.mapper.ContractItemMapper;
@@ -18,6 +19,7 @@ import com.fwai.turtle.persistence.mapper.InvoiceMapper;
 import com.fwai.turtle.persistence.repository.ContractRepository;
 import com.fwai.turtle.persistence.repository.CompanyRepository;
 import com.fwai.turtle.persistence.repository.CurrencyRepository;
+import com.fwai.turtle.persistence.repository.PersonRepository;
 import com.fwai.turtle.persistence.repository.ProductRepository;
 import com.fwai.turtle.persistence.repository.TaxInfoRepository;
 import com.fwai.turtle.persistence.repository.InvoiceRepository;
@@ -31,6 +33,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.fwai.turtle.persistence.mapper.PersonMapper;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -44,7 +47,9 @@ public class ContractServiceImpl implements ContractService {
     private final ContractRepository contractRepository;
     private final CurrencyRepository currencyRepository;
     private final CompanyRepository companyRepository;
+    private final PersonRepository personRepository;
     private final ContractMapper contractMapper;
+    private final PersonMapper personMapper;
     private final ContractItemMapper contractItemMapper;
     private final ContractDownPaymentMapper contractDownPaymentMapper;
     private final ProductRepository productRepository;
@@ -123,6 +128,15 @@ public class ContractServiceImpl implements ContractService {
         if (currency!= null) {
             existingContract.setCurrency(currencyRepository.findById(currency.getId())
                     .orElseThrow(() -> new ResourceNotFoundException("Currency", "id", currency.getId())));
+        }
+
+        // 更新联系人信息
+        if (contractDTO.getContactPerson() != null) {
+            Person contactPerson = contractDTO.getContactPerson().getId() != null ?
+                personRepository.findById(contractDTO.getContactPerson().getId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Person", "id", contractDTO.getContactPerson().getId())) :
+                personRepository.save(personMapper.toEntity(contractDTO.getContactPerson()));
+            existingContract.setContactPerson(contactPerson);
         }
 
         // 更新合同明细

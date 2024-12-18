@@ -6,7 +6,6 @@ import jakarta.validation.constraints.*;
 import java.util.List;
 
 import com.fwai.turtle.persistence.entity.Department;
-import com.fwai.turtle.persistence.entity.Person;
 import com.fwai.turtle.persistence.entity.User;
 
 import java.time.LocalDate;
@@ -34,7 +33,8 @@ public class EmployeeDTO {
     private LocalDate leaveDate;
 
     private String remarks;
-    private Person emergencyContact;
+    private String emergencyContactName;
+    private String emergencyContactPhone;
     private LocalDate birthday;
     private String gender;
     private String ethnicity;

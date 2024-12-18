@@ -23,6 +23,10 @@ import { SharedModule } from './shared/shared.module';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
+// Person Components
+import { PersonInputComponent } from './components/person-input/person-input.component';
+import { PersonDialogComponent } from './components/person-input/person-dialog.component';
+
 // Standalone Components
 import { DepartmentListComponent } from './pages/department/department-list.component';
 import { UserManagementComponent } from './pages/user-management/user-management.component';
@@ -96,7 +100,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     ProjectDialogComponent,
     ProjectListComponent,
     BaseListComponent,
-    PaymentTotalPipe
+    PaymentTotalPipe,
+    PersonInputComponent,
+    PersonDialogComponent
   ],
   imports: [
 

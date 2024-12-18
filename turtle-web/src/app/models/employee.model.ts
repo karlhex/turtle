@@ -43,7 +43,8 @@ export interface Employee {
     hireDate?: Date;
     leaveDate?: Date;
     remarks?: string;
-    emergencyContact?: Person;
+    emergencyContactName?: string;
+    emergencyContactPhone?: string;
     birthday?: Date;
     gender?: string;
     ethnicity?: string;

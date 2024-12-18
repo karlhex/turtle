@@ -38,6 +38,21 @@ public class Person {
     @Column
     private String email;
 
+    @Column(name = "mobile_phone")
+    private String mobilePhone;
+
+    @Column(name = "work_phone")
+    private String workPhone;
+
+    @Column(name = "home_phone")
+    private String homePhone;
+
+    @Column(name = "company_name")
+    private String companyName;
+
     @Column
-    private String phone;
+    private String department;
+
+    @Column
+    private String position;
 } 
