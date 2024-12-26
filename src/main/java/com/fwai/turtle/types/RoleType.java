@@ -2,7 +2,9 @@ package com.fwai.turtle.types;
 
 public enum RoleType {
   USER("ROLE_USER"),
-  ADMIN("ROLE_ADMIN");
+  ADMIN("ROLE_ADMIN"),
+  SYSTEM("ROLE_SYSTEM"),
+  GUEST("ROLE_GUEST");
 
   private String value;
 

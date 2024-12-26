@@ -26,7 +26,9 @@ public class EmployeeLeave {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private Long employeeId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "employee_id")
+    private Employee employee;
 
     @Column(nullable = false)
     private LocalDateTime startTime;        // 请假开始时间

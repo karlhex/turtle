@@ -49,23 +49,23 @@
       </ng-container>
 
       <!-- Status Column -->
-      <ng-container matColumnDef="isActive">
+      <ng-container matColumnDef="status">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'employee.list.status' | translate }}</th>
         <td mat-cell *matCellDef="let employee">
-          <span class="status-chip" [ngClass]="employee.isActive ? 'status-active' : 'status-inactive'">
-            {{ (employee.isActive ? 'common.status.active' : 'common.status.inactive') | translate }}
+          <span class="status-chip" [ngClass]="getStatusChipClass(employee.status)">
+            {{ 'employee.status.' + employee.status.toLowerCase() | translate }}
           </span>
         </td>
       </ng-container>
 
       <!-- Actions Column -->
       <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef>{{ 'employee.list.actions' | translate }}</th>
+        <th mat-header-cell *matHeaderCellDef>{{ 'common.actions' | translate }}</th>
         <td mat-cell *matCellDef="let employee">
           <app-action
             [canView]="false"
-            (edit)="openEditDialog(employee)"
-            (delete)="deleteEmployee(employee)">
+            (edit)="onEdit(employee)"
+            (delete)="onDelete(employee)">
           </app-action>
         </td>
       </ng-container>

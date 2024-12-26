@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.fwai.turtle.types.EmployeeContractType;
+import com.fwai.turtle.types.EmployeeStatus;
 import com.fwai.turtle.types.Gender;
 import com.fwai.turtle.types.IdType;
 
@@ -25,6 +26,10 @@ import com.fwai.turtle.types.IdType;
 @AllArgsConstructor
 @Table(name = "employees")
 public class Employee {
+    public Employee(Long id) {
+        this.id = id;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -48,9 +53,10 @@ public class Employee {
     @Column
     private String position;        // 职位
 
-    @Column
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     @Builder.Default
-    private Boolean isActive = true; // 是否在职
+    private EmployeeStatus status = EmployeeStatus.APPLICATION; // 员工状态
 
     @Column
     private LocalDate hireDate; // 入职日期
@@ -98,12 +104,16 @@ public class Employee {
     @JoinColumn(name = "user_id")
     private User user;            // 关联用户账号
 
-    @OneToMany(mappedBy = "employeeId", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<EmployeeEducation> educations; // 教育经历
 
-    @OneToMany(mappedBy = "employeeId", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<EmployeeAttendance> attendances; // 考勤记录
 
-    @OneToMany(mappedBy = "employeeId", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<EmployeeLeave> leaves; // 请假记录
+
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<EmployeeJobHistory> jobHistories;
+
 } 

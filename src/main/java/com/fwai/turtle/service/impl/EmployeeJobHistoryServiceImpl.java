@@ -36,7 +36,7 @@ public class EmployeeJobHistoryServiceImpl implements EmployeeJobHistoryService 
             .orElseThrow(() -> new ResourceNotFoundException("员工不存在"));
 
         EmployeeJobHistory jobHistory = jobHistoryMapper.toEntity(jobHistoryDTO);
-        jobHistory.setEmployeeId(employee.getId());
+        jobHistory.setEmployee(employee);
         jobHistory = jobHistoryRepository.save(jobHistory);
         
         return jobHistoryMapper.toDTO(jobHistory);
@@ -48,7 +48,7 @@ public class EmployeeJobHistoryServiceImpl implements EmployeeJobHistoryService 
         EmployeeJobHistory jobHistory = jobHistoryRepository.findById(jobHistoryId)
             .orElseThrow(() -> new ResourceNotFoundException("工作历史记录不存在"));
         
-        if (!jobHistory.getEmployeeId().equals(employeeId)) {
+        if (!jobHistory.getEmployee().getId().equals(employeeId)) {
             throw new IllegalArgumentException("工作历史记录不属于该员工");
         }
 
@@ -80,7 +80,7 @@ public class EmployeeJobHistoryServiceImpl implements EmployeeJobHistoryService 
         EmployeeJobHistory jobHistory = jobHistoryRepository.findById(jobHistoryId)
             .orElseThrow(() -> new ResourceNotFoundException("工作历史记录不存在"));
         
-        if (!jobHistory.getEmployeeId().equals(employeeId)) {
+        if (!jobHistory.getEmployee().getId().equals(employeeId)) {
             throw new IllegalArgumentException("工作历史记录不属于该员工");
         }
 

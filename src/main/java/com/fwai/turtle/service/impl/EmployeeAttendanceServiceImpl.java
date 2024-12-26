@@ -48,7 +48,7 @@ public class EmployeeAttendanceServiceImpl implements EmployeeAttendanceService 
             .orElseThrow(() -> new ResourceNotFoundException("员工不存在"));
 
         EmployeeAttendance attendance = attendanceMapper.toEntity(attendanceDTO);
-        attendance.setEmployeeId(employee.getId());
+        attendance.setEmployee(employee);
         attendance = attendanceRepository.save(attendance);
         
         return attendanceMapper.toDTO(attendance);
@@ -60,7 +60,7 @@ public class EmployeeAttendanceServiceImpl implements EmployeeAttendanceService 
         EmployeeAttendance attendance = attendanceRepository.findById(attendanceId)
             .orElseThrow(() -> new ResourceNotFoundException("考勤记录不存在"));
         
-        if (!attendance.getEmployeeId().equals(employeeId)) {
+        if (!attendance.getEmployee().getId().equals(employeeId)) {
             throw new IllegalArgumentException("考勤记录不属于该员工");
         }
 
@@ -92,7 +92,7 @@ public class EmployeeAttendanceServiceImpl implements EmployeeAttendanceService 
         EmployeeAttendance attendance = attendanceRepository.findById(attendanceId)
             .orElseThrow(() -> new ResourceNotFoundException("考勤记录不存在"));
         
-        if (!attendance.getEmployeeId().equals(employeeId)) {
+        if (!attendance.getEmployee().getId().equals(employeeId)) {
             throw new IllegalArgumentException("考勤记录不属于该员工");
         }
 

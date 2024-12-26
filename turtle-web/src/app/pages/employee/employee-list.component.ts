@@ -7,7 +7,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { EmployeeService } from '@services/employee.service';
 import { EmployeeDialogComponent } from './employee-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Employee } from '@models/employee.model';
+import { Employee, EmployeeStatus } from '@models/employee.model';
 
 @Component({
   selector: 'app-employee-list',
@@ -22,7 +22,7 @@ export class EmployeeListComponent implements OnInit {
     'department',
     'position',
     'hireDate',
-    'isActive',
+    'status',
     'actions'
   ];
   dataSource = new MatTableDataSource<Employee>();
@@ -30,6 +30,7 @@ export class EmployeeListComponent implements OnInit {
   pageSize = 10;
   isLoading = false;
   searchQuery = '';
+  employeeStatus = EmployeeStatus;
 
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -51,98 +52,63 @@ export class EmployeeListComponent implements OnInit {
     } : undefined;
 
     if (this.searchQuery) {
-      this.employeeService.searchEmployees(this.searchQuery, page, this.pageSize)
+      this.employeeService.search(this.searchQuery, page, this.pageSize)
         .subscribe({
           next: (response) => {
-            this.handleEmployeeResponse(response);
+            this.dataSource.data = response.data.content;
+            this.totalElements = response.data.totalElements;
+            this.isLoading = false;
           },
           error: (error) => {
-            this.handleError(error);
+            console.error('Error loading employees:', error);
+            this.snackBar.open('加载员工列表失败', '关闭', { duration: 3000 });
+            this.isLoading = false;
           }
         });
     } else {
-      this.employeeService.getEmployees(page, this.pageSize, sort)
+      this.employeeService.getEmployees(page, this.pageSize, sort?.sortBy ? { sortBy: sort.sortBy, direction: sort.direction } : undefined)
         .subscribe({
           next: (response) => {
-            this.handleEmployeeResponse(response);
+            this.dataSource.data = response.data.content;
+            this.totalElements = response.data.totalElements;
+            this.isLoading = false;
           },
           error: (error) => {
-            this.handleError(error);
+            console.error('Error loading employees:', error);
+            this.snackBar.open('加载员工列表失败', '关闭', { duration: 3000 });
+            this.isLoading = false;
           }
         });
     }
   }
 
-  private handleEmployeeResponse(response: any) {
-    if (response.data) {
-      this.dataSource.data = response.data.content;
-      this.totalElements = response.data.totalElements;
-    }
-    this.isLoading = false;
-  }
-
-  private handleError(error: any) {
-    console.error('Error:', error);
-    this.snackBar.open('An error occurred while loading employees', 'Close', {
-      duration: 3000,
-      horizontalPosition: 'center',
-      verticalPosition: 'top',
-    });
-    this.isLoading = false;
-  }
-
-  onSearch(searchText: string) {
-    this.searchQuery = searchText;
-    this.loadEmployees(0);
-
-  }
-
   onPageChange(event: PageEvent) {
-    this.pageSize = event.pageSize;
     this.loadEmployees(event.pageIndex);
   }
 
   onSortChange(sort: Sort) {
-    this.loadEmployees(0);
+    this.loadEmployees();
   }
 
-  openAddDialog(): void {
+  onSearch(query: string) {
+    this.searchQuery = query;
+    this.loadEmployees();
+  }
+
+  openAddDialog() {
     const dialogRef = this.dialog.open(EmployeeDialogComponent, {
       width: '600px',
       data: { mode: 'add' }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
       if (result) {
-        this.employeeService.createEmployee(result).subscribe({
-          next: (response) => {
-            console.log(response);
-            this.loadEmployees();
-            this.snackBar.open('Employee added successfully', 'Close', {
-              duration: 3000,
-              horizontalPosition: 'center',
-              verticalPosition: 'top',
-            });
-          },
-          error: (error) => {
-            this.handleError(error);
-          }
-        });
+        this.loadEmployees();
       }
     });
   }
 
-  openEditDialog(employee: Employee): void {
-    if (!employee.id) {
-      this.snackBar.open('Cannot edit employee: Missing ID', 'Close', {
-        duration: 3000,
-        horizontalPosition: 'center',
-        verticalPosition: 'top',
-      });
-      return;
-    }
-
+  onEdit(employee: Employee) {
     const dialogRef = this.dialog.open(EmployeeDialogComponent, {
       width: '600px',
       data: { mode: 'edit', employee }
@@ -150,45 +116,21 @@ export class EmployeeListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.employeeService.updateEmployee(employee.id as number, result).subscribe({
-          next: () => {
-            this.loadEmployees();
-            this.snackBar.open('Employee updated successfully', 'Close', {
-              duration: 3000,
-              horizontalPosition: 'center',
-              verticalPosition: 'top',
-            });
-          },
-          error: (error) => {
-            this.handleError(error);
-          }
-        });
+        this.loadEmployees();
       }
     });
   }
 
-  deleteEmployee(employee: Employee): void {
-    if (!employee.id) {
-      this.snackBar.open('Cannot delete employee: Missing ID', 'Close', {
-        duration: 3000,
-        horizontalPosition: 'center',
-        verticalPosition: 'top',
-      });
-      return;
-    }
-
-    if (confirm('Are you sure you want to delete this employee?')) {
-      this.employeeService.deleteEmployee(employee.id as number).subscribe({
+  onDelete(employee: Employee) {
+    if (confirm('确定要删除该员工吗？')) {
+      this.employeeService.deleteEmployee(employee.id!).subscribe({
         next: () => {
+          this.snackBar.open('删除成功', '关闭', { duration: 3000 });
           this.loadEmployees();
-          this.snackBar.open('Employee deleted successfully', 'Close', {
-            duration: 3000,
-            horizontalPosition: 'center',
-            verticalPosition: 'top',
-          });
         },
         error: (error) => {
-          this.handleError(error);
+          console.error('Error deleting employee:', error);
+          this.snackBar.open('删除失败', '关闭', { duration: 3000 });
         }
       });
     }
@@ -198,7 +140,18 @@ export class EmployeeListComponent implements OnInit {
     return employee.department?.name || '-';
   }
 
-  getStatusChipClass(isActive: boolean): string {
-    return isActive ? 'status-active' : 'status-inactive';
+  getStatusChipClass(status: EmployeeStatus): string {
+    switch (status) {
+      case EmployeeStatus.ACTIVE:
+        return 'status-active';
+      case EmployeeStatus.RESIGNED:
+        return 'status-resigned';
+      case EmployeeStatus.SUSPENDED:
+        return 'status-suspended';
+      case EmployeeStatus.APPLICATION:
+        return 'status-application';
+      default:
+        return 'status-inactive';
+    }
   }
 }

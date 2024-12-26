@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.fwai.turtle.persistence.entity.Department;
 import com.fwai.turtle.persistence.entity.User;
+import com.fwai.turtle.types.EmployeeStatus;
 
 import java.time.LocalDate;
 
@@ -26,7 +27,8 @@ public class EmployeeDTO {
     private String phone;
     private Department department;
     private String position;
-    private Boolean isActive;
+    @NotNull
+    private EmployeeStatus status;
 
     private LocalDate hireDate;
 
@@ -51,4 +53,5 @@ public class EmployeeDTO {
     private List<EmployeeEducationDTO> educations;
     private List<EmployeeAttendanceDTO> attendances;
     private List<EmployeeLeaveDTO> leaves;
+    private List<EmployeeJobHistoryDTO> jobHistories;
 } 

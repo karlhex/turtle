@@ -1,0 +1,16 @@
+<div class="guest-dashboard">
+  <mat-card class="welcome-card">
+    <mat-card-header>
+      <mat-card-title>{{ 'GUEST.WELCOME' | translate }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p>{{ 'GUEST.WELCOME_MESSAGE' | translate }}</p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" (click)="openApplicationForm()">
+        <mat-icon>work</mat-icon>
+        {{ 'GUEST.APPLY_JOB' | translate }}
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

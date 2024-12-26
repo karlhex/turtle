@@ -57,6 +57,12 @@ import { ContractInvoiceDialogComponent } from './pages/contract/contract-invoic
 import { ContractInvoiceListComponent } from './pages/contract/contract-invoice-list.component';
 import { BankAccountDialogComponent } from './pages/bank-account/bank-account-dialog.component';
 import { BankAccountListComponent } from './pages/bank-account/bank-account-list.component';
+import { ReimbursementDialogComponent } from './pages/reimbursement/reimbursement-dialog/reimbursement-dialog.component';
+import { ReimbursementListComponent } from './pages/reimbursement/reimbursement-list/reimbursement-list.component';
+import { UserEditDialogComponent } from './pages/user-management/user-edit-dialog/user-edit-dialog.component';
+import { EducationListComponent } from './pages/employee/education-list.component';
+import { JobHistoryListComponent } from './pages/employee/job-history-list.component';
+import { GuestDashboardComponent } from './pages/guest/guest-dashboard.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -68,12 +74,16 @@ export function HttpLoaderFactory(http: HttpClient) {
     AppComponent,
     LoginComponent,
     DashboardComponent,
+    GuestDashboardComponent,
     EmployeeDialogComponent,
+    EducationListComponent,
+    JobHistoryListComponent,
     DepartmentDialogComponent,
     EducationDialogComponent,
     JobHistoryDialogComponent,
     DepartmentListComponent,
     UserManagementComponent,
+    UserEditDialogComponent,
     UserEmployeeMappingComponent,
     EmployeeListComponent,
     ActionComponent,
@@ -102,7 +112,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     BaseListComponent,
     PaymentTotalPipe,
     PersonInputComponent,
-    PersonDialogComponent
+    PersonDialogComponent,
+    ReimbursementDialogComponent,
+    ReimbursementListComponent
   ],
   imports: [
 

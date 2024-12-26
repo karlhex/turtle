@@ -16,6 +16,7 @@
       "products": "Products",
       "financial": "Financial Management",
       "bank_accounts": "Bank Accounts",
+      "reimbursement": "Reimbursement",
       "currencies": "Currencies",
       "tax_info": "Tax Information",
       "system": "System",
@@ -113,13 +114,23 @@
     },
     "education": {
       "title": "Education History",
+      "add": "Add Education",
+      "institution": "School/Institution",
+      "school": "School/Institution",
+      "degree": "Degree",
+      "major": "Major",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "list": {
+        "empty": "No education history",
+        "noData": "No education records added",
+        "addFirst": "Add first education record"
+      },
       "actions": {
         "add": "Add Education",
         "edit": "Edit Education",
-        "view": "View Education",
+        "delete": "Delete Education",
         "save": "Save",
-        "update": "Update",
-        "delete": "Delete",
         "cancel": "Cancel"
       },
       "form": {
@@ -130,10 +141,14 @@
         "certificateNumber": "Certificate Number",
         "isHighestDegree": "Highest Degree",
         "remarks": "Remarks",
+        "degreeName": "Degree",
         "degree": {
           "bachelor": "Bachelor's Degree",
           "master": "Master's Degree",
           "doctor": "Doctorate",
+          "phd": "Ph.D.",
+          "associate": "Associate Degree",
+          "high_school": "High School",
           "other": "Other"
         }
       },
@@ -195,6 +210,11 @@
         "endDateInvalid": "End date must be after start date",
         "descriptionMaxLength": "Job description cannot exceed 500 characters",
         "achievementsMaxLength": "Achievements cannot exceed 500 characters"
+      },
+      "list": {
+        "empty": "No job history",
+        "noData": "No job history records added",
+        "addFirst": "Add first job history record"
       }
     },
     "validation": {
@@ -210,6 +230,12 @@
       "email": {
         "invalid": "Please enter a valid email"
       }
+    },
+    "dialog": {
+      "cancel": "Cancel",
+      "create": "Create",
+      "update": "Update",
+      "apply": "Apply"
     }
   },
   "department": {
@@ -684,6 +710,15 @@
     "search": {
       "placeholder": "Search project number or name"
     },
+    "field": {
+      "projectNo": "Project No",
+      "projectName": "Project Name",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "status": "Status",
+      "manager": "Manager",
+      "remarks": "Remarks"
+    },
     "actions": {
       "add": "Add Project",
       "edit": "Edit Project",
@@ -743,6 +778,49 @@
       "VAT_ELECTRONIC": "VAT Electronic Invoice"
     }
   },
+  "reimbursement": {
+    "title": "Reimbursement Management",
+    "dialog": {
+      "createTitle": "Create Reimbursement",
+      "editTitle": "Edit Reimbursement"
+    },
+    "search": {
+      "label": "Search Reimbursements",
+      "placeholder": "Search by reimbursement number or applicant"
+    },
+    "field": {
+      "reimbursementNo": "Reimbursement No",
+      "applicationDate": "Application Date",
+      "applicant": "Applicant",
+      "approvalDate": "Approval Date",
+      "approver": "Approver",
+      "project": "Project",
+      "totalAmount": "Total Amount",
+      "remarks": "Remarks",
+      "status": "Status"
+    },
+    "item": {
+      "title": "Reimbursement Items",
+      "amount": "Amount",
+      "reason": "Reason",
+      "occurrenceDate": "Occurrence Date",
+      "remarks": "Remarks"
+    },
+    "action": {
+      "add": "Add Reimbursement",
+      "edit": "Edit Reimbursement",
+      "delete": "Delete Reimbursement",
+      "addItem": "Add Item",
+      "removeItem": "Remove Item",
+      "approve": "Approve",
+      "reject": "Reject"
+    },
+    "status": {
+      "PENDING": "Pending",
+      "APPROVED": "Approved",
+      "REJECTED": "Rejected"
+    }
+  },
   "ERROR": {
     "LOAD_COMPANIES": "Failed to load companies",
     "SAVE_COMPANY": "Failed to save company",
@@ -776,5 +854,10 @@
       "COMPANY_OTHER": "Other Company Account",
       "PERSONAL": "Personal Account"
     }
+  },
+  "GUEST": {
+    "WELCOME": "Welcome to Our Company",
+    "WELCOME_MESSAGE": "Thank you for your interest in joining our team. We're excited to learn more about you!",
+    "APPLY_JOB": "Apply for Job"
   }
 }

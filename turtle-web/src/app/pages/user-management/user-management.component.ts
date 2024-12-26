@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -22,6 +22,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { ConfirmDialogComponent } from '../../components/confirmdialog/confirm-dialog.component';
 import { User, UserService } from '../../services/user.service';
 import { UserEmployeeMappingComponent } from '../user-employee-mapping/user-employee-mapping.component';
+import { UserEditDialogComponent } from './user-edit-dialog/user-edit-dialog.component';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
@@ -29,13 +30,9 @@ import { HttpErrorResponse } from '@angular/common/http';
   templateUrl: './user-management.component.html',
   styleUrls: ['./user-management.component.scss'],
 })
-export class UserManagementComponent implements OnInit {
-  users: User[] = [];
-  userForm!: FormGroup;
-  isModalVisible = false;
-  modalTitle = '';
+export class UserManagementComponent implements OnInit, AfterViewInit {
+  dataSource: MatTableDataSource<User>;
   isLoading = false;
-  availableRoles = ['ROLE_USER', 'ROLE_ADMIN'];
   displayedColumns: string[] = ['id', 'username', 'email', 'roles', 'actions'];
   totalElements = 0;
   pageSize = 10;
@@ -46,26 +43,20 @@ export class UserManagementComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private fb: FormBuilder,
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
     private translate: TranslateService
   ) {
-    this.createForm();
+    this.dataSource = new MatTableDataSource<User>([]);
   }
 
   ngOnInit(): void {
     this.loadUsers();
   }
 
-  createForm(): void {
-    this.userForm = this.fb.group({
-      id: [null],
-      username: ['', [Validators.required]],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]],
-      roleNames: [[], [Validators.required]]
-    });
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 
   loadUsers(page: number = 0): void {
@@ -98,79 +89,27 @@ export class UserManagementComponent implements OnInit {
 
   private handleUserResponse(response: any): void {
     if (response.data) {
-      this.users = response.data.content;
+      this.dataSource.data = response.data.content;
       this.totalElements = response.data.totalElements;
     }
     this.isLoading = false;
   }
 
-  private handleError(error: any): void {
-    console.error('Error:', error);
-    this.snackBar.open(this.translate.instant('user.messages.error'), 'Close', {
-      duration: 3000,
-      horizontalPosition: 'center',
-      verticalPosition: 'top',
-    });
-    this.isLoading = false;
-  }
-
-  public handleSearch(searchText: string): void {
-    console.log('Search triggered:', searchText);
-    this.searchQuery = searchText;
-    this.loadUsers(0);
-    if (this.paginator) {
-      this.paginator.firstPage();
-    }
-  }
-
-  onSortChange(sort: Sort): void {
-    this.loadUsers(this.paginator?.pageIndex || 0);
-  }
-
-  onPageChange(event: PageEvent): void {
-    this.loadUsers(event.pageIndex);
-  }
-
   showCreateModal(): void {
-    this.userForm.reset();
-    this.userForm.get('roleNames')?.setValue([]);
-    this.isModalVisible = true;
-    this.modalTitle = 'user.dialog.create';
-  }
-
-  showEditModal(user: User): void {
-    this.userForm.patchValue({
-      id: user.id,
-      username: user.username,
-      email: user.email,
-      roleNames: user.roleNames,
-      password: ''
-    });
-    this.isModalVisible = true;
-    this.modalTitle = 'user.dialog.edit';
-  }
-
-  confirmDelete(user: User): void {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '400px',
-      data: {
-        title: 'user.dialog.delete',
-        message: 'user.dialog.deleteConfirm',
-        confirmText: 'common.button.confirm',
-        cancelText: 'common.button.cancel'
-      }
+    const dialogRef = this.dialog.open(UserEditDialogComponent, {
+      data: {}
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result && user.id) {
-        this.userService.deleteUser(user.id as number).subscribe({
+      if (result) {
+        this.userService.createUser(result).subscribe({
           next: () => {
             this.loadUsers();
-            this.snackBar.open(this.translate.instant('user.messages.deleteSuccess'), 'Close', {
-              duration: 3000,
-              horizontalPosition: 'center',
-              verticalPosition: 'top',
-            });
+            this.snackBar.open(
+              this.translate.instant('user.message.create.success'),
+              this.translate.instant('common.close'),
+              { duration: 3000 }
+            );
           },
           error: (error) => {
             this.handleError(error);
@@ -180,48 +119,94 @@ export class UserManagementComponent implements OnInit {
     });
   }
 
-  saveUser(): void {
-    if (this.userForm.valid) {
-      const userData = this.userForm.value;
-      const operation = userData.id
-        ? this.userService.updateUser(userData.id, userData)
-        : this.userService.createUser(userData);
-
-      operation.subscribe({
-        next: () => {
-          this.loadUsers();
-          this.isModalVisible = false;
-          this.snackBar.open(
-            this.translate.instant(userData.id ? 'user.messages.updateSuccess' : 'user.messages.createSuccess'),
-            'Close',
-            {
-              duration: 3000,
-              horizontalPosition: 'center',
-              verticalPosition: 'top',
-            }
-          );
-        },
-        error: (error) => {
-          this.handleError(error);
-        }
-      });
-    }
-  }
-
-  showEmployeeMapping(user: User): void {
-    const dialogRef = this.dialog.open(UserEmployeeMappingComponent, {
-      width: '800px',
-      data: { userId: user.id }
+  showEditModal(user: User): void {
+    const dialogRef = this.dialog.open(UserEditDialogComponent, {
+      data: { user }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.snackBar.open('Employee mapping updated successfully', 'Close', {
-          duration: 3000,
-          horizontalPosition: 'center',
-          verticalPosition: 'top',
+        this.userService.updateUser(user.id, result).subscribe({
+          next: () => {
+            this.loadUsers();
+            this.snackBar.open(
+              this.translate.instant('user.message.update.success'),
+              this.translate.instant('common.close'),
+              { duration: 3000 }
+            );
+          },
+          error: (error) => {
+            this.handleError(error);
+          }
         });
       }
     });
+  }
+
+  confirmDelete(user: User): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: this.translate.instant('user.dialog.delete.title'),
+        message: this.translate.instant('user.dialog.delete.message', { username: user.username }),
+        confirmText: this.translate.instant('common.delete'),
+        cancelText: this.translate.instant('common.cancel')
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.userService.deleteUser(user.id).subscribe({
+          next: () => {
+            this.loadUsers();
+            this.snackBar.open(
+              this.translate.instant('user.message.delete.success'),
+              this.translate.instant('common.close'),
+              { duration: 3000 }
+            );
+          },
+          error: (error) => {
+            this.handleError(error);
+          }
+        });
+      }
+    });
+  }
+
+  showEmployeeMapping(user: User): void {
+    const dialogRef = this.dialog.open(UserEmployeeMappingComponent, {
+      data: { user },
+      width: '600px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.loadUsers();
+      }
+    });
+  }
+
+  handleSearch(query: string): void {
+    this.searchQuery = query;
+    this.loadUsers();
+  }
+
+  onPageChange(event: PageEvent): void {
+    this.loadUsers(event.pageIndex);
+  }
+
+  onSortChange(sort: Sort): void {
+    this.loadUsers();
+  }
+
+  private handleError(error: HttpErrorResponse): void {
+    let errorMessage = this.translate.instant('common.error.unknown');
+    if (error.error?.message) {
+      errorMessage = error.error.message;
+    }
+    this.snackBar.open(errorMessage, this.translate.instant('common.close'), {
+      duration: 5000,
+      panelClass: ['error-snackbar']
+    });
+    this.isLoading = false;
   }
 }

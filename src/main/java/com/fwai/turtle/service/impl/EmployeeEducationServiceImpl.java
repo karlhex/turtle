@@ -32,7 +32,7 @@ public class EmployeeEducationServiceImpl implements IEmployeeEducationService {
             .orElseThrow(() -> new ResourceNotFoundException("员工不存在"));
                 
         EmployeeEducation education = employeeEducationMapper.toEntity(educationDTO);
-        education.setEmployeeId(employee.getId());
+        education.setEmployee(employee);
         education = employeeEducationRepository.save(education);
             
         return employeeEducationMapper.toDTO(education);
@@ -43,7 +43,11 @@ public class EmployeeEducationServiceImpl implements IEmployeeEducationService {
         EmployeeEducation education = employeeEducationRepository.findByIdAndEmployeeId(educationId, employeeId)
             .orElseThrow(() -> new ResourceNotFoundException("教育信息不存在"));
                 
+        Employee employee = employeeRepository.findById(employeeId)
+            .orElseThrow(() -> new ResourceNotFoundException("员工不存在"));
+        
         employeeEducationMapper.updateEntity(educationDTO, education);
+        education.setEmployee(employee); // Ensure the employee relationship is maintained
         education = employeeEducationRepository.save(education);
             
         return employeeEducationMapper.toDTO(education);

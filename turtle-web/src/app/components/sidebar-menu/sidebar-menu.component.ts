@@ -89,6 +89,11 @@ export class SidebarMenuComponent {
           route: '/bank-accounts'
         },
         {
+          title: 'app.menu.reimbursement',
+          icon: 'receipt_long',
+          route: '/reimbursements'
+        },
+        {
           title: 'app.menu.currencies',
           icon: 'currency_exchange',
           route: '/currencies'

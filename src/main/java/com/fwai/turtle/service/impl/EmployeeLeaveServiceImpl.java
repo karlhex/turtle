@@ -30,7 +30,7 @@ public class EmployeeLeaveServiceImpl implements IEmployeeLeaveService {
             .orElseThrow(() -> new ResourceNotFoundException("员工不存在"));
                 
         EmployeeLeave leave = employeeLeaveMapper.toEntity(LeaveDTO);
-        leave.setEmployeeId(employee.getId());
+        leave.setEmployee(employee);
         leave = employeeLeaveRepository.save(leave);
             
         return employeeLeaveMapper.toDTO(leave);

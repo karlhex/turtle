@@ -23,8 +23,9 @@ public class EmployeeEducation {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(nullable = false)
-    private Long employeeId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "employee_id", nullable = false)
+    private Employee employee;
     
     @Column(nullable = false)
     private String school;              // 学校名称
@@ -49,4 +50,4 @@ public class EmployeeEducation {
 
     @Column
     private String remarks;             // 备注
-} 
+}

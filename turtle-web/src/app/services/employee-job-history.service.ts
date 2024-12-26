@@ -3,21 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApiResponse, PageResponse } from '../models/api.model';
 import { environment } from '../../environments/environment';
-
-export interface EmployeeJobHistory {
-  id?: number;
-  employeeId: number;
-  companyName: string;
-  position: string;
-  startDate: string;
-  endDate?: string;
-  department: string;
-  jobDescription?: string;
-  achievements?: string;
-  leavingReason?: string;
-  referenceContact?: string;
-  remarks?: string;
-}
+import { EmployeeJobHistory } from '../models/employee.model';
 
 @Injectable({
   providedIn: 'root'

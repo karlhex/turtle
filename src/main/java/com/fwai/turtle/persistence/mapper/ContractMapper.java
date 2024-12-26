@@ -1,9 +1,7 @@
 package com.fwai.turtle.persistence.mapper;
 
 import com.fwai.turtle.dto.ContractDTO;
-import com.fwai.turtle.dto.PersonDTO;
 import com.fwai.turtle.persistence.entity.Contract;
-import com.fwai.turtle.persistence.entity.Person;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;

@@ -1,0 +1,130 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <h2 mat-dialog-title>
+    {{ (mode === 'create' ? 'reimbursement.dialog.createTitle' : 'reimbursement.dialog.editTitle') | translate }}
+  </h2>
+
+  <mat-dialog-content>
+    <div class="form-container" [class.readonly]="isReadOnly">
+      <!-- Basic Information -->
+      <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label>{{ 'reimbursement.field.reimbursementNo' | translate }}</mat-label>
+          <input matInput formControlName="reimbursementNo" required>
+          <mat-error *ngIf="form.get('reimbursementNo')?.hasError('required')">
+            {{ 'common.validation.required' | translate }}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>{{ 'reimbursement.field.applicationDate' | translate }}</mat-label>
+          <input matInput [matDatepicker]="applicationDatePicker" formControlName="applicationDate" required>
+          <mat-datepicker-toggle matSuffix [for]="applicationDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker #applicationDatePicker></mat-datepicker>
+          <mat-error *ngIf="form.get('applicationDate')?.hasError('required')">
+            {{ 'common.validation.required' | translate }}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>{{ 'reimbursement.field.applicant' | translate }}</mat-label>
+          <mat-select formControlName="applicantId" required>
+            <mat-option *ngFor="let employee of employees" [value]="employee.id">
+              {{ employee.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.get('applicantId')?.hasError('required')">
+            {{ 'common.validation.required' | translate }}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>{{ 'reimbursement.field.project' | translate }}</mat-label>
+          <mat-select formControlName="projectId">
+            <mat-option [value]="null">{{ 'common.none' | translate }}</mat-option>
+            <mat-option *ngFor="let project of projects" [value]="project.id">
+              {{ project.projectNo }} - {{ project.projectName }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <!-- Reimbursement Items -->
+      <div class="items-section">
+        <div class="section-header">
+          <h3>{{ 'reimbursement.field.items' | translate }}</h3>
+          <div class="header-actions">
+            <div class="total-amount">
+              <span class="label">{{ 'reimbursement.field.totalAmount' | translate }}:</span>
+              <span class="amount">{{ totalAmount | currency:'CNY':'symbol-narrow':'1.2-2' }}</span>
+            </div>
+            <button type="button" mat-stroked-button color="primary" (click)="addItem()">
+              <mat-icon>add</mat-icon>
+              {{ 'reimbursement.action.addItem' | translate }}
+            </button>
+          </div>
+        </div>
+
+        <div formArrayName="items" class="items-container">
+          <div *ngFor="let item of items.controls; let i = index" [formGroupName]="i" class="item-row">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'reimbursement.field.amount' | translate }}</mat-label>
+              <input matInput type="number" formControlName="amount" required>
+              <mat-error *ngIf="item.get('amount')?.hasError('required')">
+                {{ 'common.validation.required' | translate }}
+              </mat-error>
+              <mat-error *ngIf="item.get('amount')?.hasError('min')">
+                {{ 'common.validation.min' | translate:{ value: 0 } }}
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'reimbursement.field.reason' | translate }}</mat-label>
+              <input matInput formControlName="reason" required>
+              <mat-error *ngIf="item.get('reason')?.hasError('required')">
+                {{ 'common.validation.required' | translate }}
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'reimbursement.field.occurrenceDate' | translate }}</mat-label>
+              <input matInput [matDatepicker]="occurrenceDatePicker" formControlName="occurrenceDate" required>
+              <mat-datepicker-toggle matSuffix [for]="occurrenceDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #occurrenceDatePicker></mat-datepicker>
+              <mat-error *ngIf="item.get('occurrenceDate')?.hasError('required')">
+                {{ 'common.validation.required' | translate }}
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'reimbursement.field.remarks' | translate }}</mat-label>
+              <input matInput formControlName="remarks">
+            </mat-form-field>
+
+            <button type="button" mat-icon-button color="warn" (click)="removeItem(i)" 
+                    [disabled]="items.length === 1">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Remarks -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>{{ 'reimbursement.field.remarks' | translate }}</mat-label>
+        <textarea matInput formControlName="remarks" rows="3"></textarea>
+      </mat-form-field>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button type="button" mat-button (click)="onCancel()" [disabled]="loading">
+      {{ 'common.action.cancel' | translate }}
+    </button>
+    <button type="submit" mat-raised-button color="primary" [disabled]="loading || form.invalid || isReadOnly" (click)="onSave()">
+      {{ 'common.action.save' | translate }}
+    </button>
+    <button type="button" mat-raised-button color="accent" [disabled]="loading || form.invalid || isReadOnly" (click)="onSubmit()">
+      {{ 'common.action.submit' | translate }}
+    </button>
+  </mat-dialog-actions>
+</form>

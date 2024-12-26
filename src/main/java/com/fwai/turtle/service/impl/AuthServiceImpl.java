@@ -2,6 +2,7 @@ package com.fwai.turtle.service.impl;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -27,6 +28,8 @@ import com.fwai.turtle.exception.AuthenticationException;
 import com.fwai.turtle.exception.DuplicateRecordException;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
+import com.fwai.turtle.persistence.entity.Employee;
+import com.fwai.turtle.types.EmployeeStatus;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -62,18 +65,67 @@ public class AuthServiceImpl implements AuthService {
           .orElseThrow(() -> new AuthenticationException("User not found"));
 
       log.info("Found user: {}", user);
-      log.info("User roles before authentication: {}", user.getRoles());
 
+      // Authenticate user credentials
       final Authentication authentication = authenticationProvider
           .authenticate(new UsernamePasswordAuthenticationToken(signinReq.getUsername(), signinReq.getPassword()));
 
       SecurityContextHolder.getContext().setAuthentication(authentication);
 
-      log.info("User roles after authentication: {}", user.getRoles());
-      String token = jwtTokenService.createToken(user.getUsername(), user.getRoles());
-      log.info("Generated token: {}", token);
+      // Initialize response builder
+      SigninAns.SigninAnsBuilder ansBuilder = SigninAns.builder()
+          .id(user.getId());
 
-      return new SigninAns(user.getId(), token);
+      Set<Role> roles = new HashSet<>(user.getRoles());
+
+      // Check if user is SYSTEM
+      if (roles.stream().anyMatch(role -> role.getName().getValue().equals(RoleType.SYSTEM.getValue()))) {
+        String token = jwtTokenService.createToken(user.getUsername(), roles);
+        return ansBuilder
+            .token(token)
+            .roles(roles.stream().map(role -> role.getName().getValue()).collect(Collectors.toSet()))
+            .build();
+      }
+
+      // Handle employee cases
+      Employee employee = user.getEmployee();
+      if (employee == null) {
+        // If employee is empty, assign guest role
+        Role guestRole = roleRepository.findByName(RoleType.GUEST)
+            .orElseThrow(() -> new RuntimeException("Guest role not found"));
+        roles.clear();
+        roles.add(guestRole);
+        String token = jwtTokenService.createToken(user.getUsername(), roles);
+        return ansBuilder
+            .token(token)
+            .roles(roles.stream().map(role -> role.getName().getValue()).collect(Collectors.toSet()))
+            .build();
+      }
+
+      // Check employee status
+      if (employee.getStatus() == EmployeeStatus.RESIGNED || employee.getStatus() == EmployeeStatus.SUSPENDED) {
+        throw new AuthenticationException("员工状态不正常，不能登录");
+      }
+
+      // If status is APPLICATION, assign GUEST role
+      if (employee.getStatus() == EmployeeStatus.APPLICATION) {
+        Role guestRole = roleRepository.findByName(RoleType.GUEST)
+            .orElseThrow(() -> new RuntimeException("Guest role not found"));
+        roles.clear();
+        roles.add(guestRole);
+      }
+
+      // Generate token and build response with employee info
+      String token = jwtTokenService.createToken(user.getUsername(), roles);
+      return ansBuilder
+          .token(token)
+          .roles(roles.stream().map(role -> role.getName().getValue()).collect(Collectors.toSet()))
+          .employeeId(employee.getId())
+          .employeeName(employee.getName())
+          .employeeDepartment(employee.getDepartment() != null ? employee.getDepartment().getName() : null)
+          .employeePosition(employee.getPosition())
+          .build();
+
     } catch (BadCredentialsException e) {
       log.error("Authentication failed for user: {}", signinReq.getUsername(), e);
       throw new AuthenticationException("Invalid username or password");
@@ -117,8 +169,10 @@ public class AuthServiceImpl implements AuthService {
         .build();
 
     user = userService.newUser(user);
-    return new SigninAns(user.getId(),
-        jwtTokenService.createToken(user.getEmail(), user.getRoles()));
+    return SigninAns.builder()
+        .id(user.getId())
+        .token(jwtTokenService.createToken(user.getEmail(), user.getRoles()))
+        .build();
   }
 
   @Override
@@ -145,7 +199,10 @@ public class AuthServiceImpl implements AuthService {
       // 生成新的token
       String newToken = jwtTokenService.refreshToken(refreshTokenRequest.getToken());
       
-      return new SigninAns(user.getId(), newToken);
+      return SigninAns.builder()
+          .id(user.getId())
+          .token(newToken)
+          .build();
     } catch (Exception e) {
       log.error("Error refreshing token", e);
       throw new AuthenticationException("Failed to refresh token: " + e.getMessage());

@@ -2,6 +2,20 @@ import { Department } from './department.model';
 import { Person } from './person.model';
 import { User } from './user.model';
 
+export enum EmployeeStatus {
+    APPLICATION = 'APPLICATION',
+    ACTIVE = 'ACTIVE',
+    RESIGNED = 'RESIGNED',
+    SUSPENDED = 'SUSPENDED'
+}
+
+export enum EmployeeRole {
+    HR_SPECIALIST = 'HR_SPECIALIST',
+    FINANCIAL_MANAGER = 'FINANCIAL_MANAGER',
+    DEPARTMENT_MANAGER = 'DEPARTMENT_MANAGER',
+    REGULAR_EMPLOYEE = 'REGULAR_EMPLOYEE'
+}
+
 export interface EmployeeEducation {
     id?: number;
     school: string;
@@ -31,6 +45,21 @@ export interface EmployeeLeave {
     remarks?: string;
 }
 
+export interface EmployeeJobHistory {
+    id?: number;
+    employeeId: number;
+    companyName: string;
+    position: string;
+    startDate: string;
+    endDate?: string;
+    department: string;
+    jobDescription?: string;
+    achievements?: string;
+    leavingReason?: string;
+    referenceContact?: string;
+    remarks?: string;
+  }
+  
 export interface Employee {
     id?: number;
     name: string;
@@ -39,7 +68,7 @@ export interface Employee {
     phone?: string;
     department?: Department;
     position?: string;
-    isActive?: boolean;
+    status: EmployeeStatus;
     hireDate?: Date;
     leaveDate?: Date;
     remarks?: string;
@@ -57,4 +86,6 @@ export interface Employee {
     educations?: EmployeeEducation[];
     attendances?: EmployeeAttendance[];
     leaves?: EmployeeLeave[];
+    jobHistories?: EmployeeJobHistory[];
+    role?: EmployeeRole;
 }

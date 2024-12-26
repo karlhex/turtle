@@ -1,19 +1,18 @@
 import { Component, Inject, OnInit, ViewChild, AfterViewInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { Employee } from '@models/employee.model';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Employee, EmployeeJobHistory, EmployeeEducation } from '@models/employee.model';
 import { DepartmentService, Department } from '../../services/department.service';
-import { EmployeeEducationService, EmployeeEducation } from '../../services/employee-education.service';
+import { EmployeeService } from '../../services/employee.service';
 import { EducationDialogComponent } from './education-dialog.component';
 import { ConfirmDialogComponent } from '../../components/confirmdialog/confirm-dialog.component';
 import { ApiResponse, PageResponse } from 'src/app/models/api.model';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { EmployeeJobHistoryService, EmployeeJobHistory } from '../../services/employee-job-history.service';
-import { JobHistoryDialogComponent } from './job-history-dialog.component';
 import { EmployeeContractType } from '../../types/employee-contract-type.enum';
 import { Gender } from '../../types/gender.enum';
 
@@ -23,47 +22,57 @@ import { Gender } from '../../types/gender.enum';
   styleUrls: ['./employee-dialog.component.scss']
 })
 
-export class EmployeeDialogComponent implements OnInit, AfterViewInit {
+export class EmployeeDialogComponent implements OnInit {
   employeeForm!: FormGroup;
+  isEdit: boolean;
+  loading = false;
+  isApplication: boolean;
   departments: Department[] = [];
   contractTypes = Object.values(EmployeeContractType);  
   genders = Object.values(Gender);  
 
   // Education tab
-  educations = new MatTableDataSource<EmployeeEducation>([]);
-  displayedColumns = ['school', 'major', 'degree', 'startDate', 'endDate', 'actions'];
+  educations: EmployeeEducation[] = [];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   // Job History tab
-  jobHistories = new MatTableDataSource<EmployeeJobHistory>([]);
-  jobHistoryColumns = ['companyName', 'position', 'startDate', 'endDate', 'remarks', 'actions'];
-
-  // Loading states
-  isLoadingEducations = false;
-  isLoadingJobHistory = false;
+  jobHistories: EmployeeJobHistory[] = [];
 
   constructor(
-    private fb: FormBuilder,
-    private dialog: MatDialog,
     private dialogRef: MatDialogRef<EmployeeDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: {
+      mode: 'create' | 'edit' | 'application';
+      employee: any;
+    },
+    private fb: FormBuilder,
+    private employeeService: EmployeeService,
     private departmentService: DepartmentService,
-    private educationService: EmployeeEducationService,
-    private jobHistoryService: EmployeeJobHistoryService,
-    @Inject(MAT_DIALOG_DATA) public data: { employee: Employee; mode: 'view' | 'edit' }
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar
   ) {
+    this.isEdit = data.mode === 'edit';
+    this.isApplication = data.mode === 'application';
     this.initForm();
+    this.educations = data.employee.educations || [];
+    this.jobHistories = data.employee.jobHistories || [];
   }
 
   ngOnInit(): void {
-    this.loadDepartments();
-    if (this.data.employee.id) {
-      this.loadEducations();
-      this.loadJobHistory();
+    if (!this.isApplication) {
+      this.loadDepartments();
     }
   }
 
   ngAfterViewInit() {
-    this.educations.paginator = this.paginator;
+
+  }
+
+  onEducationEdit(educations: EmployeeEducation[]): void {
+    this.educations = educations;
+  }
+
+  onJobHistoryEdit(jobHistories: EmployeeJobHistory[]): void {
+    this.jobHistories = jobHistories;
   }
 
   private loadDepartments(): void {
@@ -90,322 +99,98 @@ export class EmployeeDialogComponent implements OnInit, AfterViewInit {
 
   private initForm(): void {
     this.employeeForm = this.fb.group({
-      employeeNumber: ['', [Validators.required]],
-      name: ['', [Validators.required]],
-      email: ['', [Validators.email]],
+      employeeNumber: ['', Validators.required],
+      name: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
       phone: [''],
-      department: [null],
-      position: [''],
-      hireDate: [null],
-      leaveDate: [null],
-      birthday: [null],
+      birthday: [''],
       gender: [''],
       ethnicity: [''],
       idType: [''],
-      idNumber: ['', [Validators.required]],
-      contractType: [null],
-      contractDuration: [null],
-      contractStartDate: [null],
-      remarks: [''],
-      isActive: [true],
+      idNumber: ['', Validators.required],
       emergencyContactName: [''],
-      emergencyContactPhone: ['']
+      emergencyContactPhone: [''],
+      emergencyContactEmail: [''],
+      emergencyContactAddress: [''],
+      remarks: ['']
     });
 
-    // Set initial values
-    if (this.data.employee) {
-      this.employeeForm.patchValue(this.data.employee);
+    if (!this.isApplication) {
+      this.employeeForm.addControl('department', new FormControl('', Validators.required));
+      this.employeeForm.addControl('position', new FormControl('', Validators.required));
+      this.employeeForm.addControl('hireDate', new FormControl('', Validators.required));
+      this.employeeForm.addControl('leaveDate', new FormControl(''));
+      this.employeeForm.addControl('contractType', new FormControl(''));
+      this.employeeForm.addControl('contractDuration', new FormControl(''));
+      this.employeeForm.addControl('contractStartDate', new FormControl(''));
     }
 
-    // Handle form state based on mode
-    if (this.data.mode === 'view') {
-      this.employeeForm.disable();
-    } else if (this.data.mode === 'edit') {
-      this.employeeForm.enable();
+    if (this.isEdit || this.data.employee) {
+      this.employeeForm.patchValue(this.data.employee);
     }
   }
 
-  onSubmit(): void {
+  submit(): void {
     if (this.employeeForm.valid) {
       const formValue = this.employeeForm.getRawValue();
       const updatedEmployee: Employee = {
         ...this.data.employee,
         ...formValue,
+        educations: this.educations,
+        jobHistories: this.jobHistories,
         hireDate: formValue.hireDate ? new Date(formValue.hireDate).toISOString().split('T')[0] : null,
         leaveDate: formValue.leaveDate ? new Date(formValue.leaveDate).toISOString().split('T')[0] : null,
         birthday: formValue.birthday ? new Date(formValue.birthday).toISOString().split('T')[0] : null,
         contractStartDate: formValue.contractStartDate ? new Date(formValue.contractStartDate).toISOString().split('T')[0] : null
       };
+      const request = this.isEdit
+      ? this.employeeService.updateEmployee(updatedEmployee.id!, updatedEmployee)
+      : this.employeeService.createEmployee(updatedEmployee);
+
       console.log('in onSubmit', updatedEmployee);
-      this.dialogRef.close(updatedEmployee);
+      request.subscribe({
+        next: (response: ApiResponse<Employee>) => {
+          console.log(response);
+          if (response.code === 200) {
+            this.dialogRef.close(response.data);
+            this.showSuccess(this.isEdit ? 'Employee updated successfully' : 'Employee created successfully');
+          } else {
+            this.showError(response.message || 'Failed to save employee');
+            this.loading = false;
+          }
+        },
+        error: (error) => {
+          this.showError('Error saving employee');
+          console.error('Failed to save employee:', error);
+          this.loading = false;
+        }
+      });
+    } else {
+      Object.keys(this.employeeForm.controls).forEach(key => {
+        const control = this.employeeForm.get(key);
+        if (control?.invalid) {
+          control.markAsTouched();
+        }
+      });
     }
+
   }
 
   onCancel(): void {
     this.dialogRef.close();
   }
 
-  private loadEducations(): void {
-    if (!this.data.employee.id) {
-      console.error('Cannot load educations for employee without id');
-      return;
-    }
-
-    this.isLoadingEducations = true;
-    this.educationService.getEducations(this.data.employee.id).subscribe({
-      next: (response) => {
-        if (response.data) {
-          this.educations.data = response.data;
-        }
-        this.isLoadingEducations = false;
-      },
-      error: (error) => {
-        console.error('Error loading educations:', error);
-        this.isLoadingEducations = false;
-      }
+  private showError(message: string): void {
+    this.snackBar.open(message, 'Close', {
+      duration: 5000,
+      panelClass: ['error-snackbar']
     });
   }
 
-  private loadJobHistory(): void {
-    if (!this.data.employee.id) {
-      console.error('Cannot load job history for employee without id');
-      return;
-    }
-
-    this.isLoadingJobHistory = true;
-    this.jobHistoryService.getJobHistory(this.data.employee.id).subscribe({
-      next: (response) => {
-        if (response.code === 200 && response.data) {
-          this.jobHistories.data = response.data;
-        }
-        this.isLoadingJobHistory = false;
-      },
-      error: (error) => {
-        console.error('Error loading job history:', error);
-        this.isLoadingJobHistory = false;
-      }
+  private showSuccess(message: string): void {
+    this.snackBar.open(message, 'Close', {
+      duration: 3000,
+      panelClass: ['success-snackbar']
     });
-  }
-
-  onAddEducation(): void {
-    if (!this.data.employee.id) {
-      console.error('Cannot add education for employee without id');
-      return;
-    }
-
-    const dialogRef = this.dialog.open(EducationDialogComponent, {
-      width: '600px',
-      data: {
-        employeeId: this.data.employee.id,
-        mode: 'add'
-      }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        console.log(result);
-        if (!this.data.employee.educations) {
-          this.data.employee.educations = [];
-        }
-        this.data.employee.educations.push(result);
-      }
-    });
-  }
-
-  onEditEducation(education: EmployeeEducation): void {
-    if (!this.data.employee.id) {
-      console.error('Cannot edit education for employee without id');
-      return;
-    }
-
-    if (!education.id) {
-      console.error('Cannot edit education without id');
-      return;
-    }
-
-    const employeeId = this.data.employee.id;
-    const educationId = education.id;
-
-    const dialogRef = this.dialog.open(EducationDialogComponent, {
-      width: '600px',
-      data: {
-        employeeId: employeeId,
-        education: education,
-        mode: 'edit'
-      }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result && employeeId && educationId) {
-        this.educationService.updateEducation(employeeId, educationId, result).subscribe({
-          next: (response) => {
-            if (response.code === 200 && response.data) {
-              this.loadEducations();
-            }
-          },
-          error: (error) => {
-            console.error('Error updating education:', error);
-          }
-        });
-      }
-    });
-  }
-
-  onViewEducation(education: EmployeeEducation): void {
-    if (!this.data.employee.id) {
-      console.error('Cannot view education for employee without id');
-      return;
-    }
-
-    if (!education.id) {
-      console.error('Cannot view education without id');
-      return;
-    }
-
-    const employeeId = this.data.employee.id;
-    this.dialog.open(EducationDialogComponent, {
-      width: '600px',
-      data: {
-        employeeId: employeeId,
-        education: education,
-        mode: 'view'
-      }
-    });
-  }
-
-  onDeleteEducation(education: EmployeeEducation): void {
-    if (!this.data.employee.id) {
-      console.error('Cannot delete education for employee without id');
-      return;
-    }
-
-    if (!education.id) {
-      console.error('Cannot delete education without id');
-      return;
-    }
-
-    const employeeId = this.data.employee.id;
-    const educationId = education.id;
-
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '400px',
-      data: {
-        title: 'employee.education.actions.delete',
-        message: 'employee.education.messages.confirmDelete',
-        confirmText: 'employee.education.actions.confirm',
-        cancelText: 'employee.education.actions.cancel'
-      }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result && employeeId && educationId) {
-        this.educationService.deleteEducation(employeeId, educationId).subscribe({
-          next: () => {
-            this.loadEducations();
-          },
-          error: (error) => {
-            console.error('Error deleting education:', error);
-          }
-        });
-      }
-    });
-  }
-
-  onAddJobHistory(): void {
-    if (!this.data.employee.id) {
-      console.error('Cannot add job history for employee without id');
-      return;
-    }
-
-    const dialogRef = this.dialog.open(JobHistoryDialogComponent, {
-      width: '600px',
-      data: {
-        employeeId: this.data.employee.id,
-        mode: 'add'
-      }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.jobHistoryService.createJobHistory(this.data.employee.id!, result).subscribe({
-          next: (response) => {
-            if (response.data) {
-              this.jobHistories.data = [...this.jobHistories.data, response.data];
-            }
-          },
-          error: (error) => console.error('Error creating job history:', error)
-        });
-      }
-    });
-  }
-
-  onEditJobHistory(jobHistory: EmployeeJobHistory): void {
-    if (!this.data.employee.id || !jobHistory.id) {
-      console.error('Cannot edit job history: Invalid employee or job history ID');
-      return;
-    }
-
-    const dialogRef = this.dialog.open(JobHistoryDialogComponent, {
-      width: '600px',
-      data: {
-        jobHistory,
-        employeeId: this.data.employee.id,
-        mode: 'edit'
-      }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.jobHistoryService.updateJobHistory(this.data.employee.id!, jobHistory.id!, result).subscribe({
-          next: (response) => {
-            if (response.data) {
-              const index = this.jobHistories.data.findIndex(e => e.id === jobHistory.id);
-              if (index !== -1) {
-                const updatedData = [...this.jobHistories.data];
-                updatedData[index] = response.data;
-                this.jobHistories.data = updatedData;
-              }
-            }
-          },
-          error: (error) => console.error('Error updating job history:', error)
-        });
-      }
-    });
-  }
-
-  onViewJobHistory(jobHistory: EmployeeJobHistory): void {
-    this.dialog.open(JobHistoryDialogComponent, {
-      width: '600px',
-      data: {
-        jobHistory,
-        employeeId: this.data.employee.id,
-        mode: 'view'
-      }
-    });
-  }
-
-  onDeleteJobHistory(jobHistory: EmployeeJobHistory): void {
-    if (!this.data.employee.id || !jobHistory.id) {
-      console.error('Cannot delete job history: Invalid employee or job history ID');
-      return;
-    }
-
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      data: {
-        title: 'employee.jobHistory.dialog.deleteTitle',
-        message: 'employee.jobHistory.dialog.deleteMessage'
-      }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.jobHistoryService.deleteJobHistory(this.data.employee.id!, jobHistory.id!).subscribe({
-          next: () => {
-            this.jobHistories.data = this.jobHistories.data.filter(e => e.id !== jobHistory.id);
-          },
-          error: (error) => console.error('Error deleting job history:', error)
-        });
-      }
-    });
-  }
+  }  
 }

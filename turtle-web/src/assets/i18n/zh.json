@@ -16,6 +16,7 @@
       "products": "产品管理",
       "financial": "财务管理",
       "bank_accounts": "银行账户",
+      "reimbursement": "报销管理",
       "currencies": "货币管理",
       "tax_info": "税务信息",
       "system": "系统管理",
@@ -119,19 +120,47 @@
     },
     "education": {
       "title": "教育经历",
+      "add": "添加教育经历",
+      "institution": "学校/院校",
+      "school": "学校/院校",
+      "degreeName": "学历",
+      "degree": {
+        "bachelor": "本科",
+        "master": "硕士",
+        "doctor": "博士",
+        "phd": "博士",
+        "associate": "专科",
+        "high_school": "高中",
+        "other": "其他"
+      },
+      "major": "专业",
+      "startDate": "开始日期",
+      "endDate": "结束日期",
+      "list": {
+        "empty": "暂无教育经历",
+        "noData": "未添加任何教育经历",
+        "addFirst": "添加第一条教育经历"
+      },
       "actions": {
         "add": "添加教育经历",
         "edit": "编辑教育经历",
-        "view": "查看教育经历",
+        "delete": "删除教育经历",
         "save": "保存",
-        "update": "更新",
-        "delete": "删除",
         "cancel": "取消"
       },
       "form": {
         "school": "学校/院校",
         "major": "专业/学科",
-        "degree": "学历",
+        "degreeName": "学历",
+        "degree": {
+          "bachelor": "本科",
+          "master": "硕士",
+          "doctor": "博士",
+          "phd": "博士",
+          "associate": "专科",
+          "high_school": "高中",
+          "other": "其他"
+        },
         "startDate": "开始日期",
         "endDate": "结束日期",
         "certificateNumber": "证书编号",
@@ -202,6 +231,11 @@
         "endDateInvalid": "离职日期必须晚于入职日期",
         "descriptionMaxLength": "工作职责不能超过500个字符",
         "achievementsMaxLength": "工作业绩不能超过500个字符"
+      },
+      "list": {
+        "empty": "暂无工作经历",
+        "noData": "未添加任何工作经历",
+        "addFirst": "添加第一份工作经历"
       }
     },
     "validation": {
@@ -217,6 +251,12 @@
       "email": {
         "invalid": "请输入有效的邮箱地址"
       }
+    },
+    "dialog": {
+      "cancel": "取消",
+      "create": "创建",
+      "update": "更新",
+      "apply": "申请入职"
     }
   },
   "department": {
@@ -683,6 +723,15 @@
     "search": {
       "placeholder": "搜索项目编号或名称"
     },
+    "field": {
+      "projectNo": "项目编号",
+      "projectName": "项目名称",
+      "startDate": "开始日期",
+      "endDate": "结束日期",
+      "status": "状态",
+      "manager": "负责人",
+      "remarks": "备注"
+    },
     "actions": {
       "add": "添加项目",
       "edit": "编辑项目",
@@ -756,5 +805,53 @@
       "description": "描述",
       "active": "启用"
     }
+  },
+  "reimbursement": {
+    "title": "报销管理",
+    "dialog": {
+      "createTitle": "新建报销单",
+      "editTitle": "编辑报销单"
+    },
+    "search": {
+      "label": "搜索报销单",
+      "placeholder": "搜索报销单号或申请人"
+    },
+    "field": {
+      "reimbursementNo": "报销单号",
+      "applicationDate": "申请日期",
+      "applicant": "申请人",
+      "approvalDate": "审批日期",
+      "approver": "审批人",
+      "project": "所属项目",
+      "totalAmount": "总金额",
+      "remarks": "备注",
+      "status": "状态"
+    },
+    "item": {
+      "title": "报销明细",
+      "amount": "金额",
+      "reason": "事由",
+      "occurrenceDate": "发生日期",
+      "remarks": "备注"
+    },
+    "action": {
+      "add": "新建报销单",
+      "edit": "编辑报销单",
+      "delete": "删除报销单",
+      "addItem": "添加明细",
+      "removeItem": "删除明细",
+      "approve": "审批通过",
+      "reject": "审批拒绝"
+    },
+    "status": {
+      "PENDING": "待审批",
+      "APPROVED": "已通过",
+      "REJECTED": "已拒绝"
+    }
+  },
+  "GUEST": {
+    "WELCOME": "欢迎来到我们公司",
+    "WELCOME_MESSAGE": "感谢您对加入我们团队感兴趣。我们很期待了解更多关于您的信息！",
+    "APPLY_JOB": "申请入职"
   }
 }

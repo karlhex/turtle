@@ -9,7 +9,7 @@
   (add)="showCreateModal()">
 
   <div class="table-container">
-    <table mat-table [dataSource]="users" matSort (matSortChange)="onSortChange($event)">
+    <table mat-table [dataSource]="dataSource" matSort (matSortChange)="onSortChange($event)">
       <!-- ID Column -->
       <ng-container matColumnDef="id">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'user.list.id' | translate }}</th>
@@ -67,62 +67,5 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
-
   </div>
 </app-base-list>
-
-<!-- User Form Dialog -->
-<div class="modal" *ngIf="isModalVisible">
-  <div class="modal-content">
-    <h2>{{ modalTitle | translate }}</h2>
-    <form [formGroup]="userForm" (ngSubmit)="saveUser()">
-      <mat-form-field>
-        <mat-label>{{ 'user.form.username' | translate }}</mat-label>
-        <input matInput formControlName="username" required>
-        <mat-error *ngIf="userForm.get('username')?.hasError('required')">
-          {{ 'user.validation.required.username' | translate }}
-        </mat-error>
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-label>{{ 'user.form.email' | translate }}</mat-label>
-        <input matInput formControlName="email" required type="email">
-        <mat-error *ngIf="userForm.get('email')?.hasError('required')">
-          {{ 'user.validation.required.email' | translate }}
-        </mat-error>
-        <mat-error *ngIf="userForm.get('email')?.hasError('email')">
-          {{ 'user.validation.email' | translate }}
-        </mat-error>
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-label>{{ 'user.form.password' | translate }}</mat-label>
-        <input matInput formControlName="password" required type="password">
-        <mat-error *ngIf="userForm.get('password')?.hasError('required')">
-          {{ 'user.validation.required.password' | translate }}
-        </mat-error>
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-label>{{ 'user.form.roles' | translate }}</mat-label>
-        <mat-select formControlName="roleNames" multiple required>
-          <mat-option *ngFor="let role of availableRoles" [value]="role">
-            {{role}}
-          </mat-option>
-        </mat-select>
-        <mat-error *ngIf="userForm.get('roleNames')?.hasError('required')">
-          {{ 'user.validation.required.roles' | translate }}
-        </mat-error>
-      </mat-form-field>
-
-      <div class="button-group">
-        <button mat-button type="button" (click)="isModalVisible = false">
-          {{ 'common.button.cancel' | translate }}
-        </button>
-        <button mat-raised-button color="primary" type="submit" [disabled]="!userForm.valid">
-          {{ 'common.button.confirm' | translate }}
-        </button>
-      </div>
-    </form>
-  </div>
-</div>

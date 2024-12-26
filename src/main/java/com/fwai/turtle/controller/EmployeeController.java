@@ -14,6 +14,7 @@ import com.fwai.turtle.service.interfaces.IEmployeeLeaveService;
 import com.fwai.turtle.service.interfaces.IEmployeePayrollService;
 import com.fwai.turtle.service.interfaces.IEmployeeEducationService;
 import com.fwai.turtle.service.interfaces.EmployeeJobHistoryService;
+import com.fwai.turtle.types.EmployeeStatus;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -80,6 +81,16 @@ public class EmployeeController {
     @GetMapping("/active")
     public ApiResponse<List<EmployeeDTO>> getActiveEmployees() {
         return ApiResponse.ok(employeeService.getActiveEmployees());
+    }
+
+    @GetMapping("/unassigned")
+    public ApiResponse<List<EmployeeDTO>> getUnassignedEmployees() {
+        return ApiResponse.ok(employeeService.getUnassignedEmployees());
+    }
+
+    @GetMapping("/status/{status}")
+    public ApiResponse<List<EmployeeDTO>> getEmployeesByStatus(@PathVariable String status) {
+        return ApiResponse.ok(employeeService.getEmployeesByStatus(EmployeeStatus.valueOf(status)));
     }
 
     @PostMapping("/{employeeId}/educations")

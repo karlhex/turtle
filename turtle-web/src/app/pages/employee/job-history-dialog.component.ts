@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { EmployeeJobHistory } from '../../services/employee-job-history.service';
+import { EmployeeJobHistory } from '../../models/employee.model';
 
 @Component({
   selector: 'app-job-history-dialog',

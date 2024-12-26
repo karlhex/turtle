@@ -21,6 +21,10 @@ export interface ApiResponse<T> {
 export interface SigninData {
   id: number;
   token: string;
+  employeeId?: number;
+  employeeName?: string;
+  employeeDepartment?: string;
+  employeePosition?: string;
   message?: string;
 }
 
@@ -69,8 +73,12 @@ export class AuthService {
             this.userSubject.next(response);
             // Start token refresh timer
             this.tokenRefreshService.startRefreshTimer();           
-            // Navigate to dashboard
-            this.router.navigate(['/dashboard']);
+            // Navigate based on employee status
+            if (response.data.employeeId) {
+              this.router.navigate(['/dashboard']);
+            } else {
+              this.router.navigate(['/guest-dashboard']);
+            }
           } else {
             console.error('Invalid response format:', response);
             throw new Error('Invalid response from server');
