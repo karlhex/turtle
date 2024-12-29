@@ -103,10 +103,13 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public User updateUser(User user) {
+  public User updateUser(UserDTO userDTO) {
     try {
-      User oldUser = userRepository.findById(user.getId())
+      User oldUser = userRepository.findById(userDTO.getId())
           .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+      
+      User user = userMapper.toEntity(userDTO);
+
       user.setPassword(oldUser.getPassword());
       log.info("Updating user: {}", user);
       return userRepository.save(user);

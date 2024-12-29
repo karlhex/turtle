@@ -70,4 +70,19 @@ public class UserEmployeeMappingService {
             .filter(employee -> employee.getUser() == null)
             .collect(Collectors.toList());
     }
+
+    @Transactional(readOnly = true)
+    public UserEmployeeMappingDTO getMappingByUserId(Long userId) {
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new RuntimeException("User not found"));
+        if (user.getEmployee() == null) {
+            return null;
+        }
+        UserEmployeeMappingDTO dto = new UserEmployeeMappingDTO();
+        dto.setEmployeeId(user.getEmployee().getId());
+        dto.setEmployeeName(user.getEmployee().getName());
+        dto.setUserId(user.getId());
+        dto.setUsername(user.getUsername());
+        return dto;
+    }
 }

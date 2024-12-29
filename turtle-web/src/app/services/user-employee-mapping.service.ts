@@ -7,9 +7,8 @@ import { ApiResponse } from '../models/api.model';
 export interface UserEmployeeMapping {
   id: number;
   userId: number;
-  employeeId: number;
   username: string;
-  userEmail: string;
+  employeeId: number;
   employeeName: string;
 }
 
@@ -19,21 +18,26 @@ export interface UserEmployeeMapping {
 export class UserEmployeeMappingService {
   private apiUrl = `${environment.apiUrl}/user-employee-mappings`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getMappings(): Observable<ApiResponse<UserEmployeeMapping[]>> {
     return this.http.get<ApiResponse<UserEmployeeMapping[]>>(this.apiUrl);
   }
 
-  getUserMappings(userId: number): Observable<ApiResponse<UserEmployeeMapping[]>> {
-    return this.http.get<ApiResponse<UserEmployeeMapping[]>>(`${this.apiUrl}/user/${userId}`);
-  }
-
   createMapping(userId: number, employeeId: number): Observable<ApiResponse<void>> {
-    return this.http.post<ApiResponse<void>>(this.apiUrl, { userId, employeeId });
+    return this.http.post<ApiResponse<void>>(this.apiUrl, null, {
+      params: {
+        userId: userId.toString(),
+        employeeId: employeeId.toString()
+      }
+    });
   }
 
   deleteMapping(mappingId: number): Observable<ApiResponse<void>> {
     return this.http.delete<ApiResponse<void>>(`${this.apiUrl}/${mappingId}`);
+  }
+
+  getUserMapping(userId: number): Observable<ApiResponse<UserEmployeeMapping>> {
+    return this.http.get<ApiResponse<UserEmployeeMapping>>(`${this.apiUrl}/user/${userId}`);
   }
 }

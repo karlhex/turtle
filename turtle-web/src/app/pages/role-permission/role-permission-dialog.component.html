@@ -1,0 +1,41 @@
+<h2 mat-dialog-title>
+  {{ (isEdit ? 'ROLE_PERMISSIONS.EDIT' : 'ROLE_PERMISSIONS.ADD') | translate }}
+</h2>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <mat-dialog-content>
+    <div class="form-container">
+      <!-- Role Name -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>{{ 'ROLE_PERMISSIONS.ROLE_NAME' | translate }}</mat-label>
+        <mat-select formControlName="roleName">
+          <mat-option *ngFor="let role of roles" [value]="role.name">
+            {{role.name}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="form.get('roleName')?.hasError('required')">
+          {{ 'COMMON.FIELD_REQUIRED' | translate }}
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Permission -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>{{ 'ROLE_PERMISSIONS.PERMISSION' | translate }}</mat-label>
+        <input matInput formControlName="permission" required>
+        <mat-error *ngIf="form.get('permission')?.hasError('required')">
+          {{ 'COMMON.FIELD_REQUIRED' | translate }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button (click)="onCancel()" [disabled]="loading">
+      {{ 'COMMON.CANCEL' | translate }}
+    </button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid || loading">
+      <mat-spinner diameter="20" *ngIf="loading"></mat-spinner>
+      {{ (isEdit ? 'COMMON.UPDATE' : 'COMMON.CREATE') | translate }}
+    </button>
+  </mat-dialog-actions>
+</form>

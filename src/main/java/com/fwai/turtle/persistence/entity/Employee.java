@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.time.LocalDate;
@@ -20,6 +21,7 @@ import com.fwai.turtle.types.IdType;
  * 员工信息表
  */
 @Data
+@ToString(exclude = {"user", "educations", "attendances", "leaves", "jobHistories"})
 @Entity
 @Builder
 @NoArgsConstructor

@@ -12,6 +12,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { UserManagementComponent } from './user-management.component';
@@ -37,6 +38,7 @@ import { BaseListComponent } from '@app/components/base-list/base-list.component
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
+    MatProgressSpinnerModule,
     TranslateModule,
     BaseListComponent
   ],

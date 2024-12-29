@@ -80,12 +80,12 @@ public class UserController {
   }
 
   @PutMapping("/{id}")
-  public ApiResponse<User> updateUser(@PathVariable("id") Long id, @RequestBody User user) {
+  public ApiResponse<User> updateUser(@PathVariable("id") Long id, @RequestBody UserDTO userDTO) {
     log.info("updateUser: {}", id);
     if (!userService.findById(id).isPresent()) {
       throw new ResourceNotFoundException("User not found with id: " + id);
     }
-    user.setId(id);
-    return ApiResponse.ok(userService.updateUser(user));
+    userDTO.setId(id);
+    return ApiResponse.ok(userService.updateUser(userDTO));
   }
 }

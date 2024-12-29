@@ -21,7 +21,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActionComponent } from '../../components/action/action.component';
- import { Employee } from '@models/employee.model';
+import { Employee } from '@models/employee.model';
+import { ApiResponse } from '@models/api.model';
 
 @Component({
   selector: 'app-user-employee-mapping',
@@ -37,6 +38,7 @@ export class UserEmployeeMappingComponent implements OnInit {
   loading = false;
   displayedColumns: string[] = ['username', 'email', 'employee', 'actions'];
   currentUser: User | null = null;
+  currentUserMapping: UserEmployeeMapping | null = null;
 
   constructor(
     private userEmployeeMappingService: UserEmployeeMappingService,
@@ -62,23 +64,27 @@ export class UserEmployeeMappingComponent implements OnInit {
     this.loading = true;
 
     if (this.currentUser) {
-      this.loadUserMappings();
+      this.getUserMapping();
     } else {
-      this.loadAllMappings();
+      this.getMappings();
     }
 
-    this.loadUnmappedEmployees();
+    this.getUnmappedEmployees();
     if (!this.currentUser) {
-      this.loadUnmappedUsers();
+      this.getUnmappedUsers();
     }
   }
 
-  private loadAllMappings(): void {
+  private getMappings(): void {
     this.userEmployeeMappingService.getMappings()
       .pipe(finalize(() => this.loading = false))
       .subscribe({
-        next: (response) => {
-          this.mappings = response.data;
+        next: (response: ApiResponse<UserEmployeeMapping[]>) => {
+          if (response.code === 200) {
+            this.mappings = response.data;
+          } else {
+            this.showError(response.message || '加载用户-员工关联失败');
+          }
         },
         error: (error) => {
           console.error('Error loading mappings:', error);
@@ -87,26 +93,35 @@ export class UserEmployeeMappingComponent implements OnInit {
       });
   }
 
-  private loadUserMappings(): void {
+  private getUserMapping(): void {
     if (!this.currentUser?.id) return;
 
-    this.userEmployeeMappingService.getUserMappings(this.currentUser.id)
+    this.userEmployeeMappingService.getUserMapping(this.currentUser.id)
       .pipe(finalize(() => this.loading = false))
       .subscribe({
-        next: (response) => {
-          this.mappings = response.data;
+        next: (response: ApiResponse<UserEmployeeMapping>) => {
+          if (response.code === 200) {
+            this.currentUserMapping = response.data;
+            this.mappings = response.data ? [response.data] : [];
+          } else {
+            this.showError(response.message || '加载用户的员工关联失败');
+          }
         },
         error: (error) => {
-          console.error('Error loading user mappings:', error);
+          console.error('Error loading user mapping:', error);
           this.showError('加载用户的员工关联失败');
         }
       });
   }
 
-  private loadUnmappedUsers(): void {
+  private getUnmappedUsers(): void {
     this.userService.getUnmappedUsers().subscribe({
-      next: (response) => {
-        this.unmappedUsers = response.data;
+      next: (response: ApiResponse<User[]>) => {
+        if (response.code === 200) {
+          this.unmappedUsers = response.data;
+        } else {
+          this.showError(response.message || '加载未关联用户失败');
+        }
       },
       error: (error) => {
         console.error('Error loading unmapped users:', error);
@@ -115,10 +130,14 @@ export class UserEmployeeMappingComponent implements OnInit {
     });
   }
 
-  private loadUnmappedEmployees(): void {
+  private getUnmappedEmployees(): void {
     this.employeeService.getUnmappedEmployees().subscribe({
-      next: (response) => {
-        this.unmappedEmployees = response.data;
+      next: (response: ApiResponse<Employee[]>) => {
+        if (response.code === 200) {
+          this.unmappedEmployees = response.data;
+        } else {
+          this.showError(response.message || '加载未关联员工失败');
+        }
       },
       error: (error) => {
         console.error('Error loading unmapped employees:', error);
@@ -140,13 +159,17 @@ export class UserEmployeeMappingComponent implements OnInit {
     this.userEmployeeMappingService.createMapping(userId, this.selectedEmployee)
       .pipe(finalize(() => this.loading = false))
       .subscribe({
-        next: () => {
-          this.showSuccess('用户-员工关联创建成功');
-          this.selectedEmployee = null;
-          if (!this.currentUser) {
-            this.selectedUser = null;
+        next: (response: ApiResponse<any>) => {
+          if (response.code === 200) {
+            this.showSuccess('用户-员工关联创建成功');
+            this.selectedEmployee = null;
+            if (!this.currentUser) {
+              this.selectedUser = null;
+            }
+            this.loadData();
+          } else {
+            this.showError(response.message || '创建用户-员工关联失败');
           }
-          this.loadData();
         },
         error: (error) => {
           console.error('Error creating mapping:', error);
@@ -169,9 +192,13 @@ export class UserEmployeeMappingComponent implements OnInit {
         this.userEmployeeMappingService.deleteMapping(mapping.id)
           .pipe(finalize(() => this.loading = false))
           .subscribe({
-            next: () => {
-              this.showSuccess('用户-员工关联删除成功');
-              this.loadData();
+            next: (response: ApiResponse<any>) => {
+              if (response.code === 200) {
+                this.showSuccess('用户-员工关联删除成功');
+                this.loadData();
+              } else {
+                this.showError(response.message || '删除用户-员工关联失败');
+              }
             },
             error: (error) => {
               console.error('Error deleting mapping:', error);

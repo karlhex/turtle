@@ -13,7 +13,7 @@ public interface UserService {
     Optional<User> findById(Long id);
     Optional<User> findByUsername(String username);
     User newUser(User user);
-    User updateUser(User user);
+    User updateUser(UserDTO user);
     User destroyUser(User user);
     Page<UserDTO> findAll(Pageable pageable);
     Page<UserDTO> findUnmappedUsers(Pageable pageable);

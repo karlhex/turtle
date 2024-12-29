@@ -4,11 +4,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fwai.turtle.persistence.converter.RoleTypeConverter;
-import com.fwai.turtle.types.RoleType;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -34,20 +31,23 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Convert(converter = RoleTypeConverter.class)
     @Column(name = "role_name", unique = true, nullable = false)
-    private RoleType name;
+    private String name;
  
     @Column(name = "role_description")
     private String description;
+
+    @Column(name = "is_system")
+    private Boolean isSystem;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
     private Set<User> users = new HashSet<>();
 
-    public Role(RoleType name) {
+    public Role(String name) {
         this.name = name;
         this.users = new HashSet<>();
+        this.isSystem = false;
     }
 
     public void addUser(User user) {

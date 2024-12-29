@@ -63,6 +63,8 @@ import { UserEditDialogComponent } from './pages/user-management/user-edit-dialo
 import { EducationListComponent } from './pages/employee/education-list.component';
 import { JobHistoryListComponent } from './pages/employee/job-history-list.component';
 import { GuestDashboardComponent } from './pages/guest/guest-dashboard.component';
+import { RolePermissionListComponent } from './pages/role-permission/role-permission-list.component';
+import { RolePermissionDialogComponent } from './pages/role-permission/role-permission-dialog.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -85,6 +87,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     UserManagementComponent,
     UserEditDialogComponent,
     UserEmployeeMappingComponent,
+    RolePermissionListComponent,
+    RolePermissionDialogComponent,
     EmployeeListComponent,
     ActionComponent,
     BaseDialogComponent,
@@ -117,7 +121,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     ReimbursementListComponent
   ],
   imports: [
-
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,

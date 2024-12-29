@@ -23,20 +23,23 @@
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="full-width">
-        <mat-label>{{ 'user.form.password' | translate }}</mat-label>
-        <input matInput formControlName="password" [required]="!isEditMode" type="password">
-        <mat-error *ngIf="userForm.get('password')?.hasError('required')">
-          {{ 'user.validation.required.password' | translate }}
-        </mat-error>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="full-width">
         <mat-label>{{ 'user.form.roles' | translate }}</mat-label>
         <mat-select formControlName="roleNames" multiple required>
-          <mat-option *ngFor="let role of availableRoles" [value]="role">
-            {{ role }}
+          <mat-option *ngIf="isLoading">
+            <mat-spinner diameter="20"></mat-spinner>
+          </mat-option>
+          <mat-option *ngFor="let role of availableRoles" [value]="role.name">
+            <span class="role-name">{{ role.name.replace('ROLE_', '') }}</span>
+            <small *ngIf="role.description" class="role-description">
+              - {{ role.description }}
+            </small>
           </mat-option>
         </mat-select>
+        <mat-select-trigger>
+          <span *ngFor="let roleName of userForm.get('roleNames')?.value; let last = last">
+            {{ roleName.replace('ROLE_', '') }}{{!last ? ', ' : ''}}
+          </span>
+        </mat-select-trigger>
         <mat-error *ngIf="userForm.get('roleNames')?.hasError('required')">
           {{ 'user.validation.required.roles' | translate }}
         </mat-error>

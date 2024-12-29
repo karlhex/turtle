@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 
 import com.fwai.turtle.persistence.entity.Role;
 import com.fwai.turtle.service.interfaces.JwtTokenService;
-import com.fwai.turtle.types.RoleType;
 
 import javax.crypto.SecretKey;
 import java.util.function.Function;
@@ -49,7 +48,7 @@ public class JwtTokenServiceImpl implements JwtTokenService {
 
         // Convert roles to a list of role names
         Set<String> roleNames = roles.stream()
-                .map(role -> role.getName().name())
+                .map(role -> role.getName())
                 .collect(java.util.stream.Collectors.toSet());
 
         try {
@@ -111,8 +110,8 @@ public class JwtTokenServiceImpl implements JwtTokenService {
         Set<Role> rolesSet = new HashSet<Role>();
 
         for (int i = 0; i < roles.length; i++) {
-            RoleType rt = RoleType.valueOf(roles[i].trim());
-            rolesSet.add(new Role(rt));
+
+            rolesSet.add(new Role(roles[i].trim()));
         }
 
         return rolesSet;

@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import com.fwai.turtle.service.interfaces.AuthService;
 import com.fwai.turtle.service.interfaces.JwtTokenService;
 import com.fwai.turtle.service.interfaces.UserService;
-import com.fwai.turtle.types.RoleType;
 import com.fwai.turtle.persistence.repository.RoleRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -79,11 +78,12 @@ public class AuthServiceImpl implements AuthService {
       Set<Role> roles = new HashSet<>(user.getRoles());
 
       // Check if user is SYSTEM
-      if (roles.stream().anyMatch(role -> role.getName().getValue().equals(RoleType.SYSTEM.getValue()))) {
+      if (roles.stream().anyMatch(role -> role.getIsSystem())) {
         String token = jwtTokenService.createToken(user.getUsername(), roles);
         return ansBuilder
+            .isSystemUser(true) 
             .token(token)
-            .roles(roles.stream().map(role -> role.getName().getValue()).collect(Collectors.toSet()))
+            .roles(roles.stream().map(role -> role.getName().replace("ROLE_", "")).collect(Collectors.toSet()))
             .build();
       }
 
@@ -91,14 +91,15 @@ public class AuthServiceImpl implements AuthService {
       Employee employee = user.getEmployee();
       if (employee == null) {
         // If employee is empty, assign guest role
-        Role guestRole = roleRepository.findByName(RoleType.GUEST)
+        Role guestRole = roleRepository.findByName("ROLE_GUEST")
             .orElseThrow(() -> new RuntimeException("Guest role not found"));
         roles.clear();
         roles.add(guestRole);
         String token = jwtTokenService.createToken(user.getUsername(), roles);
         return ansBuilder
+            .isSystemUser(false)  
             .token(token)
-            .roles(roles.stream().map(role -> role.getName().getValue()).collect(Collectors.toSet()))
+            .roles(roles.stream().map(role -> role.getName().replace("ROLE_", "")).collect(Collectors.toSet()))
             .build();
       }
 
@@ -109,7 +110,7 @@ public class AuthServiceImpl implements AuthService {
 
       // If status is APPLICATION, assign GUEST role
       if (employee.getStatus() == EmployeeStatus.APPLICATION) {
-        Role guestRole = roleRepository.findByName(RoleType.GUEST)
+        Role guestRole = roleRepository.findByName("ROLE_GUEST")
             .orElseThrow(() -> new RuntimeException("Guest role not found"));
         roles.clear();
         roles.add(guestRole);
@@ -118,8 +119,9 @@ public class AuthServiceImpl implements AuthService {
       // Generate token and build response with employee info
       String token = jwtTokenService.createToken(user.getUsername(), roles);
       return ansBuilder
+          .isSystemUser(false)
           .token(token)
-          .roles(roles.stream().map(role -> role.getName().getValue()).collect(Collectors.toSet()))
+          .roles(roles.stream().map(role -> role.getName().replace("ROLE_", "")).collect(Collectors.toSet()))
           .employeeId(employee.getId())
           .employeeName(employee.getName())
           .employeeDepartment(employee.getDepartment() != null ? employee.getDepartment().getName() : null)
@@ -147,8 +149,7 @@ public class AuthServiceImpl implements AuthService {
     Set<Role> roles = new HashSet<>();
     for (String roleStr : signupReq.getRoles()) {
       try {
-        RoleType roleType = RoleType.valueOf(roleStr.toUpperCase());
-        roleRepository.findByName(roleType)
+        roleRepository.findByName(roleStr)
             .ifPresent(roles::add);
       } catch (IllegalArgumentException e) {
         log.warn("Invalid role type: " + roleStr);
@@ -157,7 +158,7 @@ public class AuthServiceImpl implements AuthService {
 
     // If no valid roles provided or found, assign default USER role
     if (roles.isEmpty()) {
-      roleRepository.findByName(RoleType.USER)
+      roleRepository.findByName("ROLE_GUEST")
           .ifPresent(roles::add);
     }
 

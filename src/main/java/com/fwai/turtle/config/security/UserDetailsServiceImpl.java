@@ -36,6 +36,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
   }
 
   private List<SimpleGrantedAuthority> getAuthority(Set<Role> roles) {
-    return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName().name())).toList();
+    return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).toList();
   }
 }
