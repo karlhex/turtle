@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import com.fwai.turtle.dto.ChangePasswordRequest;
 import com.fwai.turtle.dto.UserDTO;
 import com.fwai.turtle.persistence.entity.User;
 
@@ -18,4 +19,5 @@ public interface UserService {
     Page<UserDTO> findAll(Pageable pageable);
     Page<UserDTO> findUnmappedUsers(Pageable pageable);
     Page<UserDTO> searchUsers(String query, Pageable pageable);
+    void changePassword(ChangePasswordRequest changePasswordRequest);
 }

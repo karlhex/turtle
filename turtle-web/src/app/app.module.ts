@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -65,6 +66,7 @@ import { JobHistoryListComponent } from './pages/employee/job-history-list.compo
 import { GuestDashboardComponent } from './pages/guest/guest-dashboard.component';
 import { RolePermissionListComponent } from './pages/role-permission/role-permission-list.component';
 import { RolePermissionDialogComponent } from './pages/role-permission/role-permission-dialog.component';
+import { ChangePasswordDialogComponent } from './pages/user-management/change-password-dialog/change-password-dialog.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -75,6 +77,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   declarations: [
     AppComponent,
     LoginComponent,
+    ChangePasswordDialogComponent,
     DashboardComponent,
     GuestDashboardComponent,
     EmployeeDialogComponent,
@@ -128,6 +131,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ReactiveFormsModule,
     AppRoutingModule,
     SharedModule,
+    MatDialogModule,
     TranslateModule.forRoot({
       defaultLanguage: 'zh',
       loader: {

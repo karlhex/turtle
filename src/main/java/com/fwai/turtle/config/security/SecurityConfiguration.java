@@ -14,6 +14,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.context.annotation.Lazy;
 
 import com.fwai.turtle.config.CorsConfig;
 
@@ -22,14 +23,19 @@ import com.fwai.turtle.config.CorsConfig;
 @Profile("!test")
 public class SecurityConfiguration {
 
-  @Autowired
-  private UserDetailsService userDetailsService;
+  private final UserDetailsService userDetailsService;
+  private final JwtAuthenticationFilter jwtAuthenticationFilter;
+  private final CorsConfig corsConfig;
 
   @Autowired
-  private JwtAuthenticationFilter jwtAuthenticationFilter;
-
-  @Autowired
-  private CorsConfig corsConfig;
+  public SecurityConfiguration(
+      @Lazy UserDetailsService userDetailsService, 
+      JwtAuthenticationFilter jwtAuthenticationFilter, 
+      CorsConfig corsConfig) {
+    this.userDetailsService = userDetailsService;
+    this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+    this.corsConfig = corsConfig;
+  }
 
   private static final String[] AUTH_WHITELIST = {
       "/api/auth/**",

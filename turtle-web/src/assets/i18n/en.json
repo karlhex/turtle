@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "Turtle HR Management System",
+    "title": "Turtle Enterprise Management System",
     "menu": {
       "dashboard": "Dashboard",
       "hr": "Human Resources",
@@ -23,6 +23,7 @@
       "users": "Users",
       "company": "Company Management",
       "logout": "Logout",
+      "changePassword": "Change Password",
       "role_permissions": "Role Permissions"
     }
   },
@@ -626,7 +627,8 @@
     },
     "actions": "Actions",
     "save": "Save",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "close": "Close"
   },
   "currency": {
     "title": "Currency Management",
@@ -873,5 +875,22 @@
     "transaction_pattern": "Transaction Pattern",
     "description": "Description",
     "is_active": "Active"
+  },
+  "changePassword": {
+    "title": "Change Password",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm New Password",
+    "submit": "Confirm",
+    "cancel": "Cancel",
+    "success": "Password changed successfully",
+    "error": "Failed to change password",
+    "validations": {
+      "currentPasswordRequired": "Please enter current password",
+      "newPasswordRequired": "Please enter new password",
+      "newPasswordMinLength": "New password must be at least 8 characters",
+      "confirmPasswordRequired": "Please confirm new password",
+      "passwordMismatch": "Passwords do not match"
+    }
   }
 }

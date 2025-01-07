@@ -1,9 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
+import { MatDialog } from '@angular/material/dialog';
 import { Router, NavigationEnd } from '@angular/router';
 import { AuthService } from './services/auth.service';
 import { filter } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
+import { ChangePasswordDialogComponent } from './pages/user-management/change-password-dialog/change-password-dialog.component';
 
 @Component({
   selector: 'app-root',
@@ -18,7 +20,8 @@ export class AppComponent {
   constructor(
     private router: Router,
     private authService: AuthService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private dialog: MatDialog
   ) {
     // Initialize translations
     translate.setDefaultLang('zh');
@@ -43,5 +46,11 @@ export class AppComponent {
 
   switchLanguage(lang: string) {
     this.translate.use(lang);
+  }
+
+  openChangePasswordDialog() {
+    this.dialog.open(ChangePasswordDialogComponent, {
+      width: '400px'
+    });
   }
 }

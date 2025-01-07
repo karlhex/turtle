@@ -8,25 +8,30 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import jakarta.servlet.ServletException;
+import org.springframework.context.annotation.Lazy;
 import java.io.IOException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 
 @Slf4j
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-  @Autowired
-  private JwtTokenService jwtTokenService;
+  private final JwtTokenService jwtTokenService;
+  private final UserDetailsService userDetailsService;
 
-  @Autowired
-  private UserDetailsServiceImpl userDetailsService;
+  public JwtAuthenticationFilter(
+      JwtTokenService jwtTokenService, 
+      @Lazy UserDetailsService userDetailsService) {
+    this.jwtTokenService = jwtTokenService;
+    this.userDetailsService = userDetailsService;
+  }
 
   @Override
   protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,

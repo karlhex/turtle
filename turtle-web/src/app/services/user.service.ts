@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { ApiResponse } from '../models/api.model';
+import { ChangePasswordRequest } from '../models/change-password-request.model';
 
 export interface Role {
   id: number;
@@ -68,5 +69,9 @@ export class UserService {
   searchUsers(query: string, page: number = 0, pageSize: number = 10): Observable<ApiResponse<any>> {
     const url = `${this.API_URL}/search?query=${encodeURIComponent(query)}&page=${page}&size=${pageSize}`;
     return this.http.get<ApiResponse<any>>(url);
+  }
+
+  changeUserPassword(changePasswordRequest: ChangePasswordRequest): Observable<ApiResponse<string>> {
+    return this.http.post<ApiResponse<string>>(`${this.API_URL}/change-password`, changePasswordRequest);
   }
 }

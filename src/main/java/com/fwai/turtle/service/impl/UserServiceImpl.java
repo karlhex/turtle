@@ -1,13 +1,16 @@
 package com.fwai.turtle.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.fwai.turtle.service.interfaces.UserService;
 import com.fwai.turtle.dto.UserDTO;
+import com.fwai.turtle.dto.ChangePasswordRequest;
+import com.fwai.turtle.exception.InvalidCredentialsException;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,11 +25,9 @@ import com.fwai.turtle.persistence.repository.UserRepository;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-  @Autowired
-  private UserRepository userRepository;
-  
-  @Autowired
-  private UserMapper userMapper;
+  private final UserRepository userRepository;
+  private final UserMapper userMapper;
+  private final PasswordEncoder passwordEncoder;
 
   @Override
   public Optional<User> findByEmail(String email) {
@@ -154,5 +155,29 @@ public class UserServiceImpl implements UserService {
       log.error("Error searching users with query: {}", query, e);
       throw e;
     }
+  }
+
+  @Override
+  public void changePassword(ChangePasswordRequest changePasswordRequest) {
+    // 1. 检查新密码和确认密码是否一致
+    if (!changePasswordRequest.getNewPassword().equals(changePasswordRequest.getConfirmPassword())) {
+      throw new InvalidCredentialsException("新密码和确认密码不一致");
+    }
+
+    // 2. 获取当前登录用户
+    User currentUser = userRepository.findByUsername(
+        SecurityContextHolder.getContext().getAuthentication().getName()
+    ).orElseThrow(() -> new UsernameNotFoundException("用户未找到"));
+
+    // 3. 验证当前密码是否正确
+    if (!passwordEncoder.matches(changePasswordRequest.getCurrentPassword(), currentUser.getPassword())) {
+      throw new InvalidCredentialsException("当前密码不正确");
+    }
+
+    // 4. 更新密码
+    currentUser.setPassword(passwordEncoder.encode(changePasswordRequest.getNewPassword()));
+    userRepository.save(currentUser);
+
+    log.info("用户 {} 密码修改成功", currentUser.getUsername());
   }
 }

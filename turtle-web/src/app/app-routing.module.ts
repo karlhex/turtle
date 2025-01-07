@@ -16,6 +16,7 @@ import { ProjectListComponent } from './pages/project/project-list.component';
 import { BankAccountListComponent } from './pages/bank-account/bank-account-list.component';
 import { ReimbursementListComponent } from './pages/reimbursement/reimbursement-list/reimbursement-list.component';
 import { RolePermissionListComponent } from './pages/role-permission/role-permission-list.component';
+import { ChangePasswordDialogComponent } from './pages/user-management/change-password-dialog/change-password-dialog.component';
 import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
@@ -40,6 +41,7 @@ const routes: Routes = [
       { path: 'bank-accounts', component: BankAccountListComponent },
       { path: 'reimbursements', component: ReimbursementListComponent },
       { path: 'role-permissions', component: RolePermissionListComponent },
+      { path: 'change-password', component: ChangePasswordDialogComponent },
       // Placeholder routes for future implementation
       { path: 'positions', component: DashboardComponent },
       { path: 'attendance', component: DashboardComponent },

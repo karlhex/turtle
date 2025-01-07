@@ -19,9 +19,11 @@ import com.fwai.turtle.persistence.entity.User;
 import com.fwai.turtle.service.interfaces.UserService;
 import com.fwai.turtle.common.ApiResponse;
 import com.fwai.turtle.dto.UserDTO;
+import com.fwai.turtle.dto.ChangePasswordRequest;
 import com.fwai.turtle.exception.ResourceNotFoundException;
 
 import lombok.extern.slf4j.Slf4j;
+import jakarta.validation.Valid;
 
 @Slf4j
 @RestController
@@ -87,5 +89,13 @@ public class UserController {
     }
     userDTO.setId(id);
     return ApiResponse.ok(userService.updateUser(userDTO));
+  }
+
+  @PostMapping("/change-password")
+  public ApiResponse<String> changePassword(
+      @Valid @RequestBody ChangePasswordRequest changePasswordRequest) {
+    log.info("Changing password for user");
+    userService.changePassword(changePasswordRequest);
+    return ApiResponse.ok("密码修改成功");
   }
 }

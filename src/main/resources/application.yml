@@ -3,7 +3,10 @@ app:
   version: "1.0.0"
   upload:
     dir: /tmp
+
 spring:
+  main:
+    allow-circular-references: true
   jackson:
     date-format: yyyy-MM-dd
     time-zone: GMT+8
@@ -21,6 +24,13 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
     show_sql: false
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    com.fwai.turtle: DEBUG
+    org.springframework.web: DEBUG
+
 token:
   signing:
     secretKey: "NllmZHptNVVrNG9RRUs3NllmZHptNVVrNG9RRUs3NllmZHptNVVrNG9RRUs3NllmZHptNVVrNG9RRUs3NllmZHptNVVrNG9RRUs3NllmZHptNVVrNG9RRUs3NllmZHptNVVrNG9RRUs3Nl"

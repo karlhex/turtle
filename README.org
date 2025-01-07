@@ -1,18 +1,19 @@
 * README
-** Introduction
-Turtle is an application to help companies manage their business. It uses the MVC pattern. The frontend is written in AngularJS. The backend is written in JAVA.
+** 系统介绍
+Turtle企业管理系统是一个全面的企业管理解决方案，旨在帮助公司简化和优化其业务流程。该系统采用现代化的 MVC 架构设计，提供高效、灵活的管理工具。
 
-This is the first project where I'm using AI IDEs like Cursor and WindSurf to assist with coding.
+*** 技术栈
+- 前端: Angular TypeScript
+- 后端: Java Spring Boot
+- 架构模式: MVC (Model-View-Controller)
 
-I will document the pros and cons of the AI tools and the process of using them.
+*** 主要功能
+- 角色权限管理
+- 员工信息管理
+- 文件管理系统
+- 报销流程处理
 
-** Features
-- Employee Management
-- Contract Management
-- Invoice Management
-- Inventory Management
-
-** Journal
+** 开发日志
 - 2024-12-01: Reconstructed the directory structure
 - 2024-12-01: After using WindSurf for several days, I've discovered some issues, including:
     1. Each generated program has a different style, requiring many adjustments
