@@ -1,7 +1,7 @@
 package com.fwai.turtle.controller;
 
 import com.fwai.turtle.common.ApiResponse;
-import com.fwai.turtle.service.SequenceService;
+import com.fwai.turtle.service.interfaces.SequenceService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

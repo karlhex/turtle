@@ -1,4 +1,5 @@
-package com.fwai.turtle.service;
+// src/main/java/com/fwai/turtle/service/SequenceServiceImpl.java
+package com.fwai.turtle.service.impl;
 
 import com.fwai.turtle.persistence.entity.Sequence;
 import com.fwai.turtle.persistence.repository.SequenceRepository;
@@ -10,19 +11,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import com.fwai.turtle.service.interfaces.SequenceService;
 
 @Service
 @RequiredArgsConstructor
-public class SequenceService {
+public class SequenceServiceImpl implements SequenceService {
 
     private final SequenceRepository sequenceRepository;
 
-    /**
-     * 获取下一个序号
-     *
-     * @param type 序号类型
-     * @return 格式化后的序号
-     */
+    @Override
     @Transactional
     public String getNextSequence(String type) {
         Sequence sequence = sequenceRepository.findByTypeForUpdate(type)

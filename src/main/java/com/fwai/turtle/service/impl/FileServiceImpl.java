@@ -1,11 +1,11 @@
 package com.fwai.turtle.service.impl;
 
 import com.fwai.turtle.dto.FileDTO;
-import com.fwai.turtle.persistence.entity.ClientType;
 import com.fwai.turtle.persistence.entity.File;
 import com.fwai.turtle.persistence.mapper.FileMapper;
 import com.fwai.turtle.persistence.repository.FileRepository;
 import com.fwai.turtle.service.interfaces.FileService;
+import com.fwai.turtle.types.ClientType;
 import com.fwai.turtle.types.FileType;
 
 import lombok.RequiredArgsConstructor;

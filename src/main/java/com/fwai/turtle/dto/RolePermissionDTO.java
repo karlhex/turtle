@@ -8,5 +8,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class RolePermissionDTO extends BaseDTO {
     private String roleName;
-    private String permission;
+    private String transactionPattern;
+    private String description;
+    private Boolean isActive = true;
 }

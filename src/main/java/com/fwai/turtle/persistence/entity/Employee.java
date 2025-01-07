@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fwai.turtle.types.EmployeeContractType;
 import com.fwai.turtle.types.EmployeeStatus;
 import com.fwai.turtle.types.Gender;
@@ -104,6 +105,7 @@ public class Employee {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @JsonIgnoreProperties({"employee"})
     private User user;            // 关联用户账号
 
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)

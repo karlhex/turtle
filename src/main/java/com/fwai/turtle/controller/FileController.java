@@ -1,8 +1,8 @@
 package com.fwai.turtle.controller;
 
 import com.fwai.turtle.dto.FileDTO;
-import com.fwai.turtle.persistence.entity.ClientType;
 import com.fwai.turtle.service.interfaces.FileService;
+import com.fwai.turtle.types.ClientType;
 import com.fwai.turtle.common.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;

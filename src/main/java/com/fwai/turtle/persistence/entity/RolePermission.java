@@ -1,8 +1,11 @@
 package com.fwai.turtle.persistence.entity;
 
+import com.fwai.turtle.common.BaseEntity;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
@@ -10,10 +13,8 @@ import lombok.NoArgsConstructor;
 @Table(name = "role_permissions")
 @NoArgsConstructor
 @AllArgsConstructor
-public class RolePermission {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@EqualsAndHashCode(callSuper = false)
+public class RolePermission extends BaseEntity{
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id", nullable = false)
@@ -28,10 +29,4 @@ public class RolePermission {
     @Column(name = "is_active", nullable = false)
     private Boolean isActive = true;
 
-    public RolePermission(Role role, String transactionPattern, String description) {
-        this.role = role;
-        this.transactionPattern = transactionPattern;
-        this.description = description;
-        this.isActive = true;
-    }
 }

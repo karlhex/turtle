@@ -1,7 +1,8 @@
 package com.fwai.turtle.service.interfaces;
 
 import com.fwai.turtle.dto.FileDTO;
-import com.fwai.turtle.persistence.entity.ClientType;
+import com.fwai.turtle.types.ClientType;
+
 import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 

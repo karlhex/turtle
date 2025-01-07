@@ -6,9 +6,10 @@ import {
   RolePermissionCreateRequest,
   RolePermissionUpdateRequest,
   RolePermissionResponse,
-  RolePermissionListResponse,
+  RolePermissionListResponse
 } from '../models/role-permission.model';
 import { environment } from '../../environments/environment';
+import { ApiResponse } from '../models/api.model';
 
 @Injectable({
   providedIn: 'root'
@@ -70,5 +71,15 @@ export class RolePermissionService {
    */
   findByRoleName(roleName: string): Observable<RolePermissionResponse> {
     return this.http.get<RolePermissionResponse>(`${this.baseUrl}/role/${roleName}`);
+  }
+
+  /**
+   * Toggle active role permission
+   */
+  toggleActive(id: number): Observable<ApiResponse<RolePermission>> {
+    return this.http.put<ApiResponse<RolePermission>>(
+      `${this.baseUrl}/${id}/toggle-active`, 
+      {}
+    );
   }
 }

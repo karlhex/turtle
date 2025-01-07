@@ -31,7 +31,8 @@ export class RolePermissionDialogComponent implements OnInit {
     this.isEdit = !!data?.id;
     this.form = this.fb.group({
       roleName: ['', Validators.required],
-      permission: ['', Validators.required]
+      transactionPattern: ['', Validators.required],
+      description: ['']
     });
 
     if (this.isEdit) {

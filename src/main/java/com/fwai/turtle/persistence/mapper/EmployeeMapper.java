@@ -8,7 +8,15 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 
 @Mapper(componentModel = "spring",
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
-        uses = {DepartmentMapper.class, UserMapper.class, EmployeeEducationMapper.class, EmployeeJobHistoryMapper.class})
+        uses = {
+            DepartmentMapper.class, 
+            UserMapper.class,
+            EmployeeEducationMapper.class, 
+            EmployeeJobHistoryMapper.class, 
+            EmployeeAttendanceMapper.class, 
+            EmployeeEducationMapper.class,
+            EmployeeLeaveMapper.class
+        })
 public interface EmployeeMapper {
 
     EmployeeDTO toDTO(Employee employee);

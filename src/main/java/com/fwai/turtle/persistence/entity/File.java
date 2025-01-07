@@ -1,6 +1,7 @@
 package com.fwai.turtle.persistence.entity;
 
 import com.fwai.turtle.common.BaseEntity;
+import com.fwai.turtle.types.ClientType;
 import com.fwai.turtle.types.FileType;
 
 import jakarta.persistence.*;

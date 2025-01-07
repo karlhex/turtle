@@ -7,7 +7,7 @@
     <div class="form-container">
       <!-- Role Name -->
       <mat-form-field appearance="outline" class="full-width">
-        <mat-label>{{ 'ROLE_PERMISSIONS.ROLE_NAME' | translate }}</mat-label>
+        <mat-label>{{ 'role_permissions.role_name' | translate }}</mat-label>
         <mat-select formControlName="roleName">
           <mat-option *ngFor="let role of roles" [value]="role.name">
             {{role.name}}
@@ -17,25 +17,30 @@
           {{ 'COMMON.FIELD_REQUIRED' | translate }}
         </mat-error>
       </mat-form-field>
-
-      <!-- Permission -->
+      <!-- Transaction Pattern -->
       <mat-form-field appearance="outline" class="full-width">
-        <mat-label>{{ 'ROLE_PERMISSIONS.PERMISSION' | translate }}</mat-label>
-        <input matInput formControlName="permission" required>
-        <mat-error *ngIf="form.get('permission')?.hasError('required')">
+        <mat-label>{{ 'role_permissions.transaction_pattern' | translate }}</mat-label>
+        <input matInput formControlName="transactionPattern" required>
+        <mat-error *ngIf="form.get('transactionPattern')?.hasError('required')">
           {{ 'COMMON.FIELD_REQUIRED' | translate }}
         </mat-error>
       </mat-form-field>
+
+      <!-- Description -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>{{ 'role_permissions.description' | translate }}</mat-label>
+        <input matInput formControlName="description">
+      </mat-form-field>
     </div>
   </mat-dialog-content>
-
-  <mat-dialog-actions align="end">
-    <button mat-button (click)="onCancel()" [disabled]="loading">
-      {{ 'COMMON.CANCEL' | translate }}
-    </button>
-    <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid || loading">
-      <mat-spinner diameter="20" *ngIf="loading"></mat-spinner>
-      {{ (isEdit ? 'COMMON.UPDATE' : 'COMMON.CREATE') | translate }}
-    </button>
-  </mat-dialog-actions>
 </form>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()" [disabled]="loading">
+    {{ 'common.action.cancel' | translate }}
+  </button>
+  <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="form.invalid || loading">
+    <mat-spinner diameter="20" *ngIf="loading"></mat-spinner>
+    {{ (isEdit ? 'common.action.save' : 'common.action.add') | translate }}
+  </button>
+</mat-dialog-actions>

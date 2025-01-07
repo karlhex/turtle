@@ -51,7 +51,7 @@
       <!-- Reimbursement Items -->
       <div class="items-section">
         <div class="section-header">
-          <h3>{{ 'reimbursement.field.items' | translate }}</h3>
+          <h3>{{ 'reimbursement.item.title' | translate }}</h3>
           <div class="header-actions">
             <div class="total-amount">
               <span class="label">{{ 'reimbursement.field.totalAmount' | translate }}:</span>
@@ -67,7 +67,7 @@
         <div formArrayName="items" class="items-container">
           <div *ngFor="let item of items.controls; let i = index" [formGroupName]="i" class="item-row">
             <mat-form-field appearance="outline">
-              <mat-label>{{ 'reimbursement.field.amount' | translate }}</mat-label>
+              <mat-label>{{ 'reimbursement.item.amount' | translate }}</mat-label>
               <input matInput type="number" formControlName="amount" required>
               <mat-error *ngIf="item.get('amount')?.hasError('required')">
                 {{ 'common.validation.required' | translate }}
@@ -78,7 +78,7 @@
             </mat-form-field>
 
             <mat-form-field appearance="outline">
-              <mat-label>{{ 'reimbursement.field.reason' | translate }}</mat-label>
+              <mat-label>{{ 'reimbursement.item.reason' | translate }}</mat-label>
               <input matInput formControlName="reason" required>
               <mat-error *ngIf="item.get('reason')?.hasError('required')">
                 {{ 'common.validation.required' | translate }}
@@ -86,7 +86,7 @@
             </mat-form-field>
 
             <mat-form-field appearance="outline">
-              <mat-label>{{ 'reimbursement.field.occurrenceDate' | translate }}</mat-label>
+              <mat-label>{{ 'reimbursement.item.occurrenceDate' | translate }}</mat-label>
               <input matInput [matDatepicker]="occurrenceDatePicker" formControlName="occurrenceDate" required>
               <mat-datepicker-toggle matSuffix [for]="occurrenceDatePicker"></mat-datepicker-toggle>
               <mat-datepicker #occurrenceDatePicker></mat-datepicker>
@@ -116,15 +116,17 @@
     </div>
   </mat-dialog-content>
 
-  <mat-dialog-actions align="end">
-    <button type="button" mat-button (click)="onCancel()" [disabled]="loading">
-      {{ 'common.action.cancel' | translate }}
-    </button>
-    <button type="submit" mat-raised-button color="primary" [disabled]="loading || form.invalid || isReadOnly" (click)="onSave()">
-      {{ 'common.action.save' | translate }}
-    </button>
-    <button type="button" mat-raised-button color="accent" [disabled]="loading || form.invalid || isReadOnly" (click)="onSubmit()">
-      {{ 'common.action.submit' | translate }}
-    </button>
-  </mat-dialog-actions>
+
 </form>
+
+<mat-dialog-actions align="end">
+  <button type="button" mat-button (click)="onCancel()" [disabled]="loading">
+    {{ 'common.action.cancel' | translate }}
+  </button>
+  <button type="button" mat-raised-button color="primary" (click)="onSave()" [disabled]="loading || form.invalid || isReadOnly">
+    {{ 'reimbursement.dialog.actions.save' | translate }}
+  </button>
+  <button type="button" mat-raised-button color="accent" (click)="onSubmit()" [disabled]="loading || form.invalid || isReadOnly">
+    {{ 'reimbursement.dialog.actions.submit' | translate }}
+  </button>
+</mat-dialog-actions>

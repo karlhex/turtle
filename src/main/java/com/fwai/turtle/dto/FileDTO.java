@@ -1,6 +1,6 @@
 package com.fwai.turtle.dto;
 
-import com.fwai.turtle.persistence.entity.ClientType;
+import com.fwai.turtle.types.ClientType;
 import com.fwai.turtle.types.FileType;
 
 import lombok.Data;

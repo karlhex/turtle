@@ -2,17 +2,21 @@ import { BaseModel } from './base.model';
 
 export interface RolePermission extends BaseModel {
   roleName: string;
-  permission: string;
+  transactionPattern: string;
+  description?: string;
+  isActive: boolean;
 }
 
 export interface RolePermissionCreateRequest {
   roleName: string;
-  permission: string;
+  transactionPattern: string;
+  description?: string;
 }
 
 export interface RolePermissionUpdateRequest {
   roleName: string;
-  permission: string;
+  transactionPattern: string;
+  description?: string;
 }
 
 export interface RolePermissionResponse {

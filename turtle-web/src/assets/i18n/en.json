@@ -22,7 +22,8 @@
       "system": "System",
       "users": "Users",
       "company": "Company Management",
-      "logout": "Logout"
+      "logout": "Logout",
+      "role_permissions": "Role Permissions"
     }
   },
   "employee": {
@@ -782,7 +783,11 @@
     "title": "Reimbursement Management",
     "dialog": {
       "createTitle": "Create Reimbursement",
-      "editTitle": "Edit Reimbursement"
+      "editTitle": "Edit Reimbursement",
+      "actions": {
+        "save": "Save Draft",
+        "submit": "Submit Reimbursement"
+      }
     },
     "search": {
       "label": "Search Reimbursements",
@@ -855,9 +860,18 @@
       "PERSONAL": "Personal Account"
     }
   },
-  "GUEST": {
-    "WELCOME": "Welcome to Our Company",
-    "WELCOME_MESSAGE": "Thank you for your interest in joining our team. We're excited to learn more about you!",
-    "APPLY_JOB": "Apply for Job"
+  "guest": {
+    "welcome": "Welcome to Our Company",
+    "welcome_message": "Thank you for your interest in joining our team. We're excited to learn more about you!",
+    "apply_job": "Apply for Job"
+  },
+  "role_permissions": {
+    "title": "Role Permissions",
+    "add": "Add Role Permission",
+    "edit": "Edit Role Permission",
+    "role_name": "Role Name",
+    "transaction_pattern": "Transaction Pattern",
+    "description": "Description",
+    "is_active": "Active"
   }
 }

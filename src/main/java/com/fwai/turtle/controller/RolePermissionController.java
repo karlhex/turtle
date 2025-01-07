@@ -2,7 +2,8 @@ package com.fwai.turtle.controller;
 
 import com.fwai.turtle.common.ApiResponse;
 import com.fwai.turtle.dto.RolePermissionDTO;
-import com.fwai.turtle.service.RolePermissionService;
+import com.fwai.turtle.service.interfaces.RolePermissionService;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -45,5 +46,10 @@ public class RolePermissionController {
     @GetMapping("/role/{roleName}")
     public ApiResponse<List<RolePermissionDTO>> findByRoleName(@PathVariable String roleName) {
         return ApiResponse.ok(rolePermissionService.findByRoleName(roleName));
+    }
+
+    @PutMapping("/{id}/toggle-active")
+    public ApiResponse<RolePermissionDTO> toggleActive(@PathVariable Long id) {
+        return ApiResponse.ok(rolePermissionService.toggleActive(id));
     }
 }

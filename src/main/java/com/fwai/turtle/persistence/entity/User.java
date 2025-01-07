@@ -8,6 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -57,6 +58,7 @@ public class User {
     private Set<Role> roles;
 
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"user","educations", "attendances", "leaves", "jobHistories"})
     private Employee employee;    // 关联员工信息
 
     @CreationTimestamp

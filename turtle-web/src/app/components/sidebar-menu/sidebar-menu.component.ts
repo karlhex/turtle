@@ -109,6 +109,11 @@ export class SidebarMenuComponent {
           title: 'app.menu.users',
           icon: 'manage_accounts',
           route: '/users'
+        },
+        {
+          title: 'app.menu.role_permissions',
+          icon: 'security',
+          route: '/role-permissions'
         }
       ]
     }

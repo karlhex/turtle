@@ -1,6 +1,6 @@
 <app-base-list
-  [title]="'reimbursement.title'"
-  [placeholder]="'reimbursement.search.placeholder'"
+  [title]="'reimbursement.title' | translate"
+  [placeholder]="'reimbursement.search.placeholder' | translate"
   [loading]="loading"
   [pageSize]="pageSize"
   [totalElements]="totalElements"
@@ -11,7 +11,7 @@
   <table mat-table [dataSource]="reimbursements" class="mat-elevation-z2">
     <!-- Reimbursement No Column -->
     <ng-container matColumnDef="reimbursementNo">
-      <th mat-header-cell *matHeaderCellDef>{{ 'reimbursement.field.no' | translate }}</th>
+      <th mat-header-cell *matHeaderCellDef>{{ 'reimbursement.field.reimbursementNo' | translate }}</th>
       <td mat-cell *matCellDef="let item">{{ item.reimbursementNo }}</td>
     </ng-container>
 
@@ -53,21 +53,13 @@
 
     <!-- Actions Column -->
     <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef>{{ 'common.field.actions' | translate }}</th>
+      <th mat-header-cell *matHeaderCellDef>{{ 'common.actions' | translate }}</th>
       <td mat-cell *matCellDef="let item">
-        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Actions">
-          <mat-icon>more_vert</mat-icon>
-        </button>
-        <mat-menu #menu="matMenu">
-          <button mat-menu-item (click)="onEdit(item)">
-            <mat-icon>edit</mat-icon>
-            <span>{{ 'common.action.edit' | translate }}</span>
-          </button>
-          <button mat-menu-item (click)="onDelete(item)">
-            <mat-icon>delete</mat-icon>
-            <span>{{ 'common.action.delete' | translate }}</span>
-          </button>
-        </mat-menu>
+        <app-action
+          [canView]="false"
+          (edit)="onEdit(item)"
+          (delete)="onDelete(item)">
+        </app-action>
       </td>
     </ng-container>
 

@@ -6,10 +6,10 @@ import com.fwai.turtle.persistence.entity.RolePermission;
 import com.fwai.turtle.persistence.mapper.RolePermissionMapper;
 import com.fwai.turtle.persistence.repository.RolePermissionRepository;
 import com.fwai.turtle.persistence.repository.RoleRepository;
-import com.fwai.turtle.service.RolePermissionService;
+import com.fwai.turtle.service.interfaces.RolePermissionService;
+
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -100,11 +100,12 @@ public class RolePermissionServiceImpl implements RolePermissionService {
                 .orElseThrow(() -> new EntityNotFoundException("Role not found: " + rolePermissionDTO.getRoleName()));
 
         existingRolePermission.setRole(role);
-        existingRolePermission.setTransactionPattern(rolePermissionDTO.getPermission());
+        existingRolePermission.setTransactionPattern(rolePermissionDTO.getTransactionPattern());
+        existingRolePermission.setDescription(rolePermissionDTO.getDescription());
 
         return rolePermissionMapper.toDTO(rolePermissionRepository.save(existingRolePermission));
     }
-
+    
     @Override
     @Transactional
     public void delete(Long id) {
@@ -121,5 +122,17 @@ public class RolePermissionServiceImpl implements RolePermissionService {
         return rolePermissionRepository.findByRoleAndIsActiveTrue(role).stream()
                 .map(rolePermissionMapper::toDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public RolePermissionDTO toggleActive(Long id) {
+        RolePermission rolePermission = rolePermissionRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("RolePermission not found with id: " + id));
+        
+        // Toggle the active status
+        rolePermission.setIsActive(!rolePermission.getIsActive());
+        
+        return rolePermissionMapper.toDTO(rolePermissionRepository.save(rolePermission));
     }
 }
