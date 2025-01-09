@@ -886,5 +886,36 @@
       "confirmPasswordRequired": "请确认新密码",
       "passwordMismatch": "两次密码输入不一致"
     }
+  },
+  "inventory": {
+    "title": "库存管理",
+    "search_placeholder": "搜索库存",
+    "dialog_title": "库存操作",
+    "action_type": "操作类型",
+    "action": {
+      "storage": "入库",
+      "outbound": "出库",
+      "borrow": "借出",
+      "return": "归还"
+    },
+    "product": "产品",
+    "quantity": "数量",
+    "license": "许可证",
+    "purchase_contract": "采购合同",
+    "storage_time": "入库时间",
+    "out_time": "出库时间",
+    "handling_employee": "经办员工",
+    "shipping_method": "运输方式",
+    "shipping_address": "发货地址",
+    "receiver_name": "收货人",
+    "receiver_phone": "收货人电话",
+    "express_tracking_number": "快递单号",
+    "remarks": "备注"
+  },
+  "shipping_method": {
+    "express": "快递",
+    "standard": "标准",
+    "overnight": "隔夜",
+    "ground": "地面"
   }
 }

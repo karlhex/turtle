@@ -18,6 +18,7 @@ import { ReimbursementListComponent } from './pages/reimbursement/reimbursement-
 import { RolePermissionListComponent } from './pages/role-permission/role-permission-list.component';
 import { ChangePasswordDialogComponent } from './pages/user-management/change-password-dialog/change-password-dialog.component';
 import { AuthGuard } from './guards/auth.guard';
+import { InventoryListComponent } from './pages/inventory/inventory-list.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -42,6 +43,7 @@ const routes: Routes = [
       { path: 'reimbursements', component: ReimbursementListComponent },
       { path: 'role-permissions', component: RolePermissionListComponent },
       { path: 'change-password', component: ChangePasswordDialogComponent },
+      { path: 'inventories', component: InventoryListComponent },
       // Placeholder routes for future implementation
       { path: 'positions', component: DashboardComponent },
       { path: 'attendance', component: DashboardComponent },

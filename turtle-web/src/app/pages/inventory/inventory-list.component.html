@@ -1,0 +1,53 @@
+<app-base-list 
+  #baseList
+  [title]="'inventory.title' | translate"
+  [placeholder]="'inventory.search_placeholder' | translate"
+  [loading]="loading"
+  [totalElements]="totalElements"
+  [pageSize]="pageSize"
+  (search)="onSearch($event)"
+  (add)="openDialog()"
+  (page)="onPageChange($event)">
+
+  <mat-table [dataSource]="dataSource" class="mat-elevation-z1">
+    <!-- Product Name Column -->
+    <ng-container matColumnDef="productName">
+      <mat-header-cell *matHeaderCellDef>{{ 'inventory.product' | translate }}</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{ row.productName }}</mat-cell>
+    </ng-container>
+
+    <!-- Quantity Column -->
+    <ng-container matColumnDef="quantity">
+      <mat-header-cell *matHeaderCellDef>{{ 'inventory.quantity' | translate }}</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{ row.quantity }}</mat-cell>
+    </ng-container>
+
+    <!-- Purchase Contract Column -->
+    <ng-container matColumnDef="purchaseContractNo">
+      <mat-header-cell *matHeaderCellDef>{{ 'inventory.purchase_contract' | translate }}</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{ row.purchaseContractNo }}</mat-cell>
+    </ng-container>
+
+    <!-- Status Column -->
+    <ng-container matColumnDef="status">
+      <mat-header-cell *matHeaderCellDef>{{ 'common.status' | translate }}</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{ row.status }}</mat-cell>
+    </ng-container>
+
+    <!-- Actions Column -->
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef>{{ 'common.actions' | translate }}</mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <button mat-icon-button color="primary" (click)="openDialog(row)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="delete(row.id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+</app-base-list>

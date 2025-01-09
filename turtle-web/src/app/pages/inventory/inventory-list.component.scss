@@ -1,0 +1,21 @@
+// Specific styles for inventory list
+.mat-column-actions {
+  flex: 0 0 120px;
+  justify-content: center;
+}
+
+.mat-column-productName {
+  flex: 0 0 200px;
+}
+
+.mat-column-quantity {
+  flex: 0 0 100px;
+}
+
+.mat-column-purchaseContractNo {
+  flex: 0 0 150px;
+}
+
+.mat-column-status {
+  flex: 0 0 120px;
+}

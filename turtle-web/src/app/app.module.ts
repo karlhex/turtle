@@ -67,6 +67,8 @@ import { GuestDashboardComponent } from './pages/guest/guest-dashboard.component
 import { RolePermissionListComponent } from './pages/role-permission/role-permission-list.component';
 import { RolePermissionDialogComponent } from './pages/role-permission/role-permission-dialog.component';
 import { ChangePasswordDialogComponent } from './pages/user-management/change-password-dialog/change-password-dialog.component';
+import { InventoryDialogComponent } from './pages/inventory/inventory-dialog.component';
+import { InventoryListComponent } from './pages/inventory/inventory-list.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -121,7 +123,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     PersonInputComponent,
     PersonDialogComponent,
     ReimbursementDialogComponent,
-    ReimbursementListComponent
+    ReimbursementListComponent,
+    InventoryDialogComponent,
+    InventoryListComponent
   ],
   imports: [
     BrowserModule,

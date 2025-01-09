@@ -75,6 +75,11 @@ export class SidebarMenuComponent {
           title: 'app.menu.tax_info',
           icon: 'receipt',
           route: '/tax-infos'
+        },
+        {
+          title: 'inventory.title',
+          icon: 'inventory_2',
+          route: '/inventories'
         }
       ],
       divider: true

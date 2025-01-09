@@ -892,5 +892,36 @@
       "confirmPasswordRequired": "Please confirm new password",
       "passwordMismatch": "Passwords do not match"
     }
+  },
+  "inventory": {
+    "title": "Inventory Management",
+    "search_placeholder": "Search inventory",
+    "dialog_title": "Inventory Operation",
+    "action_type": "Operation Type",
+    "action": {
+      "storage": "Storage",
+      "outbound": "Outbound",
+      "borrow": "Borrow",
+      "return": "Return"
+    },
+    "product": "Product",
+    "quantity": "Quantity",
+    "license": "License",
+    "purchase_contract": "Purchase Contract",
+    "storage_time": "Storage Time",
+    "out_time": "Out Time",
+    "handling_employee": "Handling Employee",
+    "shipping_method": "Shipping Method",
+    "shipping_address": "Shipping Address",
+    "receiver_name": "Receiver Name",
+    "receiver_phone": "Receiver Phone",
+    "express_tracking_number": "Express Tracking Number",
+    "remarks": "Remarks"
+  },
+  "shipping_method": {
+    "express": "Express",
+    "standard": "Standard",
+    "overnight": "Overnight",
+    "ground": "Ground"
   }
 }
