@@ -6,6 +6,8 @@ import { Inventory } from '../../models/inventory.model';
 import { InventoryService } from '../../services/inventory.service';
 import { InventoryDialogComponent } from './inventory-dialog.component';
 import { BaseListComponent } from '../../components/base-list/base-list.component';
+import { InventoryStatus } from '../../types/inventory-status.enum';
+import { InventoryAction } from '../../types/inventory-action.enum';
 
 @Component({
   selector: 'app-inventory-list',
@@ -20,6 +22,8 @@ export class InventoryListComponent implements OnInit {
     'productName',
     'quantity', 
     'purchaseContractNo', 
+    'storageTime',
+    'license',
     'status',
     'actions'
   ];
@@ -72,10 +76,10 @@ export class InventoryListComponent implements OnInit {
       });
   }
 
-  openDialog(inventory?: Inventory): void {
+  openDialog(inventory?: Inventory, action?: InventoryAction): void {
     const dialogRef = this.dialog.open(InventoryDialogComponent, {
       width: '800px',
-      data: inventory || {}
+      data: {inventory, action}
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -96,5 +100,46 @@ export class InventoryListComponent implements OnInit {
         }
       });
     }
+  }
+
+  getInventoryActions(row: Inventory): InventoryAction[] {
+    const baseActions = [InventoryAction.VIEW];
+    switch (row.status) {
+      case InventoryStatus.IN_STOCK:
+        return [
+          ...baseActions,
+          InventoryAction.STORAGE,
+          InventoryAction.OUTBOUND,
+          InventoryAction.BORROW
+        ];
+      case InventoryStatus.BORROWED:
+        return [
+          ...baseActions,
+          InventoryAction.RETURN
+        ];
+      case InventoryStatus.OUT_OF_STOCK:
+        return baseActions;
+      default:
+        return baseActions;
+    }
+  }
+
+  onAdd(): void {
+    this.openDialog(undefined, InventoryAction.STORAGE);
+  }
+
+  getActionIcon(action: InventoryAction): string {
+    switch (action) {
+      case InventoryAction.VIEW: return 'visibility'; // Good for viewing details
+      case InventoryAction.STORAGE: return 'warehouse'; // Better represents storage
+      case InventoryAction.OUTBOUND: return 'local_shipping'; // Represents outgoing shipments
+      case InventoryAction.BORROW: return 'swap_horizontal_circle'; // Better represents borrowing
+      case InventoryAction.RETURN: return 'assignment_return'; // Clearly represents returning
+      default: return 'help_outline';
+    }
+  }
+
+  performInventoryAction(action: InventoryAction, row: Inventory): void {
+    this.openDialog(row, action);
   }
 }

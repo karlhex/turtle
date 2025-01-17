@@ -1,0 +1,17 @@
+<mat-form-field appearance="fill">
+  <mat-label>{{ label | translate }}</mat-label>
+  <input type="text"
+         matInput
+         [formControl]="companyCtrl"
+         [matAutocomplete]="auto">
+  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+    <mat-option *ngFor="let company of filteredCompanies | async" [value]="company">
+      <div class="company-option">
+        <div class="company-name">{{ company.fullName }}</div>
+        <div class="company-details" *ngIf="company.shortName">
+          {{ company.shortName }}
+        </div>
+      </div>
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>

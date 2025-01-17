@@ -2,6 +2,20 @@ form {
   display: flex;
   flex-direction: column;
 
+  .two-column-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    
+    mat-form-field {
+      margin: 0;
+    }
+
+    .full-width {
+      grid-column: 1 / -1;
+    }
+  }
+
   mat-form-field {
     width: 100%;
     margin-bottom: 10px;

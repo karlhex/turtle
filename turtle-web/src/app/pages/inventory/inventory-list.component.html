@@ -6,7 +6,7 @@
   [totalElements]="totalElements"
   [pageSize]="pageSize"
   (search)="onSearch($event)"
-  (add)="openDialog()"
+  (add)="onAdd()"
   (page)="onPageChange($event)">
 
   <mat-table [dataSource]="dataSource" class="mat-elevation-z1">
@@ -28,22 +28,51 @@
       <mat-cell *matCellDef="let row">{{ row.purchaseContractNo }}</mat-cell>
     </ng-container>
 
+    <!-- Storage Time Column -->
+    <ng-container matColumnDef="storageTime">
+      <mat-header-cell *matHeaderCellDef>{{ 'inventory.storage_time' | translate }}</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{ row.storageTime }}</mat-cell>
+    </ng-container>
+
+    <!-- License Column -->
+    <ng-container matColumnDef="license">
+      <mat-header-cell *matHeaderCellDef>{{ 'inventory.license' | translate }}</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{ row.license }}</mat-cell>
+    </ng-container>
+
     <!-- Status Column -->
     <ng-container matColumnDef="status">
-      <mat-header-cell *matHeaderCellDef>{{ 'common.status' | translate }}</mat-header-cell>
-      <mat-cell *matCellDef="let row">{{ row.status }}</mat-cell>
+      <mat-header-cell *matHeaderCellDef>{{ 'inventory.status_title' | translate }}</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{ 'enum.inventory.status.' + row.status | translate }}</mat-cell>
     </ng-container>
 
     <!-- Actions Column -->
     <ng-container matColumnDef="actions">
       <mat-header-cell *matHeaderCellDef>{{ 'common.actions' | translate }}</mat-header-cell>
       <mat-cell *matCellDef="let row">
-        <button mat-icon-button color="primary" (click)="openDialog(row)">
-          <mat-icon>edit</mat-icon>
-        </button>
-        <button mat-icon-button color="warn" (click)="delete(row.id)">
-          <mat-icon>delete</mat-icon>
-        </button>
+        <ng-container *ngIf="getInventoryActions(row).length <= 3; else menuActions">
+          <ng-container *ngFor="let action of getInventoryActions(row)">
+            <button mat-icon-button color="primary"
+                    (click)="performInventoryAction(action, row)"
+                    [matTooltip]="action | translate">
+              <mat-icon>{{ getActionIcon(action) }}</mat-icon>
+            </button>
+          </ng-container>
+        </ng-container>
+        
+        <ng-template #menuActions>
+          <button mat-icon-button [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <ng-container *ngFor="let action of getInventoryActions(row)">
+              <button mat-menu-item (click)="performInventoryAction(action, row)">
+                <mat-icon>{{ getActionIcon(action) }}</mat-icon>
+                <span>{{ action | translate }}</span>
+              </button>
+            </ng-container>
+          </mat-menu>
+        </ng-template>
       </mat-cell>
     </ng-container>
 

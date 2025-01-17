@@ -9,10 +9,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './pages/login/login.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
-import { EmployeeDialogComponent } from './pages/employee/employee-dialog.component';
-import { DepartmentDialogComponent } from './pages/department/department-dialog.component';
-import { EducationDialogComponent } from './pages/employee/education-dialog.component';
-import { JobHistoryDialogComponent } from './pages/employee/job-history-dialog.component';
+import { GuestDashboardComponent } from './pages/guest/guest-dashboard.component';
+import { PaymentTotalPipe } from './pipes/payment-total.pipe';
 
 // Services and Interceptors
 import { AuthInterceptor } from './interceptors/auth.interceptor';
@@ -24,51 +22,25 @@ import { SharedModule } from './shared/shared.module';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
-// Person Components
-import { PersonInputComponent } from './components/person-input/person-input.component';
-import { PersonDialogComponent } from './components/person-input/person-dialog.component';
+// Feature Modules
+import { InventoryModule } from './pages/inventory/inventory.module';
+import { ContractModule } from './pages/contract/contract.module';
+import { EmployeeModule } from './pages/employee/employee.module';
+import { CompanyModule } from './pages/company/company.module';
+import { CurrencyModule } from './pages/currency/currency.module';
+import { ReimbursementModule } from './pages/reimbursement/reimbursement.module';
+import { RolePermissionModule } from './pages/role-permission/role-permission.module';
+import { ProductModule } from './pages/product/product.module';
+import { ProjectModule } from './pages/project/project.module';
+import { DepartmentModule } from './pages/department/department.module';
+import { TaxInfoModule } from './pages/tax-info/tax-info.module';
+import { BankAccountModule } from './pages/bank-account/bank-account.module';
+import { UserManagementModule } from './pages/user-management/user-management.module';
 
 // Standalone Components
-import { DepartmentListComponent } from './pages/department/department-list.component';
-import { UserManagementComponent } from './pages/user-management/user-management.component';
-import { UserEmployeeMappingComponent } from './pages/user-employee-mapping/user-employee-mapping.component';
-import { EmployeeListComponent } from './pages/employee/employee-list.component';
-import { ActionComponent } from './components/action/action.component';
-import { BaseDialogComponent } from '@components/base-dialog/base-dialog.component';
-import { ContractListComponent } from './pages/contract/contract-list.component';
-import { ContractDialogComponent } from './pages/contract/contract-dialog.component';
-import { CurrencyListComponent } from './pages/currency/currency-list.component';
-import { CurrencyDialogComponent } from './pages/currency/currency-dialog.component';
-import { TaxInfoListComponent } from './pages/tax-info/tax-info-list.component';
-import { TaxInfoDialogComponent } from './pages/tax-info/tax-info-dialog.component';
-import { SidebarMenuComponent } from './components/sidebar-menu/sidebar-menu.component';
-import { CompanyDialogComponent } from '@pages/company/company-dialog.component';
-import { CompanyListComponent } from '@pages/company/company-list.component';
-import { ContractItemDialogComponent } from '@pages/contract/contract-item-dialog.component';
-import { ContractItemListComponent } from '@pages/contract/contract-item-list.component';
-import { ProductListComponent } from './pages/product/product-list.component';
-import { ProductDialogComponent } from './pages/product/product-dialog.component';
-import { ContractDownPaymentDialogComponent } from '@pages/contract/contract-down-payment-dialog.component';
-import { ContractDownPaymentListComponent } from '@pages/contract/contract-down-payment-list.component';
-import { ProjectDialogComponent } from './pages/project/project-dialog.component';
-import { ProjectListComponent } from './pages/project/project-list.component';
-import { BaseListComponent } from './components/base-list/base-list.component';
-import { PaymentTotalPipe } from './pipes/payment-total.pipe';
-import { ContractInvoiceDialogComponent } from './pages/contract/contract-invoice-dialog.component';
-import { ContractInvoiceListComponent } from './pages/contract/contract-invoice-list.component';
-import { BankAccountDialogComponent } from './pages/bank-account/bank-account-dialog.component';
-import { BankAccountListComponent } from './pages/bank-account/bank-account-list.component';
-import { ReimbursementDialogComponent } from './pages/reimbursement/reimbursement-dialog/reimbursement-dialog.component';
-import { ReimbursementListComponent } from './pages/reimbursement/reimbursement-list/reimbursement-list.component';
-import { UserEditDialogComponent } from './pages/user-management/user-edit-dialog/user-edit-dialog.component';
-import { EducationListComponent } from './pages/employee/education-list.component';
-import { JobHistoryListComponent } from './pages/employee/job-history-list.component';
-import { GuestDashboardComponent } from './pages/guest/guest-dashboard.component';
-import { RolePermissionListComponent } from './pages/role-permission/role-permission-list.component';
-import { RolePermissionDialogComponent } from './pages/role-permission/role-permission-dialog.component';
-import { ChangePasswordDialogComponent } from './pages/user-management/change-password-dialog/change-password-dialog.component';
-import { InventoryDialogComponent } from './pages/inventory/inventory-dialog.component';
-import { InventoryListComponent } from './pages/inventory/inventory-list.component';
+import { CompanyFilterSelectInputModule } from './components/company-filter-select-input/company-filter-select-input.module';
+import { PersonInputModule } from './components/person-input/person-input.module';
+import { BaseListModule } from './components/base-list/base-list.module';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -79,55 +51,30 @@ export function HttpLoaderFactory(http: HttpClient) {
   declarations: [
     AppComponent,
     LoginComponent,
-    ChangePasswordDialogComponent,
     DashboardComponent,
     GuestDashboardComponent,
-    EmployeeDialogComponent,
-    EducationListComponent,
-    JobHistoryListComponent,
-    DepartmentDialogComponent,
-    EducationDialogComponent,
-    JobHistoryDialogComponent,
-    DepartmentListComponent,
-    UserManagementComponent,
-    UserEditDialogComponent,
-    UserEmployeeMappingComponent,
-    RolePermissionListComponent,
-    RolePermissionDialogComponent,
-    EmployeeListComponent,
-    ActionComponent,
-    BaseDialogComponent,
-    ContractListComponent,
-    ContractDialogComponent,
-    ContractItemDialogComponent,
-    ContractItemListComponent,
-    ContractDownPaymentDialogComponent,
-    ContractDownPaymentListComponent,
-    ContractInvoiceDialogComponent,
-    ContractInvoiceListComponent,
-    CurrencyListComponent,
-    CurrencyDialogComponent,
-    TaxInfoListComponent,
-    TaxInfoDialogComponent,
-    BankAccountDialogComponent,
-    BankAccountListComponent,
-    SidebarMenuComponent,
-    CompanyDialogComponent,
-    CompanyListComponent,
-    ProductListComponent,
-    ProductDialogComponent,
-    ProjectDialogComponent,
-    ProjectListComponent,
-    BaseListComponent,
-    PaymentTotalPipe,
-    PersonInputComponent,
-    PersonDialogComponent,
-    ReimbursementDialogComponent,
-    ReimbursementListComponent,
-    InventoryDialogComponent,
-    InventoryListComponent
+    PaymentTotalPipe
   ],
   imports: [
+    // Feature Modules
+    CompanyFilterSelectInputModule,
+    PersonInputModule,
+    InventoryModule,
+    ContractModule,
+    EmployeeModule,
+    CompanyModule,
+    CurrencyModule,
+    ReimbursementModule,
+    RolePermissionModule,
+    ProductModule,
+    ProjectModule,
+    DepartmentModule,
+    TaxInfoModule,
+    BankAccountModule,
+    UserManagementModule,
+    BaseListModule,
+
+    // Angular
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,

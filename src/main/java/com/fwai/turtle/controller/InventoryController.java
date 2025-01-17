@@ -35,14 +35,30 @@ public class InventoryController {
         return ApiResponse.ok(inventories);
     }
 
-    @PutMapping("/{id}")
-    public ApiResponse<InventoryDTO> updateInventory(
+    @PutMapping("/{id}/outbound")
+    public ApiResponse<InventoryDTO> outboundInventory(
             @PathVariable Long id, 
             @RequestBody InventoryDTO inventoryDTO) {
-        InventoryDTO updatedInventory = inventoryService.update(id, inventoryDTO);
+        InventoryDTO updatedInventory = inventoryService.outBoundItem(id, inventoryDTO);
         return ApiResponse.ok(updatedInventory);
     }
 
+    @PutMapping("/{id}/borrow")
+    public ApiResponse<InventoryDTO> borrowInventory(
+            @PathVariable Long id, 
+            @RequestBody InventoryDTO inventoryDTO) {
+        InventoryDTO updatedInventory = inventoryService.borrowItem(id, inventoryDTO);
+        return ApiResponse.ok(updatedInventory);
+    }
+
+    @PutMapping("/{id}/return")
+    public ApiResponse<InventoryDTO> returnInventory(
+            @PathVariable Long id, 
+            @RequestBody InventoryDTO inventoryDTO) {
+        InventoryDTO updatedInventory = inventoryService.returnItem(id, inventoryDTO);
+        return ApiResponse.ok(updatedInventory);
+    }
+    
     @DeleteMapping("/{id}")
     public ApiResponse<Void> deleteInventory(@PathVariable Long id) {
         inventoryService.deleteById(id);

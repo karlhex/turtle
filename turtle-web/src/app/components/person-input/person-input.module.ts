@@ -11,21 +11,16 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatChipsModule } from '@angular/material/chips';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { UserManagementComponent } from './user-management.component';
-import { UserEditDialogComponent } from './user-edit-dialog/user-edit-dialog.component';
-import { UserEmployeeMappingComponent } from './user-employee-mapping/user-employee-mapping.component';
-import { ChangePasswordDialogComponent } from './change-password-dialog/change-password-dialog.component';
-import { BaseListModule } from '../../components/base-list/base-list.module';
+import { PersonInputComponent } from './person-input.component';
+import { PersonDialogComponent } from './person-dialog.component';
+import { BaseListModule } from '../base-list/base-list.module';
 
 @NgModule({
   declarations: [
-    UserManagementComponent,
-    UserEditDialogComponent,
-    UserEmployeeMappingComponent,
-    ChangePasswordDialogComponent
+    PersonInputComponent,
+    PersonDialogComponent
   ],
   imports: [
     CommonModule,
@@ -41,15 +36,12 @@ import { BaseListModule } from '../../components/base-list/base-list.module';
     MatMenuModule,
     MatProgressBarModule,
     MatTooltipModule,
-    MatChipsModule,
     TranslateModule,
     BaseListModule
   ],
   exports: [
-    UserManagementComponent,
-    UserEditDialogComponent,
-    UserEmployeeMappingComponent,
-    ChangePasswordDialogComponent
+    PersonInputComponent,
+    PersonDialogComponent
   ]
 })
-export class UserManagementModule { }
+export class PersonInputModule { }

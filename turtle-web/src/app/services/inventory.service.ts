@@ -30,8 +30,14 @@ export class InventoryService {
     return this.http.get<ApiResponse<PageResponse<Inventory>>>(this.apiUrl, { params });
   }
 
-  update(id: number, inventory: Inventory): Observable<ApiResponse<Inventory>> {
-    return this.http.put<ApiResponse<Inventory>>(`${this.apiUrl}/${id}`, inventory);
+  outbound(id: number, inventory: Inventory): Observable<ApiResponse<Inventory>> {
+    return this.http.put<ApiResponse<Inventory>>(`${this.apiUrl}/${id}/outbound`, inventory);
+  }
+  borrow(id: number, inventory: Inventory): Observable<ApiResponse<Inventory>> {
+    return this.http.put<ApiResponse<Inventory>>(`${this.apiUrl}/${id}/borrow`, inventory);
+  }
+  return(id: number, inventory: Inventory): Observable<ApiResponse<Inventory>> {
+    return this.http.put<ApiResponse<Inventory>>(`${this.apiUrl}/${id}/return`, inventory);
   }
 
   delete(id: number): Observable<ApiResponse<void>> {

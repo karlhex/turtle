@@ -569,6 +569,13 @@
     }
   },
   "enum": {
+    "inventory": {
+      "status": {
+        "IN_STOCK": "In Stock",
+        "OUT_OF_STOCK": "Out of Stock",
+        "BORROWED": "Borrowed"
+      }
+    },
     "contract": {
       "status": {
         "PENDING_SIGNATURE": "Pending Signature",
@@ -916,6 +923,8 @@
     "receiver_name": "Receiver Name",
     "receiver_phone": "Receiver Phone",
     "express_tracking_number": "Express Tracking Number",
+    "status_title": "Status",
+    "borrowed_company": "Borrowed Company",
     "remarks": "Remarks"
   },
   "shipping_method": {

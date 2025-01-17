@@ -4,13 +4,12 @@ import com.fwai.turtle.dto.InventoryDTO;
 import com.fwai.turtle.persistence.entity.Inventory;
 import com.fwai.turtle.persistence.mapper.InventoryMapper;
 import com.fwai.turtle.persistence.repository.InventoryRepository;
+import com.fwai.turtle.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.fwai.turtle.exception.ResourceNotFoundException;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,11 +41,33 @@ public class InventoryService {
     }
 
     @Transactional
-    public InventoryDTO update(Long id, InventoryDTO inventoryDTO) {
+    public InventoryDTO outBoundItem(Long id, InventoryDTO inventoryDTO) {
         return inventoryRepository.findById(id)
                 .map(existingInventory -> {
-                    Inventory updatedInventory = inventoryMapper.toEntity(inventoryDTO);
-                    updatedInventory.setId(existingInventory.getId());
+                    Inventory updatedInventory = existingInventory;
+                    inventoryMapper.updateEntityWhenOut(updatedInventory, inventoryDTO);
+                    return inventoryMapper.toDTO(inventoryRepository.save(updatedInventory));
+                })
+                .orElseThrow(() -> new RuntimeException("Inventory not found with id: " + id));
+    }
+
+    @Transactional
+    public InventoryDTO borrowItem(Long id, InventoryDTO inventoryDTO) {
+        return inventoryRepository.findById(id)
+                .map(existingInventory -> {
+                    Inventory updatedInventory = existingInventory;
+                    inventoryMapper.updateEntityWhenBorrow(updatedInventory, inventoryDTO);
+                    return inventoryMapper.toDTO(inventoryRepository.save(updatedInventory));
+                })
+                .orElseThrow(() -> new RuntimeException("Inventory not found with id: " + id));
+    }
+
+    @Transactional
+    public InventoryDTO returnItem(Long id, InventoryDTO inventoryDTO) {
+        return inventoryRepository.findById(id)
+                .map(existingInventory -> {
+                    Inventory updatedInventory = existingInventory;
+                    inventoryMapper.updateEntityWhenReturn(updatedInventory, inventoryDTO);
                     return inventoryMapper.toDTO(inventoryRepository.save(updatedInventory));
                 })
                 .orElseThrow(() -> new RuntimeException("Inventory not found with id: " + id));

@@ -1,9 +1,10 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <h2 mat-dialog-title>{{ 'inventory.dialog_title' | translate }}</h2>
   
-  <mat-dialog-content>
-    <!-- Action Type Selection -->
-    <mat-form-field>
+  <mat-dialog-content class="two-column-grid">
+    
+    <!-- Action Type Selection :disabled-->
+    <mat-form-field class="full-width">
       <mat-label>{{ 'inventory.action_type' | translate }}</mat-label>
       <mat-select formControlName="action">
         <mat-option *ngFor="let action of actionTypes" [value]="action">
@@ -13,7 +14,7 @@
     </mat-form-field>
 
     <!-- Storage Specific Fields -->
-    <ng-container *ngIf="selectedAction === 'STORAGE'">
+    <ng-container *ngIf="selectedAction === 'STORAGE' || selectedAction === 'VIEW'">
       <mat-form-field>
         <mat-label>{{ 'inventory.product' | translate }}</mat-label>
         <mat-select formControlName="productId">
@@ -50,8 +51,27 @@
       </mat-form-field>
     </ng-container>
 
+    <ng-container *ngIf="selectedAction === 'OUTBOUND'">
+      <mat-form-field>
+        <mat-label>{{ 'inventory.sales_contract' | translate }}</mat-label>
+        <mat-select formControlName="salesContractId">
+          <mat-option *ngFor="let contract of contracts" [value]="contract.id">
+            {{ contract.contractNo }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </ng-container>
+
+    <ng-container *ngIf="selectedAction === 'BORROW'">
+        <app-company-filter-select-input
+          [companies]="companies"
+          [label]="'inventory.borrowed_company' | translate"
+          formControlName="borrowedCompanyId">
+        </app-company-filter-select-input>
+    </ng-container>
+
     <!-- Outbound/Borrow Specific Fields -->
-    <ng-container *ngIf="selectedAction === 'OUTBOUND' || selectedAction === 'BORROW'">
+    <ng-container *ngIf="selectedAction === 'OUTBOUND' || selectedAction === 'BORROW' || selectedAction === 'VIEW'">
       <mat-form-field>
         <mat-label>{{ 'inventory.out_time' | translate }}</mat-label>
         <input matInput [matDatepicker]="outPicker" formControlName="outTime">
@@ -98,17 +118,25 @@
       </mat-form-field>
     </ng-container>
 
+    <!-- Common Fields -->
+    <ng-container *ngIf="selectedAction === 'VIEW'">
+      <mat-form-field>
+        <mat-label>{{ 'inventory.status' | translate }}</mat-label>
+        <input matInput formControlName="status">
+      </mat-form-field>
+    </ng-container>
+
     <!-- Common Remarks Field -->
-    <mat-form-field>
+    <mat-form-field class="full-width">
       <mat-label>{{ 'inventory.remarks' | translate }}</mat-label>
       <textarea matInput formControlName="remarks"></textarea>
     </mat-form-field>
   </mat-dialog-content>
-
-  <mat-dialog-actions>
-    <button mat-button (click)="onCancel()">{{ 'common.cancel' | translate }}</button>
-    <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid || loading">
-      {{ 'common.submit' | translate }}
-    </button>
-  </mat-dialog-actions>
 </form>
+
+<mat-dialog-actions>
+  <button mat-button (click)="onCancel()">{{ 'common.cancel' | translate }}</button>
+  <button mat-raised-button color="primary" [disabled]="form.invalid || loading" (click)="onSubmit()">
+    {{ 'common.submit' | translate }}
+  </button>
+</mat-dialog-actions>

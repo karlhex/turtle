@@ -2,14 +2,21 @@ package com.fwai.turtle.dto;
 
 import com.fwai.turtle.types.InventoryStatus;
 import com.fwai.turtle.types.ShippingMethod;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import com.fwai.turtle.common.BaseDTO;
 
 import java.time.LocalDateTime;
 
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class InventoryDTO extends BaseDTO {
 

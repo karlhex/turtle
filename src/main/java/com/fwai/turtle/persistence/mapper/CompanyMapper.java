@@ -56,4 +56,5 @@ public interface CompanyMapper {
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
     void updateCompany(Company source, @MappingTarget Company target);
+
 }

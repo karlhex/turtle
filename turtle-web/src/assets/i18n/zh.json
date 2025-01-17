@@ -568,6 +568,13 @@
     }
   },
   "enum": {
+    "inventory": {
+      "status": {
+        "IN_STOCK": "在库",
+        "OUT_OF_STOCK": "已出库",
+        "BORROWED": "借出中"
+      }
+    },
     "contract": {
       "status": {
         "PENDING_SIGNATURE": "等待签署",
@@ -910,6 +917,8 @@
     "receiver_name": "收货人",
     "receiver_phone": "收货人电话",
     "express_tracking_number": "快递单号",
+    "status_title": "状态",
+    "borrowed_company": "借出公司",
     "remarks": "备注"
   },
   "shipping_method": {
