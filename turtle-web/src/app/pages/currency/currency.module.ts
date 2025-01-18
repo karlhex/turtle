@@ -16,6 +16,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { CurrencyListComponent } from './currency-list.component';
 import { CurrencyDialogComponent } from './currency-dialog.component';
 import { BaseListModule } from '../../components/base-list/base-list.module';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { ActionModule } from '@app/components/action/action.module';
 
 @NgModule({
   declarations: [
@@ -23,9 +25,11 @@ import { BaseListModule } from '../../components/base-list/base-list.module';
     CurrencyDialogComponent
   ],
   imports: [
+    ActionModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    MatSlideToggleModule,
     MatTableModule,
     MatDialogModule,
     MatFormFieldModule,

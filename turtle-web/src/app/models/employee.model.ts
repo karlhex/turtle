@@ -1,3 +1,4 @@
+import { BaseModel } from './base.model';
 import { Department } from './department.model';
 import { Person } from './person.model';
 import { User } from './user.model';
@@ -60,8 +61,7 @@ export interface EmployeeJobHistory {
     remarks?: string;
   }
   
-export interface Employee {
-    id?: number;
+export interface Employee extends BaseModel {
     name: string;
     employeeNumber: string;
     email?: string;

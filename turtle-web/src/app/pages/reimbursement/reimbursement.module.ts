@@ -18,6 +18,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ReimbursementListComponent } from './reimbursement-list/reimbursement-list.component';
 import { ReimbursementDialogComponent } from './reimbursement-dialog/reimbursement-dialog.component';
 import { BaseListModule } from '../../components/base-list/base-list.module';
+import { ActionModule } from '@app/components/action/action.module';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { BaseListModule } from '../../components/base-list/base-list.module';
     ReimbursementDialogComponent
   ],
   imports: [
+    ActionModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,

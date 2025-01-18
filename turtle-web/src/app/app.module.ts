@@ -10,17 +10,12 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './pages/login/login.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { GuestDashboardComponent } from './pages/guest/guest-dashboard.component';
-import { PaymentTotalPipe } from './pipes/payment-total.pipe';
+import { SidebarMenuComponent } from './components/sidebar-menu/sidebar-menu.component';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 // Services and Interceptors
 import { AuthInterceptor } from './interceptors/auth.interceptor';
-
-// Shared Module
-import { SharedModule } from './shared/shared.module';
-
-// Translation
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 // Feature Modules
 import { InventoryModule } from './pages/inventory/inventory.module';
@@ -40,7 +35,9 @@ import { UserManagementModule } from './pages/user-management/user-management.mo
 // Standalone Components
 import { CompanyFilterSelectInputModule } from './components/company-filter-select-input/company-filter-select-input.module';
 import { PersonInputModule } from './components/person-input/person-input.module';
+import { ActionModule } from './components/action/action.module';
 import { BaseListModule } from './components/base-list/base-list.module';
+import { SharedModule } from './shared/shared.module';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -53,12 +50,14 @@ export function HttpLoaderFactory(http: HttpClient) {
     LoginComponent,
     DashboardComponent,
     GuestDashboardComponent,
-    PaymentTotalPipe
+    SidebarMenuComponent
   ],
   imports: [
     // Feature Modules
     CompanyFilterSelectInputModule,
     PersonInputModule,
+    ActionModule,
+    SharedModule,
     InventoryModule,
     ContractModule,
     EmployeeModule,

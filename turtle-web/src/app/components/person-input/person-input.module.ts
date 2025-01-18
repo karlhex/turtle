@@ -16,6 +16,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { PersonInputComponent } from './person-input.component';
 import { PersonDialogComponent } from './person-dialog.component';
 import { BaseListModule } from '../base-list/base-list.module';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { BaseListModule } from '../base-list/base-list.module';
     MatMenuModule,
     MatProgressBarModule,
     MatTooltipModule,
+    MatAutocompleteModule,
     TranslateModule,
     BaseListModule
   ],

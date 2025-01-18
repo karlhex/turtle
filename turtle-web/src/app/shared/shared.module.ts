@@ -5,6 +5,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { ConfirmDialogComponent } from '../components/confirmdialog/confirm-dialog.component';
+import { PaymentTotalPipe } from '../pipes/payment-total.pipe';
 
 // Material Modules
 import { MatCardModule } from '@angular/material/card';
@@ -77,14 +78,16 @@ const SHARED_MODULES = [
 
 @NgModule({
   declarations: [
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    PaymentTotalPipe
   ],
   imports: [
     ...SHARED_MODULES
   ],
   exports: [
     ...SHARED_MODULES,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    PaymentTotalPipe
   ]
 })
 export class SharedModule { }

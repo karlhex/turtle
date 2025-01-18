@@ -16,6 +16,8 @@ public class CompanyIdMapper {
 
     public Company fromId(Long id) {
         if (id == null) return null;
-        return companyRepository.findById(id).orElse(null);
+        Company company = companyRepository.findById(id).orElse(null);
+
+        return company;
     }
 }

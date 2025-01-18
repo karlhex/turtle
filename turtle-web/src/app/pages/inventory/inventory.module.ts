@@ -19,6 +19,11 @@ import { InventoryListComponent } from './inventory-list.component';
 import { InventoryDialogComponent } from './inventory-dialog.component';
 import { CompanyFilterSelectInputModule } from '../../components/company-filter-select-input/company-filter-select-input.module';
 import { BaseListModule } from '../../components/base-list/base-list.module';
+import { EmployeeFilterSelectInputModule } from '@app/components/employee-filter-select-input/employee-filter-select-input.module';
+import { ContractFilterSelectInputModule } from '@app/components/contract-filter-select-input/contract-filter-select-input.module';
+import { MaterialModule } from '@app/shared/material.module';
+import { ProductFilterSelectInputModule } from '@app/components/product-filter-select-input/product-filter-select-input.module';
+import { ProjectFilterSelectInputModule } from '@app/components/project-filter-select-input/project-filter-select-input.module';
 
 @NgModule({
   declarations: [
@@ -29,20 +34,12 @@ import { BaseListModule } from '../../components/base-list/base-list.module';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    MatTableModule,
-    MatDialogModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatButtonModule,
-    MatIconModule,
-    MatMenuModule,
-    MatProgressBarModule,
-    MatTooltipModule,
-    TranslateModule,
+    MaterialModule,
     BaseListModule,
+    ProjectFilterSelectInputModule,
+    ProductFilterSelectInputModule,
+    ContractFilterSelectInputModule,
+    EmployeeFilterSelectInputModule,
     CompanyFilterSelectInputModule
   ],
   exports: [

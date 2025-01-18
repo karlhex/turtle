@@ -14,10 +14,15 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 import { CompanyListComponent } from './company-list.component';
 import { CompanyDialogComponent } from './company-dialog.component';
 import { BaseListModule } from '../../components/base-list/base-list.module';
+import { ActionModule } from '@app/components/action/action.module';
+import { PersonInputModule } from '@app/components/person-input/person-input.module';
 
 @NgModule({
   declarations: [
@@ -25,6 +30,8 @@ import { BaseListModule } from '../../components/base-list/base-list.module';
     CompanyDialogComponent
   ],
   imports: [
+    ActionModule,
+    PersonInputModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
@@ -40,6 +47,9 @@ import { BaseListModule } from '../../components/base-list/base-list.module';
     MatMenuModule,
     MatProgressBarModule,
     MatTooltipModule,
+    MatAutocompleteModule,
+    MatProgressSpinnerModule,
+    MatSlideToggleModule,
     TranslateModule,
     BaseListModule
   ],

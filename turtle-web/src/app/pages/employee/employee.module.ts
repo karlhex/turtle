@@ -23,6 +23,9 @@ import { JobHistoryListComponent } from './job-history-list.component';
 import { JobHistoryDialogComponent } from './job-history-dialog.component';
 import { CompanyFilterSelectInputModule } from '../../components/company-filter-select-input/company-filter-select-input.module';
 import { BaseListModule } from '../../components/base-list/base-list.module';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ActionModule } from '@app/components/action/action.module';
 
 @NgModule({
   declarations: [
@@ -34,6 +37,7 @@ import { BaseListModule } from '../../components/base-list/base-list.module';
     JobHistoryDialogComponent
   ],
   imports: [
+    ActionModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
@@ -49,6 +53,8 @@ import { BaseListModule } from '../../components/base-list/base-list.module';
     MatMenuModule,
     MatProgressBarModule,
     MatTooltipModule,
+    MatTabsModule,
+    MatProgressSpinnerModule,
     TranslateModule,
     BaseListModule,
     CompanyFilterSelectInputModule

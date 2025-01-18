@@ -1,0 +1,19 @@
+.product-option {
+  display: flex;
+  flex-direction: column;
+  padding: 5px 0;
+}
+
+.product-name {
+  font-weight: 500;
+}
+
+.product-details {
+  font-size: 0.85em;
+  color: rgba(0, 0, 0, 0.54);
+}
+
+mat-form-field {
+  width: 100%;
+}
+

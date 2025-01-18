@@ -16,6 +16,9 @@ import { TranslateModule } from '@ngx-translate/core';
 import { BankAccountListComponent } from './bank-account-list.component';
 import { BankAccountDialogComponent } from './bank-account-dialog.component';
 import { BaseListModule } from '../../components/base-list/base-list.module';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @NgModule({
   declarations: [
@@ -36,6 +39,9 @@ import { BaseListModule } from '../../components/base-list/base-list.module';
     MatMenuModule,
     MatProgressBarModule,
     MatTooltipModule,
+    MatAutocompleteModule,
+    MatProgressSpinnerModule,
+    MatSlideToggleModule,
     TranslateModule,
     BaseListModule
   ],

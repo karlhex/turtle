@@ -33,6 +33,7 @@ public class InventoryMapper {
                 .receiverName(inventory.getReceiverName())
                 .expressTrackingNumber(inventory.getExpressTrackingNumber())
                 .receiverPhone(inventory.getReceiverPhone())
+                .handlingEmployeeId(inventory.getHandlingEmployee() != null ? inventory.getHandlingEmployee().getId() : null)
                 .handlingEmployeeName(inventory.getHandlingEmployee() != null ? inventory.getHandlingEmployee().getName() : null)
                 .build();
 

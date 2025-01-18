@@ -909,6 +909,7 @@
     "quantity": "数量",
     "license": "许可证",
     "purchase_contract": "采购合同",
+    "sales_contract": "销售合同",
     "storage_time": "入库时间",
     "out_time": "出库时间",
     "handling_employee": "经办员工",

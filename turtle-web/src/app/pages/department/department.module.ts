@@ -16,6 +16,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { DepartmentListComponent } from './department-list.component';
 import { DepartmentDialogComponent } from './department-dialog.component';
 import { BaseListModule } from '../../components/base-list/base-list.module';
+import { ActionModule } from '@app/components/action/action.module';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { BaseListModule } from '../../components/base-list/base-list.module';
     DepartmentDialogComponent
   ],
   imports: [
+    ActionModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,

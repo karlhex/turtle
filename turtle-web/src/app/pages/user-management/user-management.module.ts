@@ -19,6 +19,9 @@ import { UserEditDialogComponent } from './user-edit-dialog/user-edit-dialog.com
 import { UserEmployeeMappingComponent } from './user-employee-mapping/user-employee-mapping.component';
 import { ChangePasswordDialogComponent } from './change-password-dialog/change-password-dialog.component';
 import { BaseListModule } from '../../components/base-list/base-list.module';
+import { MatCardModule } from '@angular/material/card';
+import { ActionModule } from '@app/components/action/action.module';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -28,6 +31,7 @@ import { BaseListModule } from '../../components/base-list/base-list.module';
     ChangePasswordDialogComponent
   ],
   imports: [
+    ActionModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
@@ -42,6 +46,8 @@ import { BaseListModule } from '../../components/base-list/base-list.module';
     MatProgressBarModule,
     MatTooltipModule,
     MatChipsModule,
+    MatCardModule,
+    MatProgressSpinnerModule,
     TranslateModule,
     BaseListModule
   ],

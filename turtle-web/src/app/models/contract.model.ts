@@ -6,9 +6,9 @@ import { Currency } from './currency.model';
 import { Company } from './company.model';
 import { Invoice } from './invoice.model';
 import { Person } from './person.model';
+import { BaseModel } from './base.model';
 
-export interface Contract {
-  id?: number;
+export interface Contract extends BaseModel {
   contractNo: string;
   title: string;
   buyerCompany: Company;
@@ -32,8 +32,6 @@ export interface Contract {
   items?: ContractItem[];
   downPayments?: ContractDownPayment[];
   invoices?: Invoice[];
-  createdTime?: Date;
-  updatedTime?: Date;
 }
 
 export interface ContractQuery {

@@ -1,0 +1,6 @@
+<ng-template #optionTemplate let-project>
+  <div class="option-container">
+    <span class="option-name">{{project.projectName}}</span>
+    <small class="option-details" *ngIf="project.projectNo">({{project.projectNo}})</small>
+  </div>
+</ng-template>

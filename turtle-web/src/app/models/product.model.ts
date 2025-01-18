@@ -1,8 +1,8 @@
 import { ProductType } from '../types/product-type.enum';
 import { Company } from './company.model';
+import { BaseModel } from './base.model';
 
-export interface Product {
-    id?: number;
+export interface Product extends BaseModel {
     name: string;
     modelNumber: string;
     manufacturer: Company;
@@ -13,6 +13,4 @@ export interface Product {
     remarks?: string;
     active: boolean;
     warrantyPeriod?: number;
-    createdTime?: Date;
-    updatedTime?: Date;
 }

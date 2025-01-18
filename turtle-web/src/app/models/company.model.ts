@@ -1,9 +1,9 @@
 import { BankAccount } from './bank-account.model';
 import { TaxInfo } from './tax-info.model';
 import { Person } from './person.model';
+import { BaseModel } from './base.model';
 
-export interface Company {
-  id?: number;
+export interface Company extends BaseModel {
   fullName: string;        // 公司全称
   shortName?: string;      // 公司简称
   address: string;         // 公司地址
@@ -17,6 +17,4 @@ export interface Company {
   technicalContact?: Person;  // 技术联系人
   active: boolean;         // 是否启用
   remarks?: string;        // 备注
-  createdAt?: Date;
-  updatedAt?: Date;
 }

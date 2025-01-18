@@ -915,6 +915,7 @@
     "quantity": "Quantity",
     "license": "License",
     "purchase_contract": "Purchase Contract",
+    "sales_contract": "Sales Contract",
     "storage_time": "Storage Time",
     "out_time": "Out Time",
     "handling_employee": "Handling Employee",

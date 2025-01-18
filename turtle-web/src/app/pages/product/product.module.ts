@@ -16,6 +16,9 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ProductListComponent } from './product-list.component';
 import { ProductDialogComponent } from './product-dialog.component';
 import { BaseListModule } from '../../components/base-list/base-list.module';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
   declarations: [
@@ -36,6 +39,9 @@ import { BaseListModule } from '../../components/base-list/base-list.module';
     MatMenuModule,
     MatProgressBarModule,
     MatTooltipModule,
+    MatAutocompleteModule,
+    MatSlideToggleModule,
+    MatTabsModule,
     TranslateModule,
     BaseListModule
   ],

@@ -1,0 +1,17 @@
+<mat-form-field appearance="outline">
+  <mat-label>{{ label | translate }}</mat-label>
+  <input type="text"
+         matInput
+         [formControl]="itemCtrl"
+         [matAutocomplete]="auto">
+  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+    <mat-option *ngFor="let item of filteredItems | async" [value]="item">
+      <ng-container *ngTemplateOutlet="optionTemplate || defaultOptionTemplate; context: { $implicit: item }">
+      </ng-container>
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>
+
+<ng-template #defaultOptionTemplate let-item>
+  {{displayFn(item)}}
+</ng-template>

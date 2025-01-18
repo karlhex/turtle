@@ -129,7 +129,7 @@
         取消
       </button>
       <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid || loading">
-        <mat-spinner diameter="20" *ngIf="loading"></mat-spinner>
+        <mat-progress-spinner diameter="20" *ngIf="loading"></mat-progress-spinner>
         <span>{{ loading ? '保存中...' : '保存' }}</span>
       </button>
     </mat-dialog-actions>

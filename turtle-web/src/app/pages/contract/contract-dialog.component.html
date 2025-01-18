@@ -154,14 +154,11 @@
           <div class="form-section">
             <div class="grid-container">
               <div class="grid-item">
-                <mat-form-field appearance="outline">
-                  <mat-label>关联项目</mat-label>
-                  <mat-select formControlName="projectId">
-                    <mat-option *ngFor="let project of projects" [value]="project.id">
-                      {{project.projectName}}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
+                <app-project-filter-select-input
+                  formControlName="projectId"
+                  [label]="'contract.project' | translate"
+                  [items]="projects"
+                ></app-project-filter-select-input>
               </div>
               <div class="grid-item">
                 <mat-form-field appearance="outline">

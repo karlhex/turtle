@@ -1,0 +1,20 @@
+<mat-form-field appearance="outline" class="w-100">
+  <mat-label>{{ label | translate }}</mat-label>
+  <input type="text"
+         matInput
+         [formControl]="productCtrl"
+         [matAutocomplete]="auto">
+  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+    <ng-template #optionTemplate let-product>
+      <div class="product-option">
+        <div class="product-name">{{ product.name }}</div>
+        <div class="product-details">
+          <span *ngIf="product.code">({{ product.code }})</span>
+          <span *ngIf="product.specification">{{ product.specification }}</span>
+        </div>
+      </div>
+    </ng-template>
+    <mat-option *ngFor="let product of filteredProducts | async" [value]="product" [matAutocompleteCustomTrigger]="optionTemplate">
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>

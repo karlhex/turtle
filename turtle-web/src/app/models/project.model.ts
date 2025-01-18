@@ -1,9 +1,9 @@
 import { ProjectStatus } from '../types/project-status.enum';
 import { Employee } from './employee.model';
 import { Contract } from './contract.model';
+import { BaseModel } from './base.model';
 
-export interface Project {
-  id?: number;
+export interface Project extends BaseModel {
   projectName: string;    // 项目名称
   projectNo: string;      // 项目编号
   startDate: Date;        // 开始日期
@@ -12,8 +12,6 @@ export interface Project {
   manager: Employee;      // 项目负责员工
   remarks?: string;       // 备注
   contracts?: Contract[]; // 关联的合同列表
-  createdAt?: Date;
-  updatedAt?: Date;
 }
 
 export interface ProjectQuery {

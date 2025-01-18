@@ -6,7 +6,7 @@ import { GuestDashboardComponent } from './pages/guest/guest-dashboard.component
 import { EmployeeListComponent } from './pages/employee/employee-list.component';
 import { DepartmentListComponent } from './pages/department/department-list.component';
 import { UserManagementComponent } from './pages/user-management/user-management.component';
-import { UserEmployeeMappingComponent } from './pages/user-employee-mapping/user-employee-mapping.component';
+import { UserEmployeeMappingComponent } from './pages/user-management/user-employee-mapping/user-employee-mapping.component';
 import { ContractListComponent } from './pages/contract/contract-list.component';
 import { CurrencyListComponent } from './pages/currency/currency-list.component';
 import { TaxInfoListComponent } from './pages/tax-info/tax-info-list.component';

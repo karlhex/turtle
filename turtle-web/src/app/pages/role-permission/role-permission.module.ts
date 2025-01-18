@@ -16,6 +16,9 @@ import { TranslateModule } from '@ngx-translate/core';
 import { RolePermissionListComponent } from './role-permission-list.component';
 import { RolePermissionDialogComponent } from './role-permission-dialog.component';
 import { BaseListModule } from '../../components/base-list/base-list.module';
+import { ActionModule } from '@app/components/action/action.module';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -23,6 +26,7 @@ import { BaseListModule } from '../../components/base-list/base-list.module';
     RolePermissionDialogComponent
   ],
   imports: [
+    ActionModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
@@ -36,6 +40,8 @@ import { BaseListModule } from '../../components/base-list/base-list.module';
     MatMenuModule,
     MatProgressBarModule,
     MatTooltipModule,
+    MatSlideToggleModule,
+    MatProgressSpinnerModule,
     TranslateModule,
     BaseListModule
   ],

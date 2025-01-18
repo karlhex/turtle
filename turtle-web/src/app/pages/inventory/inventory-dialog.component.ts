@@ -37,6 +37,7 @@ export class InventoryDialogComponent implements OnInit {
   employees: any[] = [];
   companies: any[] = [];
   shippingMethods = Object.values(ShippingMethod);
+  statuses = Object.values(InventoryStatus);
   
   // Action types
   actionTypes = Object.values(InventoryAction);
@@ -74,6 +75,7 @@ export class InventoryDialogComponent implements OnInit {
       quantity: [this.data.inventory?.quantity ?? 0, [Validators.min(0)]],
       license: [this.data.inventory?.license ?? null],
       purchaseContractId: [this.data.inventory?.purchaseContractId ?? null],
+      salesContractId: [this.data.inventory?.salesContractId ?? null],
       storageTime: [this.data.inventory?.storageTime ?? null],
 
       // Outbound/Borrow/Return specific fields
@@ -176,7 +178,7 @@ export class InventoryDialogComponent implements OnInit {
     if (this.form.valid) {
       this.loading = true;
       const formValue = this.form.value;
-     
+      
       let inventoryData: Inventory = {
         remarks: formValue.remarks
       };
@@ -201,7 +203,6 @@ export class InventoryDialogComponent implements OnInit {
           break;
 
         case InventoryAction.BORROW:
-          console.log("inventoryData", inventoryData);
           inventoryData = {
             ...inventoryData,
             status: InventoryStatus.BORROWED,
@@ -211,6 +212,7 @@ export class InventoryDialogComponent implements OnInit {
             receiverName: formValue.receiverName,
             receiverPhone: formValue.receiverPhone,
             expressTrackingNumber: formValue.expressTrackingNumber,
+            borrowedCompanyId: formValue.borrowedCompanyId,
             handlingEmployeeId: formValue.handlingEmployeeId
           };
           request = this.inventoryService.borrow(this.data?.inventory?.id ?? 0, inventoryData);

@@ -15,14 +15,11 @@
 
     <!-- Storage Specific Fields -->
     <ng-container *ngIf="selectedAction === 'STORAGE' || selectedAction === 'VIEW'">
-      <mat-form-field>
-        <mat-label>{{ 'inventory.product' | translate }}</mat-label>
-        <mat-select formControlName="productId">
-          <mat-option *ngFor="let product of products" [value]="product.id">
-            {{ product.name }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+      <app-product-filter-select-input
+        [products]="products"
+        [label]="'inventory.product' | translate"
+        formControlName="productId">
+      </app-product-filter-select-input>
 
       <mat-form-field>
         <mat-label>{{ 'inventory.quantity' | translate }}</mat-label>
@@ -34,14 +31,11 @@
         <input matInput formControlName="license">
       </mat-form-field>
 
-      <mat-form-field>
-        <mat-label>{{ 'inventory.purchase_contract' | translate }}</mat-label>
-        <mat-select formControlName="purchaseContractId">
-          <mat-option *ngFor="let contract of contracts" [value]="contract.id">
-            {{ contract.contractNo }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+      <app-contract-filter-select-input
+        [contracts]="contracts"
+        [label]="'inventory.purchase_contract' | translate"
+        formControlName="purchaseContractId">
+      </app-contract-filter-select-input>
 
       <mat-form-field>
         <mat-label>{{ 'inventory.storage_time' | translate }}</mat-label>
@@ -51,23 +45,20 @@
       </mat-form-field>
     </ng-container>
 
-    <ng-container *ngIf="selectedAction === 'OUTBOUND'">
-      <mat-form-field>
-        <mat-label>{{ 'inventory.sales_contract' | translate }}</mat-label>
-        <mat-select formControlName="salesContractId">
-          <mat-option *ngFor="let contract of contracts" [value]="contract.id">
-            {{ contract.contractNo }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+    <ng-container *ngIf="selectedAction === 'OUTBOUND' || selectedAction === 'VIEW'">
+      <app-contract-filter-select-input
+        [contracts]="contracts"
+        [label]="'inventory.sales_contract' | translate"
+        formControlName="salesContractId">
+      </app-contract-filter-select-input>
     </ng-container>
 
-    <ng-container *ngIf="selectedAction === 'BORROW'">
-        <app-company-filter-select-input
-          [companies]="companies"
-          [label]="'inventory.borrowed_company' | translate"
-          formControlName="borrowedCompanyId">
-        </app-company-filter-select-input>
+    <ng-container *ngIf="selectedAction === 'BORROW' || selectedAction === 'VIEW'">
+      <app-company-filter-select-input
+        [companies]="companies"
+        [label]="'inventory.borrowed_company' | translate"
+        formControlName="borrowedCompanyId">
+      </app-company-filter-select-input>
     </ng-container>
 
     <!-- Outbound/Borrow Specific Fields -->
@@ -79,14 +70,11 @@
         <mat-datepicker #outPicker></mat-datepicker>
       </mat-form-field>
 
-      <mat-form-field>
-        <mat-label>{{ 'inventory.handling_employee' | translate }}</mat-label>
-        <mat-select formControlName="handlingEmployeeId">
-          <mat-option *ngFor="let employee of employees" [value]="employee.id">
-            {{ employee.name }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+      <app-employee-filter-select-input
+        [employees]="employees"
+        [label]="'inventory.handling_employee' | translate"
+        formControlName="handlingEmployeeId">
+      </app-employee-filter-select-input>
 
       <mat-form-field>
         <mat-label>{{ 'inventory.shipping_method' | translate }}</mat-label>
@@ -121,8 +109,12 @@
     <!-- Common Fields -->
     <ng-container *ngIf="selectedAction === 'VIEW'">
       <mat-form-field>
-        <mat-label>{{ 'inventory.status' | translate }}</mat-label>
-        <input matInput formControlName="status">
+        <mat-label>{{ 'inventory.status_title' | translate }}</mat-label>
+        <mat-select formControlName="status">
+          <mat-option *ngFor="let status of statuses" [value]="status">
+            {{ 'enum.inventory.status.' + status | translate }}
+          </mat-option>
+        </mat-select>
       </mat-form-field>
     </ng-container>
 
@@ -136,7 +128,9 @@
 
 <mat-dialog-actions>
   <button mat-button (click)="onCancel()">{{ 'common.cancel' | translate }}</button>
-  <button mat-raised-button color="primary" [disabled]="form.invalid || loading" (click)="onSubmit()">
-    {{ 'common.submit' | translate }}
-  </button>
+  <ng-container *ngIf="selectedAction !== 'VIEW'">
+    <button mat-raised-button color="primary" [disabled]="form.invalid || loading" (click)="onSubmit()">
+      {{ 'common.submit' | translate }}
+    </button>  
+  </ng-container>
 </mat-dialog-actions>

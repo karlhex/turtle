@@ -21,7 +21,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatMenuModule } from '@angular/material/menu';
 import { ConfirmDialogComponent } from '../../components/confirmdialog/confirm-dialog.component';
 import { User, UserService } from '../../services/user.service';
-import { UserEmployeeMappingComponent } from '../user-employee-mapping/user-employee-mapping.component';
+import { UserEmployeeMappingComponent } from './user-employee-mapping/user-employee-mapping.component';
 import { UserEditDialogComponent } from './user-edit-dialog/user-edit-dialog.component';
 import { HttpErrorResponse } from '@angular/common/http';
 

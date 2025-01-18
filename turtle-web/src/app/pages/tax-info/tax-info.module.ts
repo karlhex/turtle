@@ -16,6 +16,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { TaxInfoListComponent } from './tax-info-list.component';
 import { TaxInfoDialogComponent } from './tax-info-dialog.component';
 import { BaseListModule } from '../../components/base-list/base-list.module';
+import { ActionModule } from '@app/components/action/action.module';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @NgModule({
   declarations: [
@@ -23,6 +25,7 @@ import { BaseListModule } from '../../components/base-list/base-list.module';
     TaxInfoDialogComponent
   ],
   imports: [
+    ActionModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
@@ -36,6 +39,7 @@ import { BaseListModule } from '../../components/base-list/base-list.module';
     MatMenuModule,
     MatProgressBarModule,
     MatTooltipModule,
+    MatSlideToggleModule,
     TranslateModule,
     BaseListModule
   ],
