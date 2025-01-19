@@ -49,6 +49,10 @@ export class CompanyService {
     return this.http.put<ApiResponse<Company>>(`${this.apiUrl}/${id}/toggle-status`, {});
   }
 
+  setPrimary(id: number): Observable<ApiResponse<Company>> {
+    return this.http.put<ApiResponse<Company>>(`${this.apiUrl}/${id}/set-primary`, {});
+  }
+
   getAllActive(): Observable<ApiResponse<Company[]>> {
     return this.http.get<ApiResponse<Company[]>>(`${this.apiUrl}/active`);
   }

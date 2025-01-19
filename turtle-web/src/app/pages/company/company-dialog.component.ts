@@ -11,6 +11,7 @@ import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { TaxInfoService } from '../../services/tax-info.service';
 import { PersonService } from '../../services/person.service';
+import { CompanyType } from '../../types/company-type.enum';
 
 @Component({
   selector: 'app-company-dialog',
@@ -23,6 +24,7 @@ export class CompanyDialogComponent implements OnInit {
   taxInfos: TaxInfo[] = [];
   persons: Person[] = [];
   filteredTaxInfos!: Observable<TaxInfo[]>;
+  companyTypes = Object.values(CompanyType).filter(value => value !== CompanyType.PRIMARY);
 
   constructor(
     private fb: FormBuilder,
@@ -41,12 +43,10 @@ export class CompanyDialogComponent implements OnInit {
       phone: ['', [Validators.required]],
       email: ['', [Validators.email]],
       website: [''],
-      isPrimary: [false],
+      type: ['', [Validators.required]],
       active: [true],
       remarks: [''],
       taxInfo: [null],
-      businessContact: [null],
-      technicalContact: [null]
     });
 
     if (data.mode === 'edit' && data.company) {
@@ -114,16 +114,25 @@ export class CompanyDialogComponent implements OnInit {
 
       request.subscribe({
         next: (response) => {
-          this.snackBar.open(
-            this.translate.instant(
-              this.data.mode === 'create'
-                ? 'COMPANY.CREATE_SUCCESS'
-                : 'COMPANY.UPDATE_SUCCESS'
-            ),
-            this.translate.instant('ACTIONS.CLOSE'),
-            { duration: 3000 }
-          );
-          this.dialogRef.close(response.data);
+          if (response.code === 200) {
+            this.snackBar.open(
+              this.translate.instant(
+                this.data.mode === 'create'
+                  ? 'COMPANY.CREATE_SUCCESS'
+                  : 'COMPANY.UPDATE_SUCCESS'
+              ),
+              this.translate.instant('ACTIONS.CLOSE'),
+              { duration: 3000 }
+            );
+            this.dialogRef.close(response.data);
+          } else {
+            this.snackBar.open(
+              response.message || this.translate.instant('ERROR.SAVE_COMPANY'),
+              this.translate.instant('ACTIONS.CLOSE'),
+              { duration: 3000 }
+            );
+          }
+          this.loading = false;
         },
         error: (error) => {
           console.error('Error saving company:', error);

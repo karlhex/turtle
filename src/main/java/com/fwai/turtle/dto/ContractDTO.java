@@ -1,19 +1,20 @@
 package com.fwai.turtle.dto;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fwai.turtle.common.BaseDTO;
 import com.fwai.turtle.types.ContractStatus;
 import com.fwai.turtle.types.ContractType;
 
 @Data
-public class ContractDTO {
-    private Long id;
+@EqualsAndHashCode(callSuper = true)
+public class ContractDTO extends BaseDTO {
     private String contractNo;
     private String title;
     private CompanyDTO buyerCompany;
@@ -22,7 +23,7 @@ public class ContractDTO {
     private LocalDate signingDate;
     private LocalDate startDate;
     private LocalDate endDate;
-    private PersonDTO contactPerson;
+    private ContactDTO contactPerson;
     private BigDecimal totalAmount;
     private CurrencyDTO currency;
     private ContractStatus status;
@@ -34,8 +35,6 @@ public class ContractDTO {
     private String deliveryTerms;
     private String warrantyTerms;
     private String filePath;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 
     private List<ContractItemDTO> items = new ArrayList<>();  // 合同产品列表
     private List<ContractDownPaymentDTO> downPayments = new ArrayList<>();  // 合同首付款列表

@@ -2,6 +2,7 @@ package com.fwai.turtle.dto;
 
 import lombok.Data;
 import java.time.LocalDateTime;
+import com.fwai.turtle.types.CompanyType;
 import java.util.List;
 
 /**
@@ -17,13 +18,11 @@ public class CompanyDTO {
     private String phone;           // 公司电话
     private String email;           // 公司邮件
     private String website;         // 公司网站
-    private Boolean isPrimary;      // 主公司标志
     private List<BankAccountDTO> bankAccounts;  // 公司银行账户列表
     private TaxInfoDTO taxInfo;     // 税务信息
-    private PersonDTO businessContact;   // 商务联系人
-    private PersonDTO technicalContact;  // 技术联系人
     private Boolean active;         // 是否启用
     private String remarks;         // 备注
+    private CompanyType type;       // 公司类型
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

@@ -1,7 +1,8 @@
 import { BankAccount } from './bank-account.model';
 import { TaxInfo } from './tax-info.model';
-import { Person } from './person.model';
+import { CompanyType } from '../types/company-type.enum';
 import { BaseModel } from './base.model';
+import { Contact } from './contact.model';
 
 export interface Company extends BaseModel {
   fullName: string;        // 公司全称
@@ -10,11 +11,10 @@ export interface Company extends BaseModel {
   phone: string;           // 公司电话
   email?: string;         // 公司邮件
   website?: string;       // 公司网站
-  isPrimary?: boolean;    // 主公司标志
   bankAccounts?: BankAccount[];  // 公司银行账户列表
   taxInfo?: TaxInfo;      // 税务信息
-  businessContact?: Person;   // 商务联系人
-  technicalContact?: Person;  // 技术联系人
   active: boolean;         // 是否启用
   remarks?: string;        // 备注
+  type: CompanyType;      // 公司类型
+  contacts?: Contact[];    // 联系人列表
 }

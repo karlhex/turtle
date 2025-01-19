@@ -4,10 +4,10 @@ import com.fwai.turtle.persistence.entity.Company;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
+import com.fwai.turtle.types.CompanyType;
 
 /**
  * Company Repository
@@ -53,24 +53,9 @@ public interface CompanyRepository extends JpaRepository<Company, Long>, JpaSpec
     List<Company> findByActiveTrue();
 
     /**
-     * Find the primary company
-     * 获取主公司
+     * Find primary company
+     * 查找主公司
+     * @return Optional<Company> the primary company if exists
      */
-    Optional<Company> findByIsPrimaryTrue();
-
-    /**
-     * Reset all companies to non-primary
-     * 重置所有公司为非主公司
-     */
-    @Modifying
-    @Query("UPDATE Company c SET c.isPrimary = false")
-    void resetAllPrimaryFlags();
-
-    /**
-     * Set a specific company as primary
-     * 设置指定公司为主公司
-     */
-    @Modifying
-    @Query("UPDATE Company c SET c.isPrimary = true WHERE c.id = :companyId")
-    void setPrimaryCompany(@Param("companyId") Long companyId);
+    Optional<Company> findByTypeAndActiveTrue(CompanyType type);
 }

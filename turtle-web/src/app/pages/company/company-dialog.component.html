@@ -13,6 +13,18 @@
           </mat-error>
         </mat-form-field>
 
+        <!-- 公司类型 -->
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>公司类型</mat-label>
+          <mat-select formControlName="type" required>
+            <mat-option *ngFor="let type of companyTypes" [value]="type">
+              {{type}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.get('type')?.hasError('required')">
+            请选择公司类型
+          </mat-error>
+        </mat-form-field>
         <!-- 公司简称 -->
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>公司简称</mat-label>
@@ -62,23 +74,6 @@
             </mat-option>
           </mat-autocomplete>
         </mat-form-field>
-
-        <div class="section-title">联系人信息</div>
-        <app-person-input
-          formControlName="businessContact"
-          [value]="form.get('businessContact')?.value"
-          [persons]="persons"
-          (personAdded)="onPersonAdded($event)"
-          placeholder="商务联系人">
-        </app-person-input>
-
-        <app-person-input
-          formControlName="technicalContact"
-          [value]="form.get('technicalContact')?.value"
-          [persons]="persons"
-          (personAdded)="onPersonAdded($event)"
-          placeholder="技术联系人">
-        </app-person-input>
         
         <!-- 备注 -->
         <mat-form-field appearance="outline" class="w-full">

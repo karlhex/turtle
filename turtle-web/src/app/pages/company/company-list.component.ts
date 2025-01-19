@@ -7,6 +7,8 @@ import { CompanyService } from '../../services/company.service';
 import { Company } from '../../models/company.model';
 import { CompanyDialogComponent } from './company-dialog.component';
 import { PageEvent } from '@angular/material/paginator';
+import { CompanyType } from '../../types/company-type.enum';
+import { ConfirmDialogComponent } from '../../components/confirmdialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-company-list',
@@ -20,7 +22,7 @@ export class CompanyListComponent implements OnInit {
     'address',
     'phone',
     'email',
-    'isPrimary',
+    'type',
     'active',
     'actions'
   ];
@@ -52,9 +54,10 @@ export class CompanyListComponent implements OnInit {
       })
       .subscribe({
         next: (response) => {
-          console.log("loadCompanies", response);
-          this.dataSource.data = response.data.content;
-          this.totalElements = response.data.totalElements;
+          if (response.code === 200) {
+            this.dataSource.data = response.data.content.sort((a: Company, b: Company) => a.type === CompanyType.PRIMARY ? -1 : 1);
+            this.totalElements = response.data.totalElements;
+          }
           this.loading = false;
         },
         error: (error) => {
@@ -129,13 +132,15 @@ export class CompanyListComponent implements OnInit {
 
   onToggleStatus(company: Company): void {
     this.companyService.toggleStatus(company.id!).subscribe({
-      next: () => {
-        this.snackBar.open(
-          this.translate.instant('COMPANY.STATUS_UPDATED'),
-          this.translate.instant('ACTIONS.CLOSE'),
-          { duration: 3000 }
-        );
-        this.loadCompanies();
+      next: (response) => {
+        if (response.code === 200) {
+          this.snackBar.open(
+            this.translate.instant('COMPANY.STATUS_UPDATED'),
+            this.translate.instant('ACTIONS.CLOSE'),
+            { duration: 3000 }
+          );
+          this.loadCompanies();
+        }
       },
       error: (error) => {
         console.error('Error updating company status:', error);
@@ -148,29 +153,42 @@ export class CompanyListComponent implements OnInit {
     });
   }
 
-  onTogglePrimary(company: Company): void {
-    if (!company.isPrimary) {  // Only allow setting as primary, not unsetting
-      this.loading = true;
-      this.companyService.setPrimaryCompany(company.id!).subscribe({
-        next: () => {
-          this.loadCompanies();
-          this.snackBar.open(
-            this.translate.instant('COMPANY.PRIMARY_UPDATED'),
-            this.translate.instant('COMMON.CLOSE'),
-            { duration: 3000 }
-          );
-        },
-        error: (error) => {
-          console.error('Error updating company primary status:', error);
-          this.snackBar.open(
-            this.translate.instant('COMPANY.UPDATE_ERROR'),
-            this.translate.instant('COMMON.CLOSE'),
-            { duration: 3000 }
-          );
-          this.loading = false;
-        }
-      });
-    }
+  onSetPrimary(company: Company): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: 'COMPANY.SET_PRIMARY_TITLE',
+        message: 'COMPANY.SET_PRIMARY_CONFIRM',
+        confirmText: 'ACTIONS.CONFIRM',
+        cancelText: 'ACTIONS.CANCEL'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.loading = true;
+        this.companyService.setPrimary(company.id!).subscribe({
+          next: (response) => {
+            if (response.code === 200) {
+              this.snackBar.open(
+                this.translate.instant('COMPANY.PRIMARY_UPDATED'),
+                this.translate.instant('ACTIONS.CLOSE'),
+                { duration: 3000 }
+              );
+              this.loadCompanies();
+            }
+          },
+          error: (error) => {
+            console.error('Error setting company as primary:', error);
+            this.snackBar.open(
+              error.error?.message || this.translate.instant('ERROR.SET_PRIMARY'),
+              this.translate.instant('ACTIONS.CLOSE'),
+              { duration: 3000 }
+            );
+            this.loading = false;
+          }
+        });
+      }
+    });
   }
 
   onPageChange(event: PageEvent): void {

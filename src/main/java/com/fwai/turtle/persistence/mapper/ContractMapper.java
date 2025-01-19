@@ -14,7 +14,7 @@ import org.mapstruct.MappingTarget;
         CurrencyMapper.class,
         CompanyMapper.class,
         InvoiceMapper.class,
-        PersonMapper.class
+        ContactMapper.class
     }
 )
 public interface ContractMapper {

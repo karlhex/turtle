@@ -13,7 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import com.fwai.turtle.types.CompanyType;
 import java.util.List;
 
 /**
@@ -104,30 +104,6 @@ public class CompanyController {
     }
 
     /**
-     * Get primary company
-     * 获取主公司
-     */
-    @GetMapping("/primary")
-    @Operation(summary = "Get primary company")
-    public ResponseEntity<ApiResponse<CompanyDTO>> getPrimaryCompany() {
-        CompanyDTO primaryCompany = companyService.getPrimaryCompany();
-        return primaryCompany != null ? 
-               ResponseEntity.ok(ApiResponse.ok(primaryCompany)) : 
-               ResponseEntity.notFound().build();
-    }
-
-    /**
-     * Set company as primary
-     * 设置主公司
-     */
-    @PutMapping("/{id}/set-primary")
-    @Operation(summary = "Set company as primary", description = "Set a company as the primary company")
-    public ResponseEntity<ApiResponse<CompanyDTO>> setPrimary(@PathVariable Long id) {
-        CompanyDTO company = companyService.setPrimaryCompany(id);
-        return ResponseEntity.ok(ApiResponse.ok(company));
-    }
-
-    /**
      * Get company bank accounts
      * 获取公司银行账户
      */
@@ -170,5 +146,26 @@ public class CompanyController {
     public ResponseEntity<ApiResponse<List<CompanyDTO>>> getAllActive() {
         List<CompanyDTO> activeCompanies = companyService.getAllActive();
         return ResponseEntity.ok(ApiResponse.ok(activeCompanies));
+    }
+
+    /**
+     * Find company by type
+     * 根据类型查找公司
+     */
+    @GetMapping("/type/{type}")
+    public ResponseEntity<ApiResponse<CompanyDTO>> findCompanyByType(@PathVariable CompanyType type) {
+        CompanyDTO company = companyService.findCompanyByType(type);
+        return ResponseEntity.ok(ApiResponse.ok(company));
+    }
+
+    /**
+     * Set company as primary
+     * 设置主公司
+     */
+    @PutMapping("/{id}/set-primary")
+    @Operation(summary = "Set company as primary")
+    public ResponseEntity<ApiResponse<CompanyDTO>> setPrimary(@PathVariable Long id) {
+        CompanyDTO company = companyService.setPrimary(id);
+        return ResponseEntity.ok(ApiResponse.ok(company));
     }
 }

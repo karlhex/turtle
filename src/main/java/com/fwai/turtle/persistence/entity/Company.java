@@ -1,5 +1,8 @@
 package com.fwai.turtle.persistence.entity;
 
+import com.fwai.turtle.types.CompanyType;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fwai.turtle.common.BaseEntity;
 
 import jakarta.persistence.*;
@@ -37,8 +40,8 @@ public class Company extends BaseEntity {
     @Column
     private String website;  // 公司网站
 
-    @Column(name = "is_primary")
-    private Boolean isPrimary = false;  // 主公司标志
+    @Column
+    private CompanyType type;  // 公司类型
 
     @OneToMany(mappedBy = "companyId", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BankAccount> bankAccounts = new ArrayList<>();  // 公司银行账户
@@ -47,13 +50,9 @@ public class Company extends BaseEntity {
     @JoinColumn(name = "tax_info_id")
     private TaxInfo taxInfo;  // 税务信息
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "business_contact_id")
-    private Person businessContact;  // 商务联系人
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "technical_contact_id")
-    private Person technicalContact;  // 技术联系人
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties({"company"})
+    private List<Contact> contacts = new ArrayList<>();  // 公司联系人
 
     @Column
     private Boolean active = true;  // 是否启用

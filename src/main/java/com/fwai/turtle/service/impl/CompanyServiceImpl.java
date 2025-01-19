@@ -1,29 +1,25 @@
 package com.fwai.turtle.service.impl;
 
 import com.fwai.turtle.dto.CompanyDTO;
-import com.fwai.turtle.dto.PersonDTO;
-import com.fwai.turtle.dto.TaxInfoDTO;
 import com.fwai.turtle.dto.BankAccountDTO;
-
+import com.fwai.turtle.dto.TaxInfoDTO;
 import com.fwai.turtle.persistence.entity.Company;
 import com.fwai.turtle.persistence.entity.BankAccount;
 import com.fwai.turtle.persistence.repository.CompanyRepository;
-import com.fwai.turtle.persistence.repository.PersonRepository;
 import com.fwai.turtle.persistence.repository.TaxInfoRepository;
 import com.fwai.turtle.persistence.mapper.CompanyMapper;
 import com.fwai.turtle.persistence.mapper.BankAccountMapper;
-import com.fwai.turtle.persistence.mapper.PersonMapper;
 import com.fwai.turtle.service.interfaces.CompanyService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import com.fwai.turtle.exception.ResourceNotFoundException;
 import com.fwai.turtle.persistence.entity.TaxInfo;
+import com.fwai.turtle.types.CompanyType;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,18 +35,11 @@ public class CompanyServiceImpl implements CompanyService {
     private final CompanyMapper companyMapper;
     private final TaxInfoRepository taxInfoRepository;
     private final BankAccountMapper bankAccountMapper;
-    private final PersonRepository personRepository;
-    @Autowired
-    private PersonMapper personMapper;
+
 
     @Override
     public Page<CompanyDTO> getCompanies(Pageable pageable, String search, Boolean active) {
         Specification<Company> spec = (root, query, cb) -> {
-            // Add default sorting by isPrimary
-            query.orderBy(
-                cb.desc(root.get("isPrimary")),
-                cb.asc(root.get("fullName"))
-            );
 
             if (search != null && !search.trim().isEmpty()) {
                 String searchPattern = "%" + search.toLowerCase() + "%";
@@ -109,17 +98,12 @@ public class CompanyServiceImpl implements CompanyService {
                 }
             }
         }
-
-        // Handle business contact creation
-        PersonDTO businessContact = companyDTO.getBusinessContact();
-        if (businessContact != null && businessContact.getId() == null) {
-            company.setBusinessContact(personRepository.save(personMapper.toEntity(businessContact)));
-        }
-
-        // Handle technical contact creation
-        PersonDTO technicalContact = companyDTO.getTechnicalContact();
-        if (technicalContact != null && technicalContact.getId() == null) {
-            company.setTechnicalContact(personRepository.save(personMapper.toEntity(technicalContact)));
+        
+        // if type == PRIMARY, check if another PRIMARY company exists
+        if (company.getType() == CompanyType.PRIMARY) {
+            if (companyRepository.findByTypeAndActiveTrue(CompanyType.PRIMARY).isPresent()) {
+                throw new IllegalArgumentException("Only one PRIMARY company is allowed");
+            }
         }
         
         company.setActive(true);
@@ -165,30 +149,16 @@ public class CompanyServiceImpl implements CompanyService {
             }
         }
 
+        // if type == PRIMARY, check if another PRIMARY company exists
+
+        if (companyDTO.getType() == CompanyType.PRIMARY) {
+            Company primaryCompany = companyRepository.findByTypeAndActiveTrue(CompanyType.PRIMARY).orElse(null);
+            if (primaryCompany != null && !primaryCompany.getId().equals(id)) {
+                throw new IllegalArgumentException("Only one PRIMARY company is allowed");
+            }
+        }
+
         companyMapper.updateEntityFromDTO(companyDTO, company);
-
-        // Handle business contact creation/update
-        PersonDTO businessContact = companyDTO.getBusinessContact();
-        if (businessContact != null) {
-            if (businessContact.getId() == null) {
-                company.setBusinessContact(personRepository.save(personMapper.toEntity(businessContact)));
-            } else {
-                company.setBusinessContact(personRepository.findById(businessContact.getId())
-                        .orElseThrow(() -> new ResourceNotFoundException("Person", "id", businessContact.getId())));
-            }
-        }
-
-        // Handle technical contact creation/update
-        PersonDTO technicalContact = companyDTO.getTechnicalContact();
-        if (technicalContact != null) {
-            if (technicalContact.getId() == null) {
-                company.setTechnicalContact(personRepository.save(personMapper.toEntity(technicalContact)));
-            } else {
-                company.setTechnicalContact(personRepository.findById(technicalContact.getId())
-                        .orElseThrow(() -> new ResourceNotFoundException("Person", "id", technicalContact.getId())));
-            }
-        }
-        
         return companyMapper.toDTO(companyRepository.save(company));
     }
 
@@ -213,26 +183,6 @@ public class CompanyServiceImpl implements CompanyService {
                 .orElseThrow(() -> new EntityNotFoundException("Company not found with id: " + id));
         company.setActive(!company.getActive());
         return companyMapper.toDTO(companyRepository.save(company));
-    }
-
-    @Override
-    public CompanyDTO getPrimaryCompany() {
-        return companyRepository.findByIsPrimaryTrue()
-                .map(companyMapper::toDTO)
-                .orElse(null);
-    }
-
-    @Override
-    @Transactional
-    public CompanyDTO setPrimaryCompany(Long id) {
-        Company company = companyRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Company not found with id: " + id));
-        
-        companyRepository.resetAllPrimaryFlags();
-        companyRepository.setPrimaryCompany(id);
-        
-        company.setIsPrimary(true);
-        return companyMapper.toDTO(company);
     }
 
     @Override
@@ -267,5 +217,37 @@ public class CompanyServiceImpl implements CompanyService {
         
         company.getBankAccounts().removeIf(account -> account.getId().equals(bankAccountId));
         companyRepository.save(company);
+    }
+
+    @Override
+    public CompanyDTO findCompanyByType(CompanyType type) {
+        Company company = companyRepository.findByTypeAndActiveTrue(type)
+                .orElseThrow(() -> new EntityNotFoundException("Company not found with type: " + type));
+
+        return companyMapper.toDTO(company);
+    }
+
+    @Override
+    @Transactional
+    public CompanyDTO setPrimary(Long id) {
+        // Find the company to be set as primary
+        Company company = companyRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Company not found with id: " + id));
+
+        // Check if company is active
+        if (!company.getActive()) {
+            throw new IllegalArgumentException("Cannot set inactive company as primary");
+        }
+
+        // Find current primary company if exists
+        companyRepository.findByTypeAndActiveTrue(CompanyType.PRIMARY)
+                .ifPresent(primaryCompany -> {
+                    primaryCompany.setType(CompanyType.CUSTOMER);
+                    companyRepository.save(primaryCompany);
+                });
+
+        // Set the new company as primary
+        company.setType(CompanyType.PRIMARY);
+        return companyMapper.toDTO(companyRepository.save(company));
     }
 }

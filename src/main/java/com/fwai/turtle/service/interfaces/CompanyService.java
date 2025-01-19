@@ -5,6 +5,7 @@ import com.fwai.turtle.dto.BankAccountDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import java.util.List;
+import com.fwai.turtle.types.CompanyType;
 
 /**
  * Company Service Interface
@@ -54,18 +55,6 @@ public interface CompanyService {
     CompanyDTO toggleCompanyStatus(Long id);
 
     /**
-     * Get the primary company
-     * 获取主公司
-     */
-    CompanyDTO getPrimaryCompany();
-
-    /**
-     * Set a company as primary
-     * 设置主公司
-     */
-    CompanyDTO setPrimaryCompany(Long id);
-
-    /**
      * Get all bank accounts for a company
      * 获取公司的所有银行账户
      */
@@ -88,4 +77,16 @@ public interface CompanyService {
      * 获取所有启用的公司
      */
     List<CompanyDTO> getAllActive();
+
+    /**
+     * Find company by type
+     * 根据类型查找公司
+     */
+    CompanyDTO findCompanyByType(CompanyType type);
+
+    /**
+     * Set company as primary
+     * 设置公司为主公司
+     */
+    CompanyDTO setPrimary(Long id);
 }

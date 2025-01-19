@@ -48,7 +48,7 @@ public class Contract extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "contact_person_id")
-    private Person contactPerson;  // 联系人
+    private Contact contactPerson;  // 联系人
 
     @Column(name = "project_id")
     private Long projectId;  // 关联的项目

@@ -10,9 +10,9 @@ import org.mapstruct.*;
  */
 @Mapper(componentModel = "spring",
         uses = {
-            PersonMapper.class,
             BankAccountMapper.class,
-            TaxInfoMapper.class
+            TaxInfoMapper.class,
+            ContactMapper.class
         },
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface CompanyMapper {
@@ -22,7 +22,7 @@ public interface CompanyMapper {
      * 将实体对象转换为DTO
      */
     CompanyDTO toDTO(Company company);
-    
+
     /**
      * Convert DTO to entity
      * 将DTO转换为实体对象
