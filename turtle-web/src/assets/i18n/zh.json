@@ -24,7 +24,10 @@
       "company": "公司管理",
       "role_permissions": "角色权限",
       "logout": "退出登录",
-      "changePassword": "修改密码"
+      "changePassword": "修改密码",
+      "crm": "客户关系",
+      "contacts": "联系人管理",
+      "companies": "公司管理"
     }
   },
   "employee": {
@@ -927,5 +930,72 @@
     "standard": "标准",
     "overnight": "隔夜",
     "ground": "地面"
+  },
+  "COMMON": {
+    "ACTIONS": "操作",
+    "EDIT": "编辑",
+    "DELETE": "删除",
+    "CANCEL": "取消",
+    "SAVE": "保存",
+    "ADD": "添加",
+    "FIELD_REQUIRED": "此字段为必填项"
+  },
+  "CONTACT": {
+    "TITLE": "联系人管理",
+    "SEARCH_PLACEHOLDER": "搜索联系人...",
+    "ADD_TITLE": "添加联系人",
+    "EDIT_TITLE": "编辑联系人",
+    
+    "NAME": "姓名",
+    "LAST_NAME": "姓",
+    "FIRST_NAME": "名",
+    "EMAIL": "邮箱",
+    "MOBILE_PHONE": "手机号",
+    "WORK_PHONE": "工作电话",
+    "HOME_PHONE": "家庭电话",
+    "ADDRESS": "地址",
+    "COMPANY": "公司",
+    "DEPARTMENT": "部门",
+    "JOB_TITLE": "职位",
+    "STATUS": "状态",
+    
+    "BASIC_INFO": "基本信息",
+    "CONTACT_INFO": "联系方式",
+    "COMPANY_INFO": "公司信息",
+    "PERSONAL_INFO": "个人信息",
+    "EDUCATION_INFO": "教育信息",
+    "OTHER_INFO": "其他信息",
+    
+    "SHOW_MORE": "展开更多信息",
+    "SHOW_LESS": "收起更多信息",
+    
+    "GENDER": "性别",
+    "GENDER_MALE": "男",
+    "GENDER_FEMALE": "女",
+    "NATIVE_PLACE": "籍贯",
+    "ETHNICITY": "民族",
+    "MARITAL_STATUS": "婚姻状况",
+    "MARITAL_SINGLE": "未婚",
+    "MARITAL_MARRIED": "已婚",
+    "MARITAL_DIVORCED": "离异",
+    "NATIONALITY": "国籍",
+    "BIRTH_DATE": "出生日期",
+    "RELIGION": "宗教信仰",
+    
+    "UNIVERSITY": "毕业院校",
+    "MAJOR": "专业",
+    "GRADUATION_YEAR": "毕业年份",
+    "DEGREE": "学位",
+    
+    "HOBBIES": "爱好",
+    "REMARKS": "备注",
+    
+    "INVALID_EMAIL": "请输入有效的邮箱地址",
+    "DELETE_TITLE": "删除联系人",
+    "DELETE_CONFIRM": "确定要删除这个联系人吗？",
+    "DELETE_SUCCESS": "联系人已成功删除",
+    "STATUS_UPDATED": "联系人状态已更新",
+    "CREATE_SUCCESS": "联系人创建成功",
+    "UPDATE_SUCCESS": "联系人更新成功"
   }
 }

@@ -19,6 +19,7 @@ import { RolePermissionListComponent } from './pages/role-permission/role-permis
 import { ChangePasswordDialogComponent } from './pages/user-management/change-password-dialog/change-password-dialog.component';
 import { AuthGuard } from './guards/auth.guard';
 import { InventoryListComponent } from './pages/inventory/inventory-list.component';
+import { ContactListComponent } from './pages/contact/contact-list.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -44,6 +45,8 @@ const routes: Routes = [
       { path: 'role-permissions', component: RolePermissionListComponent },
       { path: 'change-password', component: ChangePasswordDialogComponent },
       { path: 'inventories', component: InventoryListComponent },
+      { path: 'contacts', component: ContactListComponent },
+
       // Placeholder routes for future implementation
       { path: 'positions', component: DashboardComponent },
       { path: 'attendance', component: DashboardComponent },

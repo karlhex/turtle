@@ -38,6 +38,7 @@ import { PersonInputModule } from './components/person-input/person-input.module
 import { ActionModule } from './components/action/action.module';
 import { BaseListModule } from './components/base-list/base-list.module';
 import { SharedModule } from './shared/shared.module';
+import { ContactModule } from './pages/contact/contact.module';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -71,6 +72,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     TaxInfoModule,
     BankAccountModule,
     UserManagementModule,
+    ContactModule,
     BaseListModule,
 
     // Angular

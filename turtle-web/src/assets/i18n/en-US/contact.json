@@ -1,0 +1,60 @@
+{
+  "CONTACT": {
+    "TITLE": "Contact Management",
+    "SEARCH_PLACEHOLDER": "Search contacts...",
+    "ADD_TITLE": "Add Contact",
+    "EDIT_TITLE": "Edit Contact",
+    
+    "NAME": "Name",
+    "LAST_NAME": "Last Name",
+    "FIRST_NAME": "First Name",
+    "EMAIL": "Email",
+    "MOBILE_PHONE": "Mobile Phone",
+    "WORK_PHONE": "Work Phone",
+    "HOME_PHONE": "Home Phone",
+    "ADDRESS": "Address",
+    "COMPANY": "Company",
+    "DEPARTMENT": "Department",
+    "JOB_TITLE": "Job Title",
+    "STATUS": "Status",
+    
+    "BASIC_INFO": "Basic Information",
+    "CONTACT_INFO": "Contact Information",
+    "COMPANY_INFO": "Company Information",
+    "PERSONAL_INFO": "Personal Information",
+    "EDUCATION_INFO": "Education Information",
+    "OTHER_INFO": "Other Information",
+    
+    "SHOW_MORE": "Show More",
+    "SHOW_LESS": "Show Less",
+    
+    "GENDER": "Gender",
+    "GENDER_MALE": "Male",
+    "GENDER_FEMALE": "Female",
+    "NATIVE_PLACE": "Native Place",
+    "ETHNICITY": "Ethnicity",
+    "MARITAL_STATUS": "Marital Status",
+    "MARITAL_SINGLE": "Single",
+    "MARITAL_MARRIED": "Married",
+    "MARITAL_DIVORCED": "Divorced",
+    "NATIONALITY": "Nationality",
+    "BIRTH_DATE": "Birth Date",
+    "RELIGION": "Religion",
+    
+    "UNIVERSITY": "University",
+    "MAJOR": "Major",
+    "GRADUATION_YEAR": "Graduation Year",
+    "DEGREE": "Degree",
+    
+    "HOBBIES": "Hobbies",
+    "REMARKS": "Remarks",
+    
+    "INVALID_EMAIL": "Please enter a valid email address",
+    "DELETE_TITLE": "Delete Contact",
+    "DELETE_CONFIRM": "Are you sure you want to delete this contact?",
+    "DELETE_SUCCESS": "Contact deleted successfully",
+    "STATUS_UPDATED": "Contact status updated",
+    "CREATE_SUCCESS": "Contact created successfully",
+    "UPDATE_SUCCESS": "Contact updated successfully"
+  }
+}

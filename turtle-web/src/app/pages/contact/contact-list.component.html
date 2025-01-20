@@ -1,0 +1,77 @@
+<app-base-list
+  [title]="'CONTACT.TITLE' | translate"
+  [placeholder]="'CONTACT.SEARCH_PLACEHOLDER' | translate"
+  [loading]="loading"
+  [pageSize]="pageSize"
+  [totalElements]="totalElements"
+  (search)="onSearch($event)"
+  (add)="onAdd()"
+  (page)="onPageChange($event)">
+
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z1 w-full">
+    <!-- 姓名 -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>{{ 'CONTACT.NAME' | translate }}</th>
+      <td mat-cell *matCellDef="let element">{{getFullName(element)}}</td>
+    </ng-container>
+
+    <!-- 邮箱 -->
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef>{{ 'CONTACT.EMAIL' | translate }}</th>
+      <td mat-cell *matCellDef="let element">{{element.email}}</td>
+    </ng-container>
+
+    <!-- 手机号 -->
+    <ng-container matColumnDef="mobilePhone">
+      <th mat-header-cell *matHeaderCellDef>{{ 'CONTACT.MOBILE_PHONE' | translate }}</th>
+      <td mat-cell *matCellDef="let element">{{element.mobilePhone}}</td>
+    </ng-container>
+
+    <!-- 公司名称 -->
+    <ng-container matColumnDef="companyName">
+      <th mat-header-cell *matHeaderCellDef>{{ 'CONTACT.COMPANY' | translate }}</th>
+      <td mat-cell *matCellDef="let element">{{element.companyName}}</td>
+    </ng-container>
+
+    <!-- 部门 -->
+    <ng-container matColumnDef="department">
+      <th mat-header-cell *matHeaderCellDef>{{ 'CONTACT.DEPARTMENT' | translate }}</th>
+      <td mat-cell *matCellDef="let element">{{element.department}}</td>
+    </ng-container>
+
+    <!-- 状态 -->
+    <ng-container matColumnDef="active">
+      <th mat-header-cell *matHeaderCellDef>{{ 'CONTACT.STATUS' | translate }}</th>
+      <td mat-cell *matCellDef="let element">
+        <mat-slide-toggle
+          [checked]="element.active"
+          (change)="onToggleStatus(element)"
+          color="primary">
+        </mat-slide-toggle>
+      </td>
+    </ng-container>
+
+    <!-- 操作 -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>{{ 'COMMON.ACTIONS' | translate }}</th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="onEdit(element)">
+            <mat-icon>edit</mat-icon>
+            <span>{{ 'COMMON.EDIT' | translate }}</span>
+          </button>
+          <button mat-menu-item (click)="onDelete(element)">
+            <mat-icon>delete</mat-icon>
+            <span>{{ 'COMMON.DELETE' | translate }}</span>
+          </button>
+        </mat-menu>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</app-base-list>

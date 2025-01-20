@@ -43,7 +43,23 @@ export class SidebarMenuComponent {
           icon: 'work',
           route: '/positions'
         }
-
+      ],
+      divider: true
+    },
+    {
+      title: 'app.menu.crm',
+      icon: 'contacts',
+      children: [
+        {
+          title: 'app.menu.companies',
+          icon: 'business',
+          route: '/companies'
+        },
+        {
+          title: 'app.menu.contacts',
+          icon: 'person',
+          route: '/contacts'
+        }
       ],
       divider: true
     },
@@ -65,11 +81,6 @@ export class SidebarMenuComponent {
           title: 'app.menu.products',
           icon: 'inventory_2',
           route: '/products'
-        },
-        {
-          title: 'app.menu.company',
-          icon: 'business_center',
-          route: '/companies'
         },
         {
           title: 'app.menu.tax_info',

@@ -1,0 +1,43 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.mat-mdc-table {
+  width: 100%;
+}
+
+.mat-column-actions {
+  width: 80px;
+  text-align: center;
+}
+
+.mat-column-active {
+  width: 100px;
+  text-align: center;
+}
+
+.mat-column-name,
+.mat-column-email,
+.mat-column-mobilePhone,
+.mat-column-companyName,
+.mat-column-department {
+  padding: 0 16px;
+}
+
+.mat-mdc-row:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.loading-shade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

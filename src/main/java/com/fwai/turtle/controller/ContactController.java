@@ -2,6 +2,7 @@ package com.fwai.turtle.controller;
 
 import com.fwai.turtle.dto.ContactDTO;
 import com.fwai.turtle.service.interfaces.ContactService;
+import com.fwai.turtle.common.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,8 +27,8 @@ public class ContactController {
      * 获取分页的联系人列表
      */
     @GetMapping
-    public ResponseEntity<Page<ContactDTO>> getContacts(Pageable pageable) {
-        return ResponseEntity.ok(contactService.getContacts(pageable));
+    public ResponseEntity<ApiResponse<Page<ContactDTO>>> getContacts(Pageable pageable) {
+        return ResponseEntity.ok(ApiResponse.ok(contactService.getContacts(pageable)));
     }
 
     /**
@@ -35,10 +36,10 @@ public class ContactController {
      * 搜索联系人
      */
     @GetMapping("/search")
-    public ResponseEntity<Page<ContactDTO>> searchContacts(
+    public ResponseEntity<ApiResponse<Page<ContactDTO>>> searchContacts(
             @RequestParam String query,
             Pageable pageable) {
-        return ResponseEntity.ok(contactService.searchContacts(query, pageable));
+        return ResponseEntity.ok(ApiResponse.ok(contactService.searchContacts(query, pageable)));
     }
 
     /**
@@ -46,8 +47,8 @@ public class ContactController {
      * 根据ID获取联系人
      */
     @GetMapping("/{id}")
-    public ResponseEntity<ContactDTO> getContact(@PathVariable Long id) {
-        return ResponseEntity.ok(contactService.getContactById(id));
+    public ResponseEntity<ApiResponse<ContactDTO>> getContact(@PathVariable Long id) {
+        return ResponseEntity.ok(ApiResponse.ok(contactService.getContactById(id)));
     }
 
     /**
@@ -55,8 +56,8 @@ public class ContactController {
      * 创建新联系人
      */
     @PostMapping
-    public ResponseEntity<ContactDTO> createContact(@RequestBody ContactDTO contactDTO) {
-        return ResponseEntity.ok(contactService.createContact(contactDTO));
+    public ResponseEntity<ApiResponse<ContactDTO>> createContact(@RequestBody ContactDTO contactDTO) {
+        return ResponseEntity.ok(ApiResponse.ok(contactService.createContact(contactDTO)));
     }
 
     /**
@@ -64,10 +65,10 @@ public class ContactController {
      * 更新联系人信息
      */
     @PutMapping("/{id}")
-    public ResponseEntity<ContactDTO> updateContact(
+    public ResponseEntity<ApiResponse<ContactDTO>> updateContact(
             @PathVariable Long id,
             @RequestBody ContactDTO contactDTO) {
-        return ResponseEntity.ok(contactService.updateContact(id, contactDTO));
+        return ResponseEntity.ok(ApiResponse.ok(contactService.updateContact(id, contactDTO)));
     }
 
     /**
@@ -85,8 +86,8 @@ public class ContactController {
      * 根据公司ID获取联系人列表
      */
     @GetMapping("/company/{companyId}")
-    public ResponseEntity<List<ContactDTO>> getContactsByCompany(@PathVariable Long companyId) {
-        return ResponseEntity.ok(contactService.getContactsByCompanyId(companyId));
+    public ResponseEntity<ApiResponse<List<ContactDTO>>> getContactsByCompany(@PathVariable Long companyId) {
+        return ResponseEntity.ok(ApiResponse.ok(contactService.getContactsByCompanyId(companyId)));
     }
 
     /**
@@ -94,7 +95,7 @@ public class ContactController {
      * 获取所有活跃的联系人
      */
     @GetMapping("/active")
-    public ResponseEntity<List<ContactDTO>> getAllActiveContacts() {
-        return ResponseEntity.ok(contactService.getAllActiveContacts());
+    public ResponseEntity<ApiResponse<List<ContactDTO>>> getAllActiveContacts() {
+        return ResponseEntity.ok(ApiResponse.ok(contactService.getAllActiveContacts()));
     }
 }
