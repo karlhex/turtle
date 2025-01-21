@@ -6,9 +6,9 @@ import com.fwai.turtle.dto.SignupReq;
 import com.fwai.turtle.dto.RefreshTokenRequest;
 
 public interface AuthService {
-  public abstract SigninAns signin(SigninReq signinReq);
-
-  public SigninAns signup(SignupReq signinReq);
-  
-  public SigninAns refreshToken(RefreshTokenRequest refreshTokenRequest);
+    SigninAns signin(SigninReq signinReq);
+    SigninAns signup(SignupReq signinReq);
+    SigninAns refreshToken(RefreshTokenRequest refreshTokenRequest);
+    void logout(String accessToken);
+    void logoutAll(String username);
 }

@@ -6,26 +6,22 @@ import { Router } from '@angular/router';
 import { TokenRefreshService } from './token-refresh.service';
 import { TokenStorageService } from './token-storage.service';
 import { environment } from '../../environments/environment';
+import { ApiResponse } from '@app/models/api.model';
+import { TokenPair } from '@app/models/token.model';
 
 export interface SigninRequest {
   username: string;
   password: string;
 }
 
-export interface ApiResponse<T> {
-  code: number;
-  message?: string;
-  data: T;
-}
-
 export interface SigninData {
   id: number;
-  token: string;
+  tokenPair: TokenPair;
   employeeId?: number;
   employeeName?: string;
   employeeDepartment?: string;
   employeePosition?: string;
-  message?: string;
+  isSystemUser?: boolean;  
 }
 
 export type SigninResponse = ApiResponse<SigninData>;
@@ -44,18 +40,24 @@ export class AuthService {
     private tokenStorage: TokenStorageService
   ) {
     // Check if user is already logged in
-    const token = this.tokenStorage.getToken();
+    const tokenPair = this.tokenStorage.getTokenPair();
     const userId = this.tokenStorage.getUserId();
-    if (token && userId) {
+    if (tokenPair && userId) {
       this.userSubject.next({
         code: 200,
         data: {
           id: parseInt(userId),
-          token
-        }
+          tokenPair: tokenPair,
+          employeeId: 0,
+          employeeName: '',
+          employeeDepartment: '',
+          employeePosition: '',
+          isSystemUser: false
+        },
+        message: ''
       });
       // Start token refresh timer if user is logged in
-      this.tokenRefreshService.startRefreshTimer();
+      // this.tokenRefreshService.startRefreshTimer();
     }
   }
 
@@ -66,13 +68,13 @@ export class AuthService {
         tap(response => {
           console.log('Server response:', response);
 
-          if (response && response.code === 200 && response.data && response.data.token) {
+          if (response && response.code === 200 && response.data && response.data.tokenPair) {
             // Store token and user info
-            this.tokenStorage.setToken(response.data.token);
+            this.tokenStorage.setTokenPair(response.data.tokenPair);
             this.tokenStorage.setUserId(response.data.id.toString());
             this.userSubject.next(response);
             // Start token refresh timer
-            this.tokenRefreshService.startRefreshTimer();           
+            // this.tokenRefreshService.startRefreshTimer();           
             // Navigate based on employee status
             if (response.data.employeeId) {
               this.router.navigate(['/dashboard']);

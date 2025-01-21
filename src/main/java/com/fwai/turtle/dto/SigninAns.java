@@ -19,4 +19,6 @@ public class SigninAns {
   private String employeePosition;
   private Boolean isSystemUser;
   private Set<String> roles;
+
+  TokenPair tokenPair;
 }

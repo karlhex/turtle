@@ -9,6 +9,8 @@ import java.util.stream.Collectors;
 
 import com.fwai.turtle.common.ApiResponse;
 
+import io.jsonwebtoken.ExpiredJwtException;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -41,5 +43,9 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AuthenticationException.class)
     public ApiResponse<Void> handleAuthenticationException(AuthenticationException ex) {
         return ApiResponse.error(401, ex.getMessage());
+    }
+    @ExceptionHandler(ExpiredJwtException.class)
+    public ApiResponse<Void> handleExpiredJwtException(ExpiredJwtException ex) {
+        return ApiResponse.error(401, "Token expired");
     }
 }

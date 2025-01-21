@@ -45,7 +45,7 @@ export class LoginComponent implements OnInit {
         next: (response) => {
           this.loading = false;
           console.log('Login response:', response);
-          if (!response || !response.data || !response.data.token) {
+          if (!response || !response.data || !response.data.tokenPair) {
             this.error = 'Invalid response from server';
             console.error('Invalid response:', response);
           }

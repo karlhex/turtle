@@ -3,12 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, Subscription, timer } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { TokenStorageService } from './token-storage.service';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TokenRefreshService implements OnDestroy {
-  private readonly REFRESH_URL = 'http://localhost:8080/api/auth/refresh';
+  private readonly REFRESH_URL = `${environment.apiUrl}/auth/refresh`;
   private refreshSubscription?: Subscription;
   // 设置刷新间隔为token过期时间的3/4
   private readonly REFRESH_INTERVAL = 15 * 60 * 1000; // 45分钟，假设token有效期为1小时
@@ -42,13 +43,13 @@ export class TokenRefreshService implements OnDestroy {
   }
 
   refreshToken(): Observable<any> {
-    const currentToken = this.tokenStorage.getToken();
-    return this.http.post(this.REFRESH_URL, { token: currentToken })
+    const refreshToken = this.tokenStorage.getRefreshToken();
+    return this.http.post(this.REFRESH_URL, { token: refreshToken })
       .pipe(
         tap((response: any) => {
-          if (response && response.data && response.data.token) {
+          if (response && response.data && response.data.tokenPair) {
             // 更新token
-            this.tokenStorage.setToken(response.data.token);
+            this.tokenStorage.setTokenPair(response.data.tokenPair);
           } else {
             throw new Error('Invalid token response');
           }

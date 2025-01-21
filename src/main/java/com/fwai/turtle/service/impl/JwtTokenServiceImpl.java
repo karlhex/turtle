@@ -1,179 +1,190 @@
 package com.fwai.turtle.service.impl;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
+import com.fwai.turtle.dto.TokenPair;
 import com.fwai.turtle.persistence.entity.Role;
+import com.fwai.turtle.service.TokenAuditService;
+import com.fwai.turtle.service.TokenBlacklistService;
 import com.fwai.turtle.service.interfaces.JwtTokenService;
-
-import javax.crypto.SecretKey;
-import java.util.function.Function;
-import java.util.HashSet;
-
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import lombok.NoArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import javax.crypto.SecretKey;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
-import java.util.Date;
-import java.util.Set;
-
-// implement JwtTokenService 
-@Slf4j
-@NoArgsConstructor
-@Component
+@Service
 public class JwtTokenServiceImpl implements JwtTokenService {
-
     @Value("${token.signing.issuer}")
     private String jwtIssuer;
 
     @Value("${token.signing.secretKey}")
     private String secretKey;
 
-    @Value("${token.signing.expiration}")
-    private long jwtExpiration;
+    @Value("${token.access.expiration:900}") // 默认15分钟
+    private long accessTokenExpiration;
 
-    public String createToken(String username, Set<Role> roles) {
-        log.info(" user {} secretKey {} expiration {} roles {}", username, secretKey, jwtExpiration, roles);
+    @Value("${token.refresh.expiration:604800}") // 默认7天
+    private long refreshTokenExpiration;
 
-        if (username == null || username.trim().isEmpty()) {
-            throw new IllegalArgumentException("用户名不能为空");
-        }
+    private final TokenBlacklistService blacklistService;
+    private final TokenAuditService auditService;
 
-        long currentTimeMillis = System.currentTimeMillis();
-        Date issuedAt = new Date(currentTimeMillis);
-        Date expiration = new Date(currentTimeMillis + jwtExpiration * 60 * 24);
-
-        // Convert roles to a list of role names
-        Set<String> roleNames = roles.stream()
-                .map(role -> role.getName())
-                .collect(java.util.stream.Collectors.toSet());
-
-        try {
-            return Jwts.builder()
-                    .subject(username)
-                    .claim("roles", String.join(",", roleNames))
-                    .issuedAt(issuedAt)
-                    .expiration(expiration)
-                    .issuer(jwtIssuer)
-                    .signWith(getSecetKey()).compact();
-        } catch (Exception e) {
-            log.error("Failed to create token", e);
-            throw new RuntimeException("token生成失败");
-        }
+    public JwtTokenServiceImpl(TokenBlacklistService blacklistService, TokenAuditService auditService) {
+        this.blacklistService = blacklistService;
+        this.auditService = auditService;
     }
 
-    /**
-     * 从TOKEN中获取用户名
-     * 
-     * @param token
-     * @return 用户名
-     */
+    @Override
+    public TokenPair createTokenPair(String username, Set<Role> roles) {
+        String tokenId = UUID.randomUUID().toString();
+        String deviceId = UUID.randomUUID().toString();
+
+        String accessToken = createToken(username, roles, "ACCESS", tokenId, deviceId, accessTokenExpiration);
+        String refreshToken = createToken(username, roles, "REFRESH", tokenId, deviceId, refreshTokenExpiration);
+
+        auditService.logTokenEvent(username, tokenId, "TOKEN_CREATED");
+
+        return new TokenPair(
+            accessToken,
+            refreshToken,
+            System.currentTimeMillis() + accessTokenExpiration * 1000,
+            System.currentTimeMillis() + refreshTokenExpiration * 1000
+        );
+    }
+
+    private String createToken(String username, Set<Role> roles, String tokenType, 
+                             String tokenId, String deviceId, long expiration) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("roles", roles.stream().map(Role::getName).collect(Collectors.toList()));
+        claims.put("tokenType", tokenType);
+        claims.put("tokenId", tokenId);
+        claims.put("deviceId", deviceId);
+
+        return Jwts.builder()
+            .claims(claims)
+            .subject(username)
+            .issuer(jwtIssuer)
+            .issuedAt(new Date())
+            .expiration(new Date(System.currentTimeMillis() + expiration * 1000))
+            .signWith(getSecretKey())
+            .compact();
+    }
+
+    @Override
     public String getUsernameFromToken(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
-    /**
-     * 判断token是否过期
-     * 
-     * @param token
-     * @return true：过期
-     */
+    @Override
+    public boolean validateToken(String token) {
+        if (blacklistService.isTokenBlacklisted(token)) {
+            return false;
+        }
+        try {
+            Jwts.parser()
+                .verifyWith(getSecretKey())
+                .build()
+                .parseSignedClaims(token);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @Override
     public boolean isTokenExpired(String token) {
-        return extractExpiration(token).before(new Date());
+        try {
+            return extractExpiration(token).before(new Date());
+        } catch (ExpiredJwtException e) {
+            return true;
+        } catch (Exception e) {
+            return true;
+        }
     }
 
-    /**
-     * 刷新token
-     * 
-     * @param token
-     * @return 新的token
-     */
-    public String refreshToken(String token) {
-        String username = getUsernameFromToken(token);
-        Set<Role> roles = getRolesFromToken(token);
-        return createToken(username, roles);
-    }
-
-    /**
-     * 从token中获取角色
-     * 
-     * @param token
-     * @return 角色集合
-     */
-    public Set<Role> getRolesFromToken(String token) {
-        final Claims claims = extrClaims(token);
-        String roleString = claims.get("roles", String.class);
-        String[] roles = roleString.split(",");
-        Set<Role> rolesSet = new HashSet<Role>();
-
-        for (int i = 0; i < roles.length; i++) {
-
-            rolesSet.add(new Role(roles[i].trim()));
+    @Override
+    public TokenPair refreshTokenPair(String refreshToken) {
+        if (!isRefreshToken(refreshToken) || !validateToken(refreshToken)) {
+            throw new IllegalArgumentException("Invalid refresh token");
         }
 
-        return rolesSet;
+        String username = getUsernameFromToken(refreshToken);
+        Set<Role> roles = getRolesFromToken(refreshToken);
+        String oldTokenId = extractClaim(refreshToken, claims -> claims.get("tokenId", String.class));
+
+        // 创建新的令牌对
+        TokenPair newTokenPair = createTokenPair(username, roles);
+
+        // 将旧令牌加入黑名单
+        revokeToken(refreshToken);
+        
+        auditService.logTokenEvent(username, oldTokenId, "TOKEN_REFRESHED");
+
+        return newTokenPair;
     }
 
-    /**
-     * 验证token
-     * 
-     * @param token
-     * @return true：验证通过
-     */
-    public boolean validateToken(String token) {
-        return !isTokenExpired(token);
+    @Override
+    public Set<Role> getRolesFromToken(String token) {
+        Claims claims = extractAllClaims(token);
+        @SuppressWarnings("unchecked")
+        List<String> roleNames = (List<String>) claims.get("roles", List.class);
+        return roleNames.stream()
+            .map(name -> {
+                Role role = new Role();
+                role.setName(name);
+                return role;
+            })
+            .collect(Collectors.toSet());
     }
 
-    /**
-     * 从token中获取过期时间
-     * 
-     * @param token
-     * @return 过期时间
-     */
-    private Date extractExpiration(String token) {
+    @Override
+    public void revokeToken(String token) {
+        if (!validateToken(token)) {
+            throw new IllegalArgumentException("Invalid token");
+        }
+
+        String username = getUsernameFromToken(token);
+        String tokenId = extractClaim(token, claims -> claims.get("tokenId", String.class));
+        Date expiration = extractExpiration(token);
+        long expirationSeconds = (expiration.getTime() - System.currentTimeMillis()) / 1000;
+
+        blacklistService.blacklistToken(token, expirationSeconds);
+        auditService.logTokenEvent(username, tokenId, "TOKEN_REVOKED");
+    }
+
+    @Override
+    public boolean isAccessToken(String token) {
+        return "ACCESS".equals(extractClaim(token, claims -> claims.get("tokenType", String.class)));
+    }
+
+    @Override
+    public boolean isRefreshToken(String token) {
+        return "REFRESH".equals(extractClaim(token, claims -> claims.get("tokenType", String.class)));
+    }
+
+    private Date extractExpiration(String token) throws ExpiredJwtException {
         return extractClaim(token, Claims::getExpiration);
     }
 
-    /**
-     * 获取用于加密或验证的密钥。
-     * 
-     * 此方法从预定义的密钥字符串中解码出密钥字节数组，并基于这些字节生成一个HMAC-SHA密钥。
-     * HMAC-SHA是一种消息认证码算法，用于验证数据的完整性和真实性。
-     * 
-     * @return SecretKey 对象，代表生成的HMAC-SHA密钥。
-     */
-    private SecretKey getSecetKey() {
-        // 使用BASE64解码密钥字符串，得到原始的密钥字节数组。
-        byte[] secretKeyBytes = Decoders.BASE64.decode(secretKey);
-
-        // 使用字节数组生成一个HMAC-SHA密钥，并返回。
-        return Keys.hmacShaKeyFor(secretKeyBytes);
-    }
-
-    private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = extrClaims(token);
+    private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) throws ExpiredJwtException {
+        final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
 
-    /**
-     * 从JWT令牌中提取额外的声明。
-     * 这个方法解析JWT令牌，并返回其中的载荷部分，载荷中通常包含用户信息和其他自定义声明。
-     *
-     * @param token JWT令牌，包含待提取的声明。
-     * @return 解析后的Claims对象，其中包含JWT的载荷部分。
-     */
-    private Claims extrClaims(String token) {
-        // 使用JJWT库的parser方法开始解析JWT令牌
-        return Jwts
-                // 配置解析器使用预定义的秘钥进行验证
-                .parser()
-                .verifyWith(getSecetKey())
-                .build()
-                // 使用解析器解析给定的JWT令牌并获取载荷部分
-                .parseSignedClaims(token)
-                .getPayload();
+    private Claims extractAllClaims(String token) throws ExpiredJwtException {
+        return Jwts.parser()
+            .verifyWith(getSecretKey())
+            .build()
+            .parseSignedClaims(token)
+            .getPayload();
+    }
+
+    private SecretKey getSecretKey() {
+        byte[] keyBytes = Base64.getDecoder().decode(secretKey);
+        return Keys.hmacShaKeyFor(keyBytes);
     }
 }

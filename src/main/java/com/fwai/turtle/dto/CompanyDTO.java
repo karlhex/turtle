@@ -23,6 +23,7 @@ public class CompanyDTO {
     private Boolean active;         // 是否启用
     private String remarks;         // 备注
     private CompanyType type;       // 公司类型
+    private List<ContactDTO> contacts;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }
