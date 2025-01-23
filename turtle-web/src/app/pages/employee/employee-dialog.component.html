@@ -109,10 +109,8 @@
             <mat-form-field>
               <mat-label>{{ 'employee.form.personal.idType' | translate }}</mat-label>
               <mat-select formControlName="idType">
-                <mat-option value="idCard">{{ 'employee.form.personal.idTypeCell.idCard' | translate }}</mat-option>
-                <mat-option value="passport">{{ 'employee.form.personal.idTypeCell.passport' | translate }}</mat-option>
-                <mat-option value="other">{{ 'employee.form.personal.idTypeCell.other' | translate }}</mat-option>
-              </mat-select>
+                <mat-option *ngFor="let type of idtypes" [value]="type">{{ 'employee.form.personal.idType.' + type | translate }}</mat-option>
+             </mat-select>
             </mat-form-field>
 
             <mat-form-field>
@@ -147,6 +145,16 @@
               <mat-datepicker-toggle matSuffix [for]="contractStartDatePicker"></mat-datepicker-toggle>
               <mat-datepicker #contractStartDatePicker></mat-datepicker>
             </mat-form-field>
+
+            <!-- status -->
+            <mat-form-field>
+              <mat-label>{{ 'employee.form.status' | translate }}</mat-label>
+              <mat-select formControlName="status">
+                <mat-option *ngFor="let status of employeeStatuses" [value]="status">
+                  {{ 'employee.form.status.' + status.toLowerCase() | translate }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
           </div>
 
           <!-- Emergency Contact -->
@@ -160,16 +168,6 @@
             <mat-form-field>
               <mat-label>{{ 'employee.form.emergency.phone' | translate }}</mat-label>
               <input matInput formControlName="emergencyContactPhone">
-            </mat-form-field>
-
-            <mat-form-field>
-              <mat-label>{{ 'employee.form.emergency.email' | translate }}</mat-label>
-              <input matInput formControlName="emergencyContactEmail">
-            </mat-form-field>
-
-            <mat-form-field>
-              <mat-label>{{ 'employee.form.emergency.address' | translate }}</mat-label>
-              <input matInput formControlName="emergencyContactAddress">
             </mat-form-field>
           </div>
 
@@ -188,7 +186,7 @@
 
   <mat-tab [label]="'employee.tabs.education' | translate">
     <app-education-list
-      [employeeId]="data.employee.id ?? 0"
+      [employeeId]="data.employee?.id ?? 0"
       [educations]="educations"
       [editMode]="!isApplication"
       (educationEdited)="onEducationEdit($event)">
@@ -197,7 +195,7 @@
 
   <mat-tab [label]="'employee.tabs.jobHistory' | translate">
     <app-job-history-list
-      [employeeId]="data.employee.id ?? 0"
+      [employeeId]="data.employee?.id ?? 0"
       [jobHistories]="jobHistories"
       [editMode]="!isApplication"
       (jobHistoryEdited)="onJobHistoryEdit($event)">

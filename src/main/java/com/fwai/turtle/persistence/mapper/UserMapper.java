@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
 import com.fwai.turtle.dto.UserDTO;
+import com.fwai.turtle.persistence.entity.Employee;
 import com.fwai.turtle.persistence.entity.Role;
 import com.fwai.turtle.persistence.entity.User;
 import com.fwai.turtle.persistence.repository.RoleRepository;
@@ -24,6 +25,10 @@ public class UserMapper {
             return null;
         }
 
+        Employee employee = user.getEmployee();
+        String employeeName = employee == null ? null : employee.getName();
+        Long employeeId = employee == null ? null : employee.getId();
+        
         return UserDTO.builder()
                 .id(user.getId())
                 .username(user.getUsername())
@@ -31,6 +36,8 @@ public class UserMapper {
                 .roleNames(user.getRoles().stream()
                         .map(role -> role.getName().replace("ROLE_", ""))
                         .collect(Collectors.toSet()))
+                .employeeName(employeeName)
+                .employeeId(employeeId)
                 .createdAt(user.getCreatedAt())
                 .updatedAt(user.getUpdatedAt())
                 .build();

@@ -3,7 +3,9 @@ export interface User {
     username: string;
     email: string;
     roles?: Set<string>;
-    employee?: number;  // Reference to Employee ID
+    employeeId?: number;  // Reference to Employee ID
+    employeeName?: string;  // Reference to Employee name
+    employeeDepartment?: string;  // Reference to Employee department
     createdAt?: Date;
     updatedAt?: Date;
 }

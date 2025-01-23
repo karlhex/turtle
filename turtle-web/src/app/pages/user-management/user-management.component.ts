@@ -33,7 +33,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class UserManagementComponent implements OnInit, AfterViewInit {
   dataSource: MatTableDataSource<User>;
   isLoading = false;
-  displayedColumns: string[] = ['id', 'username', 'email', 'roles', 'actions'];
+  displayedColumns: string[] = ['id', 'username', 'email', 'roles', 'employeeName', 'actions'];
   totalElements = 0;
   pageSize = 10;
   searchQuery = '';

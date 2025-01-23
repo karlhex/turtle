@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { tap, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { TokenRefreshService } from './token-refresh.service';
 import { TokenStorageService } from './token-storage.service';
@@ -32,6 +32,12 @@ export type SigninResponse = ApiResponse<SigninData>;
 export class AuthService {
   private readonly API_URL = `${environment.apiUrl}/auth`;
   private userSubject = new BehaviorSubject<SigninResponse | null>(null);
+  public authState$ = this.userSubject.asObservable().pipe(
+    map(user => ({
+      isAuthenticated: !!user,
+      user
+    }))
+  );
   
   constructor(
     private http: HttpClient,
@@ -62,16 +68,13 @@ export class AuthService {
   }
 
   login(credentials: SigninRequest): Observable<SigninResponse> {
-    console.log('signin url', `${this.API_URL}/signin`);
     return this.http.post<SigninResponse>(`${this.API_URL}/signin`, credentials)
       .pipe(
-        tap(response => {
-          console.log('Server response:', response);
-
-          if (response && response.code === 200 && response.data && response.data.tokenPair) {
-            // Store token and user info
-            this.tokenStorage.setTokenPair(response.data.tokenPair);
-            this.tokenStorage.setUserId(response.data.id.toString());
+        map(response => {
+          if (response.code === 200 && response.data) {
+            const { tokenPair, ...userInfo } = response.data;
+            this.tokenStorage.setTokenPair(tokenPair);
+            this.tokenStorage.setUserInfo(userInfo);
             this.userSubject.next(response);
             // Start token refresh timer
             // this.tokenRefreshService.startRefreshTimer();           
@@ -81,18 +84,18 @@ export class AuthService {
             } else {
               this.router.navigate(['/guest-dashboard']);
             }
-          } else {
-            console.error('Invalid response format:', response);
-            throw new Error('Invalid response from server');
+            return response;
           }
+          throw new Error(response.message || 'Login failed');
         })
       );
   }
 
   logout(): void {
-    // Stop token refresh timer
-    this.tokenRefreshService.stopRefreshTimer();
-    // Clear storage
+    const tokenPair = this.tokenStorage.getTokenPair();
+    if (tokenPair) {
+      this.http.post<any>(`${this.API_URL}/logout`, { accessToken: tokenPair.accessToken }).subscribe();
+    }
     this.tokenStorage.clear();
     this.userSubject.next(null);
     this.router.navigate(['/login']);

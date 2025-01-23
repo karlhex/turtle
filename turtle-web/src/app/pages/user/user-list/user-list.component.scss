@@ -1,0 +1,75 @@
+.user-list-container {
+  padding: 20px;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+
+    h2 {
+      margin: 0;
+      font-weight: 500;
+    }
+
+    button {
+      mat-icon {
+        margin-right: 8px;
+      }
+    }
+  }
+
+  mat-form-field {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .table-container {
+    position: relative;
+    min-height: 200px;
+    max-height: 600px;
+    overflow: auto;
+
+    table {
+      width: 100%;
+
+      .mat-column-actions {
+        width: 80px;
+        text-align: center;
+      }
+
+      .mat-column-status {
+        width: 200px;
+      }
+
+      .mat-column-id {
+        width: 80px;
+      }
+
+      td.mat-cell {
+        padding: 8px;
+      }
+    }
+  }
+
+  .mat-chip-list {
+    display: inline-block;
+  }
+
+  .mat-chip {
+    font-size: 12px;
+    min-height: 24px;
+    padding: 4px 8px;
+  }
+
+  .no-data-row {
+    text-align: center;
+    padding: 20px;
+    font-style: italic;
+    color: rgba(0, 0, 0, 0.54);
+  }
+
+  mat-paginator {
+    margin-top: 20px;
+  }
+}

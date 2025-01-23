@@ -55,8 +55,12 @@ export class EmployeeListComponent implements OnInit {
       this.employeeService.search(this.searchQuery, page, this.pageSize)
         .subscribe({
           next: (response) => {
-            this.dataSource.data = response.data.content;
-            this.totalElements = response.data.totalElements;
+            if (response.code === 200) {
+              this.dataSource.data = response.data.content;
+              this.totalElements = response.data.totalElements;
+            }else {
+              this.snackBar.open(response.message, '关闭', { duration: 3000 });
+            }
             this.isLoading = false;
           },
           error: (error) => {
@@ -69,8 +73,12 @@ export class EmployeeListComponent implements OnInit {
       this.employeeService.getEmployees(page, this.pageSize, sort?.sortBy ? { sortBy: sort.sortBy, direction: sort.direction } : undefined)
         .subscribe({
           next: (response) => {
-            this.dataSource.data = response.data.content;
-            this.totalElements = response.data.totalElements;
+            if (response.code === 200) {
+              this.dataSource.data = response.data.content;
+              this.totalElements = response.data.totalElements;
+            }else {
+              this.snackBar.open(response.message, '关闭', { duration: 3000 });
+            }
             this.isLoading = false;
           },
           error: (error) => {

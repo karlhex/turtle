@@ -15,6 +15,8 @@ import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { EmployeeContractType } from '../../types/employee-contract-type.enum';
 import { Gender } from '../../types/gender.enum';
+import { IdType } from '../../types/id-type.enum';
+import { EmployeeStatus } from '../../models/employee.model';
 
 @Component({
   selector: 'app-employee-dialog',
@@ -30,6 +32,8 @@ export class EmployeeDialogComponent implements OnInit {
   departments: Department[] = [];
   contractTypes = Object.values(EmployeeContractType);  
   genders = Object.values(Gender);  
+  idtypes = Object.values(IdType);
+  employeeStatuses = Object.values(EmployeeStatus);
 
   // Education tab
   educations: EmployeeEducation[] = [];
@@ -53,8 +57,8 @@ export class EmployeeDialogComponent implements OnInit {
     this.isEdit = data.mode === 'edit';
     this.isApplication = data.mode === 'application';
     this.initForm();
-    this.educations = data.employee.educations || [];
-    this.jobHistories = data.employee.jobHistories || [];
+    this.educations = data.employee?.educations || [];
+    this.jobHistories = data.employee?.jobHistories || [];
   }
 
   ngOnInit(): void {
@@ -110,8 +114,7 @@ export class EmployeeDialogComponent implements OnInit {
       idNumber: ['', Validators.required],
       emergencyContactName: [''],
       emergencyContactPhone: [''],
-      emergencyContactEmail: [''],
-      emergencyContactAddress: [''],
+      status: ['APPLICATION'],
       remarks: ['']
     });
 

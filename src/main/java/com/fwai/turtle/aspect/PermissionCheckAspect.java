@@ -1,13 +1,14 @@
 package com.fwai.turtle.aspect;
 
 import com.fwai.turtle.annotation.RequirePermission;
+import com.fwai.turtle.common.ApiResponse;
 import com.fwai.turtle.persistence.entity.Role;
 import com.fwai.turtle.service.interfaces.RolePermissionService;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -26,7 +27,7 @@ public class PermissionCheckAspect {
     public Object checkPermission(ProceedingJoinPoint joinPoint, RequirePermission requirePermission) throws Throwable {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated()) {
-            return ResponseEntity.status(401).body("User not authenticated");
+            return ApiResponse.error(HttpStatus.UNAUTHORIZED.value(), "用户未认证");
         }
 
         // Convert authorities to roles
@@ -40,7 +41,7 @@ public class PermissionCheckAspect {
 
         String transactionPath = requirePermission.value();
         if (!rolePermissionService.hasPermission(roles, transactionPath)) {
-            return ResponseEntity.status(403).body("User does not have permission to access: " + transactionPath);
+            return ApiResponse.error(HttpStatus.FORBIDDEN.value(), "没有权限访问: " + transactionPath);
         }
 
         // 如果权限检查通过，继续执行原方法

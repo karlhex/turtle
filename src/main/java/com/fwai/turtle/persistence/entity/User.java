@@ -46,6 +46,28 @@ public class User {
     @JsonIgnore
     private String password;
 
+    @Column(name = "password_expired", nullable = false)
+    @Builder.Default
+    private boolean passwordExpired = true;
+
+    @Column(name = "password_updated_at")
+    private LocalDateTime passwordUpdatedAt;
+
+    @Column(name = "password_expiry_days")
+    @Builder.Default
+    private Integer passwordExpiryDays = 90;
+
+    @Column(name = "failed_login_attempts")
+    @Builder.Default
+    private Integer failedLoginAttempts = 0;
+
+    @Column(name = "account_locked")
+    @Builder.Default
+    private boolean accountLocked = false;
+
+    @Column(name = "account_locked_until")
+    private LocalDateTime accountLockedUntil;
+
     @Column(unique = true)
     private String email;
 
@@ -55,7 +77,8 @@ public class User {
         joinColumns = @JoinColumn(name = "user_id"),
         inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private Set<Role> roles;
+    @Builder.Default
+    private Set<Role> roles = new HashSet<>();
 
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"user","educations", "attendances", "leaves", "jobHistories"})
@@ -70,17 +93,45 @@ public class User {
     private LocalDateTime updatedAt;
 
     public void addRole(Role role) {
-        if (roles == null) {
-            roles = new HashSet<>();
-        }
         roles.add(role);
         role.getUsers().add(this);
     }
 
     public void removeRole(Role role) {
-        if (roles != null) {
-            roles.remove(role);
-            role.getUsers().remove(this);
+        roles.remove(role);
+        role.getUsers().remove(this);
+    }
+
+    public void incrementFailedLoginAttempts() {
+        this.failedLoginAttempts++;
+        if (this.failedLoginAttempts >= 5) {
+            this.accountLocked = true;
+            this.accountLockedUntil = LocalDateTime.now().plusMinutes(30);
         }
+    }
+
+    public void resetFailedLoginAttempts() {
+        this.failedLoginAttempts = 0;
+        this.accountLocked = false;
+        this.accountLockedUntil = null;
+    }
+
+    public boolean isPasswordExpired() {
+        if (this.passwordExpired) {
+            return true;
+        }
+        
+        if (this.passwordUpdatedAt == null || this.passwordExpiryDays == null) {
+            return false;
+        }
+
+        LocalDateTime expiryDate = this.passwordUpdatedAt.plusDays(this.passwordExpiryDays);
+        return LocalDateTime.now().isAfter(expiryDate);
+    }
+
+    public void updatePassword(String newPassword) {
+        this.password = newPassword;
+        this.passwordExpired = false;
+        this.passwordUpdatedAt = LocalDateTime.now();
     }
 }

@@ -13,6 +13,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.fwai.turtle.persistence.entity.Employee;
+import com.fwai.turtle.persistence.entity.Department;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -52,13 +54,16 @@ public class AuthServiceImpl implements AuthService {
         User user = userOpt.get();
         TokenPair tokenPair = jwtTokenService.createTokenPair(user.getUsername(), user.getRoles());
 
+        Employee employee = user.getEmployee();
+        Department department = employee == null ? null : employee.getDepartment();
+
         return SigninAns.builder()
                 .id(user.getId())
                 .tokenPair(tokenPair)
-                .employeeId(user.getEmployee().getId())
-                .employeeName(user.getEmployee().getName())
-                .employeeDepartment(user.getEmployee().getDepartment().getName())
-                .employeePosition(user.getEmployee().getPosition())
+                .employeeId(employee == null ? null : employee.getId())
+                .employeeName(employee == null ? null : employee.getName())
+                .employeeDepartment(department == null ? null : department.getName())
+                .employeePosition(employee == null ? null : employee.getPosition())
                 .isSystemUser(user.getRoles().stream().anyMatch(role -> role.getName().equals("ROLE_SYSTEM_USER")))
                 .build();
     }
@@ -79,7 +84,7 @@ public class AuthServiceImpl implements AuthService {
 
         // 设置默认角色
         Set<Role> roles = new HashSet<>();
-        Role userRole = roleRepository.findByName("ROLE_USER")
+        Role userRole = roleRepository.findByName("ROLE_GUEST")
                 .orElseThrow(() -> new RuntimeException("Default role not found"));
         roles.add(userRole);
         user.setRoles(roles);
@@ -108,13 +113,17 @@ public class AuthServiceImpl implements AuthService {
         
         User user = userOpt.get();
 
+        Employee employee = user.getEmployee();
+
+        Department department = employee == null ? null : employee.getDepartment();
+
         return SigninAns.builder()
                 .id(user.getId())
                 .tokenPair(tokenPair)
-                .employeeId(user.getEmployee().getId())
-                .employeeName(user.getEmployee().getName())
-                .employeeDepartment(user.getEmployee().getDepartment().getName())
-                .employeePosition(user.getEmployee().getPosition())
+                .employeeId(employee == null ? null : employee.getId())
+                .employeeName(employee == null ? null : employee.getName())
+                .employeeDepartment(department == null ? null : department.getName())
+                .employeePosition(employee == null ? null : employee.getPosition())
                 .isSystemUser(user.getRoles().stream().anyMatch(role -> role.getName().equals("ROLE_SYSTEM_USER")))
                 .build();
     }

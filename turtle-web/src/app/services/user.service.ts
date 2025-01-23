@@ -20,6 +20,9 @@ export interface User {
   roleNames: string[];
   createdAt?: Date;
   updatedAt?: Date;
+  passwordExpired?: boolean;
+  accountLocked?: boolean;
+  accountLockedUntil?: Date;
 }
 
 export interface CreateUserDto {
@@ -71,7 +74,23 @@ export class UserService {
     return this.http.get<ApiResponse<any>>(url);
   }
 
-  changeUserPassword(changePasswordRequest: ChangePasswordRequest): Observable<ApiResponse<string>> {
-    return this.http.post<ApiResponse<string>>(`${this.API_URL}/change-password`, changePasswordRequest);
+  changeUserPassword(changePasswordRequest: ChangePasswordRequest): Observable<ApiResponse<void>> {
+    return this.http.post<ApiResponse<void>>(`${this.API_URL}/change-password`, changePasswordRequest);
+  }
+
+  resetPassword(userId: number): Observable<ApiResponse<string>> {
+    return this.http.post<ApiResponse<string>>(`${this.API_URL}/${userId}/reset-password`, {});
+  }
+
+  forcePasswordChange(userId: number): Observable<ApiResponse<void>> {
+    return this.http.post<ApiResponse<void>>(`${this.API_URL}/${userId}/force-password-change`, {});
+  }
+
+  isPasswordExpired(userId: number): Observable<ApiResponse<boolean>> {
+    return this.http.get<ApiResponse<boolean>>(`${this.API_URL}/${userId}/password-expired`);
+  }
+
+  isAccountLocked(username: string): Observable<ApiResponse<boolean>> {
+    return this.http.get<ApiResponse<boolean>>(`${this.API_URL}/account-locked/${username}`);
   }
 }

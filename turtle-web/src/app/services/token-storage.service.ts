@@ -12,8 +12,10 @@ export class TokenStorageService {
   private readonly EXPIRES_IN_REFRESH_KEY = 'expires_in_refresh';
   private readonly USER_ID_KEY = 'user_id';
   private readonly USERNAME_KEY = 'username';
+  private readonly USER_INFO_KEY = 'user_info';
 
   private tokenSubject = new BehaviorSubject<string | null>(this.getToken());
+  private userInfoSubject = new BehaviorSubject<any>(this.getUserInfo());
 
   constructor() {}
 
@@ -68,14 +70,28 @@ export class TokenStorageService {
     return localStorage.getItem(this.USERNAME_KEY);
   }
 
+  setUserInfo(userInfo: any): void {
+    if (userInfo) {
+      localStorage.setItem(this.USER_INFO_KEY, JSON.stringify(userInfo));
+    } else {
+      localStorage.removeItem(this.USER_INFO_KEY);
+    }
+    this.userInfoSubject.next(userInfo);
+  }
+
+  getUserInfo(): any {
+    const userInfo = localStorage.getItem(this.USER_INFO_KEY);
+    return userInfo ? JSON.parse(userInfo) : null;
+  }
+
+  getUserInfoObservable(): Observable<any> {
+    return this.userInfoSubject.asObservable();
+  }
+
   clear(): void {
-    localStorage.removeItem(this.TOKEN_KEY);
-    localStorage.removeItem(this.REFRESH_TOKEN_KEY);
-    localStorage.removeItem(this.EXPIRES_IN_KEY);
-    localStorage.removeItem(this.EXPIRES_IN_REFRESH_KEY);
-    localStorage.removeItem(this.USER_ID_KEY);
-    localStorage.removeItem(this.USERNAME_KEY);
+    localStorage.clear();
     this.tokenSubject.next(null);
+    this.userInfoSubject.next(null);
   }
 
   getTokenObservable(): Observable<string | null> {

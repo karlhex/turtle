@@ -26,6 +26,7 @@ import { BaseListModule } from '../../components/base-list/base-list.module';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ActionModule } from '@app/components/action/action.module';
+import { MatChipsModule } from '@angular/material/chips';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { ActionModule } from '@app/components/action/action.module';
     MatTooltipModule,
     MatTabsModule,
     MatProgressSpinnerModule,
+    MatChipsModule,
     TranslateModule,
     BaseListModule,
     CompanyFilterSelectInputModule

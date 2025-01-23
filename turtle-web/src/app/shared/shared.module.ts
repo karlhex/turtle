@@ -6,6 +6,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { ConfirmDialogComponent } from '../components/confirmdialog/confirm-dialog.component';
 import { PaymentTotalPipe } from '../pipes/payment-total.pipe';
+import { HasPermissionDirective } from '../directives/has-permission.directive';
 
 // Material Modules
 import { MatCardModule } from '@angular/material/card';
@@ -79,7 +80,8 @@ const SHARED_MODULES = [
 @NgModule({
   declarations: [
     ConfirmDialogComponent,
-    PaymentTotalPipe
+    PaymentTotalPipe,
+    HasPermissionDirective
   ],
   imports: [
     ...SHARED_MODULES
@@ -87,7 +89,8 @@ const SHARED_MODULES = [
   exports: [
     ...SHARED_MODULES,
     ConfirmDialogComponent,
-    PaymentTotalPipe
+    PaymentTotalPipe,
+    HasPermissionDirective
   ]
 })
 export class SharedModule { }
