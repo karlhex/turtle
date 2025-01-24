@@ -6,6 +6,7 @@ import { AuthService } from './services/auth.service';
 import { filter } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { ChangePasswordDialogComponent } from './pages/user-management/change-password-dialog/change-password-dialog.component';
+import { SidebarMenuComponent } from './components/sidebar-menu/sidebar-menu.component';
 
 @Component({
   selector: 'app-root',

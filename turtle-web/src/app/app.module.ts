@@ -4,15 +4,22 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './pages/login/login.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { GuestDashboardComponent } from './pages/guest/guest-dashboard.component';
-import { SidebarMenuComponent } from './components/sidebar-menu/sidebar-menu.component';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { SidebarMenuComponent } from './components/sidebar-menu/sidebar-menu.component';
 
 // Services and Interceptors
 import { AuthInterceptor } from './interceptors/auth.interceptor';
@@ -82,8 +89,18 @@ export function HttpLoaderFactory(http: HttpClient) {
     FormsModule,
     ReactiveFormsModule,
     AppRoutingModule,
-    SharedModule,
+
+    // Material
     MatDialogModule,
+    MatIconModule,
+    MatListModule,
+    MatDividerModule,
+    MatSidenavModule,
+    MatToolbarModule,
+    MatMenuModule,
+    MatButtonModule,
+
+    // Translation
     TranslateModule.forRoot({
       defaultLanguage: 'zh',
       loader: {

@@ -13,6 +13,7 @@ export class TokenStorageService {
   private readonly USER_ID_KEY = 'user_id';
   private readonly USERNAME_KEY = 'username';
   private readonly USER_INFO_KEY = 'user_info';
+  private readonly PERMISSIONS_KEY = 'user_permissions';
 
   private tokenSubject = new BehaviorSubject<string | null>(this.getToken());
   private userInfoSubject = new BehaviorSubject<any>(this.getUserInfo());
@@ -114,4 +115,12 @@ export class TokenStorageService {
     }
   }
 
+  storePermissions(permissions: string[]): void {
+    localStorage.setItem(this.PERMISSIONS_KEY, JSON.stringify(permissions));
+  }
+
+  getStoredPermissions(): string[] | null {
+    const permissions = localStorage.getItem(this.PERMISSIONS_KEY);
+    return permissions ? JSON.parse(permissions) : null;
+  }
 }

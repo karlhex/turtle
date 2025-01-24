@@ -208,6 +208,7 @@
   <button mat-raised-button 
           color="primary" 
           type="button" 
+          *hasPermission="'hr.employee.apply'"
           [disabled]="loading || !employeeForm.valid" 
           (click)="submit()">
     <mat-progress-spinner *ngIf="loading" diameter="20" mode="indeterminate">

@@ -14,6 +14,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
+import { SharedModule } from '../../shared/shared.module';
 
 import { EmployeeListComponent } from './employee-list.component';
 import { EmployeeDialogComponent } from './employee-dialog.component';
@@ -59,7 +60,8 @@ import { MatChipsModule } from '@angular/material/chips';
     MatChipsModule,
     TranslateModule,
     BaseListModule,
-    CompanyFilterSelectInputModule
+    CompanyFilterSelectInputModule,
+    SharedModule
   ],
   exports: [
     EmployeeListComponent,

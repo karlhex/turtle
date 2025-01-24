@@ -2,38 +2,43 @@
   <ng-container *ngFor="let item of menuItems">
     <!-- Single menu item -->
     <ng-container *ngIf="!item.children">
-      <a mat-list-item [routerLink]="item.route" routerLinkActive="active">
-        <mat-icon matListItemIcon>{{item.icon}}</mat-icon>
-        <span matListItemTitle *ngIf="!isCollapsed">{{ item.title | translate }}</span>
-      </a>
-      <mat-divider *ngIf="item.divider"></mat-divider>
+      <ng-container *ngIf="checkPermission(item) | async">
+        <a mat-list-item [routerLink]="item.route" routerLinkActive="active">
+          <mat-icon matListItemIcon>{{item.icon}}</mat-icon>
+          <span matListItemTitle *ngIf="!isCollapsed">{{ item.title | translate }}</span>
+        </a>
+        <mat-divider *ngIf="item.divider"></mat-divider>
+      </ng-container>
     </ng-container>
 
     <!-- Parent menu item with children -->
     <ng-container *ngIf="item.children">
-      <div class="menu-item" 
-           (click)="toggleSubmenu(item.title, $event)"
-           [class.active]="hasActiveChild(item)"
-           [class.expanded]="isExpanded(item.title)">
-        <mat-icon class="menu-icon">{{item.icon}}</mat-icon>
-        <span class="menu-title" *ngIf="!isCollapsed">{{ item.title | translate }}</span>
-        <mat-icon class="expand-icon" *ngIf="!isCollapsed">
-          {{isExpanded(item.title) ? 'expand_less' : 'expand_more'}}
-        </mat-icon>
-      </div>
+      <ng-container *ngIf="checkParentPermission(item) | async">
+        <div class="menu-item" 
+             (click)="toggleSubmenu(item.title, $event)"
+             [class.active]="hasActiveChild(item)"
+             [class.expanded]="isExpanded(item.title)">
+          <mat-icon class="menu-icon">{{item.icon}}</mat-icon>
+          <span class="menu-title" *ngIf="!isCollapsed">{{ item.title | translate }}</span>
+          <mat-icon class="expand-icon" *ngIf="!isCollapsed">
+            {{isExpanded(item.title) ? 'expand_less' : 'expand_more'}}
+          </mat-icon>
+        </div>
 
-      <!-- Submenu items -->
-      <div class="submenu" [class.expanded]="isExpanded(item.title)" [class.collapsed]="isCollapsed">
-        <a mat-list-item 
-           *ngFor="let child of item.children"
-           [routerLink]="child.route"
-           routerLinkActive="active"
-           class="submenu-item">
-          <mat-icon matListItemIcon>{{child.icon}}</mat-icon>
-          <span matListItemTitle>{{ child.title | translate }}</span>
-        </a>
-      </div>
-      <mat-divider *ngIf="item.divider"></mat-divider>
+        <!-- Submenu items -->
+        <div class="submenu" [class.expanded]="isExpanded(item.title)" [class.collapsed]="isCollapsed">
+          <ng-container *ngFor="let child of item.children">
+            <a mat-list-item 
+               *ngIf="checkPermission(child) | async"
+               [routerLink]="child.route"
+               routerLinkActive="active"
+               class="submenu-item">
+              <mat-icon matListItemIcon>{{child.icon}}</mat-icon>
+              <span matListItemTitle>{{ child.title | translate }}</span>
+            </a>
+          </ng-container>
+        </div>
+      </ng-container>
     </ng-container>
   </ng-container>
 </mat-nav-list>

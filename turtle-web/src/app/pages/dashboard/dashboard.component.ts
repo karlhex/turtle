@@ -24,14 +24,7 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    const currentUser = this.authService.getCurrentUser();
-    if (currentUser) {
-      // You might want to decode the JWT token to get the username
-      // For now, we'll use a placeholder
-      this.username = 'User';
-    } else {
-      this.router.navigate(['/login']);
-    }
+    this.username = "USER"  
   }
 
   logout() {

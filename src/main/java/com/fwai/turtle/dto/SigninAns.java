@@ -7,18 +7,15 @@ import lombok.NoArgsConstructor;
 import java.util.Set;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
 public class SigninAns {
-  private long id;
-  private String token;
+  private Long id;
+  private TokenPair tokenPair;
   private Long employeeId;
   private String employeeName;
   private String employeeDepartment;
   private String employeePosition;
-  private Boolean isSystemUser;
-  private Set<String> roles;
-
-  TokenPair tokenPair;
+  private boolean isSystemUser;
+  private Set<String> permissions;
+  private String token;
 }

@@ -5,6 +5,7 @@ import { tap, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { TokenRefreshService } from './token-refresh.service';
 import { TokenStorageService } from './token-storage.service';
+import { PermissionService } from './permission.service';
 import { environment } from '../../environments/environment';
 import { ApiResponse } from '@app/models/api.model';
 import { TokenPair } from '@app/models/token.model';
@@ -22,6 +23,7 @@ export interface SigninData {
   employeeDepartment?: string;
   employeePosition?: string;
   isSystemUser?: boolean;  
+  permissions: any;
 }
 
 export type SigninResponse = ApiResponse<SigninData>;
@@ -42,13 +44,20 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private router: Router,
-    private tokenRefreshService: TokenRefreshService,
-    private tokenStorage: TokenStorageService
+    private tokenStorage: TokenStorageService,
+    private permissionService: PermissionService
   ) {
     // Check if user is already logged in
     const tokenPair = this.tokenStorage.getTokenPair();
     const userId = this.tokenStorage.getUserId();
+    const permissions = this.tokenStorage.getStoredPermissions();
+    
     if (tokenPair && userId) {
+      // 如果有存储的权限，先恢复它们
+      if (permissions) {
+        this.permissionService.setPermissions(permissions);
+      }
+      
       this.userSubject.next({
         code: 200,
         data: {
@@ -58,12 +67,11 @@ export class AuthService {
           employeeName: '',
           employeeDepartment: '',
           employeePosition: '',
-          isSystemUser: false
+          isSystemUser: false,
+          permissions: permissions || []
         },
         message: ''
       });
-      // Start token refresh timer if user is logged in
-      // this.tokenRefreshService.startRefreshTimer();
     }
   }
 
@@ -72,9 +80,13 @@ export class AuthService {
       .pipe(
         map(response => {
           if (response.code === 200 && response.data) {
-            const { tokenPair, ...userInfo } = response.data;
+            const { tokenPair, permissions, ...userInfo } = response.data;
             this.tokenStorage.setTokenPair(tokenPair);
             this.tokenStorage.setUserInfo(userInfo);
+            // 存储权限到 localStorage
+            console.log('permissions: ', permissions);
+            this.tokenStorage.storePermissions(permissions);
+            this.permissionService.setPermissions(permissions);
             this.userSubject.next(response);
             // Start token refresh timer
             // this.tokenRefreshService.startRefreshTimer();           
@@ -97,6 +109,7 @@ export class AuthService {
       this.http.post<any>(`${this.API_URL}/logout`, { accessToken: tokenPair.accessToken }).subscribe();
     }
     this.tokenStorage.clear();
+    this.permissionService.clearPermissions();
     this.userSubject.next(null);
     this.router.navigate(['/login']);
   }

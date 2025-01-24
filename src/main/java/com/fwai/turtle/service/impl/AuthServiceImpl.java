@@ -6,10 +6,12 @@ import com.fwai.turtle.persistence.entity.User;
 import com.fwai.turtle.persistence.repository.RoleRepository;
 import com.fwai.turtle.service.interfaces.AuthService;
 import com.fwai.turtle.service.interfaces.JwtTokenService;
+import com.fwai.turtle.service.interfaces.RolePermissionService;
 import com.fwai.turtle.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +39,9 @@ public class AuthServiceImpl implements AuthService {
     @Autowired
     private RoleRepository roleRepository;
 
+    @Autowired
+    private RolePermissionService rolePermissionService;
+
 
     @Override
     @Transactional
@@ -46,16 +51,14 @@ public class AuthServiceImpl implements AuthService {
             new UsernamePasswordAuthenticationToken(signinReq.getUsername(), signinReq.getPassword())
         );
 
-        Optional<User> userOpt = userService.findByUsername(signinReq.getUsername());
-        if (!userOpt.isPresent()) {
-            throw new IllegalArgumentException("User not found");
-        }
+        User user = userService.findByUsername(signinReq.getUsername())
+            .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        User user = userOpt.get();
         TokenPair tokenPair = jwtTokenService.createTokenPair(user.getUsername(), user.getRoles());
 
         Employee employee = user.getEmployee();
         Department department = employee == null ? null : employee.getDepartment();
+        Set<String> permissions = rolePermissionService.getPermittedPatterns(user.getRoles());
 
         return SigninAns.builder()
                 .id(user.getId())
@@ -65,6 +68,7 @@ public class AuthServiceImpl implements AuthService {
                 .employeeDepartment(department == null ? null : department.getName())
                 .employeePosition(employee == null ? null : employee.getPosition())
                 .isSystemUser(user.getRoles().stream().anyMatch(role -> role.getName().equals("ROLE_SYSTEM_USER")))
+                .permissions(permissions)
                 .build();
     }
 
@@ -95,9 +99,20 @@ public class AuthServiceImpl implements AuthService {
         // 生成令牌
         TokenPair tokenPair = jwtTokenService.createTokenPair(user.getUsername(), user.getRoles());
 
+        Employee employee = user.getEmployee();
+        Department department = employee == null ? null : employee.getDepartment();
+
+        Set<String> permissions = rolePermissionService.getPermittedPatterns(user.getRoles());
+
         return SigninAns.builder()
                 .id(user.getId())
                 .tokenPair(tokenPair)
+                .employeeId(employee == null ? null : employee.getId())
+                .employeeName(employee == null ? null : employee.getName())
+                .employeeDepartment(department == null ? null : department.getName())
+                .employeePosition(employee == null ? null : employee.getPosition())
+                .isSystemUser(user.getRoles().stream().anyMatch(role -> role.getName().equals("ROLE_SYSTEM_USER")))
+                .permissions(permissions)
                 .build();
     }
 

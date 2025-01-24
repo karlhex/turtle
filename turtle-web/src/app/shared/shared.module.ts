@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { RouterModule } from '@angular/router';
 import { ConfirmDialogComponent } from '../components/confirmdialog/confirm-dialog.component';
 import { PaymentTotalPipe } from '../pipes/payment-total.pipe';
 import { HasPermissionDirective } from '../directives/has-permission.directive';
@@ -74,6 +75,7 @@ const SHARED_MODULES = [
   ReactiveFormsModule,
   HttpClientModule,
   TranslateModule,
+  RouterModule,
   ...MATERIAL_MODULES
 ];
 

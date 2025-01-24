@@ -28,6 +28,7 @@ export class HasPermissionDirective implements OnInit {
     if (this.permission) {
       this.permissionService.hasPermission(this.permission).subscribe(
         hasPermission => {
+          console.log('hasPermission: ', hasPermission);
           if (hasPermission && this.isHidden) {
             this.viewContainer.createEmbeddedView(this.templateRef);
             this.isHidden = false;
