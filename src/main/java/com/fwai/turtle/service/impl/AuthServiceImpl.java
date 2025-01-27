@@ -144,7 +144,8 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public void logout(String accessToken) {
+    public void logout(LogoutReq logoutReq) {
+        String accessToken = logoutReq.getAccessToken();
         if (!jwtTokenService.isAccessToken(accessToken)) {
             throw new IllegalArgumentException("Invalid access token");
         }
@@ -156,5 +157,6 @@ public class AuthServiceImpl implements AuthService {
         // 这里可以实现逻辑来撤销用户的所有活跃令牌
         // 可以通过查询TokenState表来获取所有活跃的令牌
         // 然后调用revokeToken来撤销它们
+
     }
 }

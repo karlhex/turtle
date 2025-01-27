@@ -5,6 +5,7 @@ import com.fwai.turtle.persistence.entity.Employee;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring",
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
@@ -19,6 +20,7 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
         })
 public interface EmployeeMapper {
 
+    @Mapping(target = "user", ignore = true)
     EmployeeDTO toDTO(Employee employee);
 
     Employee toEntity(EmployeeDTO employeeDTO);

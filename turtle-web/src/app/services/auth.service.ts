@@ -84,13 +84,9 @@ export class AuthService {
             this.tokenStorage.setTokenPair(tokenPair);
             this.tokenStorage.setUserInfo(userInfo);
             // 存储权限到 localStorage
-            console.log('permissions: ', permissions);
-            this.tokenStorage.storePermissions(permissions);
             this.permissionService.setPermissions(permissions);
             this.userSubject.next(response);
-            // Start token refresh timer
-            // this.tokenRefreshService.startRefreshTimer();           
-            // Navigate based on employee status
+
             if (response.data.employeeId) {
               this.router.navigate(['/dashboard']);
             } else {
@@ -104,9 +100,9 @@ export class AuthService {
   }
 
   logout(): void {
-    const tokenPair = this.tokenStorage.getTokenPair();
-    if (tokenPair) {
-      this.http.post<any>(`${this.API_URL}/logout`, { accessToken: tokenPair.accessToken }).subscribe();
+    const token = this.tokenStorage.getToken();
+    if (token) {
+      this.http.post<any>(`${this.API_URL}/logout`, { accessToken: token }).subscribe();
     }
     this.tokenStorage.clear();
     this.permissionService.clearPermissions();

@@ -5,6 +5,10 @@
     </button>
     <span>{{ 'app.title' | translate }}</span>
     <span class="toolbar-spacer"></span>
+    <!-- 用户信息显示 -->
+    <div class="user-info" *ngIf="userInfo">
+      <span>{{ userInfo.employeeName }}{{ userInfo.employeeDepartment ? ' - ' + userInfo.employeeDepartment : '' }}{{ userInfo.employeePosition ? ' - ' + userInfo.employeePosition : '' }}</span>
+    </div>
     <button mat-icon-button [matMenuTriggerFor]="langMenu">
       <mat-icon>language</mat-icon>
     </button>
