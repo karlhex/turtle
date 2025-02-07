@@ -1,0 +1,23 @@
+.dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px 0;
+}
+
+.full-width {
+  width: 100%;
+}
+
+mat-dialog-actions {
+  padding: 16px 0;
+  gap: 8px;
+}
+
+button {
+  min-width: 100px;
+}
+
+mat-spinner {
+  margin: 0 auto;
+}

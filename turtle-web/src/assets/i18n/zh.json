@@ -306,42 +306,27 @@
   },
   "position": {
     "title": "职位管理",
-    "search": {
-      "label": "搜索职位",
-      "placeholder": "按职位名称或部门搜索"
-    },
-    "list": {
-      "title": "职位名称",
-      "department": "所属部门",
-      "description": "职位描述",
-      "requirements": "任职要求",
-      "salary": "薪资范围",
-      "actions": "操作"
-    },
-    "dialog": {
-      "add": "添加职位",
-      "edit": "编辑职位",
-      "title": "职位名称",
-      "department": "所属部门",
-      "description": "职位描述",
-      "requirements": "任职要求",
-      "salaryMin": "最低薪资",
-      "salaryMax": "最高薪资",
-      "titleRequired": "请输入职位名称",
-      "departmentRequired": "请选择所属部门"
-    },
-    "button": {
-      "add": "添加职位",
-      "edit": "编辑",
-      "delete": "删除",
-      "save": "保存",
-      "cancel": "取消"
-    },
-    "message": {
-      "saveSuccess": "保存成功",
-      "deleteSuccess": "删除成功",
-      "deleteConfirm": "确定要删除此职位吗？"
-    }
+    "search_placeholder": "搜索职位",
+    "create_title": "新建职位",
+    "edit_title": "编辑职位",
+    "name": "职位名称",
+    "code": "职位编码",
+    "level": "职级",
+    "department": "所属部门",
+    "description": "描述",
+    "responsibilities": "职责",
+    "is_active": "是否激活",
+    "name_required": "请输入职位名称",
+    "code_required": "请输入职位编码",
+    "level_min": "职级必须大于0",
+    "create_success": "职位创建成功",
+    "update_success": "职位更新成功",
+    "delete_success": "职位删除成功",
+    "create_error": "职位创建失败",
+    "update_error": "职位更新失败",
+    "delete_error": "职位删除失败",
+    "delete_confirm": "确定要删除该职位吗？",
+    "load_error": "加载职位列表失败"
   },
   "attendance": {
     "title": "考勤管理",

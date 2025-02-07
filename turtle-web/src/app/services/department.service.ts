@@ -2,22 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApiResponse, PageResponse } from '../models/api.model';
-
-export interface Department {
-  id?: number;
-  name: string;         // 部门名称
-  description?: string; // 部门描述
-  code: string;         // 部门编码
-  isActive: boolean;    // 是否激活
-  parentId?: number;    // 父部门ID
-  managerId?: number;   // 部门管理人员
-}
+import { environment } from 'src/environments/environment';
+import { Department } from '../models/department.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DepartmentService {
-  private readonly API_URL = 'http://localhost:8080/api/departments';
+  private readonly API_URL = `${environment.apiUrl}/departments`;
 
   constructor(private http: HttpClient) {}
 

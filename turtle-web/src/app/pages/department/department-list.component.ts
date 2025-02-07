@@ -3,12 +3,14 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, PageEvent, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { Department, DepartmentService } from '../../services/department.service';
+import { DepartmentService } from '../../services/department.service';
 import { DepartmentDialogComponent } from './department-dialog.component';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { ConfirmDialogComponent } from '../../components/confirmdialog/confirm-dialog.component';
+import { Department } from '../../models/department.model';
+
 @Component({
   selector: 'app-department-list',
   templateUrl: './department-list.component.html',

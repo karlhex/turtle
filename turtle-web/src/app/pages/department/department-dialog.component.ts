@@ -2,10 +2,11 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Department, DepartmentService } from '../../services/department.service';
+import { DepartmentService } from '../../services/department.service';
 import { EmployeeService } from '../../services/employee.service';
 import { Employee } from '@models/employee.model';
 import { TranslateService } from '@ngx-translate/core';
+import { Department } from '../../models/department.model';
 
 @Component({
   selector: 'app-department-dialog',

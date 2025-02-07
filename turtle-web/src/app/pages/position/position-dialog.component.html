@@ -1,0 +1,71 @@
+<h2 mat-dialog-title>
+  {{ (isEditMode ? 'position.edit_title' : 'position.create_title') | translate }}
+</h2>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <mat-dialog-content>
+    <div class="dialog-content">
+      <!-- Name -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>{{ 'position.name' | translate }}</mat-label>
+        <input matInput formControlName="name" required>
+        <mat-error *ngIf="form.get('name')?.hasError('required')">
+          {{ 'position.name_required' | translate }}
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Code -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>{{ 'position.code' | translate }}</mat-label>
+        <input matInput formControlName="code" required>
+        <mat-error *ngIf="form.get('code')?.hasError('required')">
+          {{ 'position.code_required' | translate }}
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Level -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>{{ 'position.level' | translate }}</mat-label>
+        <input matInput type="number" formControlName="level" min="1">
+        <mat-error *ngIf="form.get('level')?.hasError('min')">
+          {{ 'position.level_min' | translate }}
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Department -->
+      <app-department-filter-select-input
+        [departments]="departments"
+        [label]="'position.department' | translate"
+        formControlName="departmentId"
+>
+      </app-department-filter-select-input>
+
+      <!-- Description -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>{{ 'position.description' | translate }}</mat-label>
+        <textarea matInput formControlName="description" rows="3"></textarea>
+      </mat-form-field>
+
+      <!-- Responsibilities -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>{{ 'position.responsibilities' | translate }}</mat-label>
+        <textarea matInput formControlName="responsibilities" rows="3"></textarea>
+      </mat-form-field>
+
+      <!-- Is Active -->
+      <mat-checkbox formControlName="isActive" class="full-width">
+        {{ 'position.is_active' | translate }}
+      </mat-checkbox>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button type="button" (click)="onCancel()">
+      {{ 'common.cancel' | translate }}
+    </button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid || loading">
+      <mat-spinner diameter="20" *ngIf="loading"></mat-spinner>
+      <span *ngIf="!loading">{{ 'common.save' | translate }}</span>
+    </button>
+  </mat-dialog-actions>
+</form>

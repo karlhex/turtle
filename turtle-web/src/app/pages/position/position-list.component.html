@@ -1,0 +1,70 @@
+<app-base-list 
+  #baseList
+  [title]="'position.title' | translate"
+  [placeholder]="'position.search_placeholder' | translate"
+  [loading]="loading"
+  [totalElements]="totalElements"
+  [pageSize]="pageSize"
+  (search)="onSearch($event)"
+  (add)="onAdd()"
+  (page)="onPageChange($event)">
+
+  <mat-table [dataSource]="dataSource" class="mat-elevation-z1">
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef>{{ 'position.name' | translate }}</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{ row.name }}</mat-cell>
+    </ng-container>
+
+    <!-- Code Column -->
+    <ng-container matColumnDef="code">
+      <mat-header-cell *matHeaderCellDef>{{ 'position.code' | translate }}</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{ row.code }}</mat-cell>
+    </ng-container>
+
+    <!-- Level Column -->
+    <ng-container matColumnDef="level">
+      <mat-header-cell *matHeaderCellDef>{{ 'position.level' | translate }}</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{ row.level }}</mat-cell>
+    </ng-container>
+
+    <!-- Department Name Column -->
+    <ng-container matColumnDef="departmentName">
+      <mat-header-cell *matHeaderCellDef>{{ 'position.department' | translate }}</mat-header-cell>
+      <mat-cell *matCellDef="let row">{{ row.departmentName }}</mat-cell>
+    </ng-container>
+
+    <!-- Is Active Column -->
+    <ng-container matColumnDef="isActive">
+      <mat-header-cell *matHeaderCellDef>{{ 'position.is_active' | translate }}</mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <mat-icon [color]="row.isActive ? 'primary' : ''">
+          {{ row.isActive ? 'check_circle' : 'cancel' }}
+        </mat-icon>
+      </mat-cell>
+    </ng-container>
+
+    <!-- Actions Column -->
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef>{{ 'common.actions' | translate }}</mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Actions">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="onEdit(row)">
+            <mat-icon>edit</mat-icon>
+            <span>{{ 'common.edit' | translate }}</span>
+          </button>
+          <button mat-menu-item (click)="onDelete(row)">
+            <mat-icon>delete</mat-icon>
+            <span>{{ 'common.delete' | translate }}</span>
+          </button>
+        </mat-menu>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+</app-base-list>

@@ -20,6 +20,7 @@ import { ChangePasswordDialogComponent } from './pages/user-management/change-pa
 import { AuthGuard } from './guards/auth.guard';
 import { InventoryListComponent } from './pages/inventory/inventory-list.component';
 import { ContactListComponent } from './pages/contact/contact-list.component';
+import { PositionListComponent } from './pages/position/position-list.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -46,9 +47,9 @@ const routes: Routes = [
       { path: 'change-password', component: ChangePasswordDialogComponent },
       { path: 'inventories', component: InventoryListComponent },
       { path: 'contacts', component: ContactListComponent },
+      { path: 'positions', component: PositionListComponent },
 
       // Placeholder routes for future implementation
-      { path: 'positions', component: DashboardComponent },
       { path: 'attendance', component: DashboardComponent },
       { path: 'leave', component: DashboardComponent },
       { path: 'payroll', component: DashboardComponent },

@@ -46,6 +46,7 @@ import { ActionModule } from './components/action/action.module';
 import { BaseListModule } from './components/base-list/base-list.module';
 import { SharedModule } from './shared/shared.module';
 import { ContactModule } from './pages/contact/contact.module';
+import { PositionModule } from './pages/position/position.module';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -64,6 +65,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     // Feature Modules
     CompanyFilterSelectInputModule,
     PersonInputModule,
+    PositionModule,
     ActionModule,
     SharedModule,
     InventoryModule,

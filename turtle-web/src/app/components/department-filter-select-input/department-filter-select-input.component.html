@@ -1,20 +1,8 @@
-<mat-form-field appearance="outline" class="w-100">
-  <mat-label>{{ label | translate }}</mat-label>
-  <input type="text"
-         matInput
-         [formControl]="departmentCtrl"
-         [matAutocomplete]="auto">
-  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-    <ng-template #optionTemplate let-department>
-      <div class="department-option">
-        <div class="department-name">{{ department.name }}</div>
-        <div class="department-details" *ngIf="department.code">
-          ({{ department.code }})
-        </div>
-      </div>
-    </ng-template>
-    <mat-option *ngFor="let department of filteredDepartments | async" [value]="department">
-      <ng-container *ngTemplateOutlet="optionTemplate; context: { department }"></ng-container>
-    </mat-option>
-  </mat-autocomplete>
-</mat-form-field>
+<ng-template #optionTemplate let-department>
+  <div class="department-option">
+    <div class="department-name">{{ department.name }}</div>
+    <div class="department-details" *ngIf="department.code">
+      ({{ department.code }})
+    </div>
+  </div>
+</ng-template>

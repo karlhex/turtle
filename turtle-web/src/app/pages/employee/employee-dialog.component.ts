@@ -6,7 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Employee, EmployeeJobHistory, EmployeeEducation } from '@models/employee.model';
-import { DepartmentService, Department } from '../../services/department.service';
+import { DepartmentService } from '../../services/department.service';
 import { EmployeeService } from '../../services/employee.service';
 import { EducationDialogComponent } from './education-dialog.component';
 import { ConfirmDialogComponent } from '../../components/confirmdialog/confirm-dialog.component';
@@ -17,6 +17,8 @@ import { EmployeeContractType } from '../../types/employee-contract-type.enum';
 import { Gender } from '../../types/gender.enum';
 import { IdType } from '../../types/id-type.enum';
 import { EmployeeStatus } from '../../models/employee.model';
+import { Department } from '../../models/department.model';
+
 
 @Component({
   selector: 'app-employee-dialog',
