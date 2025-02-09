@@ -66,7 +66,7 @@ public class AuthServiceImpl implements AuthService {
                 .employeeId(employee == null ? null : employee.getId())
                 .employeeName(employee == null ? null : employee.getName())
                 .employeeDepartment(department == null ? null : department.getName())
-                .employeePosition(employee == null ? null : employee.getPosition())
+                .employeePosition(employee == null ? null : employee.getPosition() == null ? null : employee.getPosition().getName())
                 .isSystemUser(user.getRoles().stream().anyMatch(role -> role.getName().equals("ROLE_SYSTEM_USER")))
                 .permissions(permissions)
                 .build();
@@ -110,7 +110,7 @@ public class AuthServiceImpl implements AuthService {
                 .employeeId(employee == null ? null : employee.getId())
                 .employeeName(employee == null ? null : employee.getName())
                 .employeeDepartment(department == null ? null : department.getName())
-                .employeePosition(employee == null ? null : employee.getPosition())
+                .employeePosition(employee == null ? null : employee.getPosition() == null ? null : employee.getPosition().getName())
                 .isSystemUser(user.getRoles().stream().anyMatch(role -> role.getName().equals("ROLE_SYSTEM_USER")))
                 .permissions(permissions)
                 .build();
@@ -131,6 +131,7 @@ public class AuthServiceImpl implements AuthService {
         Employee employee = user.getEmployee();
 
         Department department = employee == null ? null : employee.getDepartment();
+        Set<String> permissions = rolePermissionService.getPermittedPatterns(user.getRoles());
 
         return SigninAns.builder()
                 .id(user.getId())
@@ -138,8 +139,9 @@ public class AuthServiceImpl implements AuthService {
                 .employeeId(employee == null ? null : employee.getId())
                 .employeeName(employee == null ? null : employee.getName())
                 .employeeDepartment(department == null ? null : department.getName())
-                .employeePosition(employee == null ? null : employee.getPosition())
+                .employeePosition(employee == null ? null : employee.getPosition() == null ? null : employee.getPosition().getName())
                 .isSystemUser(user.getRoles().stream().anyMatch(role -> role.getName().equals("ROLE_SYSTEM_USER")))
+                .permissions(permissions)
                 .build();
     }
 

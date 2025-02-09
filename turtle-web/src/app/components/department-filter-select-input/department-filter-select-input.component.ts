@@ -27,7 +27,7 @@ export class DepartmentFilterSelectInputComponent extends BaseFilterSelectInputC
   }
 
   override displayFn(department: Department): string {
-    return department ? department.name : '';
+    return department ? department.name + ' (' + department.code + ')' : '';
   }
 
   override getSearchFields(department: Department): (string | undefined)[] {

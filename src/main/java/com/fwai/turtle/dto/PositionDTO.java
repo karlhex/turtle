@@ -14,8 +14,6 @@ public class PositionDTO extends BaseDTO {
     private String description;
     private String code;
     private Boolean isActive;
-    private Long departmentId;
-    private String departmentName;
     private Integer level;
     private String responsibilities;
 }

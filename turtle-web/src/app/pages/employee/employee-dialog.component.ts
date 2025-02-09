@@ -18,7 +18,9 @@ import { Gender } from '../../types/gender.enum';
 import { IdType } from '../../types/id-type.enum';
 import { EmployeeStatus } from '../../models/employee.model';
 import { Department } from '../../models/department.model';
-
+import { Position } from '../../models/position.model';
+import { PositionService } from '../../services/position.service';
+import { DepartmentFilterSelectInputComponent } from '../../components/department-filter-select-input/department-filter-select-input.component';
 
 @Component({
   selector: 'app-employee-dialog',
@@ -32,6 +34,7 @@ export class EmployeeDialogComponent implements OnInit {
   loading = false;
   isApplication: boolean;
   departments: Department[] = [];
+  positions: Position[] = [];
   contractTypes = Object.values(EmployeeContractType);  
   genders = Object.values(Gender);  
   idtypes = Object.values(IdType);
@@ -53,6 +56,7 @@ export class EmployeeDialogComponent implements OnInit {
     private fb: FormBuilder,
     private employeeService: EmployeeService,
     private departmentService: DepartmentService,
+    private positionService: PositionService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar
   ) {
@@ -66,6 +70,7 @@ export class EmployeeDialogComponent implements OnInit {
   ngOnInit(): void {
     if (!this.isApplication) {
       this.loadDepartments();
+      this.loadPositions();
     }
   }
 
@@ -79,6 +84,28 @@ export class EmployeeDialogComponent implements OnInit {
 
   onJobHistoryEdit(jobHistories: EmployeeJobHistory[]): void {
     this.jobHistories = jobHistories;
+  }
+
+  private loadPositions(): void {
+    this.positionService.getPositions(0, 100).subscribe({
+      next: (response) => {
+        if (response.data?.content) {
+          this.positions = response.data.content;
+          // After positions are loaded, find and set the correct position
+          if (this.data.employee && this.data.employee.position) {
+            const selectedPosition = this.positions.find(
+              pos => pos.id === this.data?.employee?.position?.id
+            );
+            if (selectedPosition) {
+              this.employeeForm.patchValue({ position: selectedPosition });
+            }
+          }
+        }
+      },
+      error: (error) => {
+        console.error('Error loading positions:', error);
+      }
+    });
   }
 
   private loadDepartments(): void {
@@ -121,8 +148,8 @@ export class EmployeeDialogComponent implements OnInit {
     });
 
     if (!this.isApplication) {
-      this.employeeForm.addControl('department', new FormControl('', Validators.required));
-      this.employeeForm.addControl('position', new FormControl('', Validators.required));
+      this.employeeForm.addControl('departmentId', new FormControl('', Validators.required));
+      this.employeeForm.addControl('positionId', new FormControl('', Validators.required));
       this.employeeForm.addControl('hireDate', new FormControl('', Validators.required));
       this.employeeForm.addControl('leaveDate', new FormControl(''));
       this.employeeForm.addControl('contractType', new FormControl(''));

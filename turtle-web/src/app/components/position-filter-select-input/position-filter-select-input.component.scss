@@ -1,0 +1,18 @@
+.department-option {
+  display: flex;
+  flex-direction: column;
+  padding: 5px 0;
+}
+
+.department-name {
+  font-weight: 500;
+}
+
+.department-details {
+  font-size: 0.85em;
+  color: rgba(0, 0, 0, 0.54);
+}
+
+mat-form-field {
+  width: 100%;
+}

@@ -1,0 +1,8 @@
+<ng-template #optionTemplate let-position>
+  <div class="position-option">
+    <div class="position-name">{{ position.name }}</div>
+    <div class="position-details" *ngIf="position.code">
+      ({{ position.code }})
+    </div>
+  </div>
+</ng-template>

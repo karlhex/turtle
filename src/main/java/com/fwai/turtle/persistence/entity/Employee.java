@@ -53,8 +53,9 @@ public class Employee {
     @JoinColumn(name = "department_id")
     private Department department;   // 所属部门
 
-    @Column
-    private String position;        // 职位
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "position_id")
+    private Position position;        // 职位
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)

@@ -5,7 +5,6 @@ import jakarta.validation.constraints.*;
 
 import java.util.List;
 
-import com.fwai.turtle.persistence.entity.Department;
 import com.fwai.turtle.persistence.entity.User;
 import com.fwai.turtle.types.EmployeeStatus;
 
@@ -25,8 +24,8 @@ public class EmployeeDTO {
     private String email;
     
     private String phone;
-    private Department department;
-    private String position;
+    private Long departmentId;
+    private Long positionId;
     @NotNull
     private EmployeeStatus status;
 

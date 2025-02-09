@@ -20,8 +20,7 @@ import { DepartmentFilterSelectInputModule } from '@app/components/department-fi
     ReactiveFormsModule,
     MaterialModule,
     BaseListModule,
-    TranslateModule,
-    DepartmentFilterSelectInputModule
+    TranslateModule
   ],
   exports: [
     PositionListComponent,

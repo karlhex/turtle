@@ -22,7 +22,6 @@ export class PositionListComponent implements OnInit {
     'name',
     'code',
     'level',
-    'departmentName',
     'isActive',
     'actions'
   ];

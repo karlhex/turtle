@@ -28,7 +28,9 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ActionModule } from '@app/components/action/action.module';
 import { MatChipsModule } from '@angular/material/chips';
-
+import { DepartmentFilterSelectInputModule } from '@app/components/department-filter-select-input/department-filter-select-input.module';
+import { PositionFilterSelectInputModule } from '@app/components/position-filter-select-input/position-filter-select-input.module';
+  
 @NgModule({
   declarations: [
     EmployeeListComponent,
@@ -61,6 +63,8 @@ import { MatChipsModule } from '@angular/material/chips';
     TranslateModule,
     BaseListModule,
     CompanyFilterSelectInputModule,
+    DepartmentFilterSelectInputModule,
+    PositionFilterSelectInputModule,
     SharedModule
   ],
   exports: [

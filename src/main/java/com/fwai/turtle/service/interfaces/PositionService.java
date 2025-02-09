@@ -11,6 +11,5 @@ public interface PositionService {
     void delete(Long id);
     PositionDTO findById(Long id);
     Page<PositionDTO> findAll(Pageable pageable);
-    List<PositionDTO> findByDepartmentId(Long departmentId);
     List<PositionDTO> findActive();
 }

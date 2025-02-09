@@ -5,8 +5,6 @@ export interface Position extends BaseModel {
     description?: string;
     code: string;
     isActive?: boolean;
-    departmentId?: number;
-    departmentName?: string;
     level?: number;
     responsibilities?: string;
 }

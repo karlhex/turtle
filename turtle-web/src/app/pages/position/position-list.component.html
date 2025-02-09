@@ -28,12 +28,6 @@
       <mat-cell *matCellDef="let row">{{ row.level }}</mat-cell>
     </ng-container>
 
-    <!-- Department Name Column -->
-    <ng-container matColumnDef="departmentName">
-      <mat-header-cell *matHeaderCellDef>{{ 'position.department' | translate }}</mat-header-cell>
-      <mat-cell *matCellDef="let row">{{ row.departmentName }}</mat-cell>
-    </ng-container>
-
     <!-- Is Active Column -->
     <ng-container matColumnDef="isActive">
       <mat-header-cell *matHeaderCellDef>{{ 'position.is_active' | translate }}</mat-header-cell>

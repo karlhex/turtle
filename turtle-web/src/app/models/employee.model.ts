@@ -2,6 +2,7 @@ import { BaseModel } from './base.model';
 import { Department } from './department.model';
 import { Person } from './person.model';
 import { User } from './user.model';
+import { Position } from './position.model';
 
 export enum EmployeeStatus {
     APPLICATION = 'APPLICATION',
@@ -67,7 +68,7 @@ export interface Employee extends BaseModel {
     email?: string;
     phone?: string;
     department?: Department;
-    position?: string;
+    position?: Position;
     status: EmployeeStatus;
     hireDate?: Date;
     leaveDate?: Date;

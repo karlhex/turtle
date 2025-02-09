@@ -39,7 +39,7 @@
       <!-- Position Column -->
       <ng-container matColumnDef="position">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'employee.list.position' | translate }}</th>
-        <td mat-cell *matCellDef="let employee">{{employee.position}}</td>
+        <td mat-cell *matCellDef="let employee">{{employee.position?.name}}</td>
       </ng-container>
 
       <!-- Hire Date Column -->

@@ -42,11 +42,6 @@ public class PositionController {
         return ApiResponse.ok(positionService.findAll(pageable));
     }
 
-    @GetMapping("/department/{departmentId}")
-    public ApiResponse<List<PositionDTO>> findByDepartmentId(@PathVariable Long departmentId) {
-        return ApiResponse.ok(positionService.findByDepartmentId(departmentId));
-    }
-
     @GetMapping("/active")
     public ApiResponse<List<PositionDTO>> findActive() {
         return ApiResponse.ok(positionService.findActive());

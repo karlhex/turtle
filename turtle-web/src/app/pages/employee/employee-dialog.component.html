@@ -44,25 +44,22 @@
           <!-- Department & Position -->
           <div class="section" *ngIf="!isApplication">
             <h3>{{ 'employee.form.department.title' | translate }}</h3>
-            <mat-form-field>
-              <mat-label>{{ 'employee.form.department.department' | translate }}</mat-label>
-              <mat-select formControlName="department" required>
-                <mat-option *ngFor="let dept of departments" [value]="dept">
-                  {{dept.name}} ({{dept.code}})
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="employeeForm.get('department')?.errors?.['required']">
-                {{ 'employee.validation.required.department' | translate }}
-              </mat-error>
-            </mat-form-field>
 
-            <mat-form-field>
-              <mat-label>{{ 'employee.form.department.position' | translate }}</mat-label>
-              <input matInput formControlName="position" required>
-              <mat-error *ngIf="employeeForm.get('position')?.errors?.['required']">
-                {{ 'employee.validation.required.position' | translate }}
-              </mat-error>
-            </mat-form-field>
+      <!-- Department -->
+      <app-department-filter-select-input
+      [departments]="departments"
+      [label]="'employee.form.department.department' | translate"
+      formControlName="departmentId"
+>
+    </app-department-filter-select-input>
+
+    <!-- Position -->
+     <app-position-filter-select-input
+      [positions]="positions"
+      [label]="'employee.form.department.position' | translate"
+      formControlName="positionId"
+>
+            </app-position-filter-select-input>
 
             <mat-form-field>
               <mat-label>{{ 'employee.form.department.hireDate' | translate }}</mat-label>

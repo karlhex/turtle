@@ -4,8 +4,6 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Position } from '../../models/position.model';
 import { PositionService } from '../../services/position.service';
-import { DepartmentService } from '../../services/department.service';
-import { Department } from '../../models/department.model';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -17,13 +15,11 @@ export class PositionDialogComponent implements OnInit {
   form: FormGroup;
   loading = false;
   isEditMode: boolean;
-  departments: Department[] = [];
 
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<PositionDialogComponent>,
     private positionService: PositionService,
-    private departmentService: DepartmentService,
     private snackBar: MatSnackBar,
     private translate: TranslateService,
     @Inject(MAT_DIALOG_DATA) private data: { mode: 'create' | 'edit', position?: Position }
@@ -33,7 +29,6 @@ export class PositionDialogComponent implements OnInit {
       name: ['', [Validators.required]],
       code: ['', [Validators.required]],
       level: [null],
-      departmentId: [null, [Validators.required]],
       isActive: [true],
       description:[''],
       responsibilities: ['']
@@ -45,7 +40,7 @@ export class PositionDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadDepartments();
+
   }
 
   onSubmit(): void {
@@ -78,20 +73,6 @@ export class PositionDialogComponent implements OnInit {
 
   onCancel(): void {
     this.dialogRef.close();
-  }
-
-  private loadDepartments(): void {
-    this.departmentService.getDepartments().subscribe({
-      next: (response) => {
-        if (response.code === 200 && response.data && response.data.content) {
-          this.departments = response.data.content;
-        }
-      },
-      error: (error) => {
-        console.error('Error loading departments:', error);
-        this.showError('department.load_error');
-      }
-    });
   }
 
   private showSuccess(message: string): void {
