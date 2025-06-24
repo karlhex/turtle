@@ -13,7 +13,7 @@ import { Observable, map, startWith } from 'rxjs';
 @Component({
   selector: 'app-product-dialog',
   templateUrl: './product-dialog.component.html',
-  styleUrls: ['./product-dialog.component.scss']
+  styleUrls: ['./product-dialog.component.scss'],
 })
 export class ProductDialogComponent implements OnInit {
   form: FormGroup;
@@ -41,7 +41,7 @@ export class ProductDialogComponent implements OnInit {
       specifications: [''],
       remarks: [''],
       warrantyPeriod: [null],
-      active: [true]
+      active: [true],
     });
 
     if (data) {
@@ -65,24 +65,23 @@ export class ProductDialogComponent implements OnInit {
   private loadCompanies(): void {
     this.companyService.getAllActive().subscribe({
       next: (response: ApiResponse<Company[]>) => {
-        console.log("got companies", response);
+        console.log('got companies', response);
         if (response.code === 200) {
           this.companies = response.data;
-          console.log("loaded companies", this.companies);
+          console.log('loaded companies', this.companies);
         } else {
           console.error('Error loading companies:', response.message);
         }
       },
-      error: (error) => {
+      error: error => {
         console.error('Error loading companies:', error);
-      }
+      },
     });
   }
 
   private _filterCompanies(value: string): Company[] {
     const filterValue = value.toLowerCase();
-    return this.companies.filter(company => 
-      company.fullName.toLowerCase().includes(filterValue));
+    return this.companies.filter(company => company.fullName.toLowerCase().includes(filterValue));
   }
 
   displayCompany(company: Company): string {
@@ -93,7 +92,7 @@ export class ProductDialogComponent implements OnInit {
     if (this.form.valid) {
       this.loading = true;
       const product = this.form.value;
-      
+
       const request = this.isEdit
         ? this.productService.update(this.data!.id!, product)
         : this.productService.create(product);
@@ -102,7 +101,9 @@ export class ProductDialogComponent implements OnInit {
         next: (response: ApiResponse<Product>) => {
           if (response.code === 200) {
             this.snackBar.open(
-              this.translate.instant(this.isEdit ? 'SUCCESS.UPDATE_PRODUCT' : 'SUCCESS.CREATE_PRODUCT'),
+              this.translate.instant(
+                this.isEdit ? 'SUCCESS.UPDATE_PRODUCT' : 'SUCCESS.CREATE_PRODUCT'
+              ),
               this.translate.instant('COMMON.CLOSE'),
               { duration: 3000 }
             );
@@ -110,7 +111,7 @@ export class ProductDialogComponent implements OnInit {
           }
           this.loading = false;
         },
-        error: (error) => {
+        error: error => {
           console.error('Error saving product:', error);
           this.snackBar.open(
             this.translate.instant(this.isEdit ? 'ERROR.UPDATE_PRODUCT' : 'ERROR.CREATE_PRODUCT'),
@@ -118,7 +119,7 @@ export class ProductDialogComponent implements OnInit {
             { duration: 3000 }
           );
           this.loading = false;
-        }
+        },
       });
     }
   }

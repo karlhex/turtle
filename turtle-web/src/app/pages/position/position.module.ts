@@ -10,21 +10,15 @@ import { MaterialModule } from '@app/shared/material.module';
 import { DepartmentFilterSelectInputModule } from '@app/components/department-filter-select-input/department-filter-select-input.module';
 
 @NgModule({
-  declarations: [
-    PositionListComponent,
-    PositionDialogComponent
-  ],
+  declarations: [PositionListComponent, PositionDialogComponent],
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
     MaterialModule,
     BaseListModule,
-    TranslateModule
+    TranslateModule,
   ],
-  exports: [
-    PositionListComponent,
-    PositionDialogComponent
-  ]
+  exports: [PositionListComponent, PositionDialogComponent],
 })
-export class PositionModule { }
+export class PositionModule {}

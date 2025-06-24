@@ -6,7 +6,7 @@ import { Person } from '../../models/person.model';
 @Component({
   selector: 'app-person-dialog',
   templateUrl: './person-dialog.component.html',
-  styleUrls: ['./person-dialog.component.scss']
+  styleUrls: ['./person-dialog.component.scss'],
 })
 export class PersonDialogComponent {
   form: FormGroup;
@@ -26,7 +26,7 @@ export class PersonDialogComponent {
       department: [''],
       position: [''],
       email: ['', [Validators.email]],
-      address: ['']
+      address: [''],
     });
 
     if (data.person) {
@@ -40,7 +40,7 @@ export class PersonDialogComponent {
         homePhone: data.person.homePhone || '',
         companyName: data.person.companyName || '',
         department: data.person.department || '',
-        position: data.person.position || ''
+        position: data.person.position || '',
       });
     }
   }
@@ -59,7 +59,7 @@ export class PersonDialogComponent {
         homePhone: formValue.homePhone || undefined,
         companyName: formValue.companyName || undefined,
         department: formValue.department || undefined,
-        position: formValue.position || undefined
+        position: formValue.position || undefined,
       };
       this.dialogRef.close(person);
     }

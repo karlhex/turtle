@@ -25,10 +25,7 @@ import { ActionModule } from '@app/components/action/action.module';
 import { PersonInputModule } from '@app/components/person-input/person-input.module';
 
 @NgModule({
-  declarations: [
-    CompanyListComponent,
-    CompanyDialogComponent
-  ],
+  declarations: [CompanyListComponent, CompanyDialogComponent],
   imports: [
     ActionModule,
     PersonInputModule,
@@ -51,11 +48,8 @@ import { PersonInputModule } from '@app/components/person-input/person-input.mod
     MatProgressSpinnerModule,
     MatSlideToggleModule,
     TranslateModule,
-    BaseListModule
+    BaseListModule,
   ],
-  exports: [
-    CompanyListComponent,
-    CompanyDialogComponent
-  ]
+  exports: [CompanyListComponent, CompanyDialogComponent],
 })
-export class CompanyModule { }
+export class CompanyModule {}

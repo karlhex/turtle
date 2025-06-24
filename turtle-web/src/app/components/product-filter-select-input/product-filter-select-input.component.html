@@ -1,9 +1,6 @@
 <mat-form-field appearance="outline" class="w-100">
   <mat-label>{{ label | translate }}</mat-label>
-  <input type="text"
-         matInput
-         [formControl]="productCtrl"
-         [matAutocomplete]="auto">
+  <input type="text" matInput [formControl]="productCtrl" [matAutocomplete]="auto" />
   <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
     <ng-template #optionTemplate let-product>
       <div class="product-option">
@@ -14,7 +11,11 @@
         </div>
       </div>
     </ng-template>
-    <mat-option *ngFor="let product of filteredProducts | async" [value]="product" [matAutocompleteCustomTrigger]="optionTemplate">
+    <mat-option
+      *ngFor="let product of filteredProducts | async"
+      [value]="product"
+      [matAutocompleteCustomTrigger]="optionTemplate"
+    >
     </mat-option>
   </mat-autocomplete>
 </mat-form-field>

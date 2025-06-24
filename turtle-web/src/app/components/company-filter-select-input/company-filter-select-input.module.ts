@@ -9,19 +9,15 @@ import { TranslateModule } from '@ngx-translate/core';
 import { CompanyFilterSelectInputComponent } from './company-filter-select-input.component';
 
 @NgModule({
-  declarations: [
-    CompanyFilterSelectInputComponent
-  ],
+  declarations: [CompanyFilterSelectInputComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     MatAutocompleteModule,
     MatFormFieldModule,
     MatInputModule,
-    TranslateModule
+    TranslateModule,
   ],
-  exports: [
-    CompanyFilterSelectInputComponent
-  ]
+  exports: [CompanyFilterSelectInputComponent],
 })
-export class CompanyFilterSelectInputModule { }
+export class CompanyFilterSelectInputModule {}

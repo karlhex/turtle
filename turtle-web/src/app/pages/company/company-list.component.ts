@@ -13,7 +13,7 @@ import { ConfirmDialogComponent } from '../../components/confirmdialog/confirm-d
 @Component({
   selector: 'app-company-list',
   templateUrl: './company-list.component.html',
-  styleUrls: ['./company-list.component.scss']
+  styleUrls: ['./company-list.component.scss'],
 })
 export class CompanyListComponent implements OnInit {
   displayedColumns: string[] = [
@@ -24,7 +24,7 @@ export class CompanyListComponent implements OnInit {
     'email',
     'type',
     'active',
-    'actions'
+    'actions',
   ];
   dataSource = new MatTableDataSource<Company>();
   loading = false;
@@ -50,17 +50,19 @@ export class CompanyListComponent implements OnInit {
       .getCompanies({
         page: this.pageIndex,
         size: this.pageSize,
-        search: this.searchText
+        search: this.searchText,
       })
       .subscribe({
-        next: (response) => {
+        next: response => {
           if (response.code === 200) {
-            this.dataSource.data = response.data.content.sort((a: Company, b: Company) => a.type === CompanyType.PRIMARY ? -1 : 1);
+            this.dataSource.data = response.data.content.sort((a: Company, b: Company) =>
+              a.type === CompanyType.PRIMARY ? -1 : 1
+            );
             this.totalElements = response.data.totalElements;
           }
           this.loading = false;
         },
-        error: (error) => {
+        error: error => {
           console.error('Error loading companies:', error);
           this.loading = false;
           this.snackBar.open(
@@ -68,7 +70,7 @@ export class CompanyListComponent implements OnInit {
             this.translate.instant('ACTIONS.CLOSE'),
             { duration: 3000 }
           );
-        }
+        },
       });
   }
 
@@ -81,7 +83,7 @@ export class CompanyListComponent implements OnInit {
   onAdd(): void {
     const dialogRef = this.dialog.open(CompanyDialogComponent, {
       width: '600px',
-      data: { mode: 'create' }
+      data: { mode: 'create' },
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -94,10 +96,10 @@ export class CompanyListComponent implements OnInit {
   onEdit(company: Company): void {
     const dialogRef = this.dialog.open(CompanyDialogComponent, {
       width: '600px',
-      data: { 
+      data: {
         mode: 'edit',
-        company: company
-      }
+        company: company,
+      },
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -118,21 +120,21 @@ export class CompanyListComponent implements OnInit {
           );
           this.loadCompanies();
         },
-        error: (error) => {
+        error: error => {
           console.error('Error deleting company:', error);
           this.snackBar.open(
             this.translate.instant('ERROR.DELETE_COMPANY'),
             this.translate.instant('ACTIONS.CLOSE'),
             { duration: 3000 }
           );
-        }
+        },
       });
     }
   }
 
   onToggleStatus(company: Company): void {
     this.companyService.toggleStatus(company.id!).subscribe({
-      next: (response) => {
+      next: response => {
         if (response.code === 200) {
           this.snackBar.open(
             this.translate.instant('COMPANY.STATUS_UPDATED'),
@@ -142,14 +144,14 @@ export class CompanyListComponent implements OnInit {
           this.loadCompanies();
         }
       },
-      error: (error) => {
+      error: error => {
         console.error('Error updating company status:', error);
         this.snackBar.open(
           this.translate.instant('ERROR.UPDATE_STATUS'),
           this.translate.instant('ACTIONS.CLOSE'),
           { duration: 3000 }
         );
-      }
+      },
     });
   }
 
@@ -159,15 +161,15 @@ export class CompanyListComponent implements OnInit {
         title: 'COMPANY.SET_PRIMARY_TITLE',
         message: 'COMPANY.SET_PRIMARY_CONFIRM',
         confirmText: 'ACTIONS.CONFIRM',
-        cancelText: 'ACTIONS.CANCEL'
-      }
+        cancelText: 'ACTIONS.CANCEL',
+      },
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.loading = true;
         this.companyService.setPrimary(company.id!).subscribe({
-          next: (response) => {
+          next: response => {
             if (response.code === 200) {
               this.snackBar.open(
                 this.translate.instant('COMPANY.PRIMARY_UPDATED'),
@@ -177,7 +179,7 @@ export class CompanyListComponent implements OnInit {
               this.loadCompanies();
             }
           },
-          error: (error) => {
+          error: error => {
             console.error('Error setting company as primary:', error);
             this.snackBar.open(
               error.error?.message || this.translate.instant('ERROR.SET_PRIMARY'),
@@ -185,7 +187,7 @@ export class CompanyListComponent implements OnInit {
               { duration: 3000 }
             );
             this.loading = false;
-          }
+          },
         });
       }
     });

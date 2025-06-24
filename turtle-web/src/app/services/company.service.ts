@@ -7,14 +7,19 @@ import { Page } from '../models/page.model';
 import { ApiResponse } from '../models/api.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CompanyService {
   private apiUrl = `${environment.apiUrl}/companies`;
 
   constructor(private http: HttpClient) {}
 
-  getCompanies(params: { page: number; size: number; search?: string; active?: boolean }): Observable<ApiResponse<Page<Company>>> {
+  getCompanies(params: {
+    page: number;
+    size: number;
+    search?: string;
+    active?: boolean;
+  }): Observable<ApiResponse<Page<Company>>> {
     let httpParams = new HttpParams()
       .set('page', params.page.toString())
       .set('size', params.size.toString());

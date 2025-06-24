@@ -930,7 +930,7 @@
     "SEARCH_PLACEHOLDER": "搜索联系人...",
     "ADD_TITLE": "添加联系人",
     "EDIT_TITLE": "编辑联系人",
-    
+
     "NAME": "姓名",
     "LAST_NAME": "姓",
     "FIRST_NAME": "名",
@@ -943,17 +943,17 @@
     "DEPARTMENT": "部门",
     "JOB_TITLE": "职位",
     "STATUS": "状态",
-    
+
     "BASIC_INFO": "基本信息",
     "CONTACT_INFO": "联系方式",
     "COMPANY_INFO": "公司信息",
     "PERSONAL_INFO": "个人信息",
     "EDUCATION_INFO": "教育信息",
     "OTHER_INFO": "其他信息",
-    
+
     "SHOW_MORE": "展开更多信息",
     "SHOW_LESS": "收起更多信息",
-    
+
     "GENDER": "性别",
     "GENDER_MALE": "男",
     "GENDER_FEMALE": "女",
@@ -966,15 +966,15 @@
     "NATIONALITY": "国籍",
     "BIRTH_DATE": "出生日期",
     "RELIGION": "宗教信仰",
-    
+
     "UNIVERSITY": "毕业院校",
     "MAJOR": "专业",
     "GRADUATION_YEAR": "毕业年份",
     "DEGREE": "学位",
-    
+
     "HOBBIES": "爱好",
     "REMARKS": "备注",
-    
+
     "INVALID_EMAIL": "请输入有效的邮箱地址",
     "DELETE_TITLE": "删除联系人",
     "DELETE_CONFIRM": "确定要删除这个联系人吗？",

@@ -26,10 +26,7 @@ import { ProductFilterSelectInputModule } from '@app/components/product-filter-s
 import { ProjectFilterSelectInputModule } from '@app/components/project-filter-select-input/project-filter-select-input.module';
 
 @NgModule({
-  declarations: [
-    InventoryListComponent,
-    InventoryDialogComponent
-  ],
+  declarations: [InventoryListComponent, InventoryDialogComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -40,11 +37,8 @@ import { ProjectFilterSelectInputModule } from '@app/components/project-filter-s
     ProductFilterSelectInputModule,
     ContractFilterSelectInputModule,
     EmployeeFilterSelectInputModule,
-    CompanyFilterSelectInputModule
+    CompanyFilterSelectInputModule,
   ],
-  exports: [
-    InventoryListComponent,
-    InventoryDialogComponent
-  ]
+  exports: [InventoryListComponent, InventoryDialogComponent],
 })
-export class InventoryModule { }
+export class InventoryModule {}

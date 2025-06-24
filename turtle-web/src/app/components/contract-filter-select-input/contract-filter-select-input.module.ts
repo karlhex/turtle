@@ -9,9 +9,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ContractFilterSelectInputComponent } from './contract-filter-select-input.component';
 
 @NgModule({
-  declarations: [
-    ContractFilterSelectInputComponent
-  ],
+  declarations: [ContractFilterSelectInputComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -19,10 +17,8 @@ import { ContractFilterSelectInputComponent } from './contract-filter-select-inp
     MatAutocompleteModule,
     MatFormFieldModule,
     MatInputModule,
-    TranslateModule
+    TranslateModule,
   ],
-  exports: [
-    ContractFilterSelectInputComponent
-  ]
+  exports: [ContractFilterSelectInputComponent],
 })
-export class ContractFilterSelectInputModule { }
+export class ContractFilterSelectInputModule {}

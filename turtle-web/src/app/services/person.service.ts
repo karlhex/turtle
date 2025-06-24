@@ -5,7 +5,7 @@ import { ApiResponse, PageResponse } from '../models/api.model';
 import { Person } from '../models/person.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PersonService {
   private readonly API_URL = 'http://localhost:8080/api/persons';
@@ -13,9 +13,7 @@ export class PersonService {
   constructor(private http: HttpClient) {}
 
   getPersons(page: number = 0, size: number = 10): Observable<ApiResponse<PageResponse<Person>>> {
-    const params = new HttpParams()
-      .set('page', page.toString())
-      .set('size', size.toString());
+    const params = new HttpParams().set('page', page.toString()).set('size', size.toString());
     return this.http.get<ApiResponse<PageResponse<Person>>>(this.API_URL, { params });
   }
 

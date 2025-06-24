@@ -13,7 +13,7 @@ import { Page } from '../../models/page.model';
 @Component({
   selector: 'app-project-list',
   templateUrl: './project-list.component.html',
-  styleUrls: ['./project-list.component.scss']
+  styleUrls: ['./project-list.component.scss'],
 })
 export class ProjectListComponent implements OnInit {
   @ViewChild(MatTable) table!: MatTable<Project>;
@@ -26,9 +26,9 @@ export class ProjectListComponent implements OnInit {
     'manager',
     'startDate',
     'endDate',
-    'actions'
+    'actions',
   ];
-  
+
   dataSource: Project[] = [];
   projectStatuses = Object.values(ProjectStatus);
   loading = false;
@@ -36,10 +36,7 @@ export class ProjectListComponent implements OnInit {
   pageSize = 10;
   pageIndex = 0;
 
-  constructor(
-    private projectService: ProjectService,
-    private dialog: MatDialog
-  ) {}
+  constructor(private projectService: ProjectService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.loadProjects();
@@ -50,7 +47,7 @@ export class ProjectListComponent implements OnInit {
     const query: ProjectQuery = {
       page: this.pageIndex,
       size: this.pageSize,
-      search: search
+      search: search,
     };
 
     this.projectService.getProjects(query).subscribe({
@@ -61,7 +58,7 @@ export class ProjectListComponent implements OnInit {
       },
       error: () => {
         this.loading = false;
-      }
+      },
     });
   }
 
@@ -73,7 +70,7 @@ export class ProjectListComponent implements OnInit {
   onAdd(): void {
     const dialogRef = this.dialog.open(ProjectDialogComponent, {
       width: '800px',
-      data: {}
+      data: {},
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -86,7 +83,7 @@ export class ProjectListComponent implements OnInit {
   onEdit(project: Project): void {
     const dialogRef = this.dialog.open(ProjectDialogComponent, {
       width: '800px',
-      data: { project }
+      data: { project },
     });
 
     dialogRef.afterClosed().subscribe(result => {

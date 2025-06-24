@@ -18,7 +18,7 @@ interface DialogData {
 @Component({
   selector: 'app-contract-invoice-dialog',
   templateUrl: './contract-invoice-dialog.component.html',
-  styleUrls: ['./contract-invoice-dialog.component.scss']
+  styleUrls: ['./contract-invoice-dialog.component.scss'],
 })
 export class ContractInvoiceDialogComponent implements OnInit {
   form: FormGroup;
@@ -35,8 +35,8 @@ export class ContractInvoiceDialogComponent implements OnInit {
     this.isEdit = !!data.item;
     this.buyerTaxInfo = data.buyer?.taxInfo;
     this.sellerTaxInfo = data.seller?.taxInfo;
-    
-    console.log("Dialog data:", data.buyer, this.sellerTaxInfo);
+
+    console.log('Dialog data:', data.buyer, this.sellerTaxInfo);
 
     // Create form with contract's tax info
     this.form = this.fb.group({
@@ -56,7 +56,7 @@ export class ContractInvoiceDialogComponent implements OnInit {
       machineCode: [''],
       cancelled: [false],
       cancelDate: [null],
-      remarks: ['']
+      remarks: [''],
     });
 
     if (this.isEdit && data.item) {
@@ -64,20 +64,19 @@ export class ContractInvoiceDialogComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   calculateTaxAmount(): void {
     const amount = this.form.get('amount')?.value;
     const taxRate = this.form.get('taxRate')?.value;
-    
+
     if (amount && taxRate) {
       const taxAmount = amount * (taxRate / 100);
       const totalAmount = amount + taxAmount;
-      
+
       this.form.patchValue({
         taxAmount: Number(taxAmount.toFixed(2)),
-        totalAmount: Number(totalAmount.toFixed(2))
+        totalAmount: Number(totalAmount.toFixed(2)),
       });
     }
   }

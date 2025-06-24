@@ -9,7 +9,7 @@ import { TaxInfo } from '../../models/tax-info.model';
 @Component({
   selector: 'app-tax-info-dialog',
   templateUrl: './tax-info-dialog.component.html',
-  styleUrls: ['./tax-info-dialog.component.scss']
+  styleUrls: ['./tax-info-dialog.component.scss'],
 })
 export class TaxInfoDialogComponent {
   form: FormGroup;
@@ -21,7 +21,7 @@ export class TaxInfoDialogComponent {
     private dialogRef: MatDialogRef<TaxInfoDialogComponent>,
     private snackBar: MatSnackBar,
     private translate: TranslateService,
-    @Inject(MAT_DIALOG_DATA) public data: { mode: 'create' | 'edit', taxInfo?: TaxInfo }
+    @Inject(MAT_DIALOG_DATA) public data: { mode: 'create' | 'edit'; taxInfo?: TaxInfo }
   ) {
     this.form = this.fb.group({
       fullName: ['', [Validators.required]],
@@ -31,7 +31,7 @@ export class TaxInfoDialogComponent {
       bankCode: ['', [Validators.required]],
       bankAccount: ['', [Validators.required]],
       taxNo: ['', [Validators.required]],
-      remarks: ['']
+      remarks: [''],
     });
 
     if (data.mode === 'edit' && data.taxInfo) {
@@ -44,22 +44,23 @@ export class TaxInfoDialogComponent {
       this.loading = true;
       const taxInfo = this.form.value;
 
-      const request = this.data.mode === 'create'
-        ? this.taxInfoService.createTaxInfo(taxInfo)
-        : this.taxInfoService.updateTaxInfo(this.data.taxInfo!.id!, taxInfo);
+      const request =
+        this.data.mode === 'create'
+          ? this.taxInfoService.createTaxInfo(taxInfo)
+          : this.taxInfoService.updateTaxInfo(this.data.taxInfo!.id!, taxInfo);
 
       request.subscribe({
         next: () => {
           this.dialogRef.close(true);
           this.snackBar.open(
-            this.translate.instant(this.data.mode === 'create' 
-              ? 'SUCCESS.TAX_INFO_CREATED' 
-              : 'SUCCESS.TAX_INFO_UPDATED'),
+            this.translate.instant(
+              this.data.mode === 'create' ? 'SUCCESS.TAX_INFO_CREATED' : 'SUCCESS.TAX_INFO_UPDATED'
+            ),
             this.translate.instant('ACTIONS.CLOSE'),
             { duration: 3000 }
           );
         },
-        error: (error) => {
+        error: error => {
           console.error('Error saving tax info:', error);
           this.loading = false;
           this.snackBar.open(
@@ -67,7 +68,7 @@ export class TaxInfoDialogComponent {
             this.translate.instant('ACTIONS.CLOSE'),
             { duration: 3000 }
           );
-        }
+        },
       });
     }
   }

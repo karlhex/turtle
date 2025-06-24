@@ -8,7 +8,9 @@ interface BaseItem {
 }
 
 @Directive()
-export abstract class BaseFilterSelectInputComponent<T extends BaseItem> implements OnInit, ControlValueAccessor {
+export abstract class BaseFilterSelectInputComponent<T extends BaseItem>
+  implements OnInit, ControlValueAccessor
+{
   @Input() set items(value: T[]) {
     this._items = value;
     if (this._initialValue !== undefined) {
@@ -19,13 +21,13 @@ export abstract class BaseFilterSelectInputComponent<T extends BaseItem> impleme
   get items(): T[] {
     return this._items;
   }
-  
+
   @Input() label: string = 'common.select_item';
   @Input() optionTemplate?: TemplateRef<any>;
-  
+
   itemCtrl = new FormControl();
   filteredItems: Observable<T[]>;
-  
+
   private _items: T[] = [];
   private _initialValue: any;
   protected onChange: (value: any) => void = () => {};
@@ -55,14 +57,13 @@ export abstract class BaseFilterSelectInputComponent<T extends BaseItem> impleme
 
   protected _filter(value: string | T): T[] {
     if (!value) return this.items;
-    
+
     const filterValue = typeof value === 'string' ? value.toLowerCase() : '';
-    
+
     return this.items.filter(item => {
       if (!filterValue) return true;
-      
-      const searchFields = this.getSearchFields(item)
-        .map(field => field?.toLowerCase() || '');
+
+      const searchFields = this.getSearchFields(item).map(field => field?.toLowerCase() || '');
 
       return searchFields.some(field => field.includes(filterValue));
     });

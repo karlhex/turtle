@@ -16,7 +16,7 @@ import { map, startWith } from 'rxjs/operators';
 @Component({
   selector: 'app-bank-account-dialog',
   templateUrl: './bank-account-dialog.component.html',
-  styleUrls: ['./bank-account-dialog.component.scss']
+  styleUrls: ['./bank-account-dialog.component.scss'],
 })
 export class BankAccountDialogComponent implements OnInit {
   form: FormGroup;
@@ -34,7 +34,7 @@ export class BankAccountDialogComponent implements OnInit {
     private dialogRef: MatDialogRef<BankAccountDialogComponent>,
     private snackBar: MatSnackBar,
     private translate: TranslateService,
-    @Inject(MAT_DIALOG_DATA) public data: { mode: 'create' | 'edit', bankAccount?: BankAccount }
+    @Inject(MAT_DIALOG_DATA) public data: { mode: 'create' | 'edit'; bankAccount?: BankAccount }
   ) {
     this.form = this.fb.group({
       name: ['', [Validators.required]],
@@ -50,21 +50,21 @@ export class BankAccountDialogComponent implements OnInit {
       active: [true],
       swiftCode: [''],
       contactPerson: [''],
-      contactPhone: ['']
+      contactPhone: [''],
     });
 
     if (data.mode === 'edit' && data.bankAccount) {
       // Find the company by ID and set it in the form
       if (data.bankAccount.companyId) {
         this.companyService.getCompany(data.bankAccount.companyId).subscribe({
-          next: (response) => {
+          next: response => {
             if (response.code === 200 && response.data) {
               this.form.patchValue({
                 ...data.bankAccount,
-                company: response.data
+                company: response.data,
               });
             }
-          }
+          },
         });
       } else {
         this.form.patchValue(data.bankAccount);
@@ -88,7 +88,7 @@ export class BankAccountDialogComponent implements OnInit {
 
   private loadCurrencies(): void {
     this.currencyService.getCurrencies({ page: 0, size: 100, active: true }).subscribe(response => {
-        if (response.code === 200) {
+      if (response.code === 200) {
         this.currencies = response.data.content;
       }
     });
@@ -96,7 +96,7 @@ export class BankAccountDialogComponent implements OnInit {
 
   private loadCompanies(): void {
     this.companyService.getCompanies({ page: 0, size: 100, active: true }).subscribe(response => {
-        if (response.code === 200) {
+      if (response.code === 200) {
         this.companies = response.data.content;
       }
     });
@@ -104,9 +104,10 @@ export class BankAccountDialogComponent implements OnInit {
 
   private _filterCompanies(value: string): Company[] {
     const filterValue = value.toLowerCase();
-    return this.companies.filter(company => 
-      company.fullName.toLowerCase().includes(filterValue) ||
-      (company.shortName && company.shortName.toLowerCase().includes(filterValue))
+    return this.companies.filter(
+      company =>
+        company.fullName.toLowerCase().includes(filterValue) ||
+        (company.shortName && company.shortName.toLowerCase().includes(filterValue))
     );
   }
 
@@ -122,16 +123,21 @@ export class BankAccountDialogComponent implements OnInit {
       bankAccount.companyId = bankAccount.company?.id;
       delete bankAccount.company;
 
-      const request = this.data.mode === 'create'
-        ? this.bankAccountService.createBankAccount(bankAccount)
-        : this.bankAccountService.updateBankAccount(this.data.bankAccount!.id!, bankAccount);
+      const request =
+        this.data.mode === 'create'
+          ? this.bankAccountService.createBankAccount(bankAccount)
+          : this.bankAccountService.updateBankAccount(this.data.bankAccount!.id!, bankAccount);
 
       request.subscribe({
         next: response => {
-          console.log("Saving bank account:", response);
+          console.log('Saving bank account:', response);
           if (response.code === 200) {
             this.snackBar.open(
-              this.translate.instant(this.data.mode === 'create' ? 'common.message.create_success' : 'common.message.update_success'),
+              this.translate.instant(
+                this.data.mode === 'create'
+                  ? 'common.message.create_success'
+                  : 'common.message.update_success'
+              ),
               this.translate.instant('common.action.close'),
               { duration: 3000 }
             );
@@ -152,7 +158,7 @@ export class BankAccountDialogComponent implements OnInit {
             { duration: 3000 }
           );
           this.loading = false;
-        }
+        },
       });
     }
   }

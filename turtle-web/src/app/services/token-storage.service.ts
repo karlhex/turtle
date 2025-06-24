@@ -3,7 +3,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { TokenPair } from '../models/token.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TokenStorageService {
   private readonly TOKEN_KEY = 'access_token';
@@ -54,7 +54,7 @@ export class TokenStorageService {
     const expiresIn = localStorage.getItem(this.EXPIRES_IN_REFRESH_KEY);
     return expiresIn ? parseInt(expiresIn) : null;
   }
-  
+
   setUserId(id: string): void {
     localStorage.setItem(this.USER_ID_KEY, id);
   }
@@ -103,7 +103,7 @@ export class TokenStorageService {
     this.setToken(tokenPair.accessToken);
     this.setExpiresIn(tokenPair.accessTokenExpiry);
     this.setRefreshToken(tokenPair.refreshToken);
-    this.setExpiresInRefresh(tokenPair.refreshTokenExpiry); 
+    this.setExpiresInRefresh(tokenPair.refreshTokenExpiry);
   }
 
   getTokenPair(): TokenPair | null {
@@ -111,8 +111,8 @@ export class TokenStorageService {
       accessToken: this.getToken() || '',
       accessTokenExpiry: this.getExpiresIn() || 0,
       refreshToken: this.getRefreshToken() || '',
-      refreshTokenExpiry: this.getExpiresInRefresh() || 0
-    }
+      refreshTokenExpiry: this.getExpiresInRefresh() || 0,
+    };
   }
 
   storePermissions(permissions: string[]): void {

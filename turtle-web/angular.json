@@ -125,11 +125,23 @@
           "options": {
             "browserTarget": "turtle-web:build"
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
+          }
         }
       }
     }
   },
   "cli": {
-    "analytics": "076a257f-e8b8-4c4e-9736-35332bf2f2e1"
+    "analytics": "076a257f-e8b8-4c4e-9736-35332bf2f2e1",
+    "schematicCollections": [
+      "@angular-eslint/schematics"
+    ]
   }
 }

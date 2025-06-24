@@ -7,7 +7,11 @@
     <span class="toolbar-spacer"></span>
     <!-- 用户信息显示 -->
     <div class="user-info" *ngIf="userInfo">
-      <span>{{ userInfo.employeeName }}{{ userInfo.employeeDepartment ? ' - ' + userInfo.employeeDepartment : '' }}{{ userInfo.employeePosition ? ' - ' + userInfo.employeePosition : '' }}</span>
+      <span
+        >{{ userInfo.employeeName
+        }}{{ userInfo.employeeDepartment ? ' - ' + userInfo.employeeDepartment : ''
+        }}{{ userInfo.employeePosition ? ' - ' + userInfo.employeePosition : '' }}</span
+      >
     </div>
     <button mat-icon-button [matMenuTriggerFor]="langMenu">
       <mat-icon>language</mat-icon>
@@ -37,7 +41,10 @@
 
   <mat-sidenav-container class="sidenav-container">
     <mat-sidenav #sidenav mode="side" opened [class.collapsed]="isMenuCollapsed" class="sidenav">
-      <app-sidebar-menu [isCollapsed]="isMenuCollapsed" (menuToggled)="toggleMenu()"></app-sidebar-menu>
+      <app-sidebar-menu
+        [isCollapsed]="isMenuCollapsed"
+        (menuToggled)="toggleMenu()"
+      ></app-sidebar-menu>
     </mat-sidenav>
 
     <mat-sidenav-content>

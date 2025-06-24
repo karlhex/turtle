@@ -34,14 +34,18 @@ export interface CreateUserDto {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserService {
   private readonly API_URL = `${environment.apiUrl}/users`;
 
   constructor(private http: HttpClient) {}
 
-  getUsers(page: number = 0, pageSize: number = 10, sort?: { sortBy: string; direction: 'ASC' | 'DESC' }): Observable<ApiResponse<any>> {
+  getUsers(
+    page: number = 0,
+    pageSize: number = 10,
+    sort?: { sortBy: string; direction: 'ASC' | 'DESC' }
+  ): Observable<ApiResponse<any>> {
     let url = `${this.API_URL}?page=${page}&size=${pageSize}`;
     if (sort) {
       url += `&sort=${sort.sortBy},${sort.direction}`;
@@ -69,13 +73,22 @@ export class UserService {
     return this.http.post<ApiResponse<User>>(this.API_URL, user);
   }
 
-  searchUsers(query: string, page: number = 0, pageSize: number = 10): Observable<ApiResponse<any>> {
-    const url = `${this.API_URL}/search?query=${encodeURIComponent(query)}&page=${page}&size=${pageSize}`;
+  searchUsers(
+    query: string,
+    page: number = 0,
+    pageSize: number = 10
+  ): Observable<ApiResponse<any>> {
+    const url = `${this.API_URL}/search?query=${encodeURIComponent(
+      query
+    )}&page=${page}&size=${pageSize}`;
     return this.http.get<ApiResponse<any>>(url);
   }
 
   changeUserPassword(changePasswordRequest: ChangePasswordRequest): Observable<ApiResponse<void>> {
-    return this.http.post<ApiResponse<void>>(`${this.API_URL}/change-password`, changePasswordRequest);
+    return this.http.post<ApiResponse<void>>(
+      `${this.API_URL}/change-password`,
+      changePasswordRequest
+    );
   }
 
   resetPassword(userId: number): Observable<ApiResponse<string>> {

@@ -2,7 +2,7 @@
   <!-- Header -->
   <header class="header">
     <div class="header-content">
-      <h1>Welcome, {{username}}</h1>
+      <h1>Welcome, {{ username }}</h1>
       <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="User menu">
         <mat-icon fontSet="material-icons">person</mat-icon>
       </button>
@@ -20,12 +20,12 @@
     <mat-card class="stat-card" *ngFor="let stat of stats">
       <mat-card-content>
         <div class="stat-icon">
-          <mat-icon>{{stat.icon}}</mat-icon>
+          <mat-icon>{{ stat.icon }}</mat-icon>
         </div>
         <div class="stat-info">
-          <h3>{{stat.title}}</h3>
-          <div class="stat-value">{{stat.value}}</div>
-          <div class="stat-trend">{{stat.trend}}</div>
+          <h3>{{ stat.title }}</h3>
+          <div class="stat-value">{{ stat.value }}</div>
+          <div class="stat-trend">{{ stat.trend }}</div>
         </div>
       </mat-card-content>
     </mat-card>

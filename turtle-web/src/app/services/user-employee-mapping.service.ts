@@ -13,12 +13,12 @@ export interface UserEmployeeMapping {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserEmployeeMappingService {
   private apiUrl = `${environment.apiUrl}/user-employee-mappings`;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getMappings(): Observable<ApiResponse<UserEmployeeMapping[]>> {
     return this.http.get<ApiResponse<UserEmployeeMapping[]>>(this.apiUrl);
@@ -28,8 +28,8 @@ export class UserEmployeeMappingService {
     return this.http.post<ApiResponse<void>>(this.apiUrl, null, {
       params: {
         userId: userId.toString(),
-        employeeId: employeeId.toString()
-      }
+        employeeId: employeeId.toString(),
+      },
     });
   }
 

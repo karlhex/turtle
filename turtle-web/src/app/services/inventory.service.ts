@@ -6,12 +6,12 @@ import { ApiResponse, PageResponse } from '../models/api.model';
 import { environment } from '../../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class InventoryService {
   private apiUrl = `${environment.apiUrl}/inventories`;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   create(inventory: Inventory): Observable<ApiResponse<Inventory>> {
     return this.http.post<ApiResponse<Inventory>>(this.apiUrl, inventory);
@@ -21,7 +21,11 @@ export class InventoryService {
     return this.http.get<ApiResponse<Inventory>>(`${this.apiUrl}/${id}`);
   }
 
-  getAll(page: number = 0, size: number = 10, sort: string = 'id,desc'): Observable<ApiResponse<PageResponse<Inventory>>> {
+  getAll(
+    page: number = 0,
+    size: number = 10,
+    sort: string = 'id,desc'
+  ): Observable<ApiResponse<PageResponse<Inventory>>> {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString())

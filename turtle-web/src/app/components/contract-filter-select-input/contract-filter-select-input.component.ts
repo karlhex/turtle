@@ -11,9 +11,9 @@ import { BaseFilterSelectInputComponent } from '../base-filter-select-input/base
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: ContractFilterSelectInputComponent,
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
 export class ContractFilterSelectInputComponent extends BaseFilterSelectInputComponent<Contract> {
   @Input() override label: string = 'common.select_contract';
@@ -31,6 +31,11 @@ export class ContractFilterSelectInputComponent extends BaseFilterSelectInputCom
   }
 
   override getSearchFields(contract: Contract): (string | undefined)[] {
-    return [contract.contractNo, contract.title, contract.buyerCompany?.fullName, contract.sellerCompany?.fullName];
+    return [
+      contract.contractNo,
+      contract.title,
+      contract.buyerCompany?.fullName,
+      contract.sellerCompany?.fullName,
+    ];
   }
 }

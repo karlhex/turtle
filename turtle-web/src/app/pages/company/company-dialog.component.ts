@@ -16,7 +16,7 @@ import { CompanyType } from '../../types/company-type.enum';
 @Component({
   selector: 'app-company-dialog',
   templateUrl: './company-dialog.component.html',
-  styleUrls: ['./company-dialog.component.scss']
+  styleUrls: ['./company-dialog.component.scss'],
 })
 export class CompanyDialogComponent implements OnInit {
   form: FormGroup;
@@ -34,7 +34,7 @@ export class CompanyDialogComponent implements OnInit {
     private dialogRef: MatDialogRef<CompanyDialogComponent>,
     private snackBar: MatSnackBar,
     private translate: TranslateService,
-    @Inject(MAT_DIALOG_DATA) public data: { mode: 'create' | 'edit', company?: Company }
+    @Inject(MAT_DIALOG_DATA) public data: { mode: 'create' | 'edit'; company?: Company }
   ) {
     this.form = this.fb.group({
       fullName: ['', [Validators.required]],
@@ -91,8 +91,7 @@ export class CompanyDialogComponent implements OnInit {
 
   private _filterTaxInfos(name: string): TaxInfo[] {
     const filterValue = name.toLowerCase();
-    return this.taxInfos.filter(taxInfo => 
-      taxInfo.fullName.toLowerCase().includes(filterValue));
+    return this.taxInfos.filter(taxInfo => taxInfo.fullName.toLowerCase().includes(filterValue));
   }
 
   displayTaxInfo(taxInfo: TaxInfo): string {
@@ -108,18 +107,17 @@ export class CompanyDialogComponent implements OnInit {
       this.loading = true;
       const company = this.form.value;
 
-      const request = this.data.mode === 'create'
-        ? this.companyService.createCompany(company)
-        : this.companyService.updateCompany(this.data.company!.id!, company);
+      const request =
+        this.data.mode === 'create'
+          ? this.companyService.createCompany(company)
+          : this.companyService.updateCompany(this.data.company!.id!, company);
 
       request.subscribe({
-        next: (response) => {
+        next: response => {
           if (response.code === 200) {
             this.snackBar.open(
               this.translate.instant(
-                this.data.mode === 'create'
-                  ? 'COMPANY.CREATE_SUCCESS'
-                  : 'COMPANY.UPDATE_SUCCESS'
+                this.data.mode === 'create' ? 'COMPANY.CREATE_SUCCESS' : 'COMPANY.UPDATE_SUCCESS'
               ),
               this.translate.instant('ACTIONS.CLOSE'),
               { duration: 3000 }
@@ -134,7 +132,7 @@ export class CompanyDialogComponent implements OnInit {
           }
           this.loading = false;
         },
-        error: (error) => {
+        error: error => {
           console.error('Error saving company:', error);
           this.snackBar.open(
             this.translate.instant('ERROR.SAVE_COMPANY'),
@@ -142,7 +140,7 @@ export class CompanyDialogComponent implements OnInit {
             { duration: 3000 }
           );
           this.loading = false;
-        }
+        },
       });
     }
   }

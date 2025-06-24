@@ -5,7 +5,7 @@ import { Invoice } from '../models/invoice.model';
 import { environment } from '../../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class InvoiceService {
   private readonly apiUrl = `${environment.apiUrl}/invoices`;
@@ -46,7 +46,7 @@ export class InvoiceService {
 
   cancel(id: number, reason: string): Observable<Invoice> {
     return this.http.post<Invoice>(`${this.apiUrl}/${id}/cancel`, null, {
-      params: { reason }
+      params: { reason },
     });
   }
 }

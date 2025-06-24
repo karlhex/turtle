@@ -7,7 +7,7 @@ import { EmployeeEducation as Education } from '../../models/employee.model';
 @Component({
   selector: 'app-education-list',
   templateUrl: './education-list.component.html',
-  styleUrls: ['./education-list.component.scss']
+  styleUrls: ['./education-list.component.scss'],
 })
 export class EducationListComponent {
   @Input() employeeId!: number;
@@ -15,23 +15,27 @@ export class EducationListComponent {
   @Input() editMode: boolean = false;
   @Output() educationEdited = new EventEmitter<Education[]>();
 
-  displayedColumns: string[] = ['institution', 'degree', 'major', 'startDate', 'endDate', 'actions'];
+  displayedColumns: string[] = [
+    'institution',
+    'degree',
+    'major',
+    'startDate',
+    'endDate',
+    'actions',
+  ];
 
-  constructor(
-    private dialog: MatDialog,
-    private employeeService: EmployeeService
-  ) {}
+  constructor(private dialog: MatDialog, private employeeService: EmployeeService) {}
 
   onAddEducation(): void {
     const dialogRef = this.dialog.open(EducationDialogComponent, {
       width: '600px',
-      data: { mode: 'add', employeeId: this.employeeId }
+      data: { mode: 'add', employeeId: this.employeeId },
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.educations = [...this.educations, result];
-        console.log("Updated educations",this.educations);
+        console.log('Updated educations', this.educations);
         this.educationEdited.emit(this.educations);
       }
     });
@@ -40,14 +44,12 @@ export class EducationListComponent {
   onEditEducation(education: Education): void {
     const dialogRef = this.dialog.open(EducationDialogComponent, {
       width: '600px',
-      data: { mode: 'edit', education, employeeId: this.employeeId }
+      data: { mode: 'edit', education, employeeId: this.employeeId },
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.educations = this.educations.map(e => 
-          e.id === result.id ? result : e
-        );
+        this.educations = this.educations.map(e => (e.id === result.id ? result : e));
         this.educationEdited.emit(this.educations);
       }
     });

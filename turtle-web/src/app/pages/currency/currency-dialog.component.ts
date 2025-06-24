@@ -8,7 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-currency-dialog',
   templateUrl: './currency-dialog.component.html',
-  styleUrls: ['./currency-dialog.component.scss']
+  styleUrls: ['./currency-dialog.component.scss'],
 })
 export class CurrencyDialogComponent implements OnInit {
   currencyForm: FormGroup;
@@ -30,7 +30,7 @@ export class CurrencyDialogComponent implements OnInit {
       country: ['', [Validators.maxLength(100)]],
       exchangeRate: [{ value: null, disabled: this.isEditMode }, [Validators.min(0)]],
       active: [true],
-      isBaseCurrency: [{ value: false, disabled: true }]
+      isBaseCurrency: [{ value: false, disabled: true }],
     });
   }
 
@@ -53,7 +53,7 @@ export class CurrencyDialogComponent implements OnInit {
       const formValue = this.currencyForm.getRawValue();
       const currency: Currency = {
         ...this.data.currency,
-        ...formValue
+        ...formValue,
       };
 
       // For new currencies, if no exchange rate is provided and it's not base currency,

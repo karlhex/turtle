@@ -19,9 +19,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { BaseListComponent } from './base-list.component';
 
 @NgModule({
-  declarations: [
-    BaseListComponent
-  ],
+  declarations: [BaseListComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -39,7 +37,7 @@ import { BaseListComponent } from './base-list.component';
     MatNativeDateModule,
     MatProgressBarModule,
     MatTooltipModule,
-    TranslateModule
+    TranslateModule,
   ],
   exports: [
     BaseListComponent,
@@ -59,7 +57,7 @@ import { BaseListComponent } from './base-list.component';
     MatNativeDateModule,
     MatProgressBarModule,
     MatTooltipModule,
-    TranslateModule
-  ]
+    TranslateModule,
+  ],
 })
-export class BaseListModule { }
+export class BaseListModule {}

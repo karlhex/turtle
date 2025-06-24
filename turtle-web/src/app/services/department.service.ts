@@ -6,26 +6,33 @@ import { environment } from 'src/environments/environment';
 import { Department } from '../models/department.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DepartmentService {
   private readonly API_URL = `${environment.apiUrl}/departments`;
 
   constructor(private http: HttpClient) {}
 
-  getDepartments(page: number = 0, size: number = 10): Observable<ApiResponse<PageResponse<Department>>> {
-    const params = new HttpParams()
-      .set('page', page.toString())
-      .set('size', size.toString());
+  getDepartments(
+    page: number = 0,
+    size: number = 10
+  ): Observable<ApiResponse<PageResponse<Department>>> {
+    const params = new HttpParams().set('page', page.toString()).set('size', size.toString());
     return this.http.get<ApiResponse<PageResponse<Department>>>(this.API_URL, { params });
   }
 
-  searchDepartments(query: string, page: number = 0, size: number = 10): Observable<ApiResponse<PageResponse<Department>>> {
+  searchDepartments(
+    query: string,
+    page: number = 0,
+    size: number = 10
+  ): Observable<ApiResponse<PageResponse<Department>>> {
     const params = new HttpParams()
       .set('query', query)
       .set('page', page.toString())
       .set('size', size.toString());
-    return this.http.get<ApiResponse<PageResponse<Department>>>(`${this.API_URL}/search`, { params });
+    return this.http.get<ApiResponse<PageResponse<Department>>>(`${this.API_URL}/search`, {
+      params,
+    });
   }
 
   getDepartmentById(id: number): Observable<ApiResponse<Department>> {

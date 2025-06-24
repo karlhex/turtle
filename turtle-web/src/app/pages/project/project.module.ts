@@ -23,10 +23,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { ActionModule } from '@app/components/action/action.module';
 
 @NgModule({
-  declarations: [
-    ProjectListComponent,
-    ProjectDialogComponent
-  ],
+  declarations: [ProjectListComponent, ProjectDialogComponent],
   imports: [
     SharedModule,
     ActionModule,
@@ -47,11 +44,8 @@ import { ActionModule } from '@app/components/action/action.module';
     MatAutocompleteModule,
     MatChipsModule,
     TranslateModule,
-    BaseListModule
+    BaseListModule,
   ],
-  exports: [
-    ProjectListComponent,
-    ProjectDialogComponent
-  ]
+  exports: [ProjectListComponent, ProjectDialogComponent],
 })
-export class ProjectModule { }
+export class ProjectModule {}

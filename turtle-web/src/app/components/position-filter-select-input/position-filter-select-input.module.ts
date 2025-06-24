@@ -9,9 +9,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { PositionFilterSelectInputComponent } from './position-filter-select-input.component';
 
 @NgModule({
-  declarations: [
-    PositionFilterSelectInputComponent
-  ],
+  declarations: [PositionFilterSelectInputComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -19,10 +17,8 @@ import { PositionFilterSelectInputComponent } from './position-filter-select-inp
     MatAutocompleteModule,
     MatFormFieldModule,
     MatInputModule,
-    TranslateModule
+    TranslateModule,
   ],
-  exports: [
-    PositionFilterSelectInputComponent
-  ]
+  exports: [PositionFilterSelectInputComponent],
 })
-export class PositionFilterSelectInputModule { }
+export class PositionFilterSelectInputModule {}

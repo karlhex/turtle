@@ -11,9 +11,9 @@ import { BaseFilterSelectInputComponent } from '../base-filter-select-input/base
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: PositionFilterSelectInputComponent,
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
 export class PositionFilterSelectInputComponent extends BaseFilterSelectInputComponent<Position> {
   @Input() override label: string = 'common.select_position';

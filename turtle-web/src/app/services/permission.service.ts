@@ -4,7 +4,7 @@ import { environment } from '../../environments/environment';
 import { map } from 'rxjs/operators';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PermissionService {
   private readonly PERMISSIONS_KEY = 'user_permissions';
@@ -45,9 +45,7 @@ export class PermissionService {
           const pattern = p.replace(/\./g, '\\.').replace(/\*/g, '.*');
           return new RegExp(`^${pattern}$`);
         });
-        return permissions.some(permission => 
-          permPatterns.some(regex => regex.test(permission))
-        );
+        return permissions.some(permission => permPatterns.some(regex => regex.test(permission)));
       })
     );
   }
@@ -59,9 +57,7 @@ export class PermissionService {
           const pattern = p.replace(/\./g, '\\.').replace(/\*/g, '.*');
           return new RegExp(`^${pattern}$`);
         });
-        return permissions.every(permission => 
-          permPatterns.some(regex => regex.test(permission))
-        );
+        return permissions.every(permission => permPatterns.some(regex => regex.test(permission)));
       })
     );
   }

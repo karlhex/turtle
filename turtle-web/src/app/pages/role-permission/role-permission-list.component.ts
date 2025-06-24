@@ -12,7 +12,7 @@ import { Page } from '../../models/page.model';
 @Component({
   selector: 'app-role-permission-list',
   templateUrl: './role-permission-list.component.html',
-  styleUrls: ['./role-permission-list.component.scss']
+  styleUrls: ['./role-permission-list.component.scss'],
 })
 export class RolePermissionListComponent implements OnInit {
   @ViewChild(MatTable) table!: MatTable<RolePermission>;
@@ -23,9 +23,9 @@ export class RolePermissionListComponent implements OnInit {
     'transactionPattern',
     'description',
     'isActive',
-    'actions'
+    'actions',
   ];
-  
+
   dataSource: RolePermission[] = [];
   loading = false;
   totalElements = 0;
@@ -33,10 +33,7 @@ export class RolePermissionListComponent implements OnInit {
   pageIndex = 0;
   searchText = '';
 
-  constructor(
-    private rolePermissionService: RolePermissionService,
-    private dialog: MatDialog
-  ) {}
+  constructor(private rolePermissionService: RolePermissionService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.loadData();
@@ -46,16 +43,16 @@ export class RolePermissionListComponent implements OnInit {
     this.pageSize = event.pageSize;
     this.loadData();
   }
-  
+
   onSearch(searchText: string): void {
     this.searchText = searchText;
     this.pageIndex = 0;
     const page: PageEvent = {
       pageIndex: this.pageIndex,
       pageSize: this.pageSize,
-      length: this.totalElements
+      length: this.totalElements,
     };
-    
+
     this.loadData(page);
   }
 
@@ -66,24 +63,23 @@ export class RolePermissionListComponent implements OnInit {
       this.pageSize = event.pageSize;
     }
 
-    this.rolePermissionService.findAll(this.pageIndex, this.pageSize)
-      .subscribe({
-        next: (response) => {
-          this.dataSource = response.data.content;
-          this.totalElements = response.data.totalElements;
-          this.loading = false;
-        },
-        error: (error) => {
-          console.error('Error loading role permissions:', error);
-          this.loading = false;
-        }
-      });
+    this.rolePermissionService.findAll(this.pageIndex, this.pageSize).subscribe({
+      next: response => {
+        this.dataSource = response.data.content;
+        this.totalElements = response.data.totalElements;
+        this.loading = false;
+      },
+      error: error => {
+        console.error('Error loading role permissions:', error);
+        this.loading = false;
+      },
+    });
   }
 
   openDialog(rolePermission?: RolePermission): void {
     const dialogRef = this.dialog.open(RolePermissionDialogComponent, {
       width: '600px',
-      data: rolePermission || {}
+      data: rolePermission || {},
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -99,16 +95,16 @@ export class RolePermissionListComponent implements OnInit {
         next: () => {
           this.loadData();
         },
-        error: (error) => {
+        error: error => {
           console.error('Error deleting role permission:', error);
-        }
+        },
       });
     }
   }
 
   toggleActive(rolePermission: RolePermission): void {
     this.rolePermissionService.toggleActive(rolePermission.id).subscribe({
-      next: (response) => {
+      next: response => {
         // Update the local data source
         if (response.data && response.code === 200) {
           this.dataSource = this.dataSource.map(rp => {
@@ -119,9 +115,9 @@ export class RolePermissionListComponent implements OnInit {
           });
         }
       },
-      error: (error) => {
+      error: error => {
         console.error('Error toggling role permission active status:', error);
-      }
+      },
     });
   }
 }

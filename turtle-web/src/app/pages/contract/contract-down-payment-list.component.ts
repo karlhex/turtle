@@ -6,14 +6,17 @@ import { DebitCreditType } from '../../types/debit-credit-type.enum';
 @Component({
   selector: 'app-contract-down-payment-list',
   templateUrl: './contract-down-payment-list.component.html',
-  styleUrls: ['./contract-down-payment-list.component.scss']
+  styleUrls: ['./contract-down-payment-list.component.scss'],
 })
 export class ContractDownPaymentListComponent {
   @Input() items: ContractDownPayment[] = [];
   @Input() currency?: Currency;
   @Output() itemDeleted = new EventEmitter<ContractDownPayment>();
   @Output() itemEdited = new EventEmitter<ContractDownPayment>();
-  @Output() paymentStatusChanged = new EventEmitter<{item: ContractDownPayment, status: boolean}>();
+  @Output() paymentStatusChanged = new EventEmitter<{
+    item: ContractDownPayment;
+    status: boolean;
+  }>();
 
   displayedColumns: string[] = [
     'paymentInstruction',
@@ -25,7 +28,7 @@ export class ContractDownPaymentListComponent {
     'bankName',
     'paymentStatus',
     'remarks',
-    'actions'
+    'actions',
   ];
 
   editItem(item: ContractDownPayment): void {

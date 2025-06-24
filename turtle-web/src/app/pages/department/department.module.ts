@@ -19,10 +19,7 @@ import { BaseListModule } from '../../components/base-list/base-list.module';
 import { ActionModule } from '@app/components/action/action.module';
 
 @NgModule({
-  declarations: [
-    DepartmentListComponent,
-    DepartmentDialogComponent
-  ],
+  declarations: [DepartmentListComponent, DepartmentDialogComponent],
   imports: [
     ActionModule,
     CommonModule,
@@ -39,11 +36,8 @@ import { ActionModule } from '@app/components/action/action.module';
     MatProgressBarModule,
     MatTooltipModule,
     TranslateModule,
-    BaseListModule
+    BaseListModule,
   ],
-  exports: [
-    DepartmentListComponent,
-    DepartmentDialogComponent
-  ]
+  exports: [DepartmentListComponent, DepartmentDialogComponent],
 })
-export class DepartmentModule { }
+export class DepartmentModule {}

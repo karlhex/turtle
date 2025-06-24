@@ -32,15 +32,12 @@ import { BaseListModule } from '@app/components/base-list/base-list.module';
 const routes: Routes = [
   {
     path: '',
-    component: ContactListComponent
-  }
+    component: ContactListComponent,
+  },
 ];
 
 @NgModule({
-  declarations: [
-    ContactListComponent,
-    ContactDialogComponent
-  ],
+  declarations: [ContactListComponent, ContactDialogComponent],
   imports: [
     BaseListModule,
     CommonModule,
@@ -49,7 +46,7 @@ const routes: Routes = [
     ReactiveFormsModule,
     TranslateModule,
     SharedModule,
-    
+
     // Material Modules
     MatTableModule,
     MatPaginatorModule,
@@ -67,11 +64,8 @@ const routes: Routes = [
     MatProgressSpinnerModule,
     MatSnackBarModule,
     MatAutocompleteModule,
-    MatTooltipModule
+    MatTooltipModule,
   ],
-  exports: [
-    ContactListComponent,
-    ContactDialogComponent
-  ]
+  exports: [ContactListComponent, ContactDialogComponent],
 })
-export class ContactModule { }
+export class ContactModule {}

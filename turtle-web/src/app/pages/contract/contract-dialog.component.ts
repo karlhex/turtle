@@ -31,7 +31,7 @@ import { BuiltinType } from '@angular/compiler';
 @Component({
   selector: 'app-contract-dialog',
   templateUrl: './contract-dialog.component.html',
-  styleUrls: ['./contract-dialog.component.scss']
+  styleUrls: ['./contract-dialog.component.scss'],
 })
 export class ContractDialogComponent implements OnInit {
   form: FormGroup;
@@ -49,7 +49,15 @@ export class ContractDialogComponent implements OnInit {
   contractItems: ContractItem[] = [];
   contractDownPayments: ContractDownPayment[] = [];
   displayedColumns: string[] = ['name', 'quantity', 'unitPrice', 'amount', 'actions'];
-  displayedDownPaymentColumns: string[] = ['paymentInstruction', 'debitCreditType', 'amount', 'plannedDate', 'actualDate', 'paymentStatus', 'actions'];
+  displayedDownPaymentColumns: string[] = [
+    'paymentInstruction',
+    'debitCreditType',
+    'amount',
+    'plannedDate',
+    'actualDate',
+    'paymentStatus',
+    'actions',
+  ];
 
   constructor(
     private fb: FormBuilder,
@@ -85,9 +93,9 @@ export class ContractDialogComponent implements OnInit {
       remarks: [data.remarks],
       paymentTerms: [data.paymentTerms],
       deliveryTerms: [data.deliveryTerms],
-      warrantyTerms: [data.warrantyTerms]
+      warrantyTerms: [data.warrantyTerms],
     });
-    
+
     // Initialize items if editing
     if (data.items) {
       this.contractItems = [...data.items];
@@ -131,21 +139,22 @@ export class ContractDialogComponent implements OnInit {
 
   private _filterCompanies(value: string): Company[] {
     const filterValue = value.toLowerCase();
-    return this.companies.filter(company => 
-      company.fullName.toLowerCase().includes(filterValue) ||
-      (company.shortName && company.shortName.toLowerCase().includes(filterValue))
+    return this.companies.filter(
+      company =>
+        company.fullName.toLowerCase().includes(filterValue) ||
+        (company.shortName && company.shortName.toLowerCase().includes(filterValue))
     );
   }
 
   loadCurrencies(): void {
     this.currencyService.getCurrencies({ page: 0, size: 100 }).subscribe({
-      next: (response) => {
+      next: response => {
         this.currencies = response.data.content;
       },
-      error: (error) => {
+      error: error => {
         this.showError('Error loading currencies');
         console.error('Failed to load currencies:', error);
-      }
+      },
     });
   }
 
@@ -154,10 +163,10 @@ export class ContractDialogComponent implements OnInit {
       next: (response: ApiResponse<Page<Project>>) => {
         this.projects = response.data.content;
       },
-      error: (error) => {
+      error: error => {
         this.showError('Error loading projects');
         console.error('Failed to load projects:', error);
-      }
+      },
     });
   }
 
@@ -166,10 +175,10 @@ export class ContractDialogComponent implements OnInit {
       next: (response: ApiResponse<Page<Company>>) => {
         this.companies = response.data.content;
       },
-      error: (error) => {
+      error: error => {
         this.showError('Error loading companies');
         console.error('Failed to load companies:', error);
-      }
+      },
     });
   }
 
@@ -189,16 +198,16 @@ export class ContractDialogComponent implements OnInit {
     const dialogRef = this.dialog.open(ContractItemDialogComponent, {
       width: '600px',
       data: {
-        currency: this.form.get('currency')?.value
-      }
+        currency: this.form.get('currency')?.value,
+      },
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log("Add contract item", result);
+      console.log('Add contract item', result);
       if (result) {
         // Create a new array to trigger change detection
         this.contractItems = [...this.contractItems, result];
-        console.log("Updated contract items", this.contractItems);
+        console.log('Updated contract items', this.contractItems);
       }
     });
   }
@@ -223,8 +232,8 @@ export class ContractDialogComponent implements OnInit {
       width: '600px',
       data: {
         currency: this.form.get('currency')?.value,
-        ...item
-      }
+        ...item,
+      },
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -246,11 +255,9 @@ export class ContractDialogComponent implements OnInit {
       data: {
         contractId: this.form.get('id')?.value,
         currency: this.form.get('currency')?.value,
-        ...downPayment
-      }
+        ...downPayment,
+      },
     });
-
-    
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
@@ -271,11 +278,11 @@ export class ContractDialogComponent implements OnInit {
       data: {
         item,
         buyer: this.form.get('buyerCompany')?.value,
-        seller: this.form.get('sellerCompany')?.value, 
-        currency: this.form.get('currency')?.value
-      }
+        seller: this.form.get('sellerCompany')?.value,
+        currency: this.form.get('currency')?.value,
+      },
     });
-  
+
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         if (item) {
@@ -290,16 +297,16 @@ export class ContractDialogComponent implements OnInit {
       }
     });
   }
-  
+
   deleteInvoice(item: Invoice) {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '400px',
       data: {
         title: this.translate.instant('common.dialog.confirm'),
-        message: this.translate.instant('contract.invoice.delete_confirm')
-      }
+        message: this.translate.instant('contract.invoice.delete_confirm'),
+      },
     });
-  
+
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         const index = this.contractInvoices.findIndex(i => i === item);
@@ -319,13 +326,13 @@ export class ContractDialogComponent implements OnInit {
     }
   }
 
-  onDownPaymentStatusChanged(event: {item: ContractDownPayment, status: boolean}): void {
+  onDownPaymentStatusChanged(event: { item: ContractDownPayment; status: boolean }): void {
     const index = this.contractDownPayments.findIndex(dp => dp === event.item);
     if (index !== -1) {
       this.contractDownPayments[index] = {
         ...this.contractDownPayments[index],
         paymentStatus: event.status,
-        actualDate: event.status ? new Date() : undefined
+        actualDate: event.status ? new Date() : undefined,
       };
       this.contractDownPayments = [...this.contractDownPayments];
     }
@@ -342,29 +349,31 @@ export class ContractDialogComponent implements OnInit {
       formValue.items = this.contractItems;
       formValue.downPayments = this.contractDownPayments;
       formValue.invoices = this.contractInvoices;
-      
+
       const request = this.isEdit
         ? this.contractService.updateContract(formValue.id!, formValue)
         : this.contractService.createContract(formValue);
 
-      console.log("Saving contract:", formValue);
+      console.log('Saving contract:', formValue);
 
       request.subscribe({
         next: (response: ApiResponse<Contract>) => {
           console.log(response);
           if (response.code === 200) {
             this.dialogRef.close(response.data);
-            this.showSuccess(this.isEdit ? 'Contract updated successfully' : 'Contract created successfully');
+            this.showSuccess(
+              this.isEdit ? 'Contract updated successfully' : 'Contract created successfully'
+            );
           } else {
             this.showError(response.message || 'Failed to save contract');
             this.loading = false;
           }
         },
-        error: (error) => {
+        error: error => {
           this.showError('Error saving contract');
           console.error('Failed to save contract:', error);
           this.loading = false;
-        }
+        },
       });
     } else {
       Object.keys(this.form.controls).forEach(key => {
@@ -383,14 +392,14 @@ export class ContractDialogComponent implements OnInit {
   private showError(message: string): void {
     this.snackBar.open(message, 'Close', {
       duration: 5000,
-      panelClass: ['error-snackbar']
+      panelClass: ['error-snackbar'],
     });
   }
 
   private showSuccess(message: string): void {
     this.snackBar.open(message, 'Close', {
       duration: 3000,
-      panelClass: ['success-snackbar']
+      panelClass: ['success-snackbar'],
     });
   }
 }

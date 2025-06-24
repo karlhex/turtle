@@ -7,14 +7,19 @@ import { Page } from '../models/page.model';
 import { ApiResponse } from '../models/api.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BankAccountService {
   private apiUrl = `${environment.apiUrl}/bank-accounts`;
 
   constructor(private http: HttpClient) {}
 
-  getBankAccounts(params: { page: number; size: number; search?: string; active?: boolean }): Observable<ApiResponse<Page<BankAccount>>> {
+  getBankAccounts(params: {
+    page: number;
+    size: number;
+    search?: string;
+    active?: boolean;
+  }): Observable<ApiResponse<Page<BankAccount>>> {
     let httpParams = new HttpParams()
       .set('page', params.page.toString())
       .set('size', params.size.toString());

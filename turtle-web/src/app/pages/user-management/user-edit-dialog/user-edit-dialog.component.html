@@ -1,11 +1,13 @@
-<h2 mat-dialog-title>{{ isEditMode ? ('user.dialog.edit' | translate) : ('user.dialog.create' | translate) }}</h2>
+<h2 mat-dialog-title>
+  {{ isEditMode ? ('user.dialog.edit' | translate) : ('user.dialog.create' | translate) }}
+</h2>
 
 <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
   <mat-dialog-content>
     <div class="form-container">
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>{{ 'user.form.username' | translate }}</mat-label>
-        <input matInput formControlName="username" required #firstInput>
+        <input matInput formControlName="username" required #firstInput />
         <mat-error *ngIf="userForm.get('username')?.hasError('required')">
           {{ 'user.validation.required.username' | translate }}
         </mat-error>
@@ -13,7 +15,7 @@
 
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>{{ 'user.form.email' | translate }}</mat-label>
-        <input matInput formControlName="email" required type="email">
+        <input matInput formControlName="email" required type="email" />
         <mat-error *ngIf="userForm.get('email')?.hasError('required')">
           {{ 'user.validation.required.email' | translate }}
         </mat-error>
@@ -37,7 +39,7 @@
         </mat-select>
         <mat-select-trigger>
           <span *ngFor="let roleName of userForm.get('roleNames')?.value; let last = last">
-            {{ roleName.replace('ROLE_', '') }}{{!last ? ', ' : ''}}
+            {{ roleName.replace('ROLE_', '') }}{{ !last ? ', ' : '' }}
           </span>
         </mat-select-trigger>
         <mat-error *ngIf="userForm.get('roleNames')?.hasError('required')">

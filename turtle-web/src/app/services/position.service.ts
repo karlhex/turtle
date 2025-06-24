@@ -6,17 +6,18 @@ import { Position } from '../models/position.model';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PositionService {
   private readonly API_URL = `${environment.apiUrl}/positions`;
 
   constructor(private http: HttpClient) {}
 
-  getPositions(page: number = 0, size: number = 10): Observable<ApiResponse<PageResponse<Position>>> {
-    const params = new HttpParams()
-      .set('page', page.toString())
-      .set('size', size.toString());
+  getPositions(
+    page: number = 0,
+    size: number = 10
+  ): Observable<ApiResponse<PageResponse<Position>>> {
+    const params = new HttpParams().set('page', page.toString()).set('size', size.toString());
     return this.http.get<ApiResponse<PageResponse<Position>>>(this.API_URL, { params });
   }
 

@@ -11,7 +11,7 @@
         <div class="grid grid-cols-2 gap-4">
           <mat-form-field appearance="outline">
             <mat-label>{{ 'CONTACT.LAST_NAME' | translate }}</mat-label>
-            <input matInput formControlName="lastName" required>
+            <input matInput formControlName="lastName" required />
             <mat-error *ngIf="form.get('lastName')?.hasError('required')">
               {{ 'COMMON.FIELD_REQUIRED' | translate }}
             </mat-error>
@@ -19,7 +19,7 @@
 
           <mat-form-field appearance="outline">
             <mat-label>{{ 'CONTACT.FIRST_NAME' | translate }}</mat-label>
-            <input matInput formControlName="firstName" required>
+            <input matInput formControlName="firstName" required />
             <mat-error *ngIf="form.get('firstName')?.hasError('required')">
               {{ 'COMMON.FIELD_REQUIRED' | translate }}
             </mat-error>
@@ -33,7 +33,7 @@
         <div class="grid grid-cols-2 gap-4">
           <mat-form-field appearance="outline">
             <mat-label>{{ 'CONTACT.MOBILE_PHONE' | translate }}</mat-label>
-            <input matInput formControlName="mobilePhone" required>
+            <input matInput formControlName="mobilePhone" required />
             <mat-error *ngIf="form.get('mobilePhone')?.hasError('required')">
               {{ 'COMMON.FIELD_REQUIRED' | translate }}
             </mat-error>
@@ -41,7 +41,7 @@
 
           <mat-form-field appearance="outline">
             <mat-label>{{ 'CONTACT.EMAIL' | translate }}</mat-label>
-            <input matInput formControlName="email" type="email">
+            <input matInput formControlName="email" type="email" />
             <mat-error *ngIf="form.get('email')?.hasError('email')">
               {{ 'CONTACT.INVALID_EMAIL' | translate }}
             </mat-error>
@@ -49,17 +49,17 @@
 
           <mat-form-field appearance="outline">
             <mat-label>{{ 'CONTACT.WORK_PHONE' | translate }}</mat-label>
-            <input matInput formControlName="workPhone">
+            <input matInput formControlName="workPhone" />
           </mat-form-field>
 
           <mat-form-field appearance="outline">
             <mat-label>{{ 'CONTACT.HOME_PHONE' | translate }}</mat-label>
-            <input matInput formControlName="homePhone">
+            <input matInput formControlName="homePhone" />
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="col-span-2">
             <mat-label>{{ 'CONTACT.ADDRESS' | translate }}</mat-label>
-            <input matInput formControlName="address">
+            <input matInput formControlName="address" />
           </mat-form-field>
         </div>
       </div>
@@ -70,25 +70,25 @@
         <div class="grid grid-cols-2 gap-4">
           <mat-form-field appearance="outline">
             <mat-label>{{ 'CONTACT.COMPANY' | translate }}</mat-label>
-            <input matInput formControlName="companyName" 
-                   [matAutocomplete]="auto">
-            <mat-autocomplete #auto="matAutocomplete" 
-                            (optionSelected)="onCompanySelected($event.option.value)">
-              <mat-option *ngFor="let company of filteredCompanies | async" 
-                         [value]="company">
-                {{company.fullName}}
+            <input matInput formControlName="companyName" [matAutocomplete]="auto" />
+            <mat-autocomplete
+              #auto="matAutocomplete"
+              (optionSelected)="onCompanySelected($event.option.value)"
+            >
+              <mat-option *ngFor="let company of filteredCompanies | async" [value]="company">
+                {{ company.fullName }}
               </mat-option>
             </mat-autocomplete>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
             <mat-label>{{ 'CONTACT.DEPARTMENT' | translate }}</mat-label>
-            <input matInput formControlName="department">
+            <input matInput formControlName="department" />
           </mat-form-field>
 
           <mat-form-field appearance="outline">
             <mat-label>{{ 'CONTACT.JOB_TITLE' | translate }}</mat-label>
-            <input matInput formControlName="title">
+            <input matInput formControlName="title" />
           </mat-form-field>
         </div>
       </div>
@@ -115,12 +115,12 @@
 
             <mat-form-field appearance="outline">
               <mat-label>{{ 'CONTACT.NATIVE_PLACE' | translate }}</mat-label>
-              <input matInput formControlName="nativePlace">
+              <input matInput formControlName="nativePlace" />
             </mat-form-field>
 
             <mat-form-field appearance="outline">
               <mat-label>{{ 'CONTACT.ETHNICITY' | translate }}</mat-label>
-              <input matInput formControlName="ethnicity">
+              <input matInput formControlName="ethnicity" />
             </mat-form-field>
 
             <mat-form-field appearance="outline">
@@ -134,19 +134,19 @@
 
             <mat-form-field appearance="outline">
               <mat-label>{{ 'CONTACT.NATIONALITY' | translate }}</mat-label>
-              <input matInput formControlName="nationality">
+              <input matInput formControlName="nationality" />
             </mat-form-field>
 
             <mat-form-field appearance="outline">
               <mat-label>{{ 'CONTACT.BIRTH_DATE' | translate }}</mat-label>
-              <input matInput [matDatepicker]="picker" formControlName="birthDate">
+              <input matInput [matDatepicker]="picker" formControlName="birthDate" />
               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
 
             <mat-form-field appearance="outline">
               <mat-label>{{ 'CONTACT.RELIGION' | translate }}</mat-label>
-              <input matInput formControlName="religion">
+              <input matInput formControlName="religion" />
             </mat-form-field>
           </div>
         </div>
@@ -157,22 +157,22 @@
           <div class="grid grid-cols-2 gap-4">
             <mat-form-field appearance="outline">
               <mat-label>{{ 'CONTACT.UNIVERSITY' | translate }}</mat-label>
-              <input matInput formControlName="university">
+              <input matInput formControlName="university" />
             </mat-form-field>
 
             <mat-form-field appearance="outline">
               <mat-label>{{ 'CONTACT.MAJOR' | translate }}</mat-label>
-              <input matInput formControlName="major">
+              <input matInput formControlName="major" />
             </mat-form-field>
 
             <mat-form-field appearance="outline">
               <mat-label>{{ 'CONTACT.GRADUATION_YEAR' | translate }}</mat-label>
-              <input matInput formControlName="graduationYear">
+              <input matInput formControlName="graduationYear" />
             </mat-form-field>
 
             <mat-form-field appearance="outline">
               <mat-label>{{ 'CONTACT.DEGREE' | translate }}</mat-label>
-              <input matInput formControlName="degree">
+              <input matInput formControlName="degree" />
             </mat-form-field>
           </div>
         </div>
@@ -183,7 +183,7 @@
           <div class="grid grid-cols-2 gap-4">
             <mat-form-field appearance="outline">
               <mat-label>{{ 'CONTACT.HOBBIES' | translate }}</mat-label>
-              <input matInput formControlName="hobbies">
+              <input matInput formControlName="hobbies" />
             </mat-form-field>
 
             <mat-form-field appearance="outline">
@@ -200,8 +200,7 @@
     <button mat-button type="button" (click)="onCancel()" [disabled]="loading">
       {{ 'COMMON.CANCEL' | translate }}
     </button>
-    <button mat-raised-button color="primary" type="submit" 
-            [disabled]="form.invalid || loading">
+    <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid || loading">
       <mat-spinner diameter="20" *ngIf="loading"></mat-spinner>
       {{ (data.mode === 'edit' ? 'COMMON.SAVE' : 'COMMON.ADD') | translate }}
     </button>

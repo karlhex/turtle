@@ -51,7 +51,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatTableModule,
     MatTabsModule,
     MatToolbarModule,
-    MatTooltipModule
+    MatTooltipModule,
   ],
   exports: [
     TranslateModule,
@@ -78,7 +78,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatTableModule,
     MatTabsModule,
     MatToolbarModule,
-    MatTooltipModule
-  ]
+    MatTooltipModule,
+  ],
 })
-export class MaterialModule { }
+export class MaterialModule {}

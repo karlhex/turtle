@@ -21,10 +21,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
-  declarations: [
-    RolePermissionListComponent,
-    RolePermissionDialogComponent
-  ],
+  declarations: [RolePermissionListComponent, RolePermissionDialogComponent],
   imports: [
     ActionModule,
     CommonModule,
@@ -43,11 +40,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatSlideToggleModule,
     MatProgressSpinnerModule,
     TranslateModule,
-    BaseListModule
+    BaseListModule,
   ],
-  exports: [
-    RolePermissionListComponent,
-    RolePermissionDialogComponent
-  ]
+  exports: [RolePermissionListComponent, RolePermissionDialogComponent],
 })
-export class RolePermissionModule { }
+export class RolePermissionModule {}

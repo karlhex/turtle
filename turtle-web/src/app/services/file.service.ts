@@ -6,14 +6,19 @@ import { ClientType } from '@app/types/client-type.enum';
 import { ApiResponse } from '@app/models/api.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FileService {
   private readonly apiUrl = '/api/files';
 
   constructor(private http: HttpClient) {}
 
-  upload(file: File, fileMetadata: FileMetadata, clientType: ClientType, clientId: number): Observable<ApiResponse<FileMetadata>> {
+  upload(
+    file: File,
+    fileMetadata: FileMetadata,
+    clientType: ClientType,
+    clientId: number
+  ): Observable<ApiResponse<FileMetadata>> {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('clientType', clientType.toString());
@@ -36,7 +41,7 @@ export class FileService {
 
   download(id: number): Observable<Blob> {
     return this.http.get(`${this.apiUrl}/${id}/download`, {
-      responseType: 'blob'
+      responseType: 'blob',
     });
   }
 

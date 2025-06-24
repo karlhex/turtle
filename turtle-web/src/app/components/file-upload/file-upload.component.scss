@@ -3,7 +3,7 @@
 
   .upload-button-container {
     margin-bottom: 16px;
-    
+
     button {
       mat-icon {
         margin-right: 8px;
@@ -14,7 +14,7 @@
   .file-list {
     mat-list-item {
       border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-      
+
       .file-name {
         font-weight: 500;
       }
@@ -22,7 +22,7 @@
       .file-info {
         color: rgba(0, 0, 0, 0.54);
         font-size: 12px;
-        
+
         span {
           margin-right: 16px;
         }

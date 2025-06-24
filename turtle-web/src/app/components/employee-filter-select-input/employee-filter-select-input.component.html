@@ -1,9 +1,6 @@
 <mat-form-field appearance="fill">
   <mat-label>{{ label | translate }}</mat-label>
-  <input type="text"
-         matInput
-         [formControl]="employeeCtrl"
-         [matAutocomplete]="auto">
+  <input type="text" matInput [formControl]="employeeCtrl" [matAutocomplete]="auto" />
   <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
     <ng-template #optionTemplate let-employee>
       <div class="employee-option">
@@ -15,7 +12,9 @@
       </div>
     </ng-template>
     <mat-option *ngFor="let employee of filteredEmployees | async" [value]="employee">
-      <ng-container *ngTemplateOutlet="optionTemplate; context: { $implicit: employee }"></ng-container>
+      <ng-container
+        *ngTemplateOutlet="optionTemplate; context: { $implicit: employee }"
+      ></ng-container>
     </mat-option>
   </mat-autocomplete>
 </mat-form-field>

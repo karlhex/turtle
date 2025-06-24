@@ -20,10 +20,7 @@ import { ActionModule } from '@app/components/action/action.module';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @NgModule({
-  declarations: [
-    TaxInfoListComponent,
-    TaxInfoDialogComponent
-  ],
+  declarations: [TaxInfoListComponent, TaxInfoDialogComponent],
   imports: [
     ActionModule,
     CommonModule,
@@ -41,11 +38,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatTooltipModule,
     MatSlideToggleModule,
     TranslateModule,
-    BaseListModule
+    BaseListModule,
   ],
-  exports: [
-    TaxInfoListComponent,
-    TaxInfoDialogComponent
-  ]
+  exports: [TaxInfoListComponent, TaxInfoDialogComponent],
 })
-export class TaxInfoModule { }
+export class TaxInfoModule {}

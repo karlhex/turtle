@@ -14,7 +14,7 @@ import { TranslateModule } from '@ngx-translate/core';
     MatAutocompleteModule,
     MatFormFieldModule,
     MatInputModule,
-    TranslateModule
+    TranslateModule,
   ],
   exports: [
     CommonModule,
@@ -23,7 +23,7 @@ import { TranslateModule } from '@ngx-translate/core';
     MatAutocompleteModule,
     MatFormFieldModule,
     MatInputModule,
-    TranslateModule
-  ]
+    TranslateModule,
+  ],
 })
-export class BaseFilterSelectInputModule { }
+export class BaseFilterSelectInputModule {}

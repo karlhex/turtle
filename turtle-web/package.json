@@ -5,7 +5,16 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "watch": "ng build --watch --configuration development"
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test",
+    "test:coverage": "ng test --code-coverage",
+    "test:ci": "ng test --browsers=ChromeHeadlessCI --watch=false --code-coverage",
+    "lint": "ng lint",
+    "lint:fix": "ng lint --fix",
+    "format": "prettier --write \"src/**/*.{ts,html,scss,json}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,html,scss,json}\"",
+    "e2e": "ng e2e",
+    "prepare": "husky install"
   },
   "private": true,
   "dependencies": {
@@ -28,9 +37,42 @@
     "zone.js": "0.12.0"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^15.2.11",
-    "@angular/cli": "^15.2.11",
+    "@angular-devkit/build-angular": "15.2.0",
+    "@angular-eslint/builder": "15.2.1",
+    "@angular-eslint/eslint-plugin": "15.2.1",
+    "@angular-eslint/eslint-plugin-template": "15.2.1",
+    "@angular-eslint/schematics": "15.2.1",
+    "@angular-eslint/template-parser": "15.2.1",
+    "@angular/cli": "15.2.0",
     "@angular/compiler-cli": "15.2.0",
+    "@types/jasmine": "^4.3.0",
+    "@typescript-eslint/eslint-plugin": "5.48.2",
+    "@typescript-eslint/parser": "5.48.2",
+    "eslint": "^8.33.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-jsdoc": "^46.4.4",
+    "eslint-plugin-prefer-arrow": "^1.2.3",
+    "eslint-plugin-prettier": "^4.2.1",
+    "husky": "^8.0.3",
+    "jasmine-core": "^4.6.0",
+    "karma": "^6.4.1",
+    "karma-chrome-launcher": "^3.1.1",
+    "karma-coverage": "^2.2.0",
+    "karma-jasmine": "^5.1.0",
+    "karma-jasmine-html-reporter": "^2.0.0",
+    "lint-staged": "^13.3.0",
+    "prettier": "^2.8.8",
     "typescript": "4.9.4"
+  },
+  "lint-staged": {
+    "*.{ts,html,scss,json}": [
+      "prettier --write",
+      "eslint --fix"
+    ]
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
   }
 }

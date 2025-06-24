@@ -7,7 +7,7 @@ import { EmployeeJobHistory as JobHistory } from '../../models/employee.model';
 @Component({
   selector: 'app-job-history-list',
   templateUrl: './job-history-list.component.html',
-  styleUrls: ['./job-history-list.component.scss']
+  styleUrls: ['./job-history-list.component.scss'],
 })
 export class JobHistoryListComponent {
   @Input() employeeId!: number;
@@ -17,15 +17,12 @@ export class JobHistoryListComponent {
 
   displayedColumns: string[] = ['position', 'department', 'startDate', 'endDate', 'actions'];
 
-  constructor(
-    private dialog: MatDialog,
-    private employeeService: EmployeeService
-  ) {}
+  constructor(private dialog: MatDialog, private employeeService: EmployeeService) {}
 
   onAddJobHistory(): void {
     const dialogRef = this.dialog.open(JobHistoryDialogComponent, {
       width: '600px',
-      data: { mode: 'add', employeeId: this.employeeId }
+      data: { mode: 'add', employeeId: this.employeeId },
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -39,14 +36,12 @@ export class JobHistoryListComponent {
   onEditJobHistory(jobHistory: JobHistory): void {
     const dialogRef = this.dialog.open(JobHistoryDialogComponent, {
       width: '600px',
-      data: { mode: 'edit', jobHistory, employeeId: this.employeeId }
+      data: { mode: 'edit', jobHistory, employeeId: this.employeeId },
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.jobHistories = this.jobHistories.map(j => 
-          j.id === result.id ? result : j
-        );
+        this.jobHistories = this.jobHistories.map(j => (j.id === result.id ? result : j));
         this.jobHistoryEdited.emit(this.jobHistories);
       }
     });
@@ -62,5 +57,4 @@ export class JobHistoryListComponent {
       this.jobHistoryEdited.emit(this.jobHistories);
     }
   }
-
 }

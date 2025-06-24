@@ -4,7 +4,7 @@ import {
   HttpHandler,
   HttpEvent,
   HttpInterceptor,
-  HttpErrorResponse
+  HttpErrorResponse,
 } from '@angular/common/http';
 import { Observable, throwError, BehaviorSubject } from 'rxjs';
 import { catchError, filter, take, switchMap } from 'rxjs/operators';
@@ -49,8 +49,8 @@ export class AuthInterceptor implements HttpInterceptor {
   private addToken(request: HttpRequest<any>, token: string) {
     return request.clone({
       setHeaders: {
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     });
   }
 
@@ -65,7 +65,7 @@ export class AuthInterceptor implements HttpInterceptor {
           this.refreshTokenSubject.next(response.data.tokenPair.accessToken);
           return next.handle(this.addToken(request, response.data.tokenPair.accessToken));
         }),
-        catchError((err) => {
+        catchError(err => {
           this.isRefreshing = false;
           this.tokenStorage.clear();
           this.router.navigate(['/login']);
@@ -73,7 +73,7 @@ export class AuthInterceptor implements HttpInterceptor {
         })
       );
     }
-    
+
     return this.refreshTokenSubject.pipe(
       filter(token => token !== null),
       take(1),

@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { 
-  Reimbursement, 
-  ReimbursementResponse, 
-  CreateReimbursementRequest, 
+import {
+  Reimbursement,
+  ReimbursementResponse,
+  CreateReimbursementRequest,
   UpdateReimbursementRequest,
-  ReimbursementSearchParams 
+  ReimbursementSearchParams,
 } from '../models/reimbursement.model';
 import { environment } from '../../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ReimbursementService {
   private apiUrl = `${environment.apiUrl}/reimbursements`;
@@ -20,13 +20,14 @@ export class ReimbursementService {
 
   getAll(params: ReimbursementSearchParams): Observable<ReimbursementResponse> {
     let httpParams = new HttpParams();
-    
+
     if (params.page !== undefined) httpParams = httpParams.set('page', params.page.toString());
     if (params.size !== undefined) httpParams = httpParams.set('size', params.size.toString());
     if (params.sort !== undefined) httpParams = httpParams.set('sort', params.sort);
     if (params.startDate) httpParams = httpParams.set('startDate', params.startDate);
     if (params.endDate) httpParams = httpParams.set('endDate', params.endDate);
-    if (params.applicantId) httpParams = httpParams.set('applicantId', params.applicantId.toString());
+    if (params.applicantId)
+      httpParams = httpParams.set('applicantId', params.applicantId.toString());
     if (params.approverId) httpParams = httpParams.set('approverId', params.approverId.toString());
     if (params.projectId) httpParams = httpParams.set('projectId', params.projectId.toString());
 
@@ -65,7 +66,12 @@ export class ReimbursementService {
     return this.http.get<Reimbursement[]>(`${this.apiUrl}/project/${projectId}`);
   }
 
-  getByDateRange(startDate: string, endDate: string, page: number = 0, size: number = 10): Observable<ReimbursementResponse> {
+  getByDateRange(
+    startDate: string,
+    endDate: string,
+    page: number = 0,
+    size: number = 10
+  ): Observable<ReimbursementResponse> {
     const params = new HttpParams()
       .set('startDate', startDate)
       .set('endDate', endDate)

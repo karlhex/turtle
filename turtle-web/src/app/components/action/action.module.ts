@@ -9,19 +9,15 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ActionComponent } from './action.component';
 
 @NgModule({
-  declarations: [
-    ActionComponent
-  ],
+  declarations: [ActionComponent],
   imports: [
     CommonModule,
     MatButtonModule,
     MatIconModule,
     MatMenuModule,
     MatTooltipModule,
-    TranslateModule
+    TranslateModule,
   ],
-  exports: [
-    ActionComponent
-  ]
+  exports: [ActionComponent],
 })
-export class ActionModule { }
+export class ActionModule {}

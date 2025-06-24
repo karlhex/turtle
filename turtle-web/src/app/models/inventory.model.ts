@@ -2,7 +2,7 @@ import { InventoryStatus } from '../types/inventory-status.enum';
 import { ShippingMethod } from '../types/shipping-method.enum';
 
 export interface Inventory {
-  id?: number;  // Optional as it might be generated on server-side
+  id?: number; // Optional as it might be generated on server-side
 
   productId?: number;
   productName?: string;

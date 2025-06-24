@@ -14,7 +14,7 @@ import { Page } from '../../models/page.model';
 @Component({
   selector: 'app-contract-list',
   templateUrl: './contract-list.component.html',
-  styleUrls: ['./contract-list.component.scss']
+  styleUrls: ['./contract-list.component.scss'],
 })
 export class ContractListComponent implements OnInit {
   @ViewChild(MatTable) table!: MatTable<Contract>;
@@ -32,9 +32,9 @@ export class ContractListComponent implements OnInit {
     'signingDate',
     'startDate',
     'endDate',
-    'actions'
+    'actions',
   ];
-  
+
   dataSource: Contract[] = [];
   contractTypes = Object.values(ContractType);
   contractStatuses = Object.values(ContractStatus);
@@ -43,10 +43,7 @@ export class ContractListComponent implements OnInit {
   pageSize = 10;
   pageIndex = 0;
 
-  constructor(
-    private contractService: ContractService,
-    private dialog: MatDialog
-  ) {}
+  constructor(private contractService: ContractService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.loadData();
@@ -57,7 +54,7 @@ export class ContractListComponent implements OnInit {
     const query: ContractQuery = {
       page: this.pageIndex,
       size: this.pageSize,
-      search: this.baseList?.searchText
+      search: this.baseList?.searchText,
     };
 
     this.contractService.getContracts(query).subscribe({
@@ -69,10 +66,10 @@ export class ContractListComponent implements OnInit {
           this.table.renderRows();
         }
       },
-      error: (error) => {
+      error: error => {
         console.error('Failed to load contracts:', error);
         this.loading = false;
-      }
+      },
     });
   }
 
@@ -94,7 +91,7 @@ export class ContractListComponent implements OnInit {
   openDialog(contract?: Contract): void {
     const dialogRef = this.dialog.open(ContractDialogComponent, {
       width: '800px',
-      data: contract || {}
+      data: contract || {},
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -111,10 +108,10 @@ export class ContractListComponent implements OnInit {
         next: () => {
           this.loadData();
         },
-        error: (error) => {
+        error: error => {
           console.error('Failed to delete contract:', error);
           this.loading = false;
-        }
+        },
       });
     }
   }

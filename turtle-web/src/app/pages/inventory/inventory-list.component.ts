@@ -12,7 +12,7 @@ import { InventoryAction } from '../../types/inventory-action.enum';
 @Component({
   selector: 'app-inventory-list',
   templateUrl: './inventory-list.component.html',
-  styleUrls: ['./inventory-list.component.scss']
+  styleUrls: ['./inventory-list.component.scss'],
 })
 export class InventoryListComponent implements OnInit {
   @ViewChild(MatTable) table!: MatTable<Inventory>;
@@ -20,24 +20,21 @@ export class InventoryListComponent implements OnInit {
 
   displayedColumns: string[] = [
     'productName',
-    'quantity', 
-    'purchaseContractNo', 
+    'quantity',
+    'purchaseContractNo',
     'storageTime',
     'license',
     'status',
-    'actions'
+    'actions',
   ];
-  
+
   dataSource: Inventory[] = [];
   loading = false;
   totalElements = 0;
   pageSize = 10;
   pageIndex = 0;
 
-  constructor(
-    private inventoryService: InventoryService,
-    private dialog: MatDialog
-  ) {}
+  constructor(private inventoryService: InventoryService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.loadData();
@@ -48,7 +45,7 @@ export class InventoryListComponent implements OnInit {
     this.pageSize = event.pageSize;
     this.loadData();
   }
-  
+
   onSearch(searchText: string): void {
     this.pageIndex = 0;
     // TODO: Implement search functionality if needed
@@ -62,24 +59,23 @@ export class InventoryListComponent implements OnInit {
       this.pageSize = event.pageSize;
     }
 
-    this.inventoryService.getAll(this.pageIndex, this.pageSize)
-      .subscribe({
-        next: (response) => {
-          this.dataSource = response.data.content;
-          this.totalElements = response.data.totalElements;
-          this.loading = false;
-        },
-        error: (error) => {
-          console.error('Error loading inventories:', error);
-          this.loading = false;
-        }
-      });
+    this.inventoryService.getAll(this.pageIndex, this.pageSize).subscribe({
+      next: response => {
+        this.dataSource = response.data.content;
+        this.totalElements = response.data.totalElements;
+        this.loading = false;
+      },
+      error: error => {
+        console.error('Error loading inventories:', error);
+        this.loading = false;
+      },
+    });
   }
 
   openDialog(inventory?: Inventory, action?: InventoryAction): void {
     const dialogRef = this.dialog.open(InventoryDialogComponent, {
       width: '800px',
-      data: {inventory, action}
+      data: { inventory, action },
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -95,9 +91,9 @@ export class InventoryListComponent implements OnInit {
         next: () => {
           this.loadData();
         },
-        error: (error) => {
+        error: error => {
           console.error('Error deleting inventory:', error);
-        }
+        },
       });
     }
   }
@@ -110,13 +106,10 @@ export class InventoryListComponent implements OnInit {
           ...baseActions,
           InventoryAction.STORAGE,
           InventoryAction.OUTBOUND,
-          InventoryAction.BORROW
+          InventoryAction.BORROW,
         ];
       case InventoryStatus.BORROWED:
-        return [
-          ...baseActions,
-          InventoryAction.RETURN
-        ];
+        return [...baseActions, InventoryAction.RETURN];
       case InventoryStatus.OUT_OF_STOCK:
         return baseActions;
       default:
@@ -130,12 +123,18 @@ export class InventoryListComponent implements OnInit {
 
   getActionIcon(action: InventoryAction): string {
     switch (action) {
-      case InventoryAction.VIEW: return 'visibility'; // Good for viewing details
-      case InventoryAction.STORAGE: return 'warehouse'; // Better represents storage
-      case InventoryAction.OUTBOUND: return 'local_shipping'; // Represents outgoing shipments
-      case InventoryAction.BORROW: return 'swap_horizontal_circle'; // Better represents borrowing
-      case InventoryAction.RETURN: return 'assignment_return'; // Clearly represents returning
-      default: return 'help_outline';
+      case InventoryAction.VIEW:
+        return 'visibility'; // Good for viewing details
+      case InventoryAction.STORAGE:
+        return 'warehouse'; // Better represents storage
+      case InventoryAction.OUTBOUND:
+        return 'local_shipping'; // Represents outgoing shipments
+      case InventoryAction.BORROW:
+        return 'swap_horizontal_circle'; // Better represents borrowing
+      case InventoryAction.RETURN:
+        return 'assignment_return'; // Clearly represents returning
+      default:
+        return 'help_outline';
     }
   }
 

@@ -2,7 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { ContractDownPayment } from '../models/contract-down-payment.model';
 
 @Pipe({
-  name: 'paymentTotal'
+  name: 'paymentTotal',
 })
 export class PaymentTotalPipe implements PipeTransform {
   transform(payments: ContractDownPayment[] | undefined): number {

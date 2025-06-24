@@ -14,10 +14,19 @@ import { ConfirmDialogComponent } from '../../components/confirmdialog/confirm-d
 @Component({
   selector: 'app-currency-list',
   templateUrl: './currency-list.component.html',
-  styleUrls: ['./currency-list.component.scss']
+  styleUrls: ['./currency-list.component.scss'],
 })
 export class CurrencyListComponent implements OnInit {
-  displayedColumns: string[] = ['code', 'name', 'symbol', 'decimalPlaces', 'exchangeRate', 'active', 'isBaseCurrency', 'actions'];
+  displayedColumns: string[] = [
+    'code',
+    'name',
+    'symbol',
+    'decimalPlaces',
+    'exchangeRate',
+    'active',
+    'isBaseCurrency',
+    'actions',
+  ];
   dataSource = new MatTableDataSource<Currency>();
   isLoading = false;
   totalElements = 0;
@@ -43,10 +52,7 @@ export class CurrencyListComponent implements OnInit {
   }
 
   setupSearch() {
-    this.searchSubject.pipe(
-      debounceTime(300),
-      distinctUntilChanged()
-    ).subscribe(() => {
+    this.searchSubject.pipe(debounceTime(300), distinctUntilChanged()).subscribe(() => {
       this.pageIndex = 0;
       this.loadCurrencies();
     });
@@ -65,25 +71,27 @@ export class CurrencyListComponent implements OnInit {
 
   loadCurrencies() {
     this.isLoading = true;
-    this.currencyService.getCurrencies({
-      page: this.pageIndex,
-      size: this.pageSize,
-      search: this.searchQuery
-    }).subscribe({
-      next: (response) => {
-        if (response.code === 200) {
-          this.dataSource.data = response.data.content;
-          this.totalElements = response.data.totalElements;
-        } else {
-          this.showError('Failed to load currencies: ' + response.message);
-        }
-        this.isLoading = false;
-      },
-      error: (error) => {
-        this.showError('Error loading currencies');
-        this.isLoading = false;
-      }
-    });
+    this.currencyService
+      .getCurrencies({
+        page: this.pageIndex,
+        size: this.pageSize,
+        search: this.searchQuery,
+      })
+      .subscribe({
+        next: response => {
+          if (response.code === 200) {
+            this.dataSource.data = response.data.content;
+            this.totalElements = response.data.totalElements;
+          } else {
+            this.showError('Failed to load currencies: ' + response.message);
+          }
+          this.isLoading = false;
+        },
+        error: error => {
+          this.showError('Error loading currencies');
+          this.isLoading = false;
+        },
+      });
   }
 
   onAdd() {
@@ -91,15 +99,15 @@ export class CurrencyListComponent implements OnInit {
       width: '50%',
       data: {
         currency: {},
-        mode: 'create'
-      }
+        mode: 'create',
+      },
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.isLoading = true;
         this.currencyService.createCurrency(result).subscribe({
-          next: (response) => {
+          next: response => {
             if (response.code === 200) {
               this.showSuccess('Currency created successfully');
               this.loadCurrencies();
@@ -108,10 +116,10 @@ export class CurrencyListComponent implements OnInit {
             }
             this.isLoading = false;
           },
-          error: (error) => {
+          error: error => {
             this.showError('Error creating currency');
             this.isLoading = false;
-          }
+          },
         });
       }
     });
@@ -122,15 +130,15 @@ export class CurrencyListComponent implements OnInit {
       width: '50%',
       data: {
         currency: { ...currency },
-        mode: 'edit'
-      }
+        mode: 'edit',
+      },
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.isLoading = true;
         this.currencyService.updateCurrency(currency.id!, result).subscribe({
-          next: (response) => {
+          next: response => {
             if (response.code === 200) {
               this.showSuccess('Currency updated successfully');
               this.loadCurrencies();
@@ -139,10 +147,10 @@ export class CurrencyListComponent implements OnInit {
             }
             this.isLoading = false;
           },
-          error: (error) => {
+          error: error => {
             this.showError('Error updating currency');
             this.isLoading = false;
-          }
+          },
         });
       }
     });
@@ -158,14 +166,14 @@ export class CurrencyListComponent implements OnInit {
       width: '400px',
       data: {
         title: this.translate.instant('currency.message.deleteConfirm'),
-        message: currency.name
-      }
+        message: currency.name,
+      },
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.currencyService.deleteCurrency(currency.id!).subscribe({
-          next: (response) => {
+          next: response => {
             if (response.code === 200) {
               this.showSuccess('Currency deleted successfully');
               this.loadCurrencies();
@@ -173,9 +181,9 @@ export class CurrencyListComponent implements OnInit {
               this.showError('Failed to delete currency: ' + response.message);
             }
           },
-          error: (error) => {
+          error: error => {
             this.showError('Error deleting currency');
-          }
+          },
         });
       }
     });
@@ -188,7 +196,7 @@ export class CurrencyListComponent implements OnInit {
     }
 
     this.currencyService.toggleStatus(currency.id!).subscribe({
-      next: (response) => {
+      next: response => {
         if (response.code === 200) {
           this.showSuccess('Currency status updated successfully');
           this.loadCurrencies();
@@ -196,9 +204,9 @@ export class CurrencyListComponent implements OnInit {
           this.showError('Failed to update currency status: ' + response.message);
         }
       },
-      error: (error) => {
+      error: error => {
         this.showError('Error updating currency status');
-      }
+      },
     });
   }
 
@@ -212,14 +220,14 @@ export class CurrencyListComponent implements OnInit {
       width: '400px',
       data: {
         title: this.translate.instant('currency.message.setBaseConfirm'),
-        message: currency.name
-      }
+        message: currency.name,
+      },
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.currencyService.setBaseCurrency(currency.id!).subscribe({
-          next: (response) => {
+          next: response => {
             if (response.code === 200) {
               this.showSuccess('Base currency set successfully');
               this.loadCurrencies();
@@ -227,9 +235,9 @@ export class CurrencyListComponent implements OnInit {
               this.showError('Failed to set base currency: ' + response.message);
             }
           },
-          error: (error) => {
+          error: error => {
             this.showError('Error setting base currency');
-          }
+          },
         });
       }
     });
@@ -242,14 +250,14 @@ export class CurrencyListComponent implements OnInit {
   private showSuccess(message: string) {
     this.snackBar.open(message, 'Close', {
       duration: 3000,
-      panelClass: ['success-snackbar']
+      panelClass: ['success-snackbar'],
     });
   }
 
   private showError(message: string) {
     this.snackBar.open(message, 'Close', {
       duration: 5000,
-      panelClass: ['error-snackbar']
+      panelClass: ['error-snackbar'],
     });
   }
 }

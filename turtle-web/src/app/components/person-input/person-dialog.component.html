@@ -6,79 +6,70 @@
       <!-- First Name -->
       <mat-form-field appearance="outline">
         <mat-label>姓</mat-label>
-        <input matInput formControlName="firstName" required>
-        <mat-error *ngIf="form.get('firstName')?.errors?.['required']">
-          请输入姓
-        </mat-error>
+        <input matInput formControlName="firstName" required />
+        <mat-error *ngIf="form.get('firstName')?.errors?.['required']"> 请输入姓 </mat-error>
       </mat-form-field>
 
       <!-- Last Name -->
       <mat-form-field appearance="outline">
         <mat-label>名</mat-label>
-        <input matInput formControlName="lastName" required>
-        <mat-error *ngIf="form.get('lastName')?.errors?.['required']">
-          请输入名
-        </mat-error>
+        <input matInput formControlName="lastName" required />
+        <mat-error *ngIf="form.get('lastName')?.errors?.['required']"> 请输入名 </mat-error>
       </mat-form-field>
 
       <!-- Mobile Phone -->
       <mat-form-field appearance="outline">
         <mat-label>手机</mat-label>
-        <input matInput formControlName="mobilePhone">
+        <input matInput formControlName="mobilePhone" />
       </mat-form-field>
 
       <!-- Work Phone -->
       <mat-form-field appearance="outline">
         <mat-label>工作电话</mat-label>
-        <input matInput formControlName="workPhone">
+        <input matInput formControlName="workPhone" />
       </mat-form-field>
 
       <!-- Home Phone -->
       <mat-form-field appearance="outline">
         <mat-label>家庭电话</mat-label>
-        <input matInput formControlName="homePhone">
+        <input matInput formControlName="homePhone" />
       </mat-form-field>
 
       <!-- Email -->
       <mat-form-field appearance="outline">
         <mat-label>邮箱</mat-label>
-        <input matInput formControlName="email" type="email">
-        <mat-error *ngIf="form.get('email')?.errors?.['email']">
-          请输入有效的邮箱地址
-        </mat-error>
+        <input matInput formControlName="email" type="email" />
+        <mat-error *ngIf="form.get('email')?.errors?.['email']"> 请输入有效的邮箱地址 </mat-error>
       </mat-form-field>
 
       <!-- Address -->
       <mat-form-field appearance="outline">
         <mat-label>地址</mat-label>
-        <input matInput formControlName="address">
+        <input matInput formControlName="address" />
       </mat-form-field>
-            
+
       <!-- Company Name -->
       <mat-form-field appearance="outline">
         <mat-label>公司名称</mat-label>
-        <input matInput formControlName="companyName">
+        <input matInput formControlName="companyName" />
       </mat-form-field>
 
       <!-- Department -->
       <mat-form-field appearance="outline">
         <mat-label>部门</mat-label>
-        <input matInput formControlName="department">
+        <input matInput formControlName="department" />
       </mat-form-field>
 
       <!-- Position -->
       <mat-form-field appearance="outline">
         <mat-label>职务</mat-label>
-        <input matInput formControlName="position">
+        <input matInput formControlName="position" />
       </mat-form-field>
-
     </div>
   </mat-dialog-content>
 
   <mat-dialog-actions align="end">
-    <button mat-button type="button" (click)="onCancel()">
-      取消
-    </button>
+    <button mat-button type="button" (click)="onCancel()">取消</button>
     <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">
       {{ data.person ? '保存' : '创建' }}
     </button>

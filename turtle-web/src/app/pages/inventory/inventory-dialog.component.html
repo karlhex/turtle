@@ -1,8 +1,7 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <h2 mat-dialog-title>{{ 'inventory.dialog_title' | translate }}</h2>
-  
+
   <mat-dialog-content class="two-column-grid">
-    
     <!-- Action Type Selection :disabled-->
     <mat-form-field class="full-width">
       <mat-label>{{ 'inventory.action_type' | translate }}</mat-label>
@@ -18,28 +17,30 @@
       <app-product-filter-select-input
         [products]="products"
         [label]="'inventory.product' | translate"
-        formControlName="productId">
+        formControlName="productId"
+      >
       </app-product-filter-select-input>
 
       <mat-form-field>
         <mat-label>{{ 'inventory.quantity' | translate }}</mat-label>
-        <input matInput type="number" formControlName="quantity">
+        <input matInput type="number" formControlName="quantity" />
       </mat-form-field>
 
       <mat-form-field>
         <mat-label>{{ 'inventory.license' | translate }}</mat-label>
-        <input matInput formControlName="license">
+        <input matInput formControlName="license" />
       </mat-form-field>
 
       <app-contract-filter-select-input
         [contracts]="contracts"
         [label]="'inventory.purchase_contract' | translate"
-        formControlName="purchaseContractId">
+        formControlName="purchaseContractId"
+      >
       </app-contract-filter-select-input>
 
       <mat-form-field>
         <mat-label>{{ 'inventory.storage_time' | translate }}</mat-label>
-        <input matInput [matDatepicker]="storagePicker" formControlName="storageTime">
+        <input matInput [matDatepicker]="storagePicker" formControlName="storageTime" />
         <mat-datepicker-toggle matSuffix [for]="storagePicker"></mat-datepicker-toggle>
         <mat-datepicker #storagePicker></mat-datepicker>
       </mat-form-field>
@@ -49,7 +50,8 @@
       <app-contract-filter-select-input
         [contracts]="contracts"
         [label]="'inventory.sales_contract' | translate"
-        formControlName="salesContractId">
+        formControlName="salesContractId"
+      >
       </app-contract-filter-select-input>
     </ng-container>
 
@@ -57,15 +59,20 @@
       <app-company-filter-select-input
         [companies]="companies"
         [label]="'inventory.borrowed_company' | translate"
-        formControlName="borrowedCompanyId">
+        formControlName="borrowedCompanyId"
+      >
       </app-company-filter-select-input>
     </ng-container>
 
     <!-- Outbound/Borrow Specific Fields -->
-    <ng-container *ngIf="selectedAction === 'OUTBOUND' || selectedAction === 'BORROW' || selectedAction === 'VIEW'">
+    <ng-container
+      *ngIf="
+        selectedAction === 'OUTBOUND' || selectedAction === 'BORROW' || selectedAction === 'VIEW'
+      "
+    >
       <mat-form-field>
         <mat-label>{{ 'inventory.out_time' | translate }}</mat-label>
-        <input matInput [matDatepicker]="outPicker" formControlName="outTime">
+        <input matInput [matDatepicker]="outPicker" formControlName="outTime" />
         <mat-datepicker-toggle matSuffix [for]="outPicker"></mat-datepicker-toggle>
         <mat-datepicker #outPicker></mat-datepicker>
       </mat-form-field>
@@ -73,7 +80,8 @@
       <app-employee-filter-select-input
         [employees]="employees"
         [label]="'inventory.handling_employee' | translate"
-        formControlName="handlingEmployeeId">
+        formControlName="handlingEmployeeId"
+      >
       </app-employee-filter-select-input>
 
       <mat-form-field>
@@ -87,22 +95,22 @@
 
       <mat-form-field>
         <mat-label>{{ 'inventory.shipping_address' | translate }}</mat-label>
-        <input matInput formControlName="shippingAddress">
+        <input matInput formControlName="shippingAddress" />
       </mat-form-field>
 
       <mat-form-field>
         <mat-label>{{ 'inventory.receiver_name' | translate }}</mat-label>
-        <input matInput formControlName="receiverName">
+        <input matInput formControlName="receiverName" />
       </mat-form-field>
 
       <mat-form-field>
         <mat-label>{{ 'inventory.receiver_phone' | translate }}</mat-label>
-        <input matInput formControlName="receiverPhone">
+        <input matInput formControlName="receiverPhone" />
       </mat-form-field>
 
       <mat-form-field>
         <mat-label>{{ 'inventory.express_tracking_number' | translate }}</mat-label>
-        <input matInput formControlName="expressTrackingNumber">
+        <input matInput formControlName="expressTrackingNumber" />
       </mat-form-field>
     </ng-container>
 
@@ -129,8 +137,13 @@
 <mat-dialog-actions>
   <button mat-button (click)="onCancel()">{{ 'common.cancel' | translate }}</button>
   <ng-container *ngIf="selectedAction !== 'VIEW'">
-    <button mat-raised-button color="primary" [disabled]="form.invalid || loading" (click)="onSubmit()">
+    <button
+      mat-raised-button
+      color="primary"
+      [disabled]="form.invalid || loading"
+      (click)="onSubmit()"
+    >
       {{ 'common.submit' | translate }}
-    </button>  
+    </button>
   </ng-container>
 </mat-dialog-actions>

@@ -25,12 +25,12 @@ import { InventoryAction } from './../../types/inventory-action.enum';
 @Component({
   selector: 'app-inventory-dialog',
   templateUrl: './inventory-dialog.component.html',
-  styleUrls: ['./inventory-dialog.component.scss']
+  styleUrls: ['./inventory-dialog.component.scss'],
 })
 export class InventoryDialogComponent implements OnInit {
   form: FormGroup;
   loading = false;
-  
+
   // Dropdown options
   products: any[] = [];
   contracts: any[] = [];
@@ -38,7 +38,7 @@ export class InventoryDialogComponent implements OnInit {
   companies: any[] = [];
   shippingMethods = Object.values(ShippingMethod);
   statuses = Object.values(InventoryStatus);
-  
+
   // Action types
   actionTypes = Object.values(InventoryAction);
   selectedAction: InventoryAction = this.data.action;
@@ -53,7 +53,7 @@ export class InventoryDialogComponent implements OnInit {
     private snackBar: MatSnackBar,
     private translate: TranslateService,
     private dialogRef: MatDialogRef<InventoryDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: {inventory: Inventory, action: InventoryAction}
+    @Inject(MAT_DIALOG_DATA) public data: { inventory: Inventory; action: InventoryAction }
   ) {
     this.form = this.createForm();
     this.form.get('action')?.disable();
@@ -91,7 +91,7 @@ export class InventoryDialogComponent implements OnInit {
       borrowedCompanyId: [this.data.inventory?.borrowedCompanyId ?? null],
 
       // Return specific fields
-      status: [this.data.inventory?.status ?? null]
+      status: [this.data.inventory?.status ?? null],
     });
 
     // Disable all fields if in VIEW mode
@@ -106,18 +106,20 @@ export class InventoryDialogComponent implements OnInit {
 
   loadDropdownOptions(): void {
     // Load products, contracts, and employees for dropdowns
-    this.productService.getProducts().subscribe( (response:ApiResponse<Page<Product>>) => 
-      this.products = response.data.content
-    );
-    this.contractService.getContracts({page: 0, size: 100}).subscribe(response => 
-      this.contracts = response.data.content
-    );
-    this.employeeService.getActiveEmployees().subscribe( (response:ApiResponse<Employee[]>) => 
-      this.employees = response.data
-    );
-    this.companyService.getCompanies({page: 0, size: 100}).subscribe( (response:ApiResponse<Page<Company>>) => 
-      this.companies = response.data.content
-    );
+    this.productService
+      .getProducts()
+      .subscribe((response: ApiResponse<Page<Product>>) => (this.products = response.data.content));
+    this.contractService
+      .getContracts({ page: 0, size: 100 })
+      .subscribe(response => (this.contracts = response.data.content));
+    this.employeeService
+      .getActiveEmployees()
+      .subscribe((response: ApiResponse<Employee[]>) => (this.employees = response.data));
+    this.companyService
+      .getCompanies({ page: 0, size: 100 })
+      .subscribe(
+        (response: ApiResponse<Page<Company>>) => (this.companies = response.data.content)
+      );
   }
 
   setupFormBasedOnAction(): void {
@@ -136,7 +138,7 @@ export class InventoryDialogComponent implements OnInit {
 
   updateFormValidation(action: InventoryAction): void {
     const form = this.form;
-    
+
     // Reset all validators
     form.get('productId')?.clearValidators();
     form.get('quantity')?.clearValidators();
@@ -148,13 +150,13 @@ export class InventoryDialogComponent implements OnInit {
         form.get('quantity')?.setValidators([Validators.required, Validators.min(0)]);
         form.get('purchaseContractId')?.setValidators([Validators.required]);
         break;
-      
+
       case InventoryAction.OUTBOUND:
       case InventoryAction.BORROW:
         form.get('handlingEmployeeId')?.setValidators([Validators.required]);
         form.get('outTime')?.setValidators([Validators.required]);
         break;
-      
+
       case InventoryAction.RETURN:
         // No specific additional validators
         break;
@@ -178,9 +180,9 @@ export class InventoryDialogComponent implements OnInit {
     if (this.form.valid) {
       this.loading = true;
       const formValue = this.form.value;
-      
+
       let inventoryData: Inventory = {
-        remarks: formValue.remarks
+        remarks: formValue.remarks,
       };
 
       let request: Observable<ApiResponse<Inventory>>;
@@ -197,7 +199,7 @@ export class InventoryDialogComponent implements OnInit {
             receiverName: formValue.receiverName,
             receiverPhone: formValue.receiverPhone,
             expressTrackingNumber: formValue.expressTrackingNumber,
-            handlingEmployeeId: formValue.handlingEmployeeId
+            handlingEmployeeId: formValue.handlingEmployeeId,
           };
           request = this.inventoryService.outbound(this.data?.inventory?.id ?? 0, inventoryData);
           break;
@@ -213,37 +215,37 @@ export class InventoryDialogComponent implements OnInit {
             receiverPhone: formValue.receiverPhone,
             expressTrackingNumber: formValue.expressTrackingNumber,
             borrowedCompanyId: formValue.borrowedCompanyId,
-            handlingEmployeeId: formValue.handlingEmployeeId
+            handlingEmployeeId: formValue.handlingEmployeeId,
           };
           request = this.inventoryService.borrow(this.data?.inventory?.id ?? 0, inventoryData);
           break;
-        
+
         case InventoryAction.RETURN:
           inventoryData = {
             ...inventoryData,
-            status: InventoryStatus.IN_STOCK
+            status: InventoryStatus.IN_STOCK,
           };
           request = this.inventoryService.return(this.data?.inventory?.id ?? 0, inventoryData);
           break;
 
-          default: // default to STORAGE
-            inventoryData = {
-              ...inventoryData,
-              productId: formValue.productId,
-              quantity: formValue.quantity,
-              license: formValue.license,
-              purchaseContractId: formValue.purchaseContractId,
-              storageTime: formValue.storageTime,
-              status: InventoryStatus.IN_STOCK
-            };
-            request = this.inventoryService.create(inventoryData);
-            break;  
+        default: // default to STORAGE
+          inventoryData = {
+            ...inventoryData,
+            productId: formValue.productId,
+            quantity: formValue.quantity,
+            license: formValue.license,
+            purchaseContractId: formValue.purchaseContractId,
+            storageTime: formValue.storageTime,
+            status: InventoryStatus.IN_STOCK,
+          };
+          request = this.inventoryService.create(inventoryData);
+          break;
       }
 
       console.log('Submitting inventory data:', inventoryData);
 
       request.subscribe({
-        next: (response) => {
+        next: response => {
           if (response.code === 200) {
             this.snackBar.open(
               this.translate.instant('COMMON.OPERATION_SUCCESS'),
@@ -260,7 +262,7 @@ export class InventoryDialogComponent implements OnInit {
           this.dialogRef.close(true);
           this.loading = false;
         },
-        error: (error) => {
+        error: error => {
           console.error('Error processing inventory:', error);
           this.snackBar.open(
             this.translate.instant('COMMON.ERROR_OCCURRED'),
@@ -268,7 +270,7 @@ export class InventoryDialogComponent implements OnInit {
             { duration: 3000 }
           );
           this.loading = false;
-        }
+        },
       });
     }
   }

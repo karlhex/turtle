@@ -1,4 +1,4 @@
 export enum ContractType {
-    PURCHASE = 'PURCHASE',  // 采购合同
-    SALES = 'SALES'        // 销售合同
+  PURCHASE = 'PURCHASE', // 采购合同
+  SALES = 'SALES', // 销售合同
 }

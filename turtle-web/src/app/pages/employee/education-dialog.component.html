@@ -1,11 +1,20 @@
-<h2 mat-dialog-title>{{ (mode === 'add' ? 'employee.education.actions.add' : mode === 'edit' ? 'employee.education.actions.edit' : 'employee.education.actions.view') | translate }}</h2>
+<h2 mat-dialog-title>
+  {{
+    (mode === 'add'
+      ? 'employee.education.actions.add'
+      : mode === 'edit'
+      ? 'employee.education.actions.edit'
+      : 'employee.education.actions.view'
+    ) | translate
+  }}
+</h2>
 
 <form [formGroup]="educationForm" (ngSubmit)="onSubmit()">
   <mat-dialog-content>
     <div class="form-grid">
       <mat-form-field>
         <mat-label>{{ 'employee.education.form.school' | translate }}</mat-label>
-        <input matInput formControlName="school" required>
+        <input matInput formControlName="school" required />
         <mat-error *ngIf="educationForm.get('school')?.errors?.['required']">
           {{ 'employee.education.validation.required.school' | translate }}
         </mat-error>
@@ -13,7 +22,7 @@
 
       <mat-form-field>
         <mat-label>{{ 'employee.education.form.major' | translate }}</mat-label>
-        <input matInput formControlName="major" required>
+        <input matInput formControlName="major" required />
         <mat-error *ngIf="educationForm.get('major')?.errors?.['required']">
           {{ 'employee.education.validation.required.major' | translate }}
         </mat-error>
@@ -22,10 +31,18 @@
       <mat-form-field>
         <mat-label>{{ 'employee.education.form.degreeName' | translate }}</mat-label>
         <mat-select formControlName="degree" required>
-          <mat-option value="BACHELOR">{{ 'employee.education.form.degreecombo.bachelor' | translate }}</mat-option>
-          <mat-option value="MASTER">{{ 'employee.education.form.degreecombo.master' | translate }}</mat-option>
-          <mat-option value="DOCTOR">{{ 'employee.education.form.degreecombo.doctor' | translate }}</mat-option>
-          <mat-option value="OTHER">{{ 'employee.education.form.degreecombo.other' | translate }}</mat-option>
+          <mat-option value="BACHELOR">{{
+            'employee.education.form.degreecombo.bachelor' | translate
+          }}</mat-option>
+          <mat-option value="MASTER">{{
+            'employee.education.form.degreecombo.master' | translate
+          }}</mat-option>
+          <mat-option value="DOCTOR">{{
+            'employee.education.form.degreecombo.doctor' | translate
+          }}</mat-option>
+          <mat-option value="OTHER">{{
+            'employee.education.form.degreecombo.other' | translate
+          }}</mat-option>
         </mat-select>
         <mat-error *ngIf="educationForm.get('degree')?.errors?.['required']">
           {{ 'employee.education.validation.required.degree' | translate }}
@@ -34,7 +51,7 @@
 
       <mat-form-field>
         <mat-label>{{ 'employee.education.form.startDate' | translate }}</mat-label>
-        <input matInput [matDatepicker]="startDatePicker" formControlName="startDate" required>
+        <input matInput [matDatepicker]="startDatePicker" formControlName="startDate" required />
         <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
         <mat-datepicker #startDatePicker></mat-datepicker>
         <mat-error *ngIf="educationForm.get('startDate')?.errors?.['required']">
@@ -44,14 +61,14 @@
 
       <mat-form-field>
         <mat-label>{{ 'employee.education.form.endDate' | translate }}</mat-label>
-        <input matInput [matDatepicker]="endDatePicker" formControlName="endDate">
+        <input matInput [matDatepicker]="endDatePicker" formControlName="endDate" />
         <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
         <mat-datepicker #endDatePicker></mat-datepicker>
       </mat-form-field>
 
       <mat-form-field>
         <mat-label>{{ 'employee.education.form.certificateNumber' | translate }}</mat-label>
-        <input matInput formControlName="certificateNumber">
+        <input matInput formControlName="certificateNumber" />
       </mat-form-field>
 
       <mat-slide-toggle formControlName="isHighestDegree" color="primary">
@@ -69,7 +86,13 @@
     <button mat-button mat-dialog-close type="button" (click)="onCancel()">
       {{ 'employee.education.actions.cancel' | translate }}
     </button>
-    <button mat-raised-button color="primary" type="submit" [disabled]="!educationForm.valid" *ngIf="mode !== 'view'">
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="!educationForm.valid"
+      *ngIf="mode !== 'view'"
+    >
       {{ (mode === 'add' ? 'common.action.add' : 'common.action.save') | translate }}
     </button>
   </mat-dialog-actions>

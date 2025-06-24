@@ -13,7 +13,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-reimbursement-list',
   templateUrl: './reimbursement-list.component.html',
-  styleUrls: ['./reimbursement-list.component.scss']
+  styleUrls: ['./reimbursement-list.component.scss'],
 })
 export class ReimbursementListComponent implements OnInit {
   @ViewChild(BaseListComponent) baseList!: BaseListComponent;
@@ -27,7 +27,7 @@ export class ReimbursementListComponent implements OnInit {
     'totalAmount',
     'approvalDate',
     'approver',
-    'actions'
+    'actions',
   ];
 
   reimbursements: Reimbursement[] = [];
@@ -53,7 +53,7 @@ export class ReimbursementListComponent implements OnInit {
     const params: ReimbursementSearchParams = {
       page: this.pageIndex,
       size: this.pageSize,
-      sort: 'applicationDate,desc'
+      sort: 'applicationDate,desc',
     };
 
     if (this.searchText) {
@@ -63,12 +63,12 @@ export class ReimbursementListComponent implements OnInit {
     }
 
     this.reimbursementService.getAll(params).subscribe({
-      next: (response) => {
+      next: response => {
         this.reimbursements = response.content;
         this.totalElements = response.totalElements;
         this.table?.renderRows();
       },
-      error: (error) => {
+      error: error => {
         console.error('Error loading reimbursements:', error);
         this.snackBar.open(
           this.translate.instant('reimbursement.error.loadFailed'),
@@ -78,7 +78,7 @@ export class ReimbursementListComponent implements OnInit {
       },
       complete: () => {
         this.loading = false;
-      }
+      },
     });
   }
 
@@ -97,7 +97,7 @@ export class ReimbursementListComponent implements OnInit {
   onAdd(): void {
     const dialogRef = this.dialog.open(ReimbursementDialogComponent, {
       width: '800px',
-      data: { mode: 'create' }
+      data: { mode: 'create' },
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -110,7 +110,7 @@ export class ReimbursementListComponent implements OnInit {
   onEdit(reimbursement: Reimbursement): void {
     const dialogRef = this.dialog.open(ReimbursementDialogComponent, {
       width: '800px',
-      data: { mode: 'edit', reimbursement }
+      data: { mode: 'edit', reimbursement },
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -126,9 +126,9 @@ export class ReimbursementListComponent implements OnInit {
       data: {
         title: this.translate.instant('reimbursement.dialog.deleteTitle'),
         message: this.translate.instant('reimbursement.dialog.deleteMessage', {
-          no: reimbursement.reimbursementNo
-        })
-      }
+          no: reimbursement.reimbursementNo,
+        }),
+      },
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -143,7 +143,7 @@ export class ReimbursementListComponent implements OnInit {
             );
             this.loadReimbursements();
           },
-          error: (error) => {
+          error: error => {
             console.error('Error deleting reimbursement:', error);
             this.snackBar.open(
               this.translate.instant('reimbursement.error.deleteFailed'),
@@ -151,7 +151,7 @@ export class ReimbursementListComponent implements OnInit {
               { duration: 3000 }
             );
             this.loading = false;
-          }
+          },
         });
       }
     });

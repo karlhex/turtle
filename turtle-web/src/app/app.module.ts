@@ -59,7 +59,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     LoginComponent,
     DashboardComponent,
     GuestDashboardComponent,
-    SidebarMenuComponent
+    SidebarMenuComponent,
   ],
   imports: [
     // Feature Modules
@@ -108,13 +108,11 @@ export function HttpLoaderFactory(http: HttpClient) {
       loader: {
         provide: TranslateLoader,
         useFactory: HttpLoaderFactory,
-        deps: [HttpClient]
-      }
-    })
+        deps: [HttpClient],
+      },
+    }),
   ],
-  providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
-  ],
-  bootstrap: [AppComponent]
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

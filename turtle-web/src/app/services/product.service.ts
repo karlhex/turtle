@@ -9,7 +9,7 @@ import { Page } from '../models/page.model';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ProductService {
   private apiUrl = `${environment.apiUrl}/products`;
@@ -17,7 +17,7 @@ export class ProductService {
   constructor(private http: HttpClient) {}
 
   create(product: Product): Observable<ApiResponse<Product>> {
-    console.log("create product", product);
+    console.log('create product', product);
     return this.http.post<ApiResponse<Product>>(this.apiUrl, product);
   }
 
@@ -30,11 +30,17 @@ export class ProductService {
   }
 
   getById(id: number): Observable<Product> {
-    return this.http.get<ApiResponse<Product>>(`${this.apiUrl}/${id}`)
+    return this.http
+      .get<ApiResponse<Product>>(`${this.apiUrl}/${id}`)
       .pipe(map(response => response.data));
   }
 
-  getProducts(page = 0, size = 10, sortBy = 'id', direction = 'ASC'): Observable<ApiResponse<Page<Product>>> {
+  getProducts(
+    page = 0,
+    size = 10,
+    sortBy = 'id',
+    direction = 'ASC'
+  ): Observable<ApiResponse<Page<Product>>> {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString())
@@ -44,7 +50,12 @@ export class ProductService {
     return this.http.get<ApiResponse<Page<Product>>>(this.apiUrl, { params });
   }
 
-  getAllActive(page = 0, size = 10, sortBy = 'id', direction = 'ASC'): Observable<ApiResponse<Product>> {
+  getAllActive(
+    page = 0,
+    size = 10,
+    sortBy = 'id',
+    direction = 'ASC'
+  ): Observable<ApiResponse<Product>> {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString())
@@ -54,7 +65,13 @@ export class ProductService {
     return this.http.get<ApiResponse<Product>>(`${this.apiUrl}/active`, { params });
   }
 
-  search(query: string, page = 0, size = 10, sortBy = 'id', direction = 'ASC'): Observable<ApiResponse<Page<Product>>> {
+  search(
+    query: string,
+    page = 0,
+    size = 10,
+    sortBy = 'id',
+    direction = 'ASC'
+  ): Observable<ApiResponse<Page<Product>>> {
     const params = new HttpParams()
       .set('query', query)
       .set('page', page.toString())
@@ -65,7 +82,13 @@ export class ProductService {
     return this.http.get<ApiResponse<Page<Product>>>(`${this.apiUrl}/search`, { params });
   }
 
-  getByType(type: ProductType, page = 0, size = 10, sortBy = 'id', direction = 'ASC'): Observable<ApiResponse<Page<Product>>> {
+  getByType(
+    type: ProductType,
+    page = 0,
+    size = 10,
+    sortBy = 'id',
+    direction = 'ASC'
+  ): Observable<ApiResponse<Page<Product>>> {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString())

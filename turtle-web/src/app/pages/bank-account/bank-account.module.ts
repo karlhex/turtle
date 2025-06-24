@@ -21,10 +21,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @NgModule({
-  declarations: [
-    BankAccountListComponent,
-    BankAccountDialogComponent
-  ],
+  declarations: [BankAccountListComponent, BankAccountDialogComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -43,11 +40,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatProgressSpinnerModule,
     MatSlideToggleModule,
     TranslateModule,
-    BaseListModule
+    BaseListModule,
   ],
-  exports: [
-    BankAccountListComponent,
-    BankAccountDialogComponent
-  ]
+  exports: [BankAccountListComponent, BankAccountDialogComponent],
 })
-export class BankAccountModule { }
+export class BankAccountModule {}

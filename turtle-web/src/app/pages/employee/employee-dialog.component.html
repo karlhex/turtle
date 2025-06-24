@@ -1,4 +1,6 @@
-<h2 mat-dialog-title>{{(data.mode === 'edit' ? 'employee.actions.edit' : 'employee.actions.view') | translate}}</h2>
+<h2 mat-dialog-title>
+  {{ (data.mode === 'edit' ? 'employee.actions.edit' : 'employee.actions.view') | translate }}
+</h2>
 
 <mat-tab-group>
   <mat-tab [label]="'employee.tabs.basic' | translate">
@@ -10,7 +12,7 @@
             <h3>{{ 'employee.form.basic.title' | translate }}</h3>
             <mat-form-field>
               <mat-label>{{ 'employee.form.basic.employeeNumber' | translate }}</mat-label>
-              <input matInput formControlName="employeeNumber" required>
+              <input matInput formControlName="employeeNumber" required />
               <mat-error *ngIf="employeeForm.get('employeeNumber')?.errors?.['required']">
                 {{ 'employee.validation.required.employeeNumber' | translate }}
               </mat-error>
@@ -18,7 +20,7 @@
 
             <mat-form-field>
               <mat-label>{{ 'employee.form.basic.name' | translate }}</mat-label>
-              <input matInput formControlName="name" required>
+              <input matInput formControlName="name" required />
               <mat-error *ngIf="employeeForm.get('name')?.errors?.['required']">
                 {{ 'employee.validation.required.name' | translate }}
               </mat-error>
@@ -26,7 +28,7 @@
 
             <mat-form-field>
               <mat-label>{{ 'employee.form.basic.email' | translate }}</mat-label>
-              <input matInput formControlName="email" required type="email">
+              <input matInput formControlName="email" required type="email" />
               <mat-error *ngIf="employeeForm.get('email')?.errors?.['required']">
                 {{ 'employee.validation.required.email' | translate }}
               </mat-error>
@@ -37,7 +39,7 @@
 
             <mat-form-field>
               <mat-label>{{ 'employee.form.basic.phone' | translate }}</mat-label>
-              <input matInput formControlName="phone">
+              <input matInput formControlName="phone" />
             </mat-form-field>
           </div>
 
@@ -45,25 +47,30 @@
           <div class="section" *ngIf="!isApplication">
             <h3>{{ 'employee.form.department.title' | translate }}</h3>
 
-      <!-- Department -->
-      <app-department-filter-select-input
-      [departments]="departments"
-      [label]="'employee.form.department.department' | translate"
-      formControlName="departmentId"
->
-    </app-department-filter-select-input>
+            <!-- Department -->
+            <app-department-filter-select-input
+              [departments]="departments"
+              [label]="'employee.form.department.department' | translate"
+              formControlName="departmentId"
+            >
+            </app-department-filter-select-input>
 
-    <!-- Position -->
-     <app-position-filter-select-input
-      [positions]="positions"
-      [label]="'employee.form.department.position' | translate"
-      formControlName="positionId"
->
+            <!-- Position -->
+            <app-position-filter-select-input
+              [positions]="positions"
+              [label]="'employee.form.department.position' | translate"
+              formControlName="positionId"
+            >
             </app-position-filter-select-input>
 
             <mat-form-field>
               <mat-label>{{ 'employee.form.department.hireDate' | translate }}</mat-label>
-              <input matInput [matDatepicker]="hireDatePicker" formControlName="hireDate" required>
+              <input
+                matInput
+                [matDatepicker]="hireDatePicker"
+                formControlName="hireDate"
+                required
+              />
               <mat-datepicker-toggle matSuffix [for]="hireDatePicker"></mat-datepicker-toggle>
               <mat-datepicker #hireDatePicker></mat-datepicker>
               <mat-error *ngIf="employeeForm.get('hireDate')?.errors?.['required']">
@@ -73,7 +80,7 @@
 
             <mat-form-field>
               <mat-label>{{ 'employee.form.department.leaveDate' | translate }}</mat-label>
-              <input matInput [matDatepicker]="leaveDatePicker" formControlName="leaveDate">
+              <input matInput [matDatepicker]="leaveDatePicker" formControlName="leaveDate" />
               <mat-datepicker-toggle matSuffix [for]="leaveDatePicker"></mat-datepicker-toggle>
               <mat-datepicker #leaveDatePicker></mat-datepicker>
             </mat-form-field>
@@ -84,7 +91,7 @@
             <h3>{{ 'employee.form.personal.title' | translate }}</h3>
             <mat-form-field>
               <mat-label>{{ 'employee.form.personal.birthday' | translate }}</mat-label>
-              <input matInput [matDatepicker]="birthdayPicker" formControlName="birthday">
+              <input matInput [matDatepicker]="birthdayPicker" formControlName="birthday" />
               <mat-datepicker-toggle matSuffix [for]="birthdayPicker"></mat-datepicker-toggle>
               <mat-datepicker #birthdayPicker></mat-datepicker>
             </mat-form-field>
@@ -100,19 +107,21 @@
 
             <mat-form-field>
               <mat-label>{{ 'employee.form.personal.ethnicity' | translate }}</mat-label>
-              <input matInput formControlName="ethnicity">
+              <input matInput formControlName="ethnicity" />
             </mat-form-field>
 
             <mat-form-field>
               <mat-label>{{ 'employee.form.personal.idType' | translate }}</mat-label>
               <mat-select formControlName="idType">
-                <mat-option *ngFor="let type of idtypes" [value]="type">{{ 'employee.form.personal.idType.' + type | translate }}</mat-option>
-             </mat-select>
+                <mat-option *ngFor="let type of idtypes" [value]="type">{{
+                  'employee.form.personal.idType.' + type | translate
+                }}</mat-option>
+              </mat-select>
             </mat-form-field>
 
             <mat-form-field>
               <mat-label>{{ 'employee.form.personal.idNumber' | translate }}</mat-label>
-              <input matInput formControlName="idNumber" required>
+              <input matInput formControlName="idNumber" required />
               <mat-error *ngIf="employeeForm.get('idNumber')?.errors?.['required']">
                 {{ 'employee.validation.required.idNumber' | translate }}
               </mat-error>
@@ -133,13 +142,20 @@
 
             <mat-form-field>
               <mat-label>{{ 'employee.form.contract.duration' | translate }}</mat-label>
-              <input matInput type="number" formControlName="contractDuration">
+              <input matInput type="number" formControlName="contractDuration" />
             </mat-form-field>
 
             <mat-form-field>
               <mat-label>{{ 'employee.form.contract.startDate' | translate }}</mat-label>
-              <input matInput [matDatepicker]="contractStartDatePicker" formControlName="contractStartDate">
-              <mat-datepicker-toggle matSuffix [for]="contractStartDatePicker"></mat-datepicker-toggle>
+              <input
+                matInput
+                [matDatepicker]="contractStartDatePicker"
+                formControlName="contractStartDate"
+              />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="contractStartDatePicker"
+              ></mat-datepicker-toggle>
               <mat-datepicker #contractStartDatePicker></mat-datepicker>
             </mat-form-field>
 
@@ -159,12 +175,12 @@
             <h3>{{ 'employee.form.emergency.title' | translate }}</h3>
             <mat-form-field>
               <mat-label>{{ 'employee.form.emergency.name' | translate }}</mat-label>
-              <input matInput formControlName="emergencyContactName">
+              <input matInput formControlName="emergencyContactName" />
             </mat-form-field>
 
             <mat-form-field>
               <mat-label>{{ 'employee.form.emergency.phone' | translate }}</mat-label>
-              <input matInput formControlName="emergencyContactPhone">
+              <input matInput formControlName="emergencyContactPhone" />
             </mat-form-field>
           </div>
 
@@ -186,7 +202,8 @@
       [employeeId]="data.employee?.id ?? 0"
       [educations]="educations"
       [editMode]="!isApplication"
-      (educationEdited)="onEducationEdit($event)">
+      (educationEdited)="onEducationEdit($event)"
+    >
     </app-education-list>
   </mat-tab>
 
@@ -195,21 +212,32 @@
       [employeeId]="data.employee?.id ?? 0"
       [jobHistories]="jobHistories"
       [editMode]="!isApplication"
-      (jobHistoryEdited)="onJobHistoryEdit($event)">
+      (jobHistoryEdited)="onJobHistoryEdit($event)"
+    >
     </app-job-history-list>
   </mat-tab>
 </mat-tab-group>
 
 <mat-dialog-actions align="end">
-  <button mat-button type="button" (click)="onCancel()">{{ 'employee.dialog.cancel' | translate }}</button>
-  <button mat-raised-button 
-          color="primary" 
-          type="button" 
-          *hasPermission="'hr.employee.apply'"
-          [disabled]="loading || !employeeForm.valid" 
-          (click)="submit()">
+  <button mat-button type="button" (click)="onCancel()">
+    {{ 'employee.dialog.cancel' | translate }}
+  </button>
+  <button
+    mat-raised-button
+    color="primary"
+    type="button"
+    *hasPermission="'hr.employee.apply'"
+    [disabled]="loading || !employeeForm.valid"
+    (click)="submit()"
+  >
     <mat-progress-spinner *ngIf="loading" diameter="20" mode="indeterminate">
     </mat-progress-spinner>
-    <span>{{ isApplication ? ('employee.dialog.apply' | translate) : (isEdit ? ('employee.dialog.update' | translate) : ('employee.dialog.create' | translate)) }}</span>
+    <span>{{
+      isApplication
+        ? ('employee.dialog.apply' | translate)
+        : isEdit
+        ? ('employee.dialog.update' | translate)
+        : ('employee.dialog.create' | translate)
+    }}</span>
   </button>
 </mat-dialog-actions>

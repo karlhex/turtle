@@ -2,7 +2,7 @@ import { Directive, Input, OnInit, TemplateRef, ViewContainerRef } from '@angula
 import { PermissionService } from '../services/permission.service';
 
 @Directive({
-  selector: '[hasPermission]'
+  selector: '[hasPermission]',
 })
 export class HasPermissionDirective implements OnInit {
   private permission!: string;
@@ -26,18 +26,16 @@ export class HasPermissionDirective implements OnInit {
 
   private updateView() {
     if (this.permission) {
-      this.permissionService.hasPermission(this.permission).subscribe(
-        hasPermission => {
-          console.log('hasPermission: ', hasPermission);
-          if (hasPermission && this.isHidden) {
-            this.viewContainer.createEmbeddedView(this.templateRef);
-            this.isHidden = false;
-          } else if (!hasPermission && !this.isHidden) {
-            this.viewContainer.clear();
-            this.isHidden = true;
-          }
+      this.permissionService.hasPermission(this.permission).subscribe(hasPermission => {
+        console.log('hasPermission: ', hasPermission);
+        if (hasPermission && this.isHidden) {
+          this.viewContainer.createEmbeddedView(this.templateRef);
+          this.isHidden = false;
+        } else if (!hasPermission && !this.isHidden) {
+          this.viewContainer.clear();
+          this.isHidden = true;
         }
-      );
+      });
     }
   }
 }

@@ -6,7 +6,7 @@ import { EmployeeJobHistory } from '../../models/employee.model';
 @Component({
   selector: 'app-job-history-dialog',
   templateUrl: './job-history-dialog.component.html',
-  styleUrls: ['./job-history-dialog.component.scss']
+  styleUrls: ['./job-history-dialog.component.scss'],
 })
 export class JobHistoryDialogComponent implements OnInit {
   jobHistoryForm: FormGroup;
@@ -14,10 +14,11 @@ export class JobHistoryDialogComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<JobHistoryDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { 
-      jobHistory: EmployeeJobHistory,
-      employeeId: number,
-      mode: 'view' | 'edit'
+    @Inject(MAT_DIALOG_DATA)
+    public data: {
+      jobHistory: EmployeeJobHistory;
+      employeeId: number;
+      mode: 'view' | 'edit';
     }
   ) {
     this.jobHistoryForm = this.fb.group({
@@ -30,7 +31,7 @@ export class JobHistoryDialogComponent implements OnInit {
       achievements: [''],
       leavingReason: [''],
       referenceContact: [''],
-      remarks: ['']
+      remarks: [''],
     });
   }
 
@@ -46,7 +47,7 @@ export class JobHistoryDialogComponent implements OnInit {
         achievements: this.data.jobHistory.achievements,
         leavingReason: this.data.jobHistory.leavingReason,
         referenceContact: this.data.jobHistory.referenceContact,
-        remarks: this.data.jobHistory.remarks
+        remarks: this.data.jobHistory.remarks,
       });
     }
 
@@ -70,7 +71,7 @@ export class JobHistoryDialogComponent implements OnInit {
         achievements: formValue.achievements,
         leavingReason: formValue.leavingReason,
         referenceContact: formValue.referenceContact,
-        remarks: formValue.remarks
+        remarks: formValue.remarks,
       };
       this.dialogRef.close(jobHistory);
     }

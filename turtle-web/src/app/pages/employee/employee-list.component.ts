@@ -23,7 +23,7 @@ export class EmployeeListComponent implements OnInit {
     'position',
     'hireDate',
     'status',
-    'actions'
+    'actions',
   ];
   dataSource = new MatTableDataSource<Employee>();
   totalElements = 0;
@@ -46,46 +46,52 @@ export class EmployeeListComponent implements OnInit {
 
   loadEmployees(page: number = 0) {
     this.isLoading = true;
-    const sort = this.sort?.active ? { 
-      sortBy: this.sort.active, 
-      direction: this.sort.direction.toUpperCase() as 'ASC' | 'DESC' 
-    } : undefined;
+    const sort = this.sort?.active
+      ? {
+          sortBy: this.sort.active,
+          direction: this.sort.direction.toUpperCase() as 'ASC' | 'DESC',
+        }
+      : undefined;
 
     if (this.searchQuery) {
-      this.employeeService.search(this.searchQuery, page, this.pageSize)
-        .subscribe({
-          next: (response) => {
-            if (response.code === 200) {
-              this.dataSource.data = response.data.content;
-              this.totalElements = response.data.totalElements;
-            }else {
-              this.snackBar.open(response.message, '关闭', { duration: 3000 });
-            }
-            this.isLoading = false;
-          },
-          error: (error) => {
-            console.error('Error loading employees:', error);
-            this.snackBar.open('加载员工列表失败', '关闭', { duration: 3000 });
-            this.isLoading = false;
+      this.employeeService.search(this.searchQuery, page, this.pageSize).subscribe({
+        next: response => {
+          if (response.code === 200) {
+            this.dataSource.data = response.data.content;
+            this.totalElements = response.data.totalElements;
+          } else {
+            this.snackBar.open(response.message, '关闭', { duration: 3000 });
           }
-        });
+          this.isLoading = false;
+        },
+        error: error => {
+          console.error('Error loading employees:', error);
+          this.snackBar.open('加载员工列表失败', '关闭', { duration: 3000 });
+          this.isLoading = false;
+        },
+      });
     } else {
-      this.employeeService.getEmployees(page, this.pageSize, sort?.sortBy ? { sortBy: sort.sortBy, direction: sort.direction } : undefined)
+      this.employeeService
+        .getEmployees(
+          page,
+          this.pageSize,
+          sort?.sortBy ? { sortBy: sort.sortBy, direction: sort.direction } : undefined
+        )
         .subscribe({
-          next: (response) => {
+          next: response => {
             if (response.code === 200) {
               this.dataSource.data = response.data.content;
               this.totalElements = response.data.totalElements;
-            }else {
+            } else {
               this.snackBar.open(response.message, '关闭', { duration: 3000 });
             }
             this.isLoading = false;
           },
-          error: (error) => {
+          error: error => {
             console.error('Error loading employees:', error);
             this.snackBar.open('加载员工列表失败', '关闭', { duration: 3000 });
             this.isLoading = false;
-          }
+          },
         });
     }
   }
@@ -106,7 +112,7 @@ export class EmployeeListComponent implements OnInit {
   openAddDialog() {
     const dialogRef = this.dialog.open(EmployeeDialogComponent, {
       width: '600px',
-      data: { mode: 'add' }
+      data: { mode: 'add' },
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -119,7 +125,7 @@ export class EmployeeListComponent implements OnInit {
   onEdit(employee: Employee) {
     const dialogRef = this.dialog.open(EmployeeDialogComponent, {
       width: '600px',
-      data: { mode: 'edit', employee }
+      data: { mode: 'edit', employee },
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -136,10 +142,10 @@ export class EmployeeListComponent implements OnInit {
           this.snackBar.open('删除成功', '关闭', { duration: 3000 });
           this.loadEmployees();
         },
-        error: (error) => {
+        error: error => {
           console.error('Error deleting employee:', error);
           this.snackBar.open('删除失败', '关闭', { duration: 3000 });
-        }
+        },
       });
     }
   }

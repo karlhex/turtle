@@ -20,10 +20,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { ActionModule } from '@app/components/action/action.module';
 
 @NgModule({
-  declarations: [
-    CurrencyListComponent,
-    CurrencyDialogComponent
-  ],
+  declarations: [CurrencyListComponent, CurrencyDialogComponent],
   imports: [
     ActionModule,
     CommonModule,
@@ -41,11 +38,8 @@ import { ActionModule } from '@app/components/action/action.module';
     MatProgressBarModule,
     MatTooltipModule,
     TranslateModule,
-    BaseListModule
+    BaseListModule,
   ],
-  exports: [
-    CurrencyListComponent,
-    CurrencyDialogComponent
-  ]
+  exports: [CurrencyListComponent, CurrencyDialogComponent],
 })
-export class CurrencyModule { }
+export class CurrencyModule {}

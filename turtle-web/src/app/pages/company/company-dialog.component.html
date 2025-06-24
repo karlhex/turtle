@@ -7,10 +7,8 @@
         <!-- 公司全称 -->
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>公司全称</mat-label>
-          <input matInput formControlName="fullName" required>
-          <mat-error *ngIf="form.get('fullName')?.hasError('required')">
-            请输入公司全称
-          </mat-error>
+          <input matInput formControlName="fullName" required />
+          <mat-error *ngIf="form.get('fullName')?.hasError('required')"> 请输入公司全称 </mat-error>
         </mat-form-field>
 
         <!-- 公司类型 -->
@@ -18,63 +16,55 @@
           <mat-label>公司类型</mat-label>
           <mat-select formControlName="type" required>
             <mat-option *ngFor="let type of companyTypes" [value]="type">
-              {{type}}
+              {{ type }}
             </mat-option>
           </mat-select>
-          <mat-error *ngIf="form.get('type')?.hasError('required')">
-            请选择公司类型
-          </mat-error>
+          <mat-error *ngIf="form.get('type')?.hasError('required')"> 请选择公司类型 </mat-error>
         </mat-form-field>
         <!-- 公司简称 -->
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>公司简称</mat-label>
-          <input matInput formControlName="shortName">
+          <input matInput formControlName="shortName" />
         </mat-form-field>
 
         <!-- 地址 -->
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>地址</mat-label>
-          <input matInput formControlName="address" required>
-          <mat-error *ngIf="form.get('address')?.hasError('required')">
-            请输入地址
-          </mat-error>
+          <input matInput formControlName="address" required />
+          <mat-error *ngIf="form.get('address')?.hasError('required')"> 请输入地址 </mat-error>
         </mat-form-field>
 
         <!-- 电话 -->
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>电话</mat-label>
-          <input matInput formControlName="phone" required>
-          <mat-error *ngIf="form.get('phone')?.hasError('required')">
-            请输入电话
-          </mat-error>
+          <input matInput formControlName="phone" required />
+          <mat-error *ngIf="form.get('phone')?.hasError('required')"> 请输入电话 </mat-error>
         </mat-form-field>
 
         <!-- 邮箱 -->
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>邮箱</mat-label>
-          <input matInput formControlName="email" type="email">
-          <mat-error *ngIf="form.get('email')?.hasError('email')">
-            请输入有效的邮箱地址
-          </mat-error>
+          <input matInput formControlName="email" type="email" />
+          <mat-error *ngIf="form.get('email')?.hasError('email')"> 请输入有效的邮箱地址 </mat-error>
         </mat-form-field>
 
         <!-- 网站 -->
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>网站</mat-label>
-          <input matInput formControlName="website">
+          <input matInput formControlName="website" />
         </mat-form-field>
 
         <div class="section-title">税务信息</div>
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>税务信息</mat-label>
-          <input type="text" matInput formControlName="taxInfo" [matAutocomplete]="taxInfoAuto">
+          <input type="text" matInput formControlName="taxInfo" [matAutocomplete]="taxInfoAuto" />
           <mat-autocomplete #taxInfoAuto="matAutocomplete" [displayWith]="displayTaxInfo">
             <mat-option *ngFor="let taxInfo of filteredTaxInfos | async" [value]="taxInfo">
-              {{taxInfo.fullName}}
+              {{ taxInfo.fullName }}
             </mat-option>
           </mat-autocomplete>
         </mat-form-field>
-        
+
         <!-- 备注 -->
         <mat-form-field appearance="outline" class="w-full">
           <mat-label>备注</mat-label>
@@ -84,9 +74,7 @@
     </mat-dialog-content>
 
     <mat-dialog-actions align="end">
-      <button mat-button type="button" [disabled]="loading" (click)="onCancel()">
-        取消
-      </button>
+      <button mat-button type="button" [disabled]="loading" (click)="onCancel()">取消</button>
       <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid || loading">
         <mat-spinner diameter="20" *ngIf="loading"></mat-spinner>
         <span>{{ loading ? '保存中...' : '保存' }}</span>

@@ -28,7 +28,7 @@ export class TaxInfoListComponent implements OnInit {
     'bankAccount',
     'phone',
     'active',
-    'actions'
+    'actions',
   ];
   dataSource = new MatTableDataSource<TaxInfo>();
   loading = false;
@@ -50,26 +50,28 @@ export class TaxInfoListComponent implements OnInit {
 
   loadTaxInfos(): void {
     this.loading = true;
-    this.taxInfoService.getTaxInfos({
-      page: this.pageIndex,
-      size: this.pageSize,
-      search: this.searchText || undefined
-    }).subscribe({
-      next: (response) => {
-        this.dataSource.data = response.data.content;
-        this.totalElements = response.data.totalElements;
-        this.loading = false;
-      },
-      error: (error) => {
-        console.error('Error loading tax infos:', error);
-        this.loading = false;
-        this.snackBar.open(
-          this.translate.instant('ERROR.LOADING_TAX_INFOS'),
-          this.translate.instant('ACTIONS.CLOSE'),
-          { duration: 3000 }
-        );
-      }
-    });
+    this.taxInfoService
+      .getTaxInfos({
+        page: this.pageIndex,
+        size: this.pageSize,
+        search: this.searchText || undefined,
+      })
+      .subscribe({
+        next: response => {
+          this.dataSource.data = response.data.content;
+          this.totalElements = response.data.totalElements;
+          this.loading = false;
+        },
+        error: error => {
+          console.error('Error loading tax infos:', error);
+          this.loading = false;
+          this.snackBar.open(
+            this.translate.instant('ERROR.LOADING_TAX_INFOS'),
+            this.translate.instant('ACTIONS.CLOSE'),
+            { duration: 3000 }
+          );
+        },
+      });
   }
 
   onSearch(searchText: string): void {
@@ -87,7 +89,7 @@ export class TaxInfoListComponent implements OnInit {
   onAdd(): void {
     const dialogRef = this.dialog.open(TaxInfoDialogComponent, {
       width: '600px',
-      data: { mode: 'create' }
+      data: { mode: 'create' },
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -100,7 +102,7 @@ export class TaxInfoListComponent implements OnInit {
   onEdit(taxInfo: TaxInfo): void {
     const dialogRef = this.dialog.open(TaxInfoDialogComponent, {
       width: '600px',
-      data: { mode: 'edit', taxInfo }
+      data: { mode: 'edit', taxInfo },
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -121,7 +123,7 @@ export class TaxInfoListComponent implements OnInit {
           { duration: 3000 }
         );
       },
-      error: (error) => {
+      error: error => {
         console.error('Error toggling status:', error);
         this.loading = false;
         this.snackBar.open(
@@ -129,7 +131,7 @@ export class TaxInfoListComponent implements OnInit {
           this.translate.instant('ACTIONS.CLOSE'),
           { duration: 3000 }
         );
-      }
+      },
     });
   }
 
@@ -145,7 +147,7 @@ export class TaxInfoListComponent implements OnInit {
             { duration: 3000 }
           );
         },
-        error: (error) => {
+        error: error => {
           console.error('Error deleting tax info:', error);
           this.loading = false;
           this.snackBar.open(
@@ -153,7 +155,7 @@ export class TaxInfoListComponent implements OnInit {
             this.translate.instant('ACTIONS.CLOSE'),
             { duration: 3000 }
           );
-        }
+        },
       });
     }
   }

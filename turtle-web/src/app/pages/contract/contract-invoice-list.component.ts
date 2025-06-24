@@ -11,7 +11,7 @@ import { Company } from '@app/models/company.model';
 @Component({
   selector: 'app-contract-invoice-list',
   templateUrl: './contract-invoice-list.component.html',
-  styleUrls: ['./contract-invoice-list.component.scss']
+  styleUrls: ['./contract-invoice-list.component.scss'],
 })
 export class ContractInvoiceListComponent implements OnInit {
   @Input() buyer?: Company;
@@ -33,13 +33,10 @@ export class ContractInvoiceListComponent implements OnInit {
     'buyerTaxInfo',
     'sellerTaxInfo',
     'cancelled',
-    'actions'
+    'actions',
   ];
 
-  constructor(
-    private dialog: MatDialog,
-    private translate: TranslateService
-  ) {}
+  constructor(private dialog: MatDialog, private translate: TranslateService) {}
 
   ngOnInit(): void {}
 

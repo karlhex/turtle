@@ -7,7 +7,7 @@ import { Page } from '../models/page.model';
 import { ApiResponse } from '../models/api.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ProjectService {
   private apiUrl = `${environment.apiUrl}/projects`;

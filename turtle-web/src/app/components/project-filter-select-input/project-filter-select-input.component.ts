@@ -11,9 +11,9 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms';
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: ProjectFilterSelectInputComponent,
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
 export class ProjectFilterSelectInputComponent extends BaseFilterSelectInputComponent<Project> {
   @Input() override label: string = 'common.select_project';

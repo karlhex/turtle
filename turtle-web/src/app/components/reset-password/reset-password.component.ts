@@ -7,7 +7,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-reset-password',
   templateUrl: './reset-password.component.html',
-  styleUrls: ['./reset-password.component.scss']
+  styleUrls: ['./reset-password.component.scss'],
 })
 export class ResetPasswordComponent {
   resetForm: FormGroup;
@@ -22,7 +22,7 @@ export class ResetPasswordComponent {
     @Inject(MAT_DIALOG_DATA) public data: { userId: number }
   ) {
     this.resetForm = this.fb.group({
-      confirmReset: [false, [Validators.requiredTrue]]
+      confirmReset: [false, [Validators.requiredTrue]],
     });
   }
 
@@ -30,17 +30,17 @@ export class ResetPasswordComponent {
     if (this.resetForm.valid) {
       this.loading = true;
       this.userService.resetPassword(this.data.userId).subscribe({
-        next: (response) => {
+        next: response => {
           this.tempPassword = response.data;
           this.snackBar.open('密码重置成功', '关闭', { duration: 3000 });
         },
-        error: (error) => {
+        error: error => {
           console.error('Error resetting password:', error);
           this.snackBar.open('密码重置失败', '关闭', { duration: 3000 });
         },
         complete: () => {
           this.loading = false;
-        }
+        },
       });
     }
   }
@@ -51,7 +51,7 @@ export class ResetPasswordComponent {
         () => {
           this.snackBar.open('临时密码已复制到剪贴板', '关闭', { duration: 3000 });
         },
-        (err) => {
+        err => {
           console.error('Could not copy password:', err);
           this.snackBar.open('复制密码失败', '关闭', { duration: 3000 });
         }

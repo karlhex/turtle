@@ -12,7 +12,7 @@ import { ResetPasswordComponent } from '../../../components/reset-password/reset
 @Component({
   selector: 'app-user-list',
   templateUrl: './user-list.component.html',
-  styleUrls: ['./user-list.component.scss']
+  styleUrls: ['./user-list.component.scss'],
 })
 export class UserListComponent implements OnInit {
   displayedColumns: string[] = ['id', 'username', 'email', 'status', 'roles', 'actions'];
@@ -35,15 +35,15 @@ export class UserListComponent implements OnInit {
 
   loadUsers() {
     this.userService.getUsers().subscribe({
-      next: (response) => {
+      next: response => {
         this.dataSource.data = response.data.content;
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       },
-      error: (error) => {
+      error: error => {
         console.error('Error loading users:', error);
         this.snackBar.error('加载用户列表失败');
-      }
+      },
     });
   }
 
@@ -59,7 +59,7 @@ export class UserListComponent implements OnInit {
   openCreateDialog() {
     const dialogRef = this.dialog.open(UserDialogComponent, {
       width: '600px',
-      data: { mode: 'create' }
+      data: { mode: 'create' },
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -72,7 +72,7 @@ export class UserListComponent implements OnInit {
   editUser(user: User) {
     const dialogRef = this.dialog.open(UserDialogComponent, {
       width: '600px',
-      data: { mode: 'edit', user }
+      data: { mode: 'edit', user },
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -85,7 +85,7 @@ export class UserListComponent implements OnInit {
   resetPassword(user: User) {
     const dialogRef = this.dialog.open(ResetPasswordComponent, {
       width: '500px',
-      data: { userId: user.id }
+      data: { userId: user.id },
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -100,8 +100,8 @@ export class UserListComponent implements OnInit {
       width: '400px',
       data: {
         title: '强制修改密码',
-        message: `确定要强制用户 ${user.username} 在下次登录时修改密码吗？`
-      }
+        message: `确定要强制用户 ${user.username} 在下次登录时修改密码吗？`,
+      },
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -111,10 +111,10 @@ export class UserListComponent implements OnInit {
             this.snackBar.success('操作成功');
             this.loadUsers();
           },
-          error: (error) => {
+          error: error => {
             console.error('Error forcing password change:', error);
             this.snackBar.error('操作失败');
-          }
+          },
         });
       }
     });
@@ -126,8 +126,8 @@ export class UserListComponent implements OnInit {
       width: '400px',
       data: {
         title: `${newStatus === 'ACTIVE' ? '启用' : '禁用'}用户`,
-        message: `确定要${newStatus === 'ACTIVE' ? '启用' : '禁用'}用户 ${user.username} 吗？`
-      }
+        message: `确定要${newStatus === 'ACTIVE' ? '启用' : '禁用'}用户 ${user.username} 吗？`,
+      },
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -138,10 +138,10 @@ export class UserListComponent implements OnInit {
             this.snackBar.success('操作成功');
             this.loadUsers();
           },
-          error: (error) => {
+          error: error => {
             console.error('Error updating user status:', error);
             this.snackBar.error('操作失败');
-          }
+          },
         });
       }
     });
@@ -152,8 +152,8 @@ export class UserListComponent implements OnInit {
       width: '400px',
       data: {
         title: '删除用户',
-        message: `确定要删除用户 ${user.username} 吗？此操作不可撤销。`
-      }
+        message: `确定要删除用户 ${user.username} 吗？此操作不可撤销。`,
+      },
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -163,10 +163,10 @@ export class UserListComponent implements OnInit {
             this.snackBar.success('用户删除成功');
             this.loadUsers();
           },
-          error: (error) => {
+          error: error => {
             console.error('Error deleting user:', error);
             this.snackBar.error('用户删除失败');
-          }
+          },
         });
       }
     });

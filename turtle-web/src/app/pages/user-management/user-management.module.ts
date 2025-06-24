@@ -28,7 +28,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     UserManagementComponent,
     UserEditDialogComponent,
     UserEmployeeMappingComponent,
-    ChangePasswordDialogComponent
+    ChangePasswordDialogComponent,
   ],
   imports: [
     ActionModule,
@@ -49,13 +49,13 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatCardModule,
     MatProgressSpinnerModule,
     TranslateModule,
-    BaseListModule
+    BaseListModule,
   ],
   exports: [
     UserManagementComponent,
     UserEditDialogComponent,
     UserEmployeeMappingComponent,
-    ChangePasswordDialogComponent
-  ]
+    ChangePasswordDialogComponent,
+  ],
 })
-export class UserManagementModule { }
+export class UserManagementModule {}

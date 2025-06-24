@@ -19,10 +19,7 @@ import { BaseListModule } from '../base-list/base-list.module';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
-  declarations: [
-    PersonInputComponent,
-    PersonDialogComponent
-  ],
+  declarations: [PersonInputComponent, PersonDialogComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -39,11 +36,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatTooltipModule,
     MatAutocompleteModule,
     TranslateModule,
-    BaseListModule
+    BaseListModule,
   ],
-  exports: [
-    PersonInputComponent,
-    PersonDialogComponent
-  ]
+  exports: [PersonInputComponent, PersonDialogComponent],
 })
-export class PersonInputModule { }
+export class PersonInputModule {}

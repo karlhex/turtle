@@ -1,9 +1,6 @@
 <mat-form-field appearance="outline" class="w-100">
   <mat-label>{{ label | translate }}</mat-label>
-  <input type="text"
-         matInput
-         [formControl]="contractCtrl"
-         [matAutocomplete]="auto">
+  <input type="text" matInput [formControl]="contractCtrl" [matAutocomplete]="auto" />
   <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
     <ng-template #optionTemplate let-contract>
       <div class="contract-option">
@@ -15,7 +12,9 @@
       </div>
     </ng-template>
     <mat-option *ngFor="let contract of filteredContracts | async" [value]="contract">
-      <ng-container *ngTemplateOutlet="optionTemplate; context: { contract: contract }"></ng-container>
+      <ng-container
+        *ngTemplateOutlet="optionTemplate; context: { contract: contract }"
+      ></ng-container>
     </mat-option>
   </mat-autocomplete>
 </mat-form-field>

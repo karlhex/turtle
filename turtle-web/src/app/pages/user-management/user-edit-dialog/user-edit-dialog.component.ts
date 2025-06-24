@@ -8,7 +8,7 @@ import { Role } from '../../../models/role.model';
 @Component({
   selector: 'app-user-edit-dialog',
   templateUrl: './user-edit-dialog.component.html',
-  styleUrls: ['./user-edit-dialog.component.scss']
+  styleUrls: ['./user-edit-dialog.component.scss'],
 })
 export class UserEditDialogComponent implements OnInit {
   userForm: FormGroup;
@@ -24,9 +24,9 @@ export class UserEditDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: { user?: User }
   ) {
     this.isEditMode = !!data.user;
-    
+
     // Extract role names from the user's roles if they exist
-    const roleNames = data.user?.roleNames?.map(role => "ROLE_" + role) || [];
+    const roleNames = data.user?.roleNames?.map(role => 'ROLE_' + role) || [];
     console.log('Initial user data:', data.user);
     console.log('Initial roleNames:', roleNames);
 
@@ -34,25 +34,25 @@ export class UserEditDialogComponent implements OnInit {
       id: [data.user?.id],
       username: [data.user?.username || '', [Validators.required]],
       email: [data.user?.email || '', [Validators.required, Validators.email]],
-      roleNames: [roleNames, [Validators.required]]
+      roleNames: [roleNames, [Validators.required]],
     });
   }
 
   ngOnInit(): void {
     // 设置对话框的aria标签
     this.dialogRef.addPanelClass('user-edit-dialog');
-    
+
     // 加载角色列表
     this.roleService.getAllRoles().subscribe({
-      next: (response) => {
+      next: response => {
         console.log('Loaded roles:', response.data);
         this.availableRoles = response.data;
         this.isLoading = false;
       },
-      error: (error) => {
+      error: error => {
         console.error('Failed to load roles:', error);
         this.isLoading = false;
-      }
+      },
     });
   }
 

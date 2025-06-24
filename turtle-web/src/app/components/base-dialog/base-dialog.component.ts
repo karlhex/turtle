@@ -26,7 +26,7 @@ export interface BaseDialogData {
 @Component({
   selector: 'app-base-dialog',
   templateUrl: './base-dialog.component.html',
-  styleUrls: ['./base-dialog.component.scss']
+  styleUrls: ['./base-dialog.component.scss'],
 })
 export class BaseDialogComponent {
   constructor(
@@ -40,9 +40,9 @@ export class BaseDialogComponent {
         showCloseButton: true,
         loading: false,
         preventClose: false,
-        buttons: []
+        buttons: [],
       },
-      ...this.data
+      ...this.data,
     };
 
     // Handle escape key and backdrop click

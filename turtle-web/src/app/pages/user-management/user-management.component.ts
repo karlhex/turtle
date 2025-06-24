@@ -1,6 +1,12 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+  FormsModule,
+} from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, PageEvent, MatPaginatorModule } from '@angular/material/paginator';
@@ -61,28 +67,30 @@ export class UserManagementComponent implements OnInit, AfterViewInit {
 
   loadUsers(page: number = 0): void {
     this.isLoading = true;
-    const sort = this.sort?.active ? {
-      sortBy: this.sort.active,
-      direction: this.sort.direction.toUpperCase() as 'ASC' | 'DESC'
-    } : undefined;
+    const sort = this.sort?.active
+      ? {
+          sortBy: this.sort.active,
+          direction: this.sort.direction.toUpperCase() as 'ASC' | 'DESC',
+        }
+      : undefined;
 
     if (this.searchQuery) {
       this.userService.searchUsers(this.searchQuery, page, this.pageSize).subscribe({
-        next: (response) => {
+        next: response => {
           this.handleUserResponse(response);
         },
-        error: (error) => {
+        error: error => {
           this.handleError(error);
-        }
+        },
       });
     } else {
       this.userService.getUsers(page, this.pageSize, sort).subscribe({
-        next: (response) => {
+        next: response => {
           this.handleUserResponse(response);
         },
-        error: (error) => {
+        error: error => {
           this.handleError(error);
-        }
+        },
       });
     }
   }
@@ -97,7 +105,7 @@ export class UserManagementComponent implements OnInit, AfterViewInit {
 
   showCreateModal(): void {
     const dialogRef = this.dialog.open(UserEditDialogComponent, {
-      data: {}
+      data: {},
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -111,9 +119,9 @@ export class UserManagementComponent implements OnInit, AfterViewInit {
               { duration: 3000 }
             );
           },
-          error: (error) => {
+          error: error => {
             this.handleError(error);
-          }
+          },
         });
       }
     });
@@ -121,7 +129,7 @@ export class UserManagementComponent implements OnInit, AfterViewInit {
 
   showEditModal(user: User): void {
     const dialogRef = this.dialog.open(UserEditDialogComponent, {
-      data: { user }
+      data: { user },
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -135,9 +143,9 @@ export class UserManagementComponent implements OnInit, AfterViewInit {
               { duration: 3000 }
             );
           },
-          error: (error) => {
+          error: error => {
             this.handleError(error);
-          }
+          },
         });
       }
     });
@@ -149,8 +157,8 @@ export class UserManagementComponent implements OnInit, AfterViewInit {
         title: this.translate.instant('user.dialog.delete.title'),
         message: this.translate.instant('user.dialog.delete.message', { username: user.username }),
         confirmText: this.translate.instant('common.delete'),
-        cancelText: this.translate.instant('common.cancel')
-      }
+        cancelText: this.translate.instant('common.cancel'),
+      },
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -164,9 +172,9 @@ export class UserManagementComponent implements OnInit, AfterViewInit {
               { duration: 3000 }
             );
           },
-          error: (error) => {
+          error: error => {
             this.handleError(error);
-          }
+          },
         });
       }
     });
@@ -175,7 +183,7 @@ export class UserManagementComponent implements OnInit, AfterViewInit {
   showEmployeeMapping(user: User): void {
     const dialogRef = this.dialog.open(UserEmployeeMappingComponent, {
       data: { user },
-      width: '600px'
+      width: '600px',
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -205,7 +213,7 @@ export class UserManagementComponent implements OnInit, AfterViewInit {
     }
     this.snackBar.open(errorMessage, this.translate.instant('common.close'), {
       duration: 5000,
-      panelClass: ['error-snackbar']
+      panelClass: ['error-snackbar'],
     });
     this.isLoading = false;
   }

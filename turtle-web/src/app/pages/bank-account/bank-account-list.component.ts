@@ -11,16 +11,10 @@ import { PageEvent } from '@angular/material/paginator';
 @Component({
   selector: 'app-bank-account-list',
   templateUrl: './bank-account-list.component.html',
-  styleUrls: ['./bank-account-list.component.scss']
+  styleUrls: ['./bank-account-list.component.scss'],
 })
 export class BankAccountListComponent implements OnInit {
-  displayedColumns: string[] = [
-    'name',
-    'accountNo',
-    'bankName',
-    'active',
-    'actions'
-  ];
+  displayedColumns: string[] = ['name', 'accountNo', 'bankName', 'active', 'actions'];
   dataSource = new MatTableDataSource<BankAccount>();
   loading = false;
   totalElements = 0;
@@ -45,10 +39,10 @@ export class BankAccountListComponent implements OnInit {
       .getBankAccounts({
         page: this.pageIndex,
         size: this.pageSize,
-        search: this.searchText
+        search: this.searchText,
       })
       .subscribe({
-        next: (response) => {
+        next: response => {
           if (response.code === 200) {
             this.dataSource.data = response.data.content;
             this.totalElements = response.data.totalElements;
@@ -62,7 +56,7 @@ export class BankAccountListComponent implements OnInit {
             this.translate.instant('COMMON.CLOSE'),
             { duration: 3000 }
           );
-        }
+        },
       });
   }
 
@@ -81,10 +75,10 @@ export class BankAccountListComponent implements OnInit {
   onAdd(): void {
     const dialogRef = this.dialog.open(BankAccountDialogComponent, {
       width: '600px',
-      data: { mode: 'create' }
+      data: { mode: 'create' },
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
+    dialogRef.afterClosed().subscribe(result => {
       if (result && result.code === 200) {
         this.loadBankAccounts();
       }
@@ -94,10 +88,10 @@ export class BankAccountListComponent implements OnInit {
   onEdit(bankAccount: BankAccount): void {
     const dialogRef = this.dialog.open(BankAccountDialogComponent, {
       width: '600px',
-      data: { mode: 'edit', bankAccount }
+      data: { mode: 'edit', bankAccount },
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
+    dialogRef.afterClosed().subscribe(result => {
       if (result && result.code === 200) {
         this.loadBankAccounts();
       }
@@ -106,7 +100,7 @@ export class BankAccountListComponent implements OnInit {
 
   onToggleStatus(bankAccount: BankAccount): void {
     this.bankAccountService.toggleStatus(bankAccount.id!).subscribe({
-      next: (response) => {
+      next: response => {
         if (response.code === 200) {
           this.snackBar.open(
             this.translate.instant('COMMON.SUCCESS.UPDATE'),
@@ -122,14 +116,14 @@ export class BankAccountListComponent implements OnInit {
           this.translate.instant('COMMON.CLOSE'),
           { duration: 3000 }
         );
-      }
+      },
     });
   }
 
   onDelete(bankAccount: BankAccount): void {
     if (confirm(this.translate.instant('COMMON.CONFIRM.DELETE'))) {
       this.bankAccountService.deleteBankAccount(bankAccount.id!).subscribe({
-        next: (response) => {
+        next: response => {
           if (response.code === 200) {
             this.snackBar.open(
               this.translate.instant('COMMON.SUCCESS.DELETE'),
@@ -145,7 +139,7 @@ export class BankAccountListComponent implements OnInit {
             this.translate.instant('COMMON.CLOSE'),
             { duration: 3000 }
           );
-        }
+        },
       });
     }
   }

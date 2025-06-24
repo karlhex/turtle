@@ -6,7 +6,7 @@ import { EmployeeEducation } from '../../services/employee-education.service';
 @Component({
   selector: 'app-education-dialog',
   templateUrl: './education-dialog.component.html',
-  styleUrls: ['./education-dialog.component.scss']
+  styleUrls: ['./education-dialog.component.scss'],
 })
 export class EducationDialogComponent {
   educationForm!: FormGroup;
@@ -15,7 +15,8 @@ export class EducationDialogComponent {
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<EducationDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: {
+    @Inject(MAT_DIALOG_DATA)
+    public data: {
       education?: EmployeeEducation;
       employeeId: number;
       mode: 'add' | 'edit' | 'view';
@@ -34,7 +35,7 @@ export class EducationDialogComponent {
       endDate: [null],
       certificateNumber: [''],
       isHighestDegree: [false],
-      remarks: ['']
+      remarks: [''],
     });
 
     if (this.data.education) {

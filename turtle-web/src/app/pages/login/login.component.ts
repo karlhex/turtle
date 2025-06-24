@@ -6,7 +6,7 @@ import { AuthService } from '../../services/auth.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
   ) {
     this.loginForm = this.formBuilder.group({
       username: ['', [Validators.required]],
-      password: ['', [Validators.required]]
+      password: ['', [Validators.required]],
     });
   }
 
@@ -35,14 +35,14 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       this.loading = true;
       this.error = '';
-      
+
       console.log('Attempting login with:', {
         username: this.loginForm.value.username,
-        password: '***'
+        password: '***',
       });
-      
+
       this.authService.login(this.loginForm.value).subscribe({
-        next: (response) => {
+        next: response => {
           this.loading = false;
           console.log('Login response:', response);
           if (!response || !response.data || !response.data.tokenPair) {
@@ -50,11 +50,11 @@ export class LoginComponent implements OnInit {
             console.error('Invalid response:', response);
           }
         },
-        error: (error) => {
+        error: error => {
           this.loading = false;
           console.error('Login error:', error);
           this.error = error.error?.message || 'Login failed. Please try again.';
-        }
+        },
       });
     } else {
       console.log('Form is invalid:', this.loginForm.errors);

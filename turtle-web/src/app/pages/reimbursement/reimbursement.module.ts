@@ -21,10 +21,7 @@ import { BaseListModule } from '../../components/base-list/base-list.module';
 import { ActionModule } from '@app/components/action/action.module';
 
 @NgModule({
-  declarations: [
-    ReimbursementListComponent,
-    ReimbursementDialogComponent
-  ],
+  declarations: [ReimbursementListComponent, ReimbursementDialogComponent],
   imports: [
     ActionModule,
     CommonModule,
@@ -43,11 +40,8 @@ import { ActionModule } from '@app/components/action/action.module';
     MatProgressBarModule,
     MatTooltipModule,
     TranslateModule,
-    BaseListModule
+    BaseListModule,
   ],
-  exports: [
-    ReimbursementListComponent,
-    ReimbursementDialogComponent
-  ]
+  exports: [ReimbursementListComponent, ReimbursementDialogComponent],
 })
-export class ReimbursementModule { }
+export class ReimbursementModule {}

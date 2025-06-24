@@ -4,7 +4,7 @@
     flex-direction: column;
     gap: 1rem;
     padding: 1rem 0;
-    
+
     .mat-form-field {
       width: 100%;
     }
@@ -34,7 +34,7 @@
   }
 
   // 数字输入框右对齐
-  input[type="number"] {
+  input[type='number'] {
     text-align: right;
   }
 

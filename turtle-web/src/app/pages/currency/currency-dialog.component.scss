@@ -1,6 +1,6 @@
 .currency-dialog {
   padding: 16px;
-  
+
   .form-fields {
     display: flex;
     flex-direction: column;
@@ -30,7 +30,7 @@
     margin-bottom: 8px;
   }
 
-  input[type="number"] {
+  input[type='number'] {
     -moz-appearance: textfield;
     &::-webkit-outer-spin-button,
     &::-webkit-inner-spin-button {

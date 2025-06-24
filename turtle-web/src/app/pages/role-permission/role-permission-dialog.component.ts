@@ -11,7 +11,7 @@ import { Role } from '../../models/role.model';
 @Component({
   selector: 'app-role-permission-dialog',
   templateUrl: './role-permission-dialog.component.html',
-  styleUrls: ['./role-permission-dialog.component.scss']
+  styleUrls: ['./role-permission-dialog.component.scss'],
 })
 export class RolePermissionDialogComponent implements OnInit {
   form: FormGroup;
@@ -32,7 +32,7 @@ export class RolePermissionDialogComponent implements OnInit {
     this.form = this.fb.group({
       roleName: ['', Validators.required],
       transactionPattern: ['', Validators.required],
-      description: ['']
+      description: [''],
     });
 
     if (this.isEdit) {
@@ -46,12 +46,12 @@ export class RolePermissionDialogComponent implements OnInit {
 
   loadRoles(): void {
     this.roleService.getAllRoles().subscribe({
-      next: (response) => {
+      next: response => {
         this.roles = response.data;
       },
-      error: (error) => {
+      error: error => {
         console.error('Error loading roles:', error);
-      }
+      },
     });
   }
 
@@ -60,12 +60,12 @@ export class RolePermissionDialogComponent implements OnInit {
       this.loading = true;
       const rolePermission = this.form.value;
 
-      const request = this.isEdit ?
-        this.rolePermissionService.update(this.data.id, rolePermission) :
-        this.rolePermissionService.create(rolePermission);
+      const request = this.isEdit
+        ? this.rolePermissionService.update(this.data.id, rolePermission)
+        : this.rolePermissionService.create(rolePermission);
 
       request.subscribe({
-        next: (response) => {
+        next: response => {
           this.snackBar.open(
             this.translate.instant(this.isEdit ? 'COMMON.UPDATE_SUCCESS' : 'COMMON.CREATE_SUCCESS'),
             this.translate.instant('COMMON.CLOSE'),
@@ -74,7 +74,7 @@ export class RolePermissionDialogComponent implements OnInit {
           this.dialogRef.close(true);
           this.loading = false;
         },
-        error: (error) => {
+        error: error => {
           console.error('Error saving role permission:', error);
           this.snackBar.open(
             this.translate.instant('COMMON.ERROR_OCCURRED'),
@@ -82,7 +82,7 @@ export class RolePermissionDialogComponent implements OnInit {
             { duration: 3000 }
           );
           this.loading = false;
-        }
+        },
       });
     }
   }

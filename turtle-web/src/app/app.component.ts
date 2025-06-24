@@ -12,7 +12,7 @@ import { TokenStorageService } from './services/token-storage.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
   @ViewChild('sidenav') sidenav!: MatSidenav;
@@ -31,16 +31,16 @@ export class AppComponent implements OnInit {
     translate.setDefaultLang('zh');
     translate.use('zh');
 
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe((event: any) => {
-      this.isLoginPage = event.url === '/login';
-    });
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: any) => {
+        this.isLoginPage = event.url === '/login';
+      });
   }
 
   ngOnInit() {
     this.userInfo = this.storageService.getUserInfo();
-    console.log("userInfo: ", this.userInfo);
+    console.log('userInfo: ', this.userInfo);
   }
 
   toggleMenu() {
@@ -59,7 +59,7 @@ export class AppComponent implements OnInit {
 
   openChangePasswordDialog() {
     this.dialog.open(ChangePasswordDialogComponent, {
-      width: '400px'
+      width: '400px',
     });
   }
 }

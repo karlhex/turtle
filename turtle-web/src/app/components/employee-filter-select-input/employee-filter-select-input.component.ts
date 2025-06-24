@@ -11,9 +11,9 @@ import { BaseFilterSelectInputComponent } from '../base-filter-select-input/base
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: EmployeeFilterSelectInputComponent,
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
 export class EmployeeFilterSelectInputComponent extends BaseFilterSelectInputComponent<Employee> {
   @Input() override label: string = 'common.select_employee';
@@ -31,6 +31,12 @@ export class EmployeeFilterSelectInputComponent extends BaseFilterSelectInputCom
   }
 
   override getSearchFields(employee: Employee): (string | undefined)[] {
-    return [employee.name, employee.employeeNumber, employee.phone, employee.email, employee.department?.name];
+    return [
+      employee.name,
+      employee.employeeNumber,
+      employee.phone,
+      employee.email,
+      employee.department?.name,
+    ];
   }
 }

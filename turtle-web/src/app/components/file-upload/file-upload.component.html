@@ -5,12 +5,7 @@
       <mat-icon>cloud_upload</mat-icon>
       上传文件
     </button>
-    <input
-      #fileInput
-      type="file"
-      (change)="onFileSelected($event)"
-      [style.display]="'none'"
-    >
+    <input #fileInput type="file" (change)="onFileSelected($event)" [style.display]="'none'" />
   </div>
 
   <!-- File List -->
@@ -26,13 +21,13 @@
             <ng-container *ngSwitchDefault>insert_drive_file</ng-container>
           </ng-container>
         </mat-icon>
-        
+
         <div mat-line class="file-name">{{ file.originalName }}</div>
         <div mat-line class="file-info">
           <span>{{ file.fileSize | fileSize }}</span>
-          <span>{{ file.uploadTime | date:'yyyy-MM-dd HH:mm' }}</span>
+          <span>{{ file.uploadTime | date : 'yyyy-MM-dd HH:mm' }}</span>
         </div>
-        
+
         <div class="file-actions">
           <button mat-icon-button (click)="downloadFile(file.id)" matTooltip="下载">
             <mat-icon>download</mat-icon>
@@ -46,9 +41,6 @@
   </div>
 
   <!-- Upload Progress -->
-  <mat-progress-bar
-    *ngIf="uploading"
-    mode="indeterminate"
-    class="upload-progress">
+  <mat-progress-bar *ngIf="uploading" mode="indeterminate" class="upload-progress">
   </mat-progress-bar>
 </div>

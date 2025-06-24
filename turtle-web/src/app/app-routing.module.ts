@@ -53,12 +53,12 @@ const routes: Routes = [
       { path: 'attendance', component: DashboardComponent },
       { path: 'leave', component: DashboardComponent },
       { path: 'payroll', component: DashboardComponent },
-    ]
-  }
+    ],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

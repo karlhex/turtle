@@ -7,7 +7,7 @@ import { Page } from '../models/page.model';
 import { environment } from '../../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ContactService {
   private apiUrl = `${environment.apiUrl}/contacts`;
@@ -20,10 +20,12 @@ export class ContactService {
    * @param size Page size
    * @param searchText Optional search text
    */
-  getContacts(page: number, size: number, searchText?: string): Observable<ApiResponse<Page<Contact>>> {
-    let params = new HttpParams()
-      .set('page', page.toString())
-      .set('size', size.toString());
+  getContacts(
+    page: number,
+    size: number,
+    searchText?: string
+  ): Observable<ApiResponse<Page<Contact>>> {
+    let params = new HttpParams().set('page', page.toString()).set('size', size.toString());
 
     if (searchText) {
       return this.searchContacts(searchText, page, size);
@@ -38,7 +40,11 @@ export class ContactService {
    * @param page Page number
    * @param size Page size
    */
-  private searchContacts(query: string, page: number, size: number): Observable<ApiResponse<Page<Contact>>> {
+  private searchContacts(
+    query: string,
+    page: number,
+    size: number
+  ): Observable<ApiResponse<Page<Contact>>> {
     const params = new HttpParams()
       .set('query', query)
       .set('page', page.toString())

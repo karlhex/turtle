@@ -9,7 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-change-password-dialog',
   templateUrl: './change-password-dialog.component.html',
-  styleUrls: ['./change-password-dialog.component.scss']
+  styleUrls: ['./change-password-dialog.component.scss'],
 })
 export class ChangePasswordDialogComponent implements OnInit {
   changePasswordForm: FormGroup;
@@ -21,11 +21,14 @@ export class ChangePasswordDialogComponent implements OnInit {
     private snackBar: MatSnackBar,
     private translate: TranslateService
   ) {
-    this.changePasswordForm = this.fb.group({
-      currentPassword: ['', Validators.required],
-      newPassword: ['', [Validators.required, Validators.minLength(8)]],
-      confirmPassword: ['', Validators.required]
-    }, { validator: this.passwordMatchValidator });
+    this.changePasswordForm = this.fb.group(
+      {
+        currentPassword: ['', Validators.required],
+        newPassword: ['', [Validators.required, Validators.minLength(8)]],
+        confirmPassword: ['', Validators.required],
+      },
+      { validator: this.passwordMatchValidator }
+    );
   }
 
   ngOnInit(): void {}
@@ -46,25 +49,25 @@ export class ChangePasswordDialogComponent implements OnInit {
       const changePasswordRequest: ChangePasswordRequest = {
         currentPassword: this.changePasswordForm.get('currentPassword')?.value,
         newPassword: this.changePasswordForm.get('newPassword')?.value,
-        confirmPassword: this.changePasswordForm.get('confirmPassword')?.value
+        confirmPassword: this.changePasswordForm.get('confirmPassword')?.value,
       };
 
       this.userService.changeUserPassword(changePasswordRequest).subscribe({
-        next: (response) => {
+        next: response => {
           this.snackBar.open(
-            this.translate.instant('changePassword.success'), 
-            this.translate.instant('common.close'), 
+            this.translate.instant('changePassword.success'),
+            this.translate.instant('common.close'),
             { duration: 3000 }
           );
           this.dialogRef.close(true);
         },
-        error: (error) => {
+        error: error => {
           this.snackBar.open(
-            error.error?.message || this.translate.instant('changePassword.error'), 
-            this.translate.instant('common.close'), 
+            error.error?.message || this.translate.instant('changePassword.error'),
+            this.translate.instant('common.close'),
             { duration: 3000 }
           );
-        }
+        },
       });
     }
   }

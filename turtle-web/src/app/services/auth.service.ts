@@ -22,14 +22,14 @@ export interface SigninData {
   employeeName?: string;
   employeeDepartment?: string;
   employeePosition?: string;
-  isSystemUser?: boolean;  
+  isSystemUser?: boolean;
   permissions: any;
 }
 
 export type SigninResponse = ApiResponse<SigninData>;
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   private readonly API_URL = `${environment.apiUrl}/auth`;
@@ -37,10 +37,10 @@ export class AuthService {
   public authState$ = this.userSubject.asObservable().pipe(
     map(user => ({
       isAuthenticated: !!user,
-      user
+      user,
     }))
   );
-  
+
   constructor(
     private http: HttpClient,
     private router: Router,
@@ -51,13 +51,13 @@ export class AuthService {
     const tokenPair = this.tokenStorage.getTokenPair();
     const userId = this.tokenStorage.getUserId();
     const permissions = this.tokenStorage.getStoredPermissions();
-    
+
     if (tokenPair && userId) {
       // 如果有存储的权限，先恢复它们
       if (permissions) {
         this.permissionService.setPermissions(permissions);
       }
-      
+
       this.userSubject.next({
         code: 200,
         data: {
@@ -68,35 +68,34 @@ export class AuthService {
           employeeDepartment: '',
           employeePosition: '',
           isSystemUser: false,
-          permissions: permissions || []
+          permissions: permissions || [],
         },
-        message: ''
+        message: '',
       });
     }
   }
 
   login(credentials: SigninRequest): Observable<SigninResponse> {
-    return this.http.post<SigninResponse>(`${this.API_URL}/signin`, credentials)
-      .pipe(
-        map(response => {
-          if (response.code === 200 && response.data) {
-            const { tokenPair, permissions, ...userInfo } = response.data;
-            this.tokenStorage.setTokenPair(tokenPair);
-            this.tokenStorage.setUserInfo(userInfo);
-            // 存储权限到 localStorage
-            this.permissionService.setPermissions(permissions);
-            this.userSubject.next(response);
+    return this.http.post<SigninResponse>(`${this.API_URL}/signin`, credentials).pipe(
+      map(response => {
+        if (response.code === 200 && response.data) {
+          const { tokenPair, permissions, ...userInfo } = response.data;
+          this.tokenStorage.setTokenPair(tokenPair);
+          this.tokenStorage.setUserInfo(userInfo);
+          // 存储权限到 localStorage
+          this.permissionService.setPermissions(permissions);
+          this.userSubject.next(response);
 
-            if (response.data.employeeId) {
-              this.router.navigate(['/dashboard']);
-            } else {
-              this.router.navigate(['/guest-dashboard']);
-            }
-            return response;
+          if (response.data.employeeId) {
+            this.router.navigate(['/dashboard']);
+          } else {
+            this.router.navigate(['/guest-dashboard']);
           }
-          throw new Error(response.message || 'Login failed');
-        })
-      );
+          return response;
+        }
+        throw new Error(response.message || 'Login failed');
+      })
+    );
   }
 
   logout(): void {

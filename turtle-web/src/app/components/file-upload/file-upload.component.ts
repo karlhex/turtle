@@ -8,7 +8,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-file-upload',
   templateUrl: './file-upload.component.html',
-  styleUrls: ['./file-upload.component.scss']
+  styleUrls: ['./file-upload.component.scss'],
 })
 export class FileUploadComponent implements OnInit {
   @Input() clientType!: ClientType;
@@ -19,10 +19,7 @@ export class FileUploadComponent implements OnInit {
 
   uploading = false;
 
-  constructor(
-    private fileService: FileService,
-    private snackBar: MatSnackBar
-  ) {}
+  constructor(private fileService: FileService, private snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
     this.loadFiles();
@@ -30,16 +27,15 @@ export class FileUploadComponent implements OnInit {
 
   private loadFiles(): void {
     if (this.clientType && this.clientId) {
-      this.fileService.findByClient(this.clientType, this.clientId)
-        .subscribe({
-          next: (response) => {
-            this.files = response.data;
-          },
-          error: (error) => {
-            this.snackBar.open('加载文件列表失败', '关闭', { duration: 3000 });
-            console.error('Error loading files:', error);
-          }
-        });
+      this.fileService.findByClient(this.clientType, this.clientId).subscribe({
+        next: response => {
+          this.files = response.data;
+        },
+        error: error => {
+          this.snackBar.open('加载文件列表失败', '关闭', { duration: 3000 });
+          console.error('Error loading files:', error);
+        },
+      });
     }
   }
 
@@ -63,63 +59,60 @@ export class FileUploadComponent implements OnInit {
       mimeType: file.type,
       uploadTime: new Date().toISOString(),
       createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
+      updatedAt: new Date().toISOString(),
     };
 
-    this.fileService.upload(file, fileMetadata, this.clientType, this.clientId)
-      .subscribe({
-        next: (response) => {
-          this.files.push(response.data);
-          this.fileUploaded.emit(response.data);
-          this.snackBar.open('文件上传成功', '关闭', { duration: 3000 });
-        },
-        error: (error) => {
-          this.snackBar.open('文件上传失败', '关闭', { duration: 3000 });
-          console.error('Error uploading file:', error);
-        },
-        complete: () => {
-          this.uploading = false;
-        }
-      });
+    this.fileService.upload(file, fileMetadata, this.clientType, this.clientId).subscribe({
+      next: response => {
+        this.files.push(response.data);
+        this.fileUploaded.emit(response.data);
+        this.snackBar.open('文件上传成功', '关闭', { duration: 3000 });
+      },
+      error: error => {
+        this.snackBar.open('文件上传失败', '关闭', { duration: 3000 });
+        console.error('Error uploading file:', error);
+      },
+      complete: () => {
+        this.uploading = false;
+      },
+    });
   }
 
   downloadFile(fileId: number): void {
-    this.fileService.download(fileId)
-      .subscribe({
-        next: (blob) => {
-          const file = this.files.find(f => f.id === fileId);
-          if (file) {
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = file.originalName;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            window.URL.revokeObjectURL(url);
-          }
-        },
-        error: (error) => {
-          this.snackBar.open('文件下载失败', '关闭', { duration: 3000 });
-          console.error('Error downloading file:', error);
+    this.fileService.download(fileId).subscribe({
+      next: blob => {
+        const file = this.files.find(f => f.id === fileId);
+        if (file) {
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = file.originalName;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          window.URL.revokeObjectURL(url);
         }
-      });
+      },
+      error: error => {
+        this.snackBar.open('文件下载失败', '关闭', { duration: 3000 });
+        console.error('Error downloading file:', error);
+      },
+    });
   }
 
   deleteFile(fileId: number): void {
     if (confirm('确定要删除这个文件吗？')) {
-      this.fileService.delete(fileId)
-        .subscribe({
-          next: () => {
-            this.files = this.files.filter(f => f.id !== fileId);
-            this.fileDeleted.emit(fileId);
-            this.snackBar.open('文件删除成功', '关闭', { duration: 3000 });
-          },
-          error: (error) => {
-            this.snackBar.open('文件删除失败', '关闭', { duration: 3000 });
-            console.error('Error deleting file:', error);
-          }
-        });
+      this.fileService.delete(fileId).subscribe({
+        next: () => {
+          this.files = this.files.filter(f => f.id !== fileId);
+          this.fileDeleted.emit(fileId);
+          this.snackBar.open('文件删除成功', '关闭', { duration: 3000 });
+        },
+        error: error => {
+          this.snackBar.open('文件删除失败', '关闭', { duration: 3000 });
+          console.error('Error deleting file:', error);
+        },
+      });
     }
   }
 }

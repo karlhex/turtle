@@ -5,6 +5,6 @@ import { BaseFilterSelectInputModule } from '../base-filter-select-input/base-fi
 @NgModule({
   declarations: [ProjectFilterSelectInputComponent],
   imports: [BaseFilterSelectInputModule],
-  exports: [ProjectFilterSelectInputComponent]
+  exports: [ProjectFilterSelectInputComponent],
 })
-export class ProjectFilterSelectInputModule { }
+export class ProjectFilterSelectInputModule {}

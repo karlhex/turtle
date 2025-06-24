@@ -6,13 +6,13 @@ import {
   RolePermissionCreateRequest,
   RolePermissionUpdateRequest,
   RolePermissionResponse,
-  RolePermissionListResponse
+  RolePermissionListResponse,
 } from '../models/role-permission.model';
 import { environment } from '../../environments/environment';
 import { ApiResponse } from '../models/api.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class RolePermissionService {
   private readonly baseUrl = `${environment.apiUrl}/role-permissions`;
@@ -27,10 +27,8 @@ export class RolePermissionService {
     size: number = 10,
     sort?: string
   ): Observable<RolePermissionListResponse> {
-    let params = new HttpParams()
-      .set('page', page.toString())
-      .set('size', size.toString());
-    
+    let params = new HttpParams().set('page', page.toString()).set('size', size.toString());
+
     if (sort) {
       params = params.set('sort', sort);
     }
@@ -77,9 +75,6 @@ export class RolePermissionService {
    * Toggle active role permission
    */
   toggleActive(id: number): Observable<ApiResponse<RolePermission>> {
-    return this.http.put<ApiResponse<RolePermission>>(
-      `${this.baseUrl}/${id}/toggle-active`, 
-      {}
-    );
+    return this.http.put<ApiResponse<RolePermission>>(`${this.baseUrl}/${id}/toggle-active`, {});
   }
 }

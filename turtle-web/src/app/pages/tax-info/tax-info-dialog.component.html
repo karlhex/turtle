@@ -1,88 +1,73 @@
 <div class="taxinfo-dialog">
+  <h2 mat-dialog-title>{{ data.mode === 'create' ? '新增税务信息' : '编辑税务信息' }}</h2>
 
-<h2 mat-dialog-title>{{ data.mode === 'create' ? '新增税务信息' : '编辑税务信息' }}</h2>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <mat-dialog-content>
+      <div class="form-fields">
+        <!-- 公司全称 -->
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>公司全称</mat-label>
+          <input matInput formControlName="fullName" required />
+          <mat-error *ngIf="form.get('fullName')?.hasError('required')"> 请输入公司全称 </mat-error>
+        </mat-form-field>
 
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <mat-dialog-content>
-    <div class="form-fields">
-    <!-- 公司全称 -->
-    <mat-form-field appearance="outline" class="w-full">
-      <mat-label>公司全称</mat-label>
-      <input matInput formControlName="fullName" required>
-      <mat-error *ngIf="form.get('fullName')?.hasError('required')">
-        请输入公司全称
-      </mat-error>
-    </mat-form-field>
+        <!-- 地址 -->
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>地址</mat-label>
+          <input matInput formControlName="address" required />
+          <mat-error *ngIf="form.get('address')?.hasError('required')"> 请输入地址 </mat-error>
+        </mat-form-field>
 
-    <!-- 地址 -->
-    <mat-form-field appearance="outline" class="w-full">
-      <mat-label>地址</mat-label>
-      <input matInput formControlName="address" required>
-      <mat-error *ngIf="form.get('address')?.hasError('required')">
-        请输入地址
-      </mat-error>
-    </mat-form-field>
+        <!-- 电话 -->
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>电话</mat-label>
+          <input matInput formControlName="phone" required />
+          <mat-error *ngIf="form.get('phone')?.hasError('required')"> 请输入电话 </mat-error>
+        </mat-form-field>
 
-    <!-- 电话 -->
-    <mat-form-field appearance="outline" class="w-full">
-      <mat-label>电话</mat-label>
-      <input matInput formControlName="phone" required>
-      <mat-error *ngIf="form.get('phone')?.hasError('required')">
-        请输入电话
-      </mat-error>
-    </mat-form-field>
+        <!-- 开户行 -->
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>开户行</mat-label>
+          <input matInput formControlName="bankName" required />
+          <mat-error *ngIf="form.get('bankName')?.hasError('required')"> 请输入开户行 </mat-error>
+        </mat-form-field>
 
-    <!-- 开户行 -->
-    <mat-form-field appearance="outline" class="w-full">
-      <mat-label>开户行</mat-label>
-      <input matInput formControlName="bankName" required>
-      <mat-error *ngIf="form.get('bankName')?.hasError('required')">
-        请输入开户行
-      </mat-error>
-    </mat-form-field>
+        <!-- 联行号 -->
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>联行号</mat-label>
+          <input matInput formControlName="bankCode" required />
+          <mat-error *ngIf="form.get('bankCode')?.hasError('required')"> 请输入联行号 </mat-error>
+        </mat-form-field>
 
-    <!-- 联行号 -->
-    <mat-form-field appearance="outline" class="w-full">
-      <mat-label>联行号</mat-label>
-      <input matInput formControlName="bankCode" required>
-      <mat-error *ngIf="form.get('bankCode')?.hasError('required')">
-        请输入联行号
-      </mat-error>
-    </mat-form-field>
+        <!-- 银行账号 -->
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>银行账号</mat-label>
+          <input matInput formControlName="bankAccount" required />
+          <mat-error *ngIf="form.get('bankAccount')?.hasError('required')">
+            请输入银行账号
+          </mat-error>
+        </mat-form-field>
 
-    <!-- 银行账号 -->
-    <mat-form-field appearance="outline" class="w-full">
-      <mat-label>银行账号</mat-label>
-      <input matInput formControlName="bankAccount" required>
-      <mat-error *ngIf="form.get('bankAccount')?.hasError('required')">
-        请输入银行账号
-      </mat-error>
-    </mat-form-field>
+        <!-- 税号 -->
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>税号</mat-label>
+          <input matInput formControlName="taxNo" required />
+          <mat-error *ngIf="form.get('taxNo')?.hasError('required')"> 请输入税号 </mat-error>
+        </mat-form-field>
 
-    <!-- 税号 -->
-    <mat-form-field appearance="outline" class="w-full">
-      <mat-label>税号</mat-label>
-      <input matInput formControlName="taxNo" required>
-      <mat-error *ngIf="form.get('taxNo')?.hasError('required')">
-        请输入税号
-      </mat-error>
-    </mat-form-field>
+        <!-- 备注 -->
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>备注</mat-label>
+          <textarea matInput formControlName="remarks" rows="3"></textarea>
+        </mat-form-field>
+      </div>
+    </mat-dialog-content>
 
-    <!-- 备注 -->
-    <mat-form-field appearance="outline" class="w-full">
-      <mat-label>备注</mat-label>
-      <textarea matInput formControlName="remarks" rows="3"></textarea>
-    </mat-form-field>
-    </div>
-  </mat-dialog-content>
-
-  <mat-dialog-actions align="end">
-    <button mat-button type="button" [disabled]="loading" (click)="onCancel()">
-      取消
-    </button>
-    <button mat-raised-button color="primary" type="submit" [disabled]="loading || !form.valid">
-      {{ loading ? '保存中...' : '保存' }}
-    </button>
-  </mat-dialog-actions>
-</form>
+    <mat-dialog-actions align="end">
+      <button mat-button type="button" [disabled]="loading" (click)="onCancel()">取消</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="loading || !form.valid">
+        {{ loading ? '保存中...' : '保存' }}
+      </button>
+    </mat-dialog-actions>
+  </form>
 </div>

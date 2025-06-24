@@ -6,10 +6,10 @@ import { TranslateService } from '@ngx-translate/core';
 import { ReimbursementService } from '../../../services/reimbursement.service';
 import { EmployeeService } from '../../../services/employee.service';
 import { ProjectService } from '../../../services/project.service';
-import { 
-  Reimbursement, 
+import {
+  Reimbursement,
   CreateReimbursementRequest,
-  UpdateReimbursementRequest 
+  UpdateReimbursementRequest,
 } from '../../../models/reimbursement.model';
 import { CreateReimbursementItemRequest } from '../../../models/reimbursement-item.model';
 import { Employee } from '../../../models/employee.model';
@@ -25,7 +25,7 @@ interface DialogData {
 @Component({
   selector: 'app-reimbursement-dialog',
   templateUrl: './reimbursement-dialog.component.html',
-  styleUrls: ['./reimbursement-dialog.component.scss']
+  styleUrls: ['./reimbursement-dialog.component.scss'],
 })
 export class ReimbursementDialogComponent implements OnInit {
   form: FormGroup;
@@ -37,8 +37,9 @@ export class ReimbursementDialogComponent implements OnInit {
   status: ReimbursementStatus = ReimbursementStatus.DRAFT;
 
   get isReadOnly(): boolean {
-    return this.status === ReimbursementStatus.PENDING || 
-           this.status === ReimbursementStatus.APPROVED;
+    return (
+      this.status === ReimbursementStatus.PENDING || this.status === ReimbursementStatus.APPROVED
+    );
   }
 
   constructor(
@@ -65,17 +66,17 @@ export class ReimbursementDialogComponent implements OnInit {
 
   private loadEmployees(): void {
     this.employeeService.getActiveEmployees().subscribe({
-      next: (response) => {
+      next: response => {
         this.employees = response.data;
       },
-      error: (error) => {
+      error: error => {
         console.error('Error loading employees:', error);
         this.snackBar.open(
           this.translate.instant('common.error.loadFailed'),
           this.translate.instant('common.action.close'),
           { duration: 3000 }
         );
-      }
+      },
     });
   }
 
@@ -83,21 +84,21 @@ export class ReimbursementDialogComponent implements OnInit {
     const params = {
       page: 0,
       size: 1000,
-      status: ProjectStatus.IN_PROGRESS
+      status: ProjectStatus.IN_PROGRESS,
     };
-    
+
     this.projectService.getProjects(params).subscribe({
-      next: (response) => {
+      next: response => {
         this.projects = response.data.content;
       },
-      error: (error) => {
+      error: error => {
         console.error('Error loading projects:', error);
         this.snackBar.open(
           this.translate.instant('common.error.loadFailed'),
           this.translate.instant('common.action.close'),
           { duration: 3000 }
         );
-      }
+      },
     });
   }
 
@@ -109,13 +110,16 @@ export class ReimbursementDialogComponent implements OnInit {
       projectId: [''],
       remarks: [''],
       items: this.fb.array([]),
-      status: [ReimbursementStatus.DRAFT]
+      status: [ReimbursementStatus.DRAFT],
     });
   }
 
   private updateTotalAmount(): void {
     const items = this.form.get('items')?.value || [];
-    this.totalAmount = items.reduce((sum: number, item: any) => sum + (Number(item.amount) || 0), 0);
+    this.totalAmount = items.reduce(
+      (sum: number, item: any) => sum + (Number(item.amount) || 0),
+      0
+    );
   }
 
   private populateForm(reimbursement: Reimbursement): void {
@@ -125,7 +129,7 @@ export class ReimbursementDialogComponent implements OnInit {
       applicantId: reimbursement.applicantId,
       projectId: reimbursement.projectId,
       remarks: reimbursement.remarks,
-      status: reimbursement.status
+      status: reimbursement.status,
     });
 
     this.status = reimbursement.status as ReimbursementStatus;
@@ -137,7 +141,7 @@ export class ReimbursementDialogComponent implements OnInit {
     }
 
     console.log(reimbursement);
-    
+
     // Add items if they exist
     if (reimbursement.items && reimbursement.items.length > 0) {
       reimbursement.items.forEach(item => {
@@ -156,7 +160,7 @@ export class ReimbursementDialogComponent implements OnInit {
       amount: [item?.amount || '', [Validators.required, Validators.min(0)]],
       reason: [item?.reason || '', Validators.required],
       occurrenceDate: [item?.occurrenceDate || '', Validators.required],
-      remarks: [item?.remarks || '']
+      remarks: [item?.remarks || ''],
     });
 
     group.get('amount')?.valueChanges.subscribe(() => {
@@ -188,7 +192,7 @@ export class ReimbursementDialogComponent implements OnInit {
     if (this.mode === 'create') {
       const request: CreateReimbursementRequest = {
         ...formValue,
-        totalAmount: this.totalAmount
+        totalAmount: this.totalAmount,
       };
 
       this.reimbursementService.create(request).subscribe({
@@ -200,7 +204,7 @@ export class ReimbursementDialogComponent implements OnInit {
           );
           this.dialogRef.close(true);
         },
-        error: (error) => {
+        error: error => {
           console.error('Error creating reimbursement:', error);
           this.snackBar.open(
             this.translate.instant('reimbursement.message.createError'),
@@ -208,13 +212,13 @@ export class ReimbursementDialogComponent implements OnInit {
             { duration: 3000 }
           );
           this.loading = false;
-        }
+        },
       });
     } else {
       const request: UpdateReimbursementRequest = {
         ...formValue,
         id: this.data.reimbursement!.id,
-        totalAmount: this.totalAmount
+        totalAmount: this.totalAmount,
       };
 
       this.reimbursementService.update(this.data.reimbursement!.id, request).subscribe({
@@ -226,7 +230,7 @@ export class ReimbursementDialogComponent implements OnInit {
           );
           this.dialogRef.close(true);
         },
-        error: (error) => {
+        error: error => {
           console.error('Error updating reimbursement:', error);
           this.snackBar.open(
             this.translate.instant('reimbursement.message.updateError'),
@@ -234,7 +238,7 @@ export class ReimbursementDialogComponent implements OnInit {
             { duration: 3000 }
           );
           this.loading = false;
-        }
+        },
       });
     }
   }
@@ -249,7 +253,7 @@ export class ReimbursementDialogComponent implements OnInit {
     if (this.mode === 'create') {
       const request: CreateReimbursementRequest = {
         ...formValue,
-        totalAmount: this.totalAmount
+        totalAmount: this.totalAmount,
       };
 
       this.reimbursementService.create(request).subscribe({
@@ -261,7 +265,7 @@ export class ReimbursementDialogComponent implements OnInit {
           );
           this.dialogRef.close(true);
         },
-        error: (error) => {
+        error: error => {
           console.error('Error submitting reimbursement:', error);
           this.snackBar.open(
             this.translate.instant('reimbursement.message.submitError'),
@@ -269,13 +273,13 @@ export class ReimbursementDialogComponent implements OnInit {
             { duration: 3000 }
           );
           this.loading = false;
-        }
+        },
       });
     } else {
       const request: UpdateReimbursementRequest = {
         ...formValue,
         id: this.data.reimbursement!.id,
-        totalAmount: this.totalAmount
+        totalAmount: this.totalAmount,
       };
 
       this.reimbursementService.update(this.data.reimbursement!.id, request).subscribe({
@@ -287,7 +291,7 @@ export class ReimbursementDialogComponent implements OnInit {
           );
           this.dialogRef.close(true);
         },
-        error: (error) => {
+        error: error => {
           console.error('Error submitting reimbursement:', error);
           this.snackBar.open(
             this.translate.instant('reimbursement.message.submitError'),
@@ -295,7 +299,7 @@ export class ReimbursementDialogComponent implements OnInit {
             { duration: 3000 }
           );
           this.loading = false;
-        }
+        },
       });
     }
   }

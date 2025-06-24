@@ -1,8 +1,6 @@
 <ng-template #optionTemplate let-department>
   <div class="department-option">
     <div class="department-name">{{ department.name }}</div>
-    <div class="department-details" *ngIf="department.code">
-      ({{ department.code }})
-    </div>
+    <div class="department-details" *ngIf="department.code">({{ department.code }})</div>
   </div>
 </ng-template>

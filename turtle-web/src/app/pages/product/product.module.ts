@@ -21,10 +21,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
-  declarations: [
-    ProductListComponent,
-    ProductDialogComponent
-  ],
+  declarations: [ProductListComponent, ProductDialogComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -43,11 +40,8 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatSlideToggleModule,
     MatTabsModule,
     TranslateModule,
-    BaseListModule
+    BaseListModule,
   ],
-  exports: [
-    ProductListComponent,
-    ProductDialogComponent
-  ]
+  exports: [ProductListComponent, ProductDialogComponent],
 })
-export class ProductModule { }
+export class ProductModule {}

@@ -1,54 +1,67 @@
 <table mat-table [dataSource]="items" class="mat-elevation-z1 w-100">
   <!-- Payment Instruction Column -->
   <ng-container matColumnDef="paymentInstruction">
-    <th mat-header-cell *matHeaderCellDef>{{ 'contract.downPayment.paymentInstruction' | translate }}</th>
-    <td mat-cell *matCellDef="let item">{{item.paymentInstruction}}</td>
+    <th mat-header-cell *matHeaderCellDef>
+      {{ 'contract.downPayment.paymentInstruction' | translate }}
+    </th>
+    <td mat-cell *matCellDef="let item">{{ item.paymentInstruction }}</td>
   </ng-container>
 
   <!-- Debit Credit Type Column -->
   <ng-container matColumnDef="debitCreditType">
-    <th mat-header-cell *matHeaderCellDef>{{ 'contract.downPayment.debitCreditType' | translate }}</th>
-    <td mat-cell *matCellDef="let item">{{ 'enum.debitCredit.type.' + item.debitCreditType | translate }}</td>
+    <th mat-header-cell *matHeaderCellDef>
+      {{ 'contract.downPayment.debitCreditType' | translate }}
+    </th>
+    <td mat-cell *matCellDef="let item">
+      {{ 'enum.debitCredit.type.' + item.debitCreditType | translate }}
+    </td>
   </ng-container>
 
   <!-- Planned Date Column -->
   <ng-container matColumnDef="plannedDate">
     <th mat-header-cell *matHeaderCellDef>{{ 'contract.downPayment.plannedDate' | translate }}</th>
-    <td mat-cell *matCellDef="let item">{{item.plannedDate | date:'yyyy-MM-dd'}}</td>
+    <td mat-cell *matCellDef="let item">{{ item.plannedDate | date : 'yyyy-MM-dd' }}</td>
   </ng-container>
 
   <!-- Actual Date Column -->
   <ng-container matColumnDef="actualDate">
     <th mat-header-cell *matHeaderCellDef>{{ 'contract.downPayment.actualDate' | translate }}</th>
-    <td mat-cell *matCellDef="let item">{{item.actualDate | date:'yyyy-MM-dd'}}</td>
+    <td mat-cell *matCellDef="let item">{{ item.actualDate | date : 'yyyy-MM-dd' }}</td>
   </ng-container>
 
   <!-- Amount Column -->
   <ng-container matColumnDef="amount">
     <th mat-header-cell *matHeaderCellDef>{{ 'contract.downPayment.amount' | translate }}</th>
-    <td mat-cell *matCellDef="let item">{{item.amount | number:'1.2-2'}} {{currency?.symbol}}</td>
+    <td mat-cell *matCellDef="let item">
+      {{ item.amount | number : '1.2-2' }} {{ currency?.symbol }}
+    </td>
   </ng-container>
 
   <!-- Bank Account Column -->
   <ng-container matColumnDef="bankAccountNo">
-    <th mat-header-cell *matHeaderCellDef>{{ 'contract.downPayment.bankAccountNo' | translate }}</th>
-    <td mat-cell *matCellDef="let item">{{item.bankAccountNo}}</td>
+    <th mat-header-cell *matHeaderCellDef>
+      {{ 'contract.downPayment.bankAccountNo' | translate }}
+    </th>
+    <td mat-cell *matCellDef="let item">{{ item.bankAccountNo }}</td>
   </ng-container>
 
   <!-- Bank Name Column -->
   <ng-container matColumnDef="bankName">
     <th mat-header-cell *matHeaderCellDef>{{ 'contract.downPayment.bankName' | translate }}</th>
-    <td mat-cell *matCellDef="let item">{{item.bankName}}</td>
+    <td mat-cell *matCellDef="let item">{{ item.bankName }}</td>
   </ng-container>
 
   <!-- Payment Status Column -->
   <ng-container matColumnDef="paymentStatus">
-    <th mat-header-cell *matHeaderCellDef>{{ 'contract.downPayment.paymentStatus' | translate }}</th>
+    <th mat-header-cell *matHeaderCellDef>
+      {{ 'contract.downPayment.paymentStatus' | translate }}
+    </th>
     <td mat-cell *matCellDef="let item">
       <mat-slide-toggle
         [checked]="item.paymentStatus"
         (change)="onPaymentStatusChange(item, $event)"
-        color="primary">
+        color="primary"
+      >
       </mat-slide-toggle>
     </td>
   </ng-container>
@@ -56,21 +69,18 @@
   <!-- Remarks Column -->
   <ng-container matColumnDef="remarks">
     <th mat-header-cell *matHeaderCellDef>{{ 'contract.downPayment.remarks' | translate }}</th>
-    <td mat-cell *matCellDef="let item">{{item.remarks}}</td>
+    <td mat-cell *matCellDef="let item">{{ item.remarks }}</td>
   </ng-container>
 
   <!-- Actions Column -->
   <ng-container matColumnDef="actions">
     <th mat-header-cell *matHeaderCellDef>{{ 'common.actions' | translate }}</th>
     <td mat-cell *matCellDef="let item">
-      <app-action
-        [canView]="false"
-        (edit)="editItem(item)"
-        (delete)="deleteItem(item)">
+      <app-action [canView]="false" (edit)="editItem(item)" (delete)="deleteItem(item)">
       </app-action>
     </td>
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 </table>

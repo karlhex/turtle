@@ -3,10 +3,16 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
-import { UserEmployeeMappingService, UserEmployeeMapping } from '../../../services/user-employee-mapping.service';
+import {
+  UserEmployeeMappingService,
+  UserEmployeeMapping,
+} from '../../../services/user-employee-mapping.service';
 import { UserService, User } from '../../../services/user.service';
 import { EmployeeService } from '../../../services/employee.service';
-import { ConfirmDialogComponent, ConfirmDialogData } from '../../../components/confirmdialog/confirm-dialog.component';
+import {
+  ConfirmDialogComponent,
+  ConfirmDialogData,
+} from '../../../components/confirmdialog/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { finalize } from 'rxjs/operators';
 import { TranslateModule } from '@ngx-translate/core';
@@ -27,7 +33,7 @@ import { ApiResponse } from '@models/api.model';
 @Component({
   selector: 'app-user-employee-mapping',
   templateUrl: './user-employee-mapping.component.html',
-  styleUrls: ['./user-employee-mapping.component.scss']
+  styleUrls: ['./user-employee-mapping.component.scss'],
 })
 export class UserEmployeeMappingComponent implements OnInit {
   mappings: UserEmployeeMapping[] = [];
@@ -76,8 +82,9 @@ export class UserEmployeeMappingComponent implements OnInit {
   }
 
   private getMappings(): void {
-    this.userEmployeeMappingService.getMappings()
-      .pipe(finalize(() => this.loading = false))
+    this.userEmployeeMappingService
+      .getMappings()
+      .pipe(finalize(() => (this.loading = false)))
       .subscribe({
         next: (response: ApiResponse<UserEmployeeMapping[]>) => {
           if (response.code === 200) {
@@ -86,18 +93,19 @@ export class UserEmployeeMappingComponent implements OnInit {
             this.showError(response.message || '加载用户-员工关联失败');
           }
         },
-        error: (error) => {
+        error: error => {
           console.error('Error loading mappings:', error);
           this.showError('加载用户-员工关联失败');
-        }
+        },
       });
   }
 
   private getUserMapping(): void {
     if (!this.currentUser?.id) return;
 
-    this.userEmployeeMappingService.getUserMapping(this.currentUser.id)
-      .pipe(finalize(() => this.loading = false))
+    this.userEmployeeMappingService
+      .getUserMapping(this.currentUser.id)
+      .pipe(finalize(() => (this.loading = false)))
       .subscribe({
         next: (response: ApiResponse<UserEmployeeMapping>) => {
           if (response.code === 200) {
@@ -107,10 +115,10 @@ export class UserEmployeeMappingComponent implements OnInit {
             this.showError(response.message || '加载用户的员工关联失败');
           }
         },
-        error: (error) => {
+        error: error => {
           console.error('Error loading user mapping:', error);
           this.showError('加载用户的员工关联失败');
-        }
+        },
       });
   }
 
@@ -123,10 +131,10 @@ export class UserEmployeeMappingComponent implements OnInit {
           this.showError(response.message || '加载未关联用户失败');
         }
       },
-      error: (error) => {
+      error: error => {
         console.error('Error loading unmapped users:', error);
         this.showError('加载未关联用户失败');
-      }
+      },
     });
   }
 
@@ -139,10 +147,10 @@ export class UserEmployeeMappingComponent implements OnInit {
           this.showError(response.message || '加载未关联员工失败');
         }
       },
-      error: (error) => {
+      error: error => {
         console.error('Error loading unmapped employees:', error);
         this.showError('加载未关联员工失败');
-      }
+      },
     });
   }
 
@@ -156,8 +164,9 @@ export class UserEmployeeMappingComponent implements OnInit {
     if (!userId) return;
 
     this.loading = true;
-    this.userEmployeeMappingService.createMapping(userId, this.selectedEmployee)
-      .pipe(finalize(() => this.loading = false))
+    this.userEmployeeMappingService
+      .createMapping(userId, this.selectedEmployee)
+      .pipe(finalize(() => (this.loading = false)))
       .subscribe({
         next: (response: ApiResponse<any>) => {
           if (response.code === 200) {
@@ -171,10 +180,10 @@ export class UserEmployeeMappingComponent implements OnInit {
             this.showError(response.message || '创建用户-员工关联失败');
           }
         },
-        error: (error) => {
+        error: error => {
           console.error('Error creating mapping:', error);
           this.showError('创建用户-员工关联失败');
-        }
+        },
       });
   }
 
@@ -182,15 +191,16 @@ export class UserEmployeeMappingComponent implements OnInit {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: {
         title: '确认删除',
-        message: `确定要删除用户 "${mapping.username}" 与员工 "${mapping.employeeName}" 的关联吗？`
-      }
+        message: `确定要删除用户 "${mapping.username}" 与员工 "${mapping.employeeName}" 的关联吗？`,
+      },
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.loading = true;
-        this.userEmployeeMappingService.deleteMapping(mapping.id)
-          .pipe(finalize(() => this.loading = false))
+        this.userEmployeeMappingService
+          .deleteMapping(mapping.id)
+          .pipe(finalize(() => (this.loading = false)))
           .subscribe({
             next: (response: ApiResponse<any>) => {
               if (response.code === 200) {
@@ -200,10 +210,10 @@ export class UserEmployeeMappingComponent implements OnInit {
                 this.showError(response.message || '删除用户-员工关联失败');
               }
             },
-            error: (error) => {
+            error: error => {
               console.error('Error deleting mapping:', error);
               this.showError('删除用户-员工关联失败');
-            }
+            },
           });
       }
     });
@@ -214,7 +224,7 @@ export class UserEmployeeMappingComponent implements OnInit {
       duration: 3000,
       horizontalPosition: 'center',
       verticalPosition: 'top',
-      panelClass: ['success-snackbar']
+      panelClass: ['success-snackbar'],
     });
   }
 
@@ -223,7 +233,7 @@ export class UserEmployeeMappingComponent implements OnInit {
       duration: 5000,
       horizontalPosition: 'center',
       verticalPosition: 'top',
-      panelClass: ['error-snackbar']
+      panelClass: ['error-snackbar'],
     });
   }
 

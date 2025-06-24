@@ -30,7 +30,7 @@ import { ActionModule } from '@app/components/action/action.module';
 import { MatChipsModule } from '@angular/material/chips';
 import { DepartmentFilterSelectInputModule } from '@app/components/department-filter-select-input/department-filter-select-input.module';
 import { PositionFilterSelectInputModule } from '@app/components/position-filter-select-input/position-filter-select-input.module';
-  
+
 @NgModule({
   declarations: [
     EmployeeListComponent,
@@ -38,7 +38,7 @@ import { PositionFilterSelectInputModule } from '@app/components/position-filter
     EducationListComponent,
     EducationDialogComponent,
     JobHistoryListComponent,
-    JobHistoryDialogComponent
+    JobHistoryDialogComponent,
   ],
   imports: [
     ActionModule,
@@ -65,7 +65,7 @@ import { PositionFilterSelectInputModule } from '@app/components/position-filter
     CompanyFilterSelectInputModule,
     DepartmentFilterSelectInputModule,
     PositionFilterSelectInputModule,
-    SharedModule
+    SharedModule,
   ],
   exports: [
     EmployeeListComponent,
@@ -73,7 +73,7 @@ import { PositionFilterSelectInputModule } from '@app/components/position-filter
     EducationListComponent,
     EducationDialogComponent,
     JobHistoryListComponent,
-    JobHistoryDialogComponent
-  ]
+    JobHistoryDialogComponent,
+  ],
 })
-export class EmployeeModule { }
+export class EmployeeModule {}

@@ -11,7 +11,7 @@ import { PageEvent } from '@angular/material/paginator';
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
-  styleUrls: ['./product-list.component.scss']
+  styleUrls: ['./product-list.component.scss'],
 })
 export class ProductListComponent implements OnInit {
   displayedColumns: string[] = [
@@ -23,7 +23,7 @@ export class ProductListComponent implements OnInit {
     'price',
     'description',
     'active',
-    'actions'
+    'actions',
   ];
   dataSource = new MatTableDataSource<Product>();
   loading = false;
@@ -46,14 +46,14 @@ export class ProductListComponent implements OnInit {
   loadProducts(): void {
     this.loading = true;
     this.productService.getProducts(this.pageIndex, this.pageSize, this.searchText).subscribe({
-      next: (response) => {
+      next: response => {
         if (response.code === 200 && response.data) {
           this.dataSource.data = response.data.content;
           this.totalElements = response.data.totalElements;
         }
         this.loading = false;
       },
-      error: (error) => {
+      error: error => {
         console.error('Error loading products:', error);
         this.snackBar.open(
           this.translate.instant('ERROR.LOAD_PRODUCTS'),
@@ -61,7 +61,7 @@ export class ProductListComponent implements OnInit {
           { duration: 3000 }
         );
         this.loading = false;
-      }
+      },
     });
   }
 
@@ -73,7 +73,7 @@ export class ProductListComponent implements OnInit {
 
   onAdd(): void {
     const dialogRef = this.dialog.open(ProductDialogComponent, {
-      width: '600px'
+      width: '600px',
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -86,7 +86,7 @@ export class ProductListComponent implements OnInit {
   onEdit(product: Product): void {
     const dialogRef = this.dialog.open(ProductDialogComponent, {
       width: '600px',
-      data: product
+      data: product,
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -100,7 +100,7 @@ export class ProductListComponent implements OnInit {
     if (confirm(this.translate.instant('product.confirm_delete'))) {
       this.loading = true;
       this.productService.delete(product.id!).subscribe({
-        next: (response) => {
+        next: response => {
           if (response.code === 200) {
             this.snackBar.open(
               this.translate.instant('SUCCESS.DELETE_PRODUCT'),
@@ -111,7 +111,7 @@ export class ProductListComponent implements OnInit {
           }
           this.loading = false;
         },
-        error: (error) => {
+        error: error => {
           console.error('Error deleting product:', error);
           this.snackBar.open(
             this.translate.instant('ERROR.DELETE_PRODUCT'),
@@ -119,7 +119,7 @@ export class ProductListComponent implements OnInit {
             { duration: 3000 }
           );
           this.loading = false;
-        }
+        },
       });
     }
   }
@@ -127,7 +127,7 @@ export class ProductListComponent implements OnInit {
   onToggleStatus(product: Product): void {
     this.loading = true;
     this.productService.toggleStatus(product.id!).subscribe({
-      next: (response) => {
+      next: response => {
         if (response.code === 200) {
           this.snackBar.open(
             this.translate.instant('SUCCESS.UPDATE_PRODUCT_STATUS'),
@@ -138,7 +138,7 @@ export class ProductListComponent implements OnInit {
         }
         this.loading = false;
       },
-      error: (error) => {
+      error: error => {
         console.error('Error updating product status:', error);
         this.snackBar.open(
           this.translate.instant('ERROR.UPDATE_PRODUCT_STATUS'),
@@ -147,7 +147,7 @@ export class ProductListComponent implements OnInit {
         );
         this.loading = false;
         product.active = !product.active; // Revert the toggle
-      }
+      },
     });
   }
 

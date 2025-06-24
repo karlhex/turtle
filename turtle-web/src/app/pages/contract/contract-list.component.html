@@ -6,25 +6,27 @@
   [totalElements]="totalElements"
   (search)="onSearch($event)"
   (add)="onAdd()"
-  (page)="onPageChange($event)">
-
+  (page)="onPageChange($event)"
+>
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
     <!-- Contract No Column -->
     <ng-container matColumnDef="contractNo">
       <th mat-header-cell *matHeaderCellDef>合同编号</th>
-      <td mat-cell *matCellDef="let element">{{element.contractNo}}</td>
+      <td mat-cell *matCellDef="let element">{{ element.contractNo }}</td>
     </ng-container>
 
     <!-- Title Column -->
     <ng-container matColumnDef="title">
       <th mat-header-cell *matHeaderCellDef>标题</th>
-      <td mat-cell *matCellDef="let element">{{element.title}}</td>
+      <td mat-cell *matCellDef="let element">{{ element.title }}</td>
     </ng-container>
 
     <!-- Type Column -->
     <ng-container matColumnDef="type">
       <th mat-header-cell *matHeaderCellDef>合同类型</th>
-      <td mat-cell *matCellDef="let element">{{ 'enum.contract.type.' + element.type | translate }}</td>
+      <td mat-cell *matCellDef="let element">
+        {{ 'enum.contract.type.' + element.type | translate }}
+      </td>
     </ng-container>
 
     <!-- Status Column -->
@@ -42,43 +44,43 @@
     <!-- Total Amount Column -->
     <ng-container matColumnDef="totalAmount">
       <th mat-header-cell *matHeaderCellDef>金额</th>
-      <td mat-cell *matCellDef="let element">{{element.totalAmount | number:'1.2-2'}}</td>
+      <td mat-cell *matCellDef="let element">{{ element.totalAmount | number : '1.2-2' }}</td>
     </ng-container>
 
     <!-- Currency Column -->
     <ng-container matColumnDef="currency">
       <th mat-header-cell *matHeaderCellDef>币种</th>
-      <td mat-cell *matCellDef="let element">{{element.currency.code}}</td>
+      <td mat-cell *matCellDef="let element">{{ element.currency.code }}</td>
     </ng-container>
 
     <!-- Buyer Company Column -->
     <ng-container matColumnDef="buyerCompany">
       <th mat-header-cell *matHeaderCellDef>买方公司</th>
-      <td mat-cell *matCellDef="let element">{{element.buyerCompany.shortName}}</td>
+      <td mat-cell *matCellDef="let element">{{ element.buyerCompany.shortName }}</td>
     </ng-container>
 
     <!-- Seller Company Column -->
     <ng-container matColumnDef="sellerCompany">
       <th mat-header-cell *matHeaderCellDef>卖方公司</th>
-      <td mat-cell *matCellDef="let element">{{element.sellerCompany.shortName}}</td>
+      <td mat-cell *matCellDef="let element">{{ element.sellerCompany.shortName }}</td>
     </ng-container>
 
     <!-- Signing Date Column -->
     <ng-container matColumnDef="signingDate">
       <th mat-header-cell *matHeaderCellDef>签署日期</th>
-      <td mat-cell *matCellDef="let element">{{element.signingDate | date:'yyyy-MM-dd'}}</td>
+      <td mat-cell *matCellDef="let element">{{ element.signingDate | date : 'yyyy-MM-dd' }}</td>
     </ng-container>
 
     <!-- Start Date Column -->
     <ng-container matColumnDef="startDate">
       <th mat-header-cell *matHeaderCellDef>开始日期</th>
-      <td mat-cell *matCellDef="let element">{{element.startDate | date:'yyyy-MM-dd'}}</td>
+      <td mat-cell *matCellDef="let element">{{ element.startDate | date : 'yyyy-MM-dd' }}</td>
     </ng-container>
 
     <!-- End Date Column -->
     <ng-container matColumnDef="endDate">
       <th mat-header-cell *matHeaderCellDef>结束日期</th>
-      <td mat-cell *matCellDef="let element">{{element.endDate | date:'yyyy-MM-dd'}}</td>
+      <td mat-cell *matCellDef="let element">{{ element.endDate | date : 'yyyy-MM-dd' }}</td>
     </ng-container>
 
     <!-- Actions Column -->
@@ -86,15 +88,15 @@
       <th mat-header-cell *matHeaderCellDef>操作</th>
       <td mat-cell *matCellDef="let element">
         <app-action
-        [canView]="false"
-        (edit)="openDialog(element)"
-        (delete)="deleteContract(element.id!)">
+          [canView]="false"
+          (edit)="openDialog(element)"
+          (delete)="deleteContract(element.id!)"
+        >
         </app-action>
       </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
-
 </app-base-list>

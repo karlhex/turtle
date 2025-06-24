@@ -3,7 +3,7 @@ import { TaxInfo } from './tax-info.model';
 
 export enum InvoiceType {
   GENERAL = 'GENERAL',
-  SPECIAL = 'SPECIAL'
+  SPECIAL = 'SPECIAL',
 }
 
 export interface Invoice extends BaseModel {

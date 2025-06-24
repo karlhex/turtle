@@ -7,14 +7,18 @@ import { Page } from '../models/page.model';
 import { ApiResponse } from '../models/api.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ContractService {
   private apiUrl = `${environment.apiUrl}/contracts`;
 
   constructor(private http: HttpClient) {}
 
-  getContracts(params: { page: number; size: number; search?: string }): Observable<ApiResponse<Page<Contract>>> {
+  getContracts(params: {
+    page: number;
+    size: number;
+    search?: string;
+  }): Observable<ApiResponse<Page<Contract>>> {
     let httpParams = new HttpParams()
       .set('page', params.page.toString())
       .set('size', params.size.toString());

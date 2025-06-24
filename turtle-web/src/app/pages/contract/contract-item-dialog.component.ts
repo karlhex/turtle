@@ -24,7 +24,7 @@ interface DialogData {
 @Component({
   selector: 'app-contract-item-dialog',
   templateUrl: './contract-item-dialog.component.html',
-  styleUrls: ['./contract-item-dialog.component.scss']
+  styleUrls: ['./contract-item-dialog.component.scss'],
 })
 export class ContractItemDialogComponent {
   form: FormGroup;
@@ -45,13 +45,13 @@ export class ContractItemDialogComponent {
       unitPrice: [data.unitPrice || 0, [Validators.required, Validators.min(0)]],
       totalAmount: [data.totalAmount || 0],
       modelNumber: [data.modelNumber || ''],
-      remarks: [data.remarks || '']
+      remarks: [data.remarks || ''],
     });
 
     // Calculate total amount when quantity or unit price changes
     combineLatest([
       this.form.get('quantity')!.valueChanges.pipe(startWith(this.form.get('quantity')!.value)),
-      this.form.get('unitPrice')!.valueChanges.pipe(startWith(this.form.get('unitPrice')!.value))
+      this.form.get('unitPrice')!.valueChanges.pipe(startWith(this.form.get('unitPrice')!.value)),
     ]).subscribe(([quantity, unitPrice]) => {
       const total = quantity * unitPrice;
       this.form.patchValue({ totalAmount: total }, { emitEvent: false });
@@ -90,9 +90,10 @@ export class ContractItemDialogComponent {
 
     if (typeof value === 'string') {
       const filterValue = value.toLowerCase();
-      return this.products.filter(product => 
-        product.name.toLowerCase().includes(filterValue) ||
-        (product.modelNumber && product.modelNumber.toLowerCase().includes(filterValue))
+      return this.products.filter(
+        product =>
+          product.name.toLowerCase().includes(filterValue) ||
+          (product.modelNumber && product.modelNumber.toLowerCase().includes(filterValue))
       );
     }
 
@@ -108,14 +109,14 @@ export class ContractItemDialogComponent {
       this.form.patchValue({
         product: product,
         modelNumber: product.modelNumber || '',
-        unitPrice: 0
+        unitPrice: 0,
       });
 
       // Recalculate total amount
       const quantity = this.form.get('quantity')?.value || 0;
       const unitPrice = 0;
       this.form.patchValue({ totalAmount: quantity * unitPrice }, { emitEvent: false });
-      
+
       // Mark the form controls as touched to trigger validation
       Object.keys(this.form.controls).forEach(key => {
         const control = this.form.get(key);
@@ -133,12 +134,12 @@ export class ContractItemDialogComponent {
         productName: formValue.product?.name || '',
         quantity: formValue.quantity,
         unitPrice: formValue.unitPrice,
-        totalAmount: formValue.quantity * formValue.unitPrice, 
+        totalAmount: formValue.quantity * formValue.unitPrice,
         modelNumber: formValue.modelNumber,
-        remarks: formValue.remarks
+        remarks: formValue.remarks,
       };
-      
-      console.log('Submitting contract item:', contractItem); 
+
+      console.log('Submitting contract item:', contractItem);
       this.dialogRef.close(contractItem);
     } else {
       // 如果表单无效，标记所有字段为touched以显示验证错误
@@ -146,7 +147,7 @@ export class ContractItemDialogComponent {
         const control = this.form.get(key);
         control?.markAsTouched();
       });
-      console.log('Form is invalid:', this.form.errors); 
+      console.log('Form is invalid:', this.form.errors);
     }
   }
 

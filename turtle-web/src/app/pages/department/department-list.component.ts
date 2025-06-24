@@ -17,7 +17,15 @@ import { Department } from '../../models/department.model';
   styleUrls: ['./department-list.component.scss'],
 })
 export class DepartmentListComponent implements OnInit {
-  displayedColumns: string[] = ['name', 'code', 'description', 'parentId', 'managerId', 'isActive', 'actions'];
+  displayedColumns: string[] = [
+    'name',
+    'code',
+    'description',
+    'parentId',
+    'managerId',
+    'isActive',
+    'actions',
+  ];
   dataSource = new MatTableDataSource<Department>();
   isLoading = false;
   totalElements = 0;
@@ -43,10 +51,7 @@ export class DepartmentListComponent implements OnInit {
   }
 
   setupSearch() {
-    this.searchSubject.pipe(
-      debounceTime(300),
-      distinctUntilChanged()
-    ).subscribe(() => {
+    this.searchSubject.pipe(debounceTime(300), distinctUntilChanged()).subscribe(() => {
       this.pageIndex = 0;
       this.loadDepartments();
     });
@@ -76,7 +81,7 @@ export class DepartmentListComponent implements OnInit {
       : this.departmentService.getDepartments(this.pageIndex, this.pageSize);
 
     request.subscribe({
-      next: (response) => {
+      next: response => {
         if (response.code === 200) {
           this.dataSource.data = response.data.content;
           this.totalElements = response.data.totalElements;
@@ -85,10 +90,10 @@ export class DepartmentListComponent implements OnInit {
         }
         this.isLoading = false;
       },
-      error: (error) => {
+      error: error => {
         this.showError('Error loading departments');
         this.isLoading = false;
-      }
+      },
     });
   }
 
@@ -97,15 +102,15 @@ export class DepartmentListComponent implements OnInit {
       width: '50%',
       data: {
         department: {},
-        mode: 'create'
-      }
+        mode: 'create',
+      },
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.isLoading = true;
         this.departmentService.createDepartment(result).subscribe({
-          next: (response) => {
+          next: response => {
             if (response.code === 200) {
               this.showSuccess('Department created successfully');
               this.loadDepartments();
@@ -114,10 +119,10 @@ export class DepartmentListComponent implements OnInit {
             }
             this.isLoading = false;
           },
-          error: (error) => {
+          error: error => {
             this.showError('Error creating department');
             this.isLoading = false;
-          }
+          },
         });
       }
     });
@@ -128,15 +133,15 @@ export class DepartmentListComponent implements OnInit {
       width: '50%',
       data: {
         department: { ...department },
-        mode: 'edit'
-      }
+        mode: 'edit',
+      },
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.isLoading = true;
         this.departmentService.updateDepartment(department.id!, result).subscribe({
-          next: (response) => {
+          next: response => {
             if (response.code === 200) {
               this.showSuccess('Department updated successfully');
               this.loadDepartments();
@@ -145,10 +150,10 @@ export class DepartmentListComponent implements OnInit {
             }
             this.isLoading = false;
           },
-          error: (error) => {
+          error: error => {
             this.showError('Error updating department');
             this.isLoading = false;
-          }
+          },
         });
       }
     });
@@ -159,8 +164,8 @@ export class DepartmentListComponent implements OnInit {
       width: '400px',
       data: {
         title: this.translate.instant('department.message.deleteConfirm'),
-        message: department.name
-      }
+        message: department.name,
+      },
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -168,16 +173,14 @@ export class DepartmentListComponent implements OnInit {
         this.departmentService.deleteDepartment(department.id!).subscribe({
           next: () => {
             this.loadDepartments();
-            this.snackBar.open(
-              this.translate.instant('department.message.deleteSuccess'),
-              'OK',
-              { duration: 3000 }
-            );
+            this.snackBar.open(this.translate.instant('department.message.deleteSuccess'), 'OK', {
+              duration: 3000,
+            });
           },
-          error: (error) => {
+          error: error => {
             console.error('Error deleting department:', error);
             this.snackBar.open(error.message, 'OK', { duration: 3000 });
-          }
+          },
         });
       }
     });
@@ -190,14 +193,14 @@ export class DepartmentListComponent implements OnInit {
   private showSuccess(message: string) {
     this.snackBar.open(message, 'Close', {
       duration: 3000,
-      panelClass: ['success-snackbar']
+      panelClass: ['success-snackbar'],
     });
   }
 
   private showError(message: string) {
     this.snackBar.open(message, 'Close', {
       duration: 5000,
-      panelClass: ['error-snackbar']
+      panelClass: ['error-snackbar'],
     });
   }
 }

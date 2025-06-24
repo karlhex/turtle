@@ -7,14 +7,19 @@ import { Page } from '../models/page.model';
 import { ApiResponse } from '../models/api.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TaxInfoService {
   private apiUrl = `${environment.apiUrl}/tax-infos`;
 
   constructor(private http: HttpClient) {}
 
-  getTaxInfos(params: { page: number; size: number; search?: string; active?: boolean }): Observable<ApiResponse<Page<TaxInfo>>> {
+  getTaxInfos(params: {
+    page: number;
+    size: number;
+    search?: string;
+    active?: boolean;
+  }): Observable<ApiResponse<Page<TaxInfo>>> {
     let httpParams = new HttpParams()
       .set('page', params.page.toString())
       .set('size', params.size.toString());

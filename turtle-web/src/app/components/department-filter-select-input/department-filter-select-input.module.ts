@@ -9,9 +9,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { DepartmentFilterSelectInputComponent } from './department-filter-select-input.component';
 
 @NgModule({
-  declarations: [
-    DepartmentFilterSelectInputComponent
-  ],
+  declarations: [DepartmentFilterSelectInputComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -19,10 +17,8 @@ import { DepartmentFilterSelectInputComponent } from './department-filter-select
     MatAutocompleteModule,
     MatFormFieldModule,
     MatInputModule,
-    TranslateModule
+    TranslateModule,
   ],
-  exports: [
-    DepartmentFilterSelectInputComponent
-  ]
+  exports: [DepartmentFilterSelectInputComponent],
 })
-export class DepartmentFilterSelectInputModule { }
+export class DepartmentFilterSelectInputModule {}

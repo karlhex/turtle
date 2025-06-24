@@ -66,7 +66,7 @@ const MATERIAL_MODULES = [
   MatSidenavModule,
   MatListModule,
   MatChipsModule,
-  MatMenuModule
+  MatMenuModule,
 ];
 
 const SHARED_MODULES = [
@@ -76,23 +76,12 @@ const SHARED_MODULES = [
   HttpClientModule,
   TranslateModule,
   RouterModule,
-  ...MATERIAL_MODULES
+  ...MATERIAL_MODULES,
 ];
 
 @NgModule({
-  declarations: [
-    ConfirmDialogComponent,
-    PaymentTotalPipe,
-    HasPermissionDirective
-  ],
-  imports: [
-    ...SHARED_MODULES
-  ],
-  exports: [
-    ...SHARED_MODULES,
-    ConfirmDialogComponent,
-    PaymentTotalPipe,
-    HasPermissionDirective
-  ]
+  declarations: [ConfirmDialogComponent, PaymentTotalPipe, HasPermissionDirective],
+  imports: [...SHARED_MODULES],
+  exports: [...SHARED_MODULES, ConfirmDialogComponent, PaymentTotalPipe, HasPermissionDirective],
 })
-export class SharedModule { }
+export class SharedModule {}

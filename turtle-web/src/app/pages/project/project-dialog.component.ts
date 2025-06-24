@@ -16,7 +16,7 @@ import { ContractType } from '../../types/contract-type.enum';
   selector: 'app-project-dialog',
   templateUrl: './project-dialog.component.html',
   styleUrls: ['./project-dialog.component.scss'],
-  providers: [PaymentTotalPipe]
+  providers: [PaymentTotalPipe],
 })
 export class ProjectDialogComponent implements OnInit {
   form: FormGroup;
@@ -28,13 +28,21 @@ export class ProjectDialogComponent implements OnInit {
   contractTypes = ContractType;
   groupedContracts: { [key in ContractType]: Contract[] } = {
     [ContractType.PURCHASE]: [],
-    [ContractType.SALES]: []
+    [ContractType.SALES]: [],
   };
   totalsByType: { [key in ContractType]: { total: number; paid: number } } = {
     [ContractType.PURCHASE]: { total: 0, paid: 0 },
-    [ContractType.SALES]: { total: 0, paid: 0 }
+    [ContractType.SALES]: { total: 0, paid: 0 },
   };
-  displayedColumns: string[] = ['contractNo', 'title', 'type', 'totalAmount', 'paidAmount', 'status', 'actions'];
+  displayedColumns: string[] = [
+    'contractNo',
+    'title',
+    'type',
+    'totalAmount',
+    'paidAmount',
+    'status',
+    'actions',
+  ];
 
   constructor(
     private fb: FormBuilder,
@@ -52,14 +60,14 @@ export class ProjectDialogComponent implements OnInit {
       endDate: [null, [Validators.required]],
       status: [ProjectStatus.NOT_STARTED, [Validators.required]],
       manager: [null, [Validators.required]],
-      remarks: ['']
+      remarks: [''],
     });
 
     if (this.isEdit && data.project) {
       this.form.patchValue({
         ...data.project,
         startDate: data.project.startDate ? new Date(data.project.startDate) : null,
-        endDate: data.project.endDate ? new Date(data.project.endDate) : null
+        endDate: data.project.endDate ? new Date(data.project.endDate) : null,
       });
       this.contracts = data.project.contracts || [];
       this.groupContracts();
@@ -73,14 +81,14 @@ export class ProjectDialogComponent implements OnInit {
 
   loadEmployees(): void {
     this.employeeService.getActiveEmployees().subscribe({
-      next: (response) => {
+      next: response => {
         if (response.code === 200 && response.data) {
           this.employees = response.data;
         }
       },
-      error: (error) => {
+      error: error => {
         console.error('Error loading employees:', error);
-      }
+      },
     });
   }
 
@@ -88,20 +96,21 @@ export class ProjectDialogComponent implements OnInit {
     // Reset grouped contracts
     this.groupedContracts = {
       [ContractType.PURCHASE]: [],
-      [ContractType.SALES]: []
+      [ContractType.SALES]: [],
     };
     this.totalsByType = {
       [ContractType.PURCHASE]: { total: 0, paid: 0 },
-      [ContractType.SALES]: { total: 0, paid: 0 }
+      [ContractType.SALES]: { total: 0, paid: 0 },
     };
 
     // Group contracts by type
     this.contracts.forEach(contract => {
       this.groupedContracts[contract.type].push(contract);
-      
+
       // Calculate totals for each type
       this.totalsByType[contract.type].total += contract.totalAmount;
-      const paidAmount = contract.downPayments?.reduce((sum, payment) => sum + payment.amount, 0) || 0;
+      const paidAmount =
+        contract.downPayments?.reduce((sum, payment) => sum + payment.amount, 0) || 0;
       this.totalsByType[contract.type].paid += paidAmount;
     });
   }
@@ -126,9 +135,7 @@ export class ProjectDialogComponent implements OnInit {
 
   private _filterEmployees(value: string): Employee[] {
     const filterValue = value.toLowerCase();
-    return this.employees.filter(employee => 
-      employee.name.toLowerCase().includes(filterValue)
-    );
+    return this.employees.filter(employee => employee.name.toLowerCase().includes(filterValue));
   }
 
   displayFn(employee: Employee): string {
@@ -139,10 +146,10 @@ export class ProjectDialogComponent implements OnInit {
     if (this.form.valid) {
       const formValue = this.form.value;
       const projectId = this.data.project?.id;
-      
+
       const project: Project = {
         ...formValue,
-        id: projectId
+        id: projectId,
       };
 
       if (this.isEdit && !projectId) {
@@ -157,7 +164,7 @@ export class ProjectDialogComponent implements OnInit {
       request.subscribe({
         next: () => {
           this.dialogRef.close(true);
-        }
+        },
       });
     }
   }

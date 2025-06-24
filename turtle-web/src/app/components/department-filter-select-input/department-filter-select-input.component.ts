@@ -11,9 +11,9 @@ import { BaseFilterSelectInputComponent } from '../base-filter-select-input/base
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: DepartmentFilterSelectInputComponent,
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
 export class DepartmentFilterSelectInputComponent extends BaseFilterSelectInputComponent<Department> {
   @Input() override label: string = 'common.select_department';

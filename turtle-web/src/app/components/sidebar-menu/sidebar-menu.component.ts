@@ -23,7 +23,7 @@ interface MenuItem {
   selector: 'app-sidebar-menu',
   templateUrl: './sidebar-menu.component.html',
   styleUrls: ['./sidebar-menu.component.scss'],
-  standalone: false
+  standalone: false,
 })
 export class SidebarMenuComponent implements OnInit, OnDestroy {
   @Input() isCollapsed = false;
@@ -34,18 +34,17 @@ export class SidebarMenuComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   private activeItemCache = new Map<string, boolean>();
 
-  constructor(
-    private router: Router,
-    private permissionService: PermissionService
-  ) {
+  constructor(private router: Router, private permissionService: PermissionService) {
     // 监听路由事件，更新活动状态缓存
-    this.router.events.pipe(
-      filter((event): event is NavigationEnd => event instanceof NavigationEnd),
-      takeUntil(this.destroy$)
-    ).subscribe(() => {
-      // 只在路由变化时清除缓存
-      this.activeItemCache.clear();
-    });
+    this.router.events
+      .pipe(
+        filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(() => {
+        // 只在路由变化时清除缓存
+        this.activeItemCache.clear();
+      });
   }
 
   ngOnInit() {
@@ -73,10 +72,9 @@ export class SidebarMenuComponent implements OnInit, OnDestroy {
 
   private getCachedPermission(permission: string): Observable<boolean> {
     if (!this.permissionCache.has(permission)) {
-      const permission$ = this.permissionService.hasPermission(permission).pipe(
-        take(1),
-        shareReplay(1)
-      );
+      const permission$ = this.permissionService
+        .hasPermission(permission)
+        .pipe(take(1), shareReplay(1));
       this.permissionCache.set(permission, permission$);
     }
     return this.permissionCache.get(permission)!;
@@ -101,13 +99,11 @@ export class SidebarMenuComponent implements OnInit, OnDestroy {
       return this.permissionCache.get(cacheKey)!;
     }
 
-    const parentPermission$ = item.permission ? 
-      this.getCachedPermission(item.permission) : 
-      of(true);
+    const parentPermission$ = item.permission
+      ? this.getCachedPermission(item.permission)
+      : of(true);
 
-    const childrenPermissions$ = item.children.map(child => 
-      this.checkPermission(child)
-    );
+    const childrenPermissions$ = item.children.map(child => this.checkPermission(child));
 
     const result$ = combineLatest([parentPermission$, ...childrenPermissions$]).pipe(
       map(([parentHasPermission, ...childrenHavePermission]) => {
@@ -135,8 +131,8 @@ export class SidebarMenuComponent implements OnInit, OnDestroy {
     if (item.route) {
       isActive = this.router.url.startsWith(item.route);
     } else if (item.children) {
-      isActive = item.children.some(child => 
-        child.route && this.router.url.startsWith(child.route)
+      isActive = item.children.some(
+        child => child.route && this.router.url.startsWith(child.route)
       );
     }
 
@@ -163,7 +159,7 @@ export class SidebarMenuComponent implements OnInit, OnDestroy {
     {
       title: 'app.menu.dashboard',
       icon: 'dashboard',
-      route: '/dashboard'
+      route: '/dashboard',
     },
     {
       title: 'app.menu.hr',
@@ -173,21 +169,21 @@ export class SidebarMenuComponent implements OnInit, OnDestroy {
           title: 'app.menu.employees',
           icon: 'badge',
           route: '/employees',
-          permission: 'hr.employee.view'
+          permission: 'hr.employee.view',
         },
         {
           title: 'app.menu.departments',
           icon: 'business',
           route: '/departments',
-          permission: 'hr.department.view'
+          permission: 'hr.department.view',
         },
         {
           title: 'app.menu.positions',
           icon: 'work',
-          route: '/positions'
-        }
+          route: '/positions',
+        },
       ],
-      divider: true
+      divider: true,
     },
     {
       title: 'app.menu.crm',
@@ -197,16 +193,16 @@ export class SidebarMenuComponent implements OnInit, OnDestroy {
           title: 'app.menu.companies',
           icon: 'business',
           route: '/companies',
-          permission: 'crm.company.view'
+          permission: 'crm.company.view',
         },
         {
           title: 'app.menu.contacts',
           icon: 'person',
           route: '/contacts',
-          permission: 'crm.contact.view'
-        }
+          permission: 'crm.contact.view',
+        },
       ],
-      divider: true
+      divider: true,
     },
     {
       title: 'app.menu.contract_management',
@@ -215,30 +211,30 @@ export class SidebarMenuComponent implements OnInit, OnDestroy {
         {
           title: 'app.menu.contracts',
           icon: 'description',
-          route: '/contracts'
+          route: '/contracts',
         },
         {
           title: 'app.menu.projects',
           icon: 'calendar_today',
-          route: '/projects'
+          route: '/projects',
         },
         {
           title: 'app.menu.products',
           icon: 'inventory_2',
-          route: '/products'
+          route: '/products',
         },
         {
           title: 'app.menu.tax_info',
           icon: 'receipt',
-          route: '/tax-infos'
+          route: '/tax-infos',
         },
         {
           title: 'inventory.title',
           icon: 'inventory_2',
-          route: '/inventories'
-        }
+          route: '/inventories',
+        },
       ],
-      divider: true
+      divider: true,
     },
     {
       title: 'app.menu.financial',
@@ -247,20 +243,20 @@ export class SidebarMenuComponent implements OnInit, OnDestroy {
         {
           title: 'app.menu.bank_accounts',
           icon: 'account_balance_wallet',
-          route: '/bank-accounts'
+          route: '/bank-accounts',
         },
         {
           title: 'app.menu.reimbursement',
           icon: 'receipt_long',
-          route: '/reimbursements'
+          route: '/reimbursements',
         },
         {
           title: 'app.menu.currencies',
           icon: 'currency_exchange',
-          route: '/currencies'
-        }
+          route: '/currencies',
+        },
       ],
-      divider: true
+      divider: true,
     },
     {
       title: 'app.menu.system',
@@ -269,14 +265,14 @@ export class SidebarMenuComponent implements OnInit, OnDestroy {
         {
           title: 'app.menu.users',
           icon: 'manage_accounts',
-          route: '/users'
+          route: '/users',
         },
         {
           title: 'app.menu.role_permissions',
           icon: 'security',
-          route: '/role-permissions'
-        }
-      ]
-    }
+          route: '/role-permissions',
+        },
+      ],
+    },
   ];
 }

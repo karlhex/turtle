@@ -14,9 +14,9 @@ import { map, startWith } from 'rxjs/operators';
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => PersonInputComponent),
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
 export class PersonInputComponent implements ControlValueAccessor {
   @Input() placeholder = '';
@@ -45,7 +45,7 @@ export class PersonInputComponent implements ControlValueAccessor {
   get persons(): Person[] {
     return this._persons;
   }
-  
+
   @Output() personAdded = new EventEmitter<Person>();
 
   private _persons: Person[] = [];
@@ -101,7 +101,7 @@ export class PersonInputComponent implements ControlValueAccessor {
 
   openPersonDialog(): void {
     const dialogRef = this.dialog.open(PersonDialogComponent, {
-      data: { person: this.value }
+      data: { person: this.value },
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -129,16 +129,17 @@ export class PersonInputComponent implements ControlValueAccessor {
       return [];
     }
     const filter = filterValue.toLowerCase();
-    return this._persons.filter(person => 
-      person.firstName.toLowerCase().includes(filter) ||
-      person.lastName.toLowerCase().includes(filter) ||
-      `${person.firstName} ${person.lastName}`.toLowerCase().includes(filter) ||
-      (person.mobilePhone && person.mobilePhone.toLowerCase().includes(filter)) ||
-      (person.workPhone && person.workPhone.toLowerCase().includes(filter)) ||
-      (person.homePhone && person.homePhone.toLowerCase().includes(filter)) ||
-      (person.companyName && person.companyName.toLowerCase().includes(filter)) ||
-      (person.department && person.department.toLowerCase().includes(filter)) ||
-      (person.position && person.position.toLowerCase().includes(filter))
+    return this._persons.filter(
+      person =>
+        person.firstName.toLowerCase().includes(filter) ||
+        person.lastName.toLowerCase().includes(filter) ||
+        `${person.firstName} ${person.lastName}`.toLowerCase().includes(filter) ||
+        (person.mobilePhone && person.mobilePhone.toLowerCase().includes(filter)) ||
+        (person.workPhone && person.workPhone.toLowerCase().includes(filter)) ||
+        (person.homePhone && person.homePhone.toLowerCase().includes(filter)) ||
+        (person.companyName && person.companyName.toLowerCase().includes(filter)) ||
+        (person.department && person.department.toLowerCase().includes(filter)) ||
+        (person.position && person.position.toLowerCase().includes(filter))
     );
   }
 

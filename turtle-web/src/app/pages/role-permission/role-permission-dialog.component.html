@@ -10,7 +10,7 @@
         <mat-label>{{ 'role_permissions.role_name' | translate }}</mat-label>
         <mat-select formControlName="roleName">
           <mat-option *ngFor="let role of roles" [value]="role.name">
-            {{role.name}}
+            {{ role.name }}
           </mat-option>
         </mat-select>
         <mat-error *ngIf="form.get('roleName')?.hasError('required')">
@@ -20,7 +20,7 @@
       <!-- Transaction Pattern -->
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>{{ 'role_permissions.transaction_pattern' | translate }}</mat-label>
-        <input matInput formControlName="transactionPattern" required>
+        <input matInput formControlName="transactionPattern" required />
         <mat-error *ngIf="form.get('transactionPattern')?.hasError('required')">
           {{ 'COMMON.FIELD_REQUIRED' | translate }}
         </mat-error>
@@ -29,7 +29,7 @@
       <!-- Description -->
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>{{ 'role_permissions.description' | translate }}</mat-label>
-        <input matInput formControlName="description">
+        <input matInput formControlName="description" />
       </mat-form-field>
     </div>
   </mat-dialog-content>
@@ -39,7 +39,12 @@
   <button mat-button (click)="onCancel()" [disabled]="loading">
     {{ 'common.action.cancel' | translate }}
   </button>
-  <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="form.invalid || loading">
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="onSubmit()"
+    [disabled]="form.invalid || loading"
+  >
     <mat-spinner diameter="20" *ngIf="loading"></mat-spinner>
     {{ (isEdit ? 'common.action.save' : 'common.action.add') | translate }}
   </button>

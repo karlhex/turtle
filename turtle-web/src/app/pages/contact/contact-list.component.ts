@@ -13,7 +13,7 @@ import { ConfirmDialogComponent } from '../../components/confirmdialog/confirm-d
 @Component({
   selector: 'app-contact-list',
   templateUrl: './contact-list.component.html',
-  styleUrls: ['./contact-list.component.scss']
+  styleUrls: ['./contact-list.component.scss'],
 })
 export class ContactListComponent implements OnInit {
   @ViewChild(MatTable) table!: MatTable<Contact>;
@@ -26,9 +26,9 @@ export class ContactListComponent implements OnInit {
     'companyName',
     'department',
     'active',
-    'actions'
+    'actions',
   ];
-  
+
   dataSource: Contact[] = [];
   loading = false;
   totalElements = 0;
@@ -54,36 +54,35 @@ export class ContactListComponent implements OnInit {
       this.pageSize = event.pageSize;
     }
 
-    this.contactService.getContacts(this.pageIndex, this.pageSize, this.searchText)
-      .subscribe({
-        next: (response) => {
-          console.log('Response:', response);
-          console.log('Data:', response.data);
-          console.log('Content:', response.data?.content);
-          if (response.code === 200) {
-            // 检查response.data是否是数组
-            if (Array.isArray(response.data)) {
-              this.dataSource = response.data;
-              this.totalElements = response.data.length;
-            } 
-            // 检查response.data是否是分页对象
-            else if (response.data && response.data.content) {
-              this.dataSource = response.data.content;
-              this.totalElements = response.data.totalElements;
-            }
-            // 如果都不是，可能数据直接在response中
-            else if (Array.isArray(response)) {
-              this.dataSource = response;
-              this.totalElements = response.length;
-            }
+    this.contactService.getContacts(this.pageIndex, this.pageSize, this.searchText).subscribe({
+      next: response => {
+        console.log('Response:', response);
+        console.log('Data:', response.data);
+        console.log('Content:', response.data?.content);
+        if (response.code === 200) {
+          // 检查response.data是否是数组
+          if (Array.isArray(response.data)) {
+            this.dataSource = response.data;
+            this.totalElements = response.data.length;
           }
-          this.loading = false;
-        },
-        error: (error) => {
-          console.error('Error fetching contacts:', error);
-          this.loading = false;
+          // 检查response.data是否是分页对象
+          else if (response.data && response.data.content) {
+            this.dataSource = response.data.content;
+            this.totalElements = response.data.totalElements;
+          }
+          // 如果都不是，可能数据直接在response中
+          else if (Array.isArray(response)) {
+            this.dataSource = response;
+            this.totalElements = response.length;
+          }
         }
-      });
+        this.loading = false;
+      },
+      error: error => {
+        console.error('Error fetching contacts:', error);
+        this.loading = false;
+      },
+    });
   }
 
   onSearch(searchText: string): void {
@@ -101,7 +100,7 @@ export class ContactListComponent implements OnInit {
   onAdd(): void {
     const dialogRef = this.dialog.open(ContactDialogComponent, {
       width: '900px',
-      data: { mode: 'create' }
+      data: { mode: 'create' },
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -114,7 +113,7 @@ export class ContactListComponent implements OnInit {
   onEdit(contact: Contact): void {
     const dialogRef = this.dialog.open(ContactDialogComponent, {
       width: '900px',
-      data: { mode: 'edit', contact }
+      data: { mode: 'edit', contact },
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -130,15 +129,15 @@ export class ContactListComponent implements OnInit {
         title: 'CONTACT.DELETE_TITLE',
         message: 'CONTACT.DELETE_CONFIRM',
         confirmText: 'ACTIONS.DELETE',
-        cancelText: 'ACTIONS.CANCEL'
-      }
+        cancelText: 'ACTIONS.CANCEL',
+      },
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.loading = true;
         this.contactService.deleteContact(contact.id!).subscribe({
-          next: (response) => {
+          next: response => {
             if (response.code === 200) {
               this.snackBar.open(
                 this.translate.instant('CONTACT.DELETE_SUCCESS'),
@@ -148,7 +147,7 @@ export class ContactListComponent implements OnInit {
               this.loadContacts();
             }
           },
-          error: (error) => {
+          error: error => {
             console.error('Error deleting contact:', error);
             this.snackBar.open(
               this.translate.instant('ERROR.DELETE_CONTACT'),
@@ -156,7 +155,7 @@ export class ContactListComponent implements OnInit {
               { duration: 3000 }
             );
             this.loading = false;
-          }
+          },
         });
       }
     });
@@ -164,7 +163,7 @@ export class ContactListComponent implements OnInit {
 
   onToggleStatus(contact: Contact): void {
     this.contactService.toggleStatus(contact.id!).subscribe({
-      next: (response) => {
+      next: response => {
         if (response.code === 200) {
           this.snackBar.open(
             this.translate.instant('CONTACT.STATUS_UPDATED'),
@@ -174,14 +173,14 @@ export class ContactListComponent implements OnInit {
           this.loadContacts();
         }
       },
-      error: (error) => {
+      error: error => {
         console.error('Error updating contact status:', error);
         this.snackBar.open(
           this.translate.instant('ERROR.UPDATE_STATUS'),
           this.translate.instant('ACTIONS.CLOSE'),
           { duration: 3000 }
         );
-      }
+      },
     });
   }
 

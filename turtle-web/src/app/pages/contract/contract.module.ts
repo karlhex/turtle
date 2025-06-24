@@ -44,7 +44,7 @@ import { ProjectFilterSelectInputModule } from '@app/components/project-filter-s
     ContractDownPaymentDialogComponent,
     ContractInvoiceListComponent,
     ContractInvoiceDialogComponent,
-    ContractItemDialogComponent
+    ContractItemDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -54,7 +54,7 @@ import { ProjectFilterSelectInputModule } from '@app/components/project-filter-s
     BaseListModule,
     MatSlideToggleModule,
     ProjectFilterSelectInputModule,
-    CompanyFilterSelectInputModule
+    CompanyFilterSelectInputModule,
   ],
   exports: [
     ContractListComponent,
@@ -62,7 +62,7 @@ import { ProjectFilterSelectInputModule } from '@app/components/project-filter-s
     ContractItemListComponent,
     ContractDownPaymentListComponent,
     ContractDialogComponent,
-    ContractItemDialogComponent
-  ]
+    ContractItemDialogComponent,
+  ],
 })
-export class ContractModule { }
+export class ContractModule {}

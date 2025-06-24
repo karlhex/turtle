@@ -6,37 +6,37 @@
   [totalElements]="totalElements"
   (search)="onSearch($event)"
   (add)="onAdd()"
-  (page)="onPageChange($event)">
-
+  (page)="onPageChange($event)"
+>
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z1 w-full">
     <!-- 姓名 -->
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef>{{ 'CONTACT.NAME' | translate }}</th>
-      <td mat-cell *matCellDef="let element">{{getFullName(element)}}</td>
+      <td mat-cell *matCellDef="let element">{{ getFullName(element) }}</td>
     </ng-container>
 
     <!-- 邮箱 -->
     <ng-container matColumnDef="email">
       <th mat-header-cell *matHeaderCellDef>{{ 'CONTACT.EMAIL' | translate }}</th>
-      <td mat-cell *matCellDef="let element">{{element.email}}</td>
+      <td mat-cell *matCellDef="let element">{{ element.email }}</td>
     </ng-container>
 
     <!-- 手机号 -->
     <ng-container matColumnDef="mobilePhone">
       <th mat-header-cell *matHeaderCellDef>{{ 'CONTACT.MOBILE_PHONE' | translate }}</th>
-      <td mat-cell *matCellDef="let element">{{element.mobilePhone}}</td>
+      <td mat-cell *matCellDef="let element">{{ element.mobilePhone }}</td>
     </ng-container>
 
     <!-- 公司名称 -->
     <ng-container matColumnDef="companyName">
       <th mat-header-cell *matHeaderCellDef>{{ 'CONTACT.COMPANY' | translate }}</th>
-      <td mat-cell *matCellDef="let element">{{element.companyName}}</td>
+      <td mat-cell *matCellDef="let element">{{ element.companyName }}</td>
     </ng-container>
 
     <!-- 部门 -->
     <ng-container matColumnDef="department">
       <th mat-header-cell *matHeaderCellDef>{{ 'CONTACT.DEPARTMENT' | translate }}</th>
-      <td mat-cell *matCellDef="let element">{{element.department}}</td>
+      <td mat-cell *matCellDef="let element">{{ element.department }}</td>
     </ng-container>
 
     <!-- 状态 -->
@@ -46,7 +46,8 @@
         <mat-slide-toggle
           [checked]="element.active"
           (change)="onToggleStatus(element)"
-          color="primary">
+          color="primary"
+        >
         </mat-slide-toggle>
       </td>
     </ng-container>
@@ -72,6 +73,6 @@
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
 </app-base-list>

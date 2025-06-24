@@ -5,7 +5,7 @@ import { Currency } from '../../models/currency.model';
 @Component({
   selector: 'app-contract-item-list',
   templateUrl: './contract-item-list.component.html',
-  styleUrls: ['./contract-item-list.component.scss']
+  styleUrls: ['./contract-item-list.component.scss'],
 })
 export class ContractItemListComponent {
   @Input() items: ContractItem[] = [];
@@ -13,7 +13,15 @@ export class ContractItemListComponent {
   @Output() itemDeleted = new EventEmitter<ContractItem>();
   @Output() itemEdited = new EventEmitter<ContractItem>();
 
-  displayedColumns: string[] = ['productName', 'modelNumber', 'quantity', 'unitPrice', 'totalAmount', 'remarks', 'actions'];
+  displayedColumns: string[] = [
+    'productName',
+    'modelNumber',
+    'quantity',
+    'unitPrice',
+    'totalAmount',
+    'remarks',
+    'actions',
+  ];
 
   constructor() {}
 

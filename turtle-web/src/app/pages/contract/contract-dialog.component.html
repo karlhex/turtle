@@ -13,7 +13,7 @@
               <div class="grid-item">
                 <mat-form-field appearance="outline">
                   <mat-label>合同编号</mat-label>
-                  <input matInput formControlName="contractNo" required>
+                  <input matInput formControlName="contractNo" required />
                   <mat-error *ngIf="form.get('contractNo')?.hasError('required')">
                     请输入合同编号
                   </mat-error>
@@ -22,7 +22,7 @@
               <div class="grid-item">
                 <mat-form-field appearance="outline">
                   <mat-label>标题</mat-label>
-                  <input matInput formControlName="title" required>
+                  <input matInput formControlName="title" required />
                   <mat-error *ngIf="form.get('title')?.hasError('required')">
                     请输入标题
                   </mat-error>
@@ -33,9 +33,18 @@
               <div class="grid-item">
                 <mat-form-field appearance="outline">
                   <mat-label>买方公司</mat-label>
-                  <input type="text" matInput formControlName="buyerCompany" [matAutocomplete]="buyerAuto" required>
+                  <input
+                    type="text"
+                    matInput
+                    formControlName="buyerCompany"
+                    [matAutocomplete]="buyerAuto"
+                    required
+                  />
                   <mat-autocomplete #buyerAuto="matAutocomplete" [displayWith]="displayCompany">
-                    <mat-option *ngFor="let company of filteredBuyerCompanies | async" [value]="company">
+                    <mat-option
+                      *ngFor="let company of filteredBuyerCompanies | async"
+                      [value]="company"
+                    >
                       {{ company.fullName }}
                       <small *ngIf="company.shortName"> ({{ company.shortName }})</small>
                     </mat-option>
@@ -48,9 +57,18 @@
               <div class="grid-item">
                 <mat-form-field appearance="outline">
                   <mat-label>卖方公司</mat-label>
-                  <input type="text" matInput formControlName="sellerCompany" [matAutocomplete]="sellerAuto" required>
+                  <input
+                    type="text"
+                    matInput
+                    formControlName="sellerCompany"
+                    [matAutocomplete]="sellerAuto"
+                    required
+                  />
                   <mat-autocomplete #sellerAuto="matAutocomplete" [displayWith]="displayCompany">
-                    <mat-option *ngFor="let company of filteredSellerCompanies | async" [value]="company">
+                    <mat-option
+                      *ngFor="let company of filteredSellerCompanies | async"
+                      [value]="company"
+                    >
                       {{ company.fullName }}
                       <small *ngIf="company.shortName"> ({{ company.shortName }})</small>
                     </mat-option>
@@ -67,7 +85,7 @@
                   <mat-label>合同类型</mat-label>
                   <mat-select formControlName="type" required>
                     <mat-option *ngFor="let type of contractTypes" [value]="type">
-                      {{ 'enum.contract.type.' +  type | translate }}
+                      {{ 'enum.contract.type.' + type | translate }}
                     </mat-option>
                   </mat-select>
                   <mat-error *ngIf="form.get('type')?.hasError('required')">
@@ -98,7 +116,12 @@
               <div class="grid-item">
                 <mat-form-field appearance="outline">
                   <mat-label>签署日期</mat-label>
-                  <input matInput [matDatepicker]="signingPicker" formControlName="signingDate" required>
+                  <input
+                    matInput
+                    [matDatepicker]="signingPicker"
+                    formControlName="signingDate"
+                    required
+                  />
                   <mat-datepicker-toggle matSuffix [for]="signingPicker"></mat-datepicker-toggle>
                   <mat-datepicker #signingPicker></mat-datepicker>
                   <mat-error *ngIf="form.get('signingDate')?.hasError('required')">
@@ -109,7 +132,12 @@
               <div class="grid-item">
                 <mat-form-field appearance="outline">
                   <mat-label>开始日期</mat-label>
-                  <input matInput [matDatepicker]="startPicker" formControlName="startDate" required>
+                  <input
+                    matInput
+                    [matDatepicker]="startPicker"
+                    formControlName="startDate"
+                    required
+                  />
                   <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
                   <mat-datepicker #startPicker></mat-datepicker>
                   <mat-error *ngIf="form.get('startDate')?.hasError('required')">
@@ -122,7 +150,12 @@
               <div class="grid-item">
                 <mat-form-field appearance="outline">
                   <mat-label>结束日期</mat-label>
-                  <input matInput [matDatepicker]="endDatePicker" formControlName="endDate" required>
+                  <input
+                    matInput
+                    [matDatepicker]="endDatePicker"
+                    formControlName="endDate"
+                    required
+                  />
                   <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
                   <mat-datepicker #endDatePicker></mat-datepicker>
                   <mat-error *ngIf="form.get('endDate')?.hasError('required')">
@@ -143,7 +176,8 @@
                   [required]="true"
                   placeholder="联系人"
                   [persons]="people"
-                  (personAdded)="onPersonAdded($event)">
+                  (personAdded)="onPersonAdded($event)"
+                >
                 </app-person-input>
               </div>
             </div>
@@ -163,7 +197,7 @@
               <div class="grid-item">
                 <mat-form-field appearance="outline">
                   <mat-label>项目编号</mat-label>
-                  <input matInput formControlName="projectNo">
+                  <input matInput formControlName="projectNo" />
                 </mat-form-field>
               </div>
             </div>
@@ -176,7 +210,7 @@
               <div class="grid-item">
                 <mat-form-field appearance="outline">
                   <mat-label>合同金额</mat-label>
-                  <input matInput type="number" formControlName="totalAmount" required>
+                  <input matInput type="number" formControlName="totalAmount" required />
                   <mat-error *ngIf="form.get('totalAmount')?.hasError('required')">
                     请输入合同金额
                   </mat-error>
@@ -190,7 +224,7 @@
                   <mat-label>币种</mat-label>
                   <mat-select formControlName="currency" required>
                     <mat-option *ngFor="let currency of currencies" [value]="currency">
-                      {{currency.code}} - {{currency.name}}
+                      {{ currency.code }} - {{ currency.name }}
                     </mat-option>
                   </mat-select>
                   <mat-error *ngIf="form.get('currency')?.hasError('required')">
@@ -266,7 +300,8 @@
             [items]="contractItems"
             [currency]="form.get('currency')?.value"
             (itemEdited)="editContractItem($event)"
-            (itemDeleted)="deleteContractItem($event)">
+            (itemDeleted)="deleteContractItem($event)"
+          >
           </app-contract-item-list>
         </div>
       </mat-tab>
@@ -275,7 +310,12 @@
       <mat-tab label="{{ 'contract.downPayment.tab' | translate }}">
         <div class="contract-down-payments-container">
           <div class="action-bar">
-            <button mat-raised-button color="primary" type="button" (click)="openDownPaymentDialog()">
+            <button
+              mat-raised-button
+              color="primary"
+              type="button"
+              (click)="openDownPaymentDialog()"
+            >
               {{ 'contract.downPayment.add' | translate }}
             </button>
           </div>
@@ -284,7 +324,8 @@
             [currency]="form.get('currency')?.value"
             (itemEdited)="openDownPaymentDialog($event)"
             (itemDeleted)="deleteDownPayment($event)"
-            (paymentStatusChanged)="onDownPaymentStatusChanged($event)">
+            (paymentStatusChanged)="onDownPaymentStatusChanged($event)"
+          >
           </app-contract-down-payment-list>
         </div>
       </mat-tab>
@@ -304,22 +345,24 @@
             [seller]="form.get('sellerCompany')?.value"
             [readOnly]="false"
             (itemEdited)="openInvoiceDialog($event)"
-            (itemDeleted)="deleteInvoice($event)">
+            (itemDeleted)="deleteInvoice($event)"
+          >
           </app-contract-invoice-list>
         </div>
       </mat-tab>
-
     </mat-tab-group>
   </div>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
   <button mat-button type="button" (click)="cancel()">取消</button>
-  <button mat-raised-button 
-          color="primary" 
-          type="button" 
-          [disabled]="loading || !form.valid" 
-          (click)="submit()">
+  <button
+    mat-raised-button
+    color="primary"
+    type="button"
+    [disabled]="loading || !form.valid"
+    (click)="submit()"
+  >
     <mat-progress-spinner *ngIf="loading" diameter="20" mode="indeterminate">
     </mat-progress-spinner>
     <span>{{ isEdit ? '更新' : '创建' }}</span>

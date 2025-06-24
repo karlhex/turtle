@@ -18,7 +18,7 @@ export interface EmployeeEducation {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EmployeeEducationService {
   private apiUrl = `${environment.apiUrl}/employees`;
@@ -26,18 +26,35 @@ export class EmployeeEducationService {
   constructor(private http: HttpClient) {}
 
   getEducations(employeeId: number): Observable<ApiResponse<EmployeeEducation[]>> {
-    return this.http.get<ApiResponse<EmployeeEducation[]>>(`${this.apiUrl}/${employeeId}/educations`);
+    return this.http.get<ApiResponse<EmployeeEducation[]>>(
+      `${this.apiUrl}/${employeeId}/educations`
+    );
   }
 
-  addEducation(employeeId: number, education: EmployeeEducation): Observable<ApiResponse<EmployeeEducation>> {
-    return this.http.post<ApiResponse<EmployeeEducation>>(`${this.apiUrl}/${employeeId}/educations`, education);
+  addEducation(
+    employeeId: number,
+    education: EmployeeEducation
+  ): Observable<ApiResponse<EmployeeEducation>> {
+    return this.http.post<ApiResponse<EmployeeEducation>>(
+      `${this.apiUrl}/${employeeId}/educations`,
+      education
+    );
   }
 
-  updateEducation(employeeId: number, educationId: number, education: EmployeeEducation): Observable<ApiResponse<EmployeeEducation>> {
-    return this.http.put<ApiResponse<EmployeeEducation>>(`${this.apiUrl}/${employeeId}/educations/${educationId}`, education);
+  updateEducation(
+    employeeId: number,
+    educationId: number,
+    education: EmployeeEducation
+  ): Observable<ApiResponse<EmployeeEducation>> {
+    return this.http.put<ApiResponse<EmployeeEducation>>(
+      `${this.apiUrl}/${employeeId}/educations/${educationId}`,
+      education
+    );
   }
 
   deleteEducation(employeeId: number, educationId: number): Observable<ApiResponse<void>> {
-    return this.http.delete<ApiResponse<void>>(`${this.apiUrl}/${employeeId}/educations/${educationId}`);
+    return this.http.delete<ApiResponse<void>>(
+      `${this.apiUrl}/${employeeId}/educations/${educationId}`
+    );
   }
 }

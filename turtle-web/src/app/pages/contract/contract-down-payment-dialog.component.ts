@@ -27,7 +27,7 @@ interface DialogData {
 @Component({
   selector: 'app-contract-down-payment-dialog',
   templateUrl: './contract-down-payment-dialog.component.html',
-  styleUrls: ['./contract-down-payment-dialog.component.scss']
+  styleUrls: ['./contract-down-payment-dialog.component.scss'],
 })
 export class ContractDownPaymentDialogComponent {
   form: FormGroup;
@@ -39,7 +39,7 @@ export class ContractDownPaymentDialogComponent {
     private dialogRef: MatDialogRef<ContractDownPaymentDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData
   ) {
-    console.log("Dialog data:", data);
+    console.log('Dialog data:', data);
     this.form = this.fb.group({
       id: [data.id],
       contractId: [data.contractId],
@@ -55,7 +55,7 @@ export class ContractDownPaymentDialogComponent {
       bankAccountNo: [data.bankAccountNo || ''],
       bankName: [data.bankName || ''],
       accountName: [data.accountName || ''],
-      remarks: [data.remarks || '']
+      remarks: [data.remarks || ''],
     });
   }
 
@@ -65,7 +65,7 @@ export class ContractDownPaymentDialogComponent {
       const downPayment: ContractDownPayment = {
         ...formValue,
         currencyId: this.data.currency.id,
-        currencyCode: this.data.currency.code
+        currencyCode: this.data.currency.code,
       };
       this.dialogRef.close(downPayment);
     }

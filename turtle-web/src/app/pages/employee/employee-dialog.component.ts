@@ -25,9 +25,8 @@ import { DepartmentFilterSelectInputComponent } from '../../components/departmen
 @Component({
   selector: 'app-employee-dialog',
   templateUrl: './employee-dialog.component.html',
-  styleUrls: ['./employee-dialog.component.scss']
+  styleUrls: ['./employee-dialog.component.scss'],
 })
-
 export class EmployeeDialogComponent implements OnInit {
   employeeForm!: FormGroup;
   isEdit: boolean;
@@ -35,8 +34,8 @@ export class EmployeeDialogComponent implements OnInit {
   isApplication: boolean;
   departments: Department[] = [];
   positions: Position[] = [];
-  contractTypes = Object.values(EmployeeContractType);  
-  genders = Object.values(Gender);  
+  contractTypes = Object.values(EmployeeContractType);
+  genders = Object.values(Gender);
   idtypes = Object.values(IdType);
   employeeStatuses = Object.values(EmployeeStatus);
 
@@ -49,7 +48,8 @@ export class EmployeeDialogComponent implements OnInit {
 
   constructor(
     private dialogRef: MatDialogRef<EmployeeDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: {
+    @Inject(MAT_DIALOG_DATA)
+    public data: {
       mode: 'create' | 'edit' | 'application';
       employee: any;
     },
@@ -74,9 +74,7 @@ export class EmployeeDialogComponent implements OnInit {
     }
   }
 
-  ngAfterViewInit() {
-
-  }
+  ngAfterViewInit() {}
 
   onEducationEdit(educations: EmployeeEducation[]): void {
     this.educations = educations;
@@ -88,7 +86,7 @@ export class EmployeeDialogComponent implements OnInit {
 
   private loadPositions(): void {
     this.positionService.getPositions(0, 100).subscribe({
-      next: (response) => {
+      next: response => {
         if (response.data?.content) {
           this.positions = response.data.content;
           // After positions are loaded, find and set the correct position
@@ -102,15 +100,15 @@ export class EmployeeDialogComponent implements OnInit {
           }
         }
       },
-      error: (error) => {
+      error: error => {
         console.error('Error loading positions:', error);
-      }
+      },
     });
   }
 
   private loadDepartments(): void {
     this.departmentService.getDepartments(0, 100).subscribe({
-      next: (response) => {
+      next: response => {
         if (response.data?.content) {
           this.departments = response.data.content;
           // After departments are loaded, find and set the correct department
@@ -124,9 +122,9 @@ export class EmployeeDialogComponent implements OnInit {
           }
         }
       },
-      error: (error) => {
+      error: error => {
         console.error('Error loading departments:', error);
-      }
+      },
     });
   }
 
@@ -144,7 +142,7 @@ export class EmployeeDialogComponent implements OnInit {
       emergencyContactName: [''],
       emergencyContactPhone: [''],
       status: ['APPLICATION'],
-      remarks: ['']
+      remarks: [''],
     });
 
     if (!this.isApplication) {
@@ -170,14 +168,22 @@ export class EmployeeDialogComponent implements OnInit {
         ...formValue,
         educations: this.educations,
         jobHistories: this.jobHistories,
-        hireDate: formValue.hireDate ? new Date(formValue.hireDate).toISOString().split('T')[0] : null,
-        leaveDate: formValue.leaveDate ? new Date(formValue.leaveDate).toISOString().split('T')[0] : null,
-        birthday: formValue.birthday ? new Date(formValue.birthday).toISOString().split('T')[0] : null,
-        contractStartDate: formValue.contractStartDate ? new Date(formValue.contractStartDate).toISOString().split('T')[0] : null
+        hireDate: formValue.hireDate
+          ? new Date(formValue.hireDate).toISOString().split('T')[0]
+          : null,
+        leaveDate: formValue.leaveDate
+          ? new Date(formValue.leaveDate).toISOString().split('T')[0]
+          : null,
+        birthday: formValue.birthday
+          ? new Date(formValue.birthday).toISOString().split('T')[0]
+          : null,
+        contractStartDate: formValue.contractStartDate
+          ? new Date(formValue.contractStartDate).toISOString().split('T')[0]
+          : null,
       };
       const request = this.isEdit
-      ? this.employeeService.updateEmployee(updatedEmployee.id!, updatedEmployee)
-      : this.employeeService.createEmployee(updatedEmployee);
+        ? this.employeeService.updateEmployee(updatedEmployee.id!, updatedEmployee)
+        : this.employeeService.createEmployee(updatedEmployee);
 
       console.log('in onSubmit', updatedEmployee);
       request.subscribe({
@@ -185,17 +191,19 @@ export class EmployeeDialogComponent implements OnInit {
           console.log(response);
           if (response.code === 200) {
             this.dialogRef.close(response.data);
-            this.showSuccess(this.isEdit ? 'Employee updated successfully' : 'Employee created successfully');
+            this.showSuccess(
+              this.isEdit ? 'Employee updated successfully' : 'Employee created successfully'
+            );
           } else {
             this.showError(response.message || 'Failed to save employee');
             this.loading = false;
           }
         },
-        error: (error) => {
+        error: error => {
           this.showError('Error saving employee');
           console.error('Failed to save employee:', error);
           this.loading = false;
-        }
+        },
       });
     } else {
       Object.keys(this.employeeForm.controls).forEach(key => {
@@ -205,7 +213,6 @@ export class EmployeeDialogComponent implements OnInit {
         }
       });
     }
-
   }
 
   onCancel(): void {
@@ -215,14 +222,14 @@ export class EmployeeDialogComponent implements OnInit {
   private showError(message: string): void {
     this.snackBar.open(message, 'Close', {
       duration: 5000,
-      panelClass: ['error-snackbar']
+      panelClass: ['error-snackbar'],
     });
   }
 
   private showSuccess(message: string): void {
     this.snackBar.open(message, 'Close', {
       duration: 3000,
-      panelClass: ['success-snackbar']
+      panelClass: ['success-snackbar'],
     });
-  }  
+  }
 }
