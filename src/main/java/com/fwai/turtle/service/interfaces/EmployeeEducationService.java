@@ -3,7 +3,7 @@ package com.fwai.turtle.service.interfaces;
 import com.fwai.turtle.dto.EmployeeEducationDTO;
 import java.util.List;
 
-public interface IEmployeeEducationService {
+public interface EmployeeEducationService {
     
     /**
      * Add a new employee education record

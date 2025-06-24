@@ -11,9 +11,9 @@ import com.fwai.turtle.dto.EmployeeLeaveDTO;
 import com.fwai.turtle.dto.EmployeePayrollDTO;
 import com.fwai.turtle.service.EmployeeService;
 import com.fwai.turtle.service.impl.EmployeeAttendanceServiceImpl;
-import com.fwai.turtle.service.interfaces.IEmployeeLeaveService;
-import com.fwai.turtle.service.interfaces.IEmployeePayrollService;
-import com.fwai.turtle.service.interfaces.IEmployeeEducationService;
+import com.fwai.turtle.service.interfaces.EmployeeLeaveService;
+import com.fwai.turtle.service.interfaces.EmployeePayrollService;
+import com.fwai.turtle.service.interfaces.EmployeeEducationService;
 import com.fwai.turtle.service.interfaces.EmployeeJobHistoryService;
 import com.fwai.turtle.types.EmployeeStatus;
 
@@ -29,10 +29,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 @RequestMapping("/api/employees")
 public class EmployeeController {
     private final EmployeeService employeeService;
-    private final IEmployeeEducationService employeeEducationService;
+    private final EmployeeEducationService employeeEducationService;
     private final EmployeeAttendanceServiceImpl employeeAttendanceService;
-    private final IEmployeeLeaveService employeeLeaveService;
-    private final IEmployeePayrollService employeePayrollService;
+    private final EmployeeLeaveService employeeLeaveService;
+    private final EmployeePayrollService employeePayrollService;
     @Autowired
     private final EmployeeJobHistoryService employeeJobHistoryService;
 

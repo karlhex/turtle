@@ -1,18 +1,28 @@
 package com.fwai.turtle.dto;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import com.fwai.turtle.common.BaseDTO;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-@Data
-@EqualsAndHashCode(callSuper = true)
-public class ReimbursementItemDTO extends BaseDTO {
-    private Long reimbursementId;  // 所属报销单ID
-    private BigDecimal amount;  // 金额
-    private String reason;  // 事由
-    private LocalDate occurrenceDate;  // 发生时间
-    private String remarks;  // 备注
+public record ReimbursementItemDTO(
+    Long id,
+    Long reimbursementId,  // 所属报销单ID
+    BigDecimal amount,  // 金额
+    String reason,  // 事由
+    LocalDate occurrenceDate,  // 发生时间
+    String remarks,  // 备注
+    LocalDateTime createdAt,
+    LocalDateTime updatedAt
+) {
+    public ReimbursementItemDTO {
+        if (amount == null) {
+            throw new IllegalArgumentException("金额不能为空");
+        }
+        if (reason == null || reason.trim().isEmpty()) {
+            throw new IllegalArgumentException("事由不能为空");
+        }
+        if (occurrenceDate == null) {
+            throw new IllegalArgumentException("发生时间不能为空");
+        }
+    }
 }

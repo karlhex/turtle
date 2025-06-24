@@ -6,14 +6,14 @@ import com.fwai.turtle.persistence.entity.Employee;
 import com.fwai.turtle.persistence.entity.EmployeePayroll;
 import com.fwai.turtle.persistence.repository.EmployeePayrollRepository;
 import com.fwai.turtle.persistence.repository.EmployeeRepository;
-import com.fwai.turtle.service.interfaces.IEmployeePayrollService;
+import com.fwai.turtle.service.interfaces.EmployeePayrollService;
 import com.fwai.turtle.persistence.mapper.EmployeePayrollMapper;
 
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Service
-public class EmployeePayrollServiceImpl implements IEmployeePayrollService {
+public class EmployeePayrollServiceImpl implements EmployeePayrollService {
 
     @Autowired
     private EmployeeRepository employeeRepository;

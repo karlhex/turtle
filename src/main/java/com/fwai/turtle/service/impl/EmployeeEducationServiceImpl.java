@@ -6,7 +6,7 @@ import com.fwai.turtle.persistence.entity.Employee;
 import com.fwai.turtle.persistence.entity.EmployeeEducation;
 import com.fwai.turtle.persistence.repository.EmployeeEducationRepository;
 import com.fwai.turtle.persistence.repository.EmployeeRepository;
-import com.fwai.turtle.service.interfaces.IEmployeeEducationService;
+import com.fwai.turtle.service.interfaces.EmployeeEducationService;
 import com.fwai.turtle.persistence.mapper.EmployeeEducationMapper;
 
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class EmployeeEducationServiceImpl implements IEmployeeEducationService {
+public class EmployeeEducationServiceImpl implements EmployeeEducationService {
 
     @Autowired
     private EmployeeRepository employeeRepository;

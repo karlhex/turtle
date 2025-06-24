@@ -11,6 +11,6 @@ public interface EmployeeAttendanceMapper {
     @Mapping(target = "employeeId", expression = "java(attendance.getEmployee() != null ? attendance.getEmployee().getId() : null)")
     EmployeeAttendanceDTO toDTO(EmployeeAttendance attendance);
     
-    @Mapping(target = "employee", expression = "java(attendanceDTO.getEmployeeId() != null ? new com.fwai.turtle.persistence.entity.Employee(attendanceDTO.getEmployeeId()) : null)")
+    @Mapping(target = "employee", expression = "java(attendanceDTO.employeeId() != null ? new com.fwai.turtle.persistence.entity.Employee(attendanceDTO.employeeId()) : null)")
     EmployeeAttendance toEntity(EmployeeAttendanceDTO attendanceDTO);
 } 

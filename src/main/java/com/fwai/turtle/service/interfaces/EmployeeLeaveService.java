@@ -2,7 +2,7 @@ package com.fwai.turtle.service.interfaces;
 
 import com.fwai.turtle.dto.EmployeeLeaveDTO;
 
-public interface IEmployeeLeaveService {
+public interface EmployeeLeaveService {
     
     /**
      * Add a new employee leave record

@@ -42,8 +42,8 @@ public class ReimbursementItemServiceImpl implements ReimbursementItemService {
     @Override
     public ReimbursementItemDTO create(ReimbursementItemDTO itemDTO) {
         // 验证报销单是否存在
-        Reimbursement reimbursement = reimbursementRepository.findById(itemDTO.getReimbursementId())
-                .orElseThrow(() -> new ResourceNotFoundException("Reimbursement", "id", itemDTO.getReimbursementId()));
+        Reimbursement reimbursement = reimbursementRepository.findById(itemDTO.reimbursementId())
+                .orElseThrow(() -> new ResourceNotFoundException("Reimbursement", "id", itemDTO.reimbursementId()));
 
         ReimbursementItem item = itemMapper.toEntity(itemDTO);
         item.setReimbursement(reimbursement);
@@ -58,9 +58,9 @@ public class ReimbursementItemServiceImpl implements ReimbursementItemService {
                 .orElseThrow(() -> new ResourceNotFoundException("ReimbursementItem", "id", id));
 
         // 如果报销单ID有变化，验证新的报销单是否存在
-        if (!existingItem.getReimbursement().getId().equals(itemDTO.getReimbursementId())) {
-            Reimbursement newReimbursement = reimbursementRepository.findById(itemDTO.getReimbursementId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Reimbursement", "id", itemDTO.getReimbursementId()));
+        if (!existingItem.getReimbursement().getId().equals(itemDTO.reimbursementId())) {
+            Reimbursement newReimbursement = reimbursementRepository.findById(itemDTO.reimbursementId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Reimbursement", "id", itemDTO.reimbursementId()));
             existingItem.setReimbursement(newReimbursement);
         }
 

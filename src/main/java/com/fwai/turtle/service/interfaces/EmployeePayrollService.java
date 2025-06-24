@@ -2,7 +2,7 @@ package com.fwai.turtle.service.interfaces;
 
 import com.fwai.turtle.dto.EmployeePayrollDTO;
 
-public interface IEmployeePayrollService {
+public interface EmployeePayrollService {
     
     /**
      * Add a new employee payroll record

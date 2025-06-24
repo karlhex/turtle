@@ -1,6 +1,5 @@
 package com.fwai.turtle.config.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -27,7 +26,6 @@ public class SecurityConfiguration {
   private final JwtAuthenticationFilter jwtAuthenticationFilter;
   private final CorsConfig corsConfig;
 
-  @Autowired
   public SecurityConfiguration(
       @Lazy UserDetailsService userDetailsService, 
       JwtAuthenticationFilter jwtAuthenticationFilter, 

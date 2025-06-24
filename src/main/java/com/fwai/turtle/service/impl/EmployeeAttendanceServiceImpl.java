@@ -35,12 +35,12 @@ public class EmployeeAttendanceServiceImpl implements EmployeeAttendanceService 
     public EmployeeAttendanceDTO add(Long employeeId, EmployeeAttendanceDTO attendanceDTO) {
         // 检查是否已存在当天的考勤记录
         if (attendanceRepository.existsByEmployeeIdAndAttendanceDate(
-                employeeId, attendanceDTO.getAttendanceDate())) {
+                employeeId, attendanceDTO.attendanceDate())) {
             throw new DuplicateRecordException("该日期已存在考勤记录");
         }
 
         // 检查考勤日期是否是将来日期
-        if (attendanceDTO.getAttendanceDate().isAfter(LocalDate.now())) {
+        if (attendanceDTO.attendanceDate().isAfter(LocalDate.now())) {
             throw new IllegalArgumentException("不能添加将来日期的考勤记录");
         }
 
@@ -65,16 +65,16 @@ public class EmployeeAttendanceServiceImpl implements EmployeeAttendanceService 
         }
 
         // 检查考勤日期是否是将来日期
-        if (attendanceDTO.getAttendanceDate().isAfter(LocalDate.now())) {
+        if (attendanceDTO.attendanceDate().isAfter(LocalDate.now())) {
             throw new IllegalArgumentException("不能更新为将来日期的考勤记录");
         }
 
         // 更新字段
-        attendance.setAttendanceDate(attendanceDTO.getAttendanceDate());
-        attendance.setCheckInTime(attendanceDTO.getCheckInTime());
-        attendance.setCheckOutTime(attendanceDTO.getCheckOutTime());
-        attendance.setStatus(attendanceDTO.getStatus());
-        attendance.setRemarks(attendanceDTO.getRemarks());
+        attendance.setAttendanceDate(attendanceDTO.attendanceDate());
+        attendance.setCheckInTime(attendanceDTO.checkInTime());
+        attendance.setCheckOutTime(attendanceDTO.checkOutTime());
+        attendance.setStatus(attendanceDTO.status());
+        attendance.setRemarks(attendanceDTO.remarks());
         
         attendance = attendanceRepository.save(attendance);
         return attendanceMapper.toDTO(attendance);

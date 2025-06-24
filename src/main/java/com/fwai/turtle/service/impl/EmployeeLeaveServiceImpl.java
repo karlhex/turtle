@@ -6,14 +6,14 @@ import com.fwai.turtle.persistence.entity.Employee;
 import com.fwai.turtle.persistence.entity.EmployeeLeave;
 import com.fwai.turtle.persistence.repository.EmployeeLeaveRepository;
 import com.fwai.turtle.persistence.repository.EmployeeRepository;
-import com.fwai.turtle.service.interfaces.IEmployeeLeaveService;
+import com.fwai.turtle.service.interfaces.EmployeeLeaveService;
 import com.fwai.turtle.persistence.mapper.EmployeeLeaveMapper;
 
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Service
-public class EmployeeLeaveServiceImpl implements IEmployeeLeaveService {
+public class EmployeeLeaveServiceImpl implements EmployeeLeaveService {
 
     @Autowired
     private EmployeeRepository employeeRepository;
