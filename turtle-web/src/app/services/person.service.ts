@@ -12,7 +12,7 @@ export class PersonService {
 
   constructor(private http: HttpClient) {}
 
-  getPersons(page: number = 0, size: number = 10): Observable<ApiResponse<PageResponse<Person>>> {
+  getPersons(page = 0, size = 10): Observable<ApiResponse<PageResponse<Person>>> {
     const params = new HttpParams().set('page', page.toString()).set('size', size.toString());
     return this.http.get<ApiResponse<PageResponse<Person>>>(this.API_URL, { params });
   }

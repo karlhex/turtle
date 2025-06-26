@@ -57,19 +57,19 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 })
 export class BaseListComponent {
   /** Title displayed at the top of the list */
-  @Input() title: string = '';
+  @Input() title = '';
 
   /** Placeholder text for the search input field */
-  @Input() placeholder: string = 'Search...';
+  @Input() placeholder = 'Search...';
 
   /** Flag indicating if the list is currently loading data */
-  @Input() loading: boolean = false;
+  @Input() loading = false;
 
   /** Number of items to display per page */
-  @Input() pageSize: number = 10;
+  @Input() pageSize = 10;
 
   /** Total number of items in the list */
-  @Input() totalElements: number = 0;
+  @Input() totalElements = 0;
 
   /** Event emitted when user performs a search */
   @Output() search = new EventEmitter<string>();
@@ -84,10 +84,10 @@ export class BaseListComponent {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   /** Current search query text */
-  searchText: string = '';
+  searchText = '';
 
   /** Current page index (zero-based) */
-  pageIndex: number = 0;
+  pageIndex = 0;
 
   /**
    * Handles search action

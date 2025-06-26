@@ -44,7 +44,7 @@ export class EmployeeListComponent implements OnInit {
     this.loadEmployees();
   }
 
-  loadEmployees(page: number = 0) {
+  loadEmployees(page = 0) {
     this.isLoading = true;
     const sort = this.sort?.active
       ? {

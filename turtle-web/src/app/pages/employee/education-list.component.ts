@@ -12,7 +12,7 @@ import { EmployeeEducation as Education } from '../../models/employee.model';
 export class EducationListComponent {
   @Input() employeeId!: number;
   @Input() educations: Education[] = [];
-  @Input() editMode: boolean = false;
+  @Input() editMode = false;
   @Output() educationEdited = new EventEmitter<Education[]>();
 
   displayedColumns: string[] = [

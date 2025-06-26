@@ -16,7 +16,7 @@ import { BaseFilterSelectInputComponent } from '../base-filter-select-input/base
   ],
 })
 export class PositionFilterSelectInputComponent extends BaseFilterSelectInputComponent<Position> {
-  @Input() override label: string = 'common.select_position';
+  @Input() override label = 'common.select_position';
   @ViewChild('optionTemplate', { static: true }) override optionTemplate!: TemplateRef<any>;
 
   @Input() set positions(value: Position[]) {

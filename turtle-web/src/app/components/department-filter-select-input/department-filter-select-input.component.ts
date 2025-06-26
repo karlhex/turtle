@@ -16,7 +16,7 @@ import { BaseFilterSelectInputComponent } from '../base-filter-select-input/base
   ],
 })
 export class DepartmentFilterSelectInputComponent extends BaseFilterSelectInputComponent<Department> {
-  @Input() override label: string = 'common.select_department';
+  @Input() override label = 'common.select_department';
   @ViewChild('optionTemplate', { static: true }) override optionTemplate!: TemplateRef<any>;
 
   @Input() set departments(value: Department[]) {

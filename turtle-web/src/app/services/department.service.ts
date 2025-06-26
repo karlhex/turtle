@@ -14,8 +14,8 @@ export class DepartmentService {
   constructor(private http: HttpClient) {}
 
   getDepartments(
-    page: number = 0,
-    size: number = 10
+    page = 0,
+    size = 10
   ): Observable<ApiResponse<PageResponse<Department>>> {
     const params = new HttpParams().set('page', page.toString()).set('size', size.toString());
     return this.http.get<ApiResponse<PageResponse<Department>>>(this.API_URL, { params });
@@ -23,8 +23,8 @@ export class DepartmentService {
 
   searchDepartments(
     query: string,
-    page: number = 0,
-    size: number = 10
+    page = 0,
+    size = 10
   ): Observable<ApiResponse<PageResponse<Department>>> {
     const params = new HttpParams()
       .set('query', query)

@@ -10,8 +10,8 @@ import { AuthService } from '../../services/auth.service';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
-  error: string = '';
-  loading: boolean = false;
+  error = '';
+  loading = false;
 
   constructor(
     private formBuilder: FormBuilder,

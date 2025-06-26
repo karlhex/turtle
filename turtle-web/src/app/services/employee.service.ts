@@ -55,8 +55,8 @@ export class EmployeeService {
   }
 
   getEmployees(
-    page: number = 0,
-    size: number = 10,
+    page = 0,
+    size = 10,
     sort?: { sortBy?: string; direction?: 'ASC' | 'DESC' }
   ): Observable<ApiResponse<PageResponse<Employee>>> {
     const headers = this.getHeaders();
@@ -66,8 +66,8 @@ export class EmployeeService {
 
   search(
     query: string,
-    page: number = 0,
-    size: number = 10,
+    page = 0,
+    size = 10,
     sort?: { sortBy?: string; direction?: 'ASC' | 'DESC' }
   ): Observable<ApiResponse<PageResponse<Employee>>> {
     const headers = this.getHeaders();
@@ -81,8 +81,8 @@ export class EmployeeService {
   searchByRole(
     role: EmployeeRole,
     query: string,
-    page: number = 0,
-    size: number = 10
+    page = 0,
+    size = 10
   ): Observable<ApiResponse<PageResponse<Employee>>> {
     const headers = this.getHeaders();
     const params = this.getParams(page, size).set('query', query).set('role', role);

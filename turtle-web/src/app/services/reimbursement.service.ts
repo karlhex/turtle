@@ -69,8 +69,8 @@ export class ReimbursementService {
   getByDateRange(
     startDate: string,
     endDate: string,
-    page: number = 0,
-    size: number = 10
+    page = 0,
+    size = 10
   ): Observable<ReimbursementResponse> {
     const params = new HttpParams()
       .set('startDate', startDate)

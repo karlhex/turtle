@@ -14,8 +14,8 @@ export class PositionService {
   constructor(private http: HttpClient) {}
 
   getPositions(
-    page: number = 0,
-    size: number = 10
+    page = 0,
+    size = 10
   ): Observable<ApiResponse<PageResponse<Position>>> {
     const params = new HttpParams().set('page', page.toString()).set('size', size.toString());
     return this.http.get<ApiResponse<PageResponse<Position>>>(this.API_URL, { params });

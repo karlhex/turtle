@@ -25,7 +25,7 @@ export class ContactService {
     size: number,
     searchText?: string
   ): Observable<ApiResponse<Page<Contact>>> {
-    let params = new HttpParams().set('page', page.toString()).set('size', size.toString());
+    const params = new HttpParams().set('page', page.toString()).set('size', size.toString());
 
     if (searchText) {
       return this.searchContacts(searchText, page, size);

@@ -12,7 +12,7 @@ import { EmployeeJobHistory as JobHistory } from '../../models/employee.model';
 export class JobHistoryListComponent {
   @Input() employeeId!: number;
   @Input() jobHistories: JobHistory[] = [];
-  @Input() editMode: boolean = false;
+  @Input() editMode = false;
   @Output() jobHistoryEdited = new EventEmitter<JobHistory[]>();
 
   displayedColumns: string[] = ['position', 'department', 'startDate', 'endDate', 'actions'];

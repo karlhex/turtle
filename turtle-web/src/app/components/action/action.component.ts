@@ -11,9 +11,9 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrls: ['./action.component.scss'],
 })
 export class ActionComponent {
-  @Input() canView: boolean = true;
-  @Input() canEdit: boolean = true;
-  @Input() canDelete: boolean = true;
+  @Input() canView = true;
+  @Input() canEdit = true;
+  @Input() canDelete = true;
 
   @Output() view = new EventEmitter<void>();
   @Output() edit = new EventEmitter<void>();

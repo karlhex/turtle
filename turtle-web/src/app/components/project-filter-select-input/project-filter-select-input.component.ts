@@ -16,7 +16,7 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms';
   ],
 })
 export class ProjectFilterSelectInputComponent extends BaseFilterSelectInputComponent<Project> {
-  @Input() override label: string = 'common.select_project';
+  @Input() override label = 'common.select_project';
   @ViewChild('optionTemplate', { static: true }) override optionTemplate!: TemplateRef<any>;
 
   override displayFn(project: Project): string {

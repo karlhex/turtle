@@ -42,8 +42,8 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   getUsers(
-    page: number = 0,
-    pageSize: number = 10,
+    page = 0,
+    pageSize = 10,
     sort?: { sortBy: string; direction: 'ASC' | 'DESC' }
   ): Observable<ApiResponse<any>> {
     let url = `${this.API_URL}?page=${page}&size=${pageSize}`;
@@ -75,8 +75,8 @@ export class UserService {
 
   searchUsers(
     query: string,
-    page: number = 0,
-    pageSize: number = 10
+    page = 0,
+    pageSize = 10
   ): Observable<ApiResponse<any>> {
     const url = `${this.API_URL}/search?query=${encodeURIComponent(
       query

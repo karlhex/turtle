@@ -22,7 +22,7 @@ export abstract class BaseFilterSelectInputComponent<T extends BaseItem>
     return this._items;
   }
 
-  @Input() label: string = 'common.select_item';
+  @Input() label = 'common.select_item';
   @Input() optionTemplate?: TemplateRef<any>;
 
   itemCtrl = new FormControl();

@@ -16,7 +16,7 @@ import { BaseFilterSelectInputComponent } from '../base-filter-select-input/base
   ],
 })
 export class ContractFilterSelectInputComponent extends BaseFilterSelectInputComponent<Contract> {
-  @Input() override label: string = 'common.select_contract';
+  @Input() override label = 'common.select_contract';
   @ViewChild('optionTemplate', { static: true }) override optionTemplate!: TemplateRef<any>;
 
   @Input() set contracts(value: Contract[]) {

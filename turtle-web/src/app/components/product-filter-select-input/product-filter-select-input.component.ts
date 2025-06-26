@@ -16,7 +16,7 @@ import { BaseFilterSelectInputComponent } from '../base-filter-select-input/base
   ],
 })
 export class ProductFilterSelectInputComponent extends BaseFilterSelectInputComponent<Product> {
-  @Input() override label: string = 'common.select_product';
+  @Input() override label = 'common.select_product';
   @ViewChild('optionTemplate', { static: true }) override optionTemplate!: TemplateRef<any>;
 
   @Input() set products(value: Product[]) {

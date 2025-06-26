@@ -23,8 +23,8 @@ export class RolePermissionService {
    * Get paginated list of role permissions
    */
   findAll(
-    page: number = 0,
-    size: number = 10,
+    page = 0,
+    size = 10,
     sort?: string
   ): Observable<RolePermissionListResponse> {
     let params = new HttpParams().set('page', page.toString()).set('size', size.toString());

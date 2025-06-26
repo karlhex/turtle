@@ -22,9 +22,9 @@ export class InventoryService {
   }
 
   getAll(
-    page: number = 0,
-    size: number = 10,
-    sort: string = 'id,desc'
+    page = 0,
+    size = 10,
+    sort = 'id,desc'
   ): Observable<ApiResponse<PageResponse<Inventory>>> {
     const params = new HttpParams()
       .set('page', page.toString())

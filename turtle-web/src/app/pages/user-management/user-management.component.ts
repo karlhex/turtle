@@ -65,7 +65,7 @@ export class UserManagementComponent implements OnInit, AfterViewInit {
     this.dataSource.sort = this.sort;
   }
 
-  loadUsers(page: number = 0): void {
+  loadUsers(page = 0): void {
     this.isLoading = true;
     const sort = this.sort?.active
       ? {
