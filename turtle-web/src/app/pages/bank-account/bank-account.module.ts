@@ -15,13 +15,21 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { BankAccountListComponent } from './bank-account-list.component';
 import { BankAccountDialogComponent } from './bank-account-dialog.component';
+import { BankAccountListNewComponent } from './bank-account-list-new.component';
+import { BankAccountInputNewComponent } from './bank-account-input-new.component';
 import { BaseListModule } from '../../components/base-list/base-list.module';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
-  declarations: [BankAccountListComponent, BankAccountDialogComponent],
+  declarations: [
+    BankAccountListComponent, 
+    BankAccountDialogComponent,
+    BankAccountListNewComponent,
+    BankAccountInputNewComponent
+  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -41,7 +49,13 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatSlideToggleModule,
     TranslateModule,
     BaseListModule,
+    SharedModule,
   ],
-  exports: [BankAccountListComponent, BankAccountDialogComponent],
+  exports: [
+    BankAccountListComponent, 
+    BankAccountDialogComponent,
+    BankAccountListNewComponent,
+    BankAccountInputNewComponent
+  ],
 })
 export class BankAccountModule {}

@@ -1,0 +1,43 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+// Custom styles for reimbursement list
+.status-badge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+
+  &.draft {
+    background-color: #f0f0f0;
+    color: #666;
+  }
+
+  &.pending {
+    background-color: #fff3cd;
+    color: #856404;
+  }
+
+  &.approved {
+    background-color: #d4edda;
+    color: #155724;
+  }
+
+  &.rejected {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+}
+
+.amount-cell {
+  font-weight: 500;
+  color: #1976d2;
+}
+
+.date-cell {
+  color: #666;
+  font-size: 14px;
+} 

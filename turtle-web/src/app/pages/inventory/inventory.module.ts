@@ -17,6 +17,8 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { InventoryListComponent } from './inventory-list.component';
 import { InventoryDialogComponent } from './inventory-dialog.component';
+import { InventoryListNewComponent } from './inventory-list-new.component';
+import { InventoryInputNewComponent } from './inventory-input-new.component';
 import { CompanyFilterSelectInputModule } from '../../components/company-filter-select-input/company-filter-select-input.module';
 import { BaseListModule } from '../../components/base-list/base-list.module';
 import { EmployeeFilterSelectInputModule } from '@app/components/employee-filter-select-input/employee-filter-select-input.module';
@@ -24,9 +26,15 @@ import { ContractFilterSelectInputModule } from '@app/components/contract-filter
 import { MaterialModule } from '@app/shared/material.module';
 import { ProductFilterSelectInputModule } from '@app/components/product-filter-select-input/product-filter-select-input.module';
 import { ProjectFilterSelectInputModule } from '@app/components/project-filter-select-input/project-filter-select-input.module';
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
-  declarations: [InventoryListComponent, InventoryDialogComponent],
+  declarations: [
+    InventoryListComponent, 
+    InventoryDialogComponent,
+    InventoryListNewComponent,
+    InventoryInputNewComponent
+  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -38,7 +46,13 @@ import { ProjectFilterSelectInputModule } from '@app/components/project-filter-s
     ContractFilterSelectInputModule,
     EmployeeFilterSelectInputModule,
     CompanyFilterSelectInputModule,
+    SharedModule,
   ],
-  exports: [InventoryListComponent, InventoryDialogComponent],
+  exports: [
+    InventoryListComponent, 
+    InventoryDialogComponent,
+    InventoryListNewComponent,
+    InventoryInputNewComponent
+  ],
 })
 export class InventoryModule {}

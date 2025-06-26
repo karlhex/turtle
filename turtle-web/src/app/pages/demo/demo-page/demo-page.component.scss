@@ -1,0 +1,280 @@
+.demo-container {
+  padding: 24px;
+  background: #f5f5f5;
+  min-height: 100vh;
+
+  .demo-navigation {
+    background: white;
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    .nav-header {
+      text-align: center;
+      margin-bottom: 24px;
+
+      h1 {
+        margin: 0 0 8px 0;
+        font-size: 32px;
+        font-weight: 500;
+        color: #333;
+      }
+
+      p {
+        margin: 0;
+        color: #666;
+        font-size: 16px;
+      }
+    }
+
+    .nav-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+
+      button {
+        min-width: 160px;
+        height: 48px;
+        font-size: 16px;
+
+        mat-icon {
+          margin-right: 8px;
+        }
+      }
+    }
+  }
+
+  .demo-content {
+    .demo-description {
+      background: white;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+      h3 {
+        margin: 0 0 16px 0;
+        font-size: 20px;
+        font-weight: 500;
+        color: #333;
+      }
+
+      ul {
+        margin: 0;
+        padding-left: 20px;
+        list-style: none;
+
+        li {
+          margin-bottom: 8px;
+          color: #555;
+          font-size: 14px;
+          line-height: 1.5;
+
+          &::before {
+            content: "✅ ";
+            margin-right: 8px;
+          }
+        }
+      }
+    }
+
+    .list-demo,
+    .input-demo {
+      animation: fadeIn 0.3s ease-in-out;
+    }
+  }
+
+  .demo-instructions {
+    margin-top: 32px;
+
+    mat-expansion-panel {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+      mat-expansion-panel-header {
+        padding: 16px 24px;
+
+        mat-panel-title {
+          display: flex;
+          align-items: center;
+          font-size: 16px;
+          font-weight: 500;
+
+          mat-icon {
+            margin-right: 8px;
+            color: #2196f3;
+          }
+        }
+      }
+
+      .instructions-content {
+        padding: 0 24px 24px;
+
+        h4 {
+          margin: 20px 0 12px 0;
+          font-size: 16px;
+          font-weight: 500;
+          color: #333;
+
+          &:first-child {
+            margin-top: 0;
+          }
+        }
+
+        ol, ul {
+          margin: 0 0 16px 0;
+          padding-left: 20px;
+
+          li {
+            margin-bottom: 8px;
+            color: #555;
+            line-height: 1.5;
+          }
+        }
+
+        ol {
+          list-style-type: decimal;
+        }
+
+        ul {
+          list-style-type: disc;
+        }
+      }
+    }
+  }
+}
+
+// Animations
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .demo-container {
+    padding: 16px;
+
+    .demo-navigation {
+      padding: 20px;
+
+      .nav-header {
+        h1 {
+          font-size: 24px;
+        }
+
+        p {
+          font-size: 14px;
+        }
+      }
+
+      .nav-tabs {
+        flex-direction: column;
+        align-items: center;
+
+        button {
+          width: 100%;
+          max-width: 300px;
+        }
+      }
+    }
+
+    .demo-content {
+      .demo-description {
+        padding: 16px;
+
+        h3 {
+          font-size: 18px;
+        }
+
+        ul li {
+          font-size: 13px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .demo-container {
+    padding: 12px;
+
+    .demo-navigation {
+      padding: 16px;
+
+      .nav-header {
+        h1 {
+          font-size: 20px;
+        }
+      }
+    }
+
+    .demo-content {
+      .demo-description {
+        padding: 12px;
+
+        h3 {
+          font-size: 16px;
+        }
+      }
+    }
+  }
+}
+
+// Dark theme support
+@media (prefers-color-scheme: dark) {
+  .demo-container {
+    background: #121212;
+
+    .demo-navigation,
+    .demo-content .demo-description,
+    .demo-instructions mat-expansion-panel {
+      background: #1e1e1e;
+      color: #fff;
+    }
+
+    .demo-navigation {
+      .nav-header {
+        h1 {
+          color: #fff;
+        }
+
+        p {
+          color: #b0b0b0;
+        }
+      }
+    }
+
+    .demo-content {
+      .demo-description {
+        h3 {
+          color: #fff;
+        }
+
+        ul li {
+          color: #b0b0b0;
+        }
+      }
+    }
+
+    .demo-instructions {
+      .instructions-content {
+        h4 {
+          color: #fff;
+        }
+
+        ol li, ul li {
+          color: #b0b0b0;
+        }
+      }
+    }
+  }
+} 

@@ -27,6 +27,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 // Components
 import { ContactListComponent } from './contact-list.component';
 import { ContactDialogComponent } from './contact-dialog.component';
+import { ContactListNewComponent } from './contact-list-new.component';
+import { ContactInputNewComponent } from './contact-input-new.component';
 import { BaseListModule } from '@app/components/base-list/base-list.module';
 
 const routes: Routes = [
@@ -37,7 +39,12 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [ContactListComponent, ContactDialogComponent],
+  declarations: [
+    ContactListComponent, 
+    ContactDialogComponent,
+    ContactListNewComponent,
+    ContactInputNewComponent
+  ],
   imports: [
     BaseListModule,
     CommonModule,
@@ -66,6 +73,11 @@ const routes: Routes = [
     MatAutocompleteModule,
     MatTooltipModule,
   ],
-  exports: [ContactListComponent, ContactDialogComponent],
+  exports: [
+    ContactListComponent, 
+    ContactDialogComponent,
+    ContactListNewComponent,
+    ContactInputNewComponent
+  ],
 })
 export class ContactModule {}

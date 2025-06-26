@@ -15,13 +15,21 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { ProductListComponent } from './product-list.component';
 import { ProductDialogComponent } from './product-dialog.component';
+import { ProductListNewComponent } from './product-list-new.component';
+import { ProductInputNewComponent } from './product-input-new.component';
 import { BaseListModule } from '../../components/base-list/base-list.module';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTabsModule } from '@angular/material/tabs';
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
-  declarations: [ProductListComponent, ProductDialogComponent],
+  declarations: [
+    ProductListComponent, 
+    ProductDialogComponent,
+    ProductListNewComponent,
+    ProductInputNewComponent
+  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -41,7 +49,13 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatTabsModule,
     TranslateModule,
     BaseListModule,
+    SharedModule,
   ],
-  exports: [ProductListComponent, ProductDialogComponent],
+  exports: [
+    ProductListComponent, 
+    ProductDialogComponent,
+    ProductListNewComponent,
+    ProductInputNewComponent
+  ],
 })
 export class ProductModule {}

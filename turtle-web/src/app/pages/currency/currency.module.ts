@@ -15,12 +15,20 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { CurrencyListComponent } from './currency-list.component';
 import { CurrencyDialogComponent } from './currency-dialog.component';
+import { CurrencyListNewComponent } from './currency-list-new.component';
+import { CurrencyInputNewComponent } from './currency-input-new.component';
 import { BaseListModule } from '../../components/base-list/base-list.module';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { ActionModule } from '@app/components/action/action.module';
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
-  declarations: [CurrencyListComponent, CurrencyDialogComponent],
+  declarations: [
+    CurrencyListComponent, 
+    CurrencyDialogComponent,
+    CurrencyListNewComponent,
+    CurrencyInputNewComponent
+  ],
   imports: [
     ActionModule,
     CommonModule,
@@ -39,7 +47,13 @@ import { ActionModule } from '@app/components/action/action.module';
     MatTooltipModule,
     TranslateModule,
     BaseListModule,
+    SharedModule,
   ],
-  exports: [CurrencyListComponent, CurrencyDialogComponent],
+  exports: [
+    CurrencyListComponent, 
+    CurrencyDialogComponent,
+    CurrencyListNewComponent,
+    CurrencyInputNewComponent
+  ],
 })
 export class CurrencyModule {}

@@ -4,23 +4,24 @@ import { LoginComponent } from './pages/login/login.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { GuestDashboardComponent } from './pages/guest/guest-dashboard.component';
 import { EmployeeListComponent } from './pages/employee/employee-list.component';
-import { DepartmentListComponent } from './pages/department/department-list.component';
+import { DepartmentListNewComponent } from './pages/department/department-list-new.component';
 import { UserManagementComponent } from './pages/user-management/user-management.component';
 import { UserEmployeeMappingComponent } from './pages/user-management/user-employee-mapping/user-employee-mapping.component';
 import { ContractListComponent } from './pages/contract/contract-list.component';
-import { CurrencyListComponent } from './pages/currency/currency-list.component';
-import { TaxInfoListComponent } from './pages/tax-info/tax-info-list.component';
-import { CompanyListComponent } from './pages/company/company-list.component';
-import { ProductListComponent } from './pages/product/product-list.component';
+import { CurrencyListNewComponent } from './pages/currency/currency-list-new.component';
+import { TaxInfoListNewComponent } from './pages/tax-info/tax-info-list-new.component';
+import { CompanyListNewComponent } from './pages/company/company-list-new.component';
+import { ProductListNewComponent } from './pages/product/product-list-new.component';
 import { ProjectListComponent } from './pages/project/project-list.component';
-import { BankAccountListComponent } from './pages/bank-account/bank-account-list.component';
-import { ReimbursementListComponent } from './pages/reimbursement/reimbursement-list/reimbursement-list.component';
+import { BankAccountListNewComponent } from './pages/bank-account/bank-account-list-new.component';
+import { ReimbursementListNewComponent } from './pages/reimbursement/reimbursement-list-new.component';
 import { RolePermissionListComponent } from './pages/role-permission/role-permission-list.component';
 import { ChangePasswordDialogComponent } from './pages/user-management/change-password-dialog/change-password-dialog.component';
 import { AuthGuard } from './guards/auth.guard';
-import { InventoryListComponent } from './pages/inventory/inventory-list.component';
-import { ContactListComponent } from './pages/contact/contact-list.component';
-import { PositionListComponent } from './pages/position/position-list.component';
+import { InventoryListNewComponent } from './pages/inventory/inventory-list-new.component';
+import { ContactListNewComponent } from './pages/contact/contact-list-new.component';
+import { PositionListNewComponent } from './pages/position/position-list-new.component';
+import { DemoPageComponent } from './pages/demo/demo-page/demo-page.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -32,22 +33,23 @@ const routes: Routes = [
       { path: 'dashboard', component: DashboardComponent },
       { path: 'guest-dashboard', component: GuestDashboardComponent },
       { path: 'employees', component: EmployeeListComponent },
-      { path: 'departments', component: DepartmentListComponent },
+      { path: 'departments', component: DepartmentListNewComponent },
       { path: 'users', component: UserManagementComponent },
       { path: 'user-employee-mapping', component: UserEmployeeMappingComponent },
       { path: 'contracts', component: ContractListComponent },
-      { path: 'currencies', component: CurrencyListComponent },
-      { path: 'tax-infos', component: TaxInfoListComponent },
-      { path: 'companies', component: CompanyListComponent },
-      { path: 'products', component: ProductListComponent },
+      { path: 'currencies', component: CurrencyListNewComponent },
+      { path: 'tax-infos', component: TaxInfoListNewComponent },
+      { path: 'companies', component: CompanyListNewComponent },
+      { path: 'products', component: ProductListNewComponent },
       { path: 'projects', component: ProjectListComponent },
-      { path: 'bank-accounts', component: BankAccountListComponent },
-      { path: 'reimbursements', component: ReimbursementListComponent },
+      { path: 'bank-accounts', component: BankAccountListNewComponent },
+      { path: 'reimbursements', component: ReimbursementListNewComponent },
       { path: 'role-permissions', component: RolePermissionListComponent },
       { path: 'change-password', component: ChangePasswordDialogComponent },
-      { path: 'inventories', component: InventoryListComponent },
-      { path: 'contacts', component: ContactListComponent },
-      { path: 'positions', component: PositionListComponent },
+      { path: 'inventories', component: InventoryListNewComponent },
+      { path: 'contacts', component: ContactListNewComponent },
+      { path: 'positions', component: PositionListNewComponent },
+      { path: 'demo', component: DemoPageComponent },
 
       // Placeholder routes for future implementation
       { path: 'attendance', component: DashboardComponent },

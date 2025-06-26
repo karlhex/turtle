@@ -17,11 +17,19 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { ReimbursementListComponent } from './reimbursement-list/reimbursement-list.component';
 import { ReimbursementDialogComponent } from './reimbursement-dialog/reimbursement-dialog.component';
+import { ReimbursementListNewComponent } from './reimbursement-list-new.component';
+import { ReimbursementInputNewComponent } from './reimbursement-input-new.component';
 import { BaseListModule } from '../../components/base-list/base-list.module';
 import { ActionModule } from '@app/components/action/action.module';
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
-  declarations: [ReimbursementListComponent, ReimbursementDialogComponent],
+  declarations: [
+    ReimbursementListComponent, 
+    ReimbursementDialogComponent,
+    ReimbursementListNewComponent,
+    ReimbursementInputNewComponent
+  ],
   imports: [
     ActionModule,
     CommonModule,
@@ -41,7 +49,13 @@ import { ActionModule } from '@app/components/action/action.module';
     MatTooltipModule,
     TranslateModule,
     BaseListModule,
+    SharedModule,
   ],
-  exports: [ReimbursementListComponent, ReimbursementDialogComponent],
+  exports: [
+    ReimbursementListComponent, 
+    ReimbursementDialogComponent,
+    ReimbursementListNewComponent,
+    ReimbursementInputNewComponent
+  ],
 })
 export class ReimbursementModule {}

@@ -1,0 +1,12 @@
+<app-list-page
+  [config]="config"
+  [data]="data"
+  [loading]="loading"
+  [totalItems]="totalItems"
+  (pageChange)="onPageChange($event)"
+  (sortChange)="onSortChange($event)"
+  (searchChange)="onSearchChange($event)"
+  (refresh)="onRefresh()"
+  (export)="onExport()"
+  [onAdd]="onAdd.bind(this)">
+</app-list-page> 

@@ -15,12 +15,20 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { TaxInfoListComponent } from './tax-info-list.component';
 import { TaxInfoDialogComponent } from './tax-info-dialog.component';
+import { TaxInfoListNewComponent } from './tax-info-list-new.component';
+import { TaxInfoInputNewComponent } from './tax-info-input-new.component';
 import { BaseListModule } from '../../components/base-list/base-list.module';
 import { ActionModule } from '@app/components/action/action.module';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
-  declarations: [TaxInfoListComponent, TaxInfoDialogComponent],
+  declarations: [
+    TaxInfoListComponent, 
+    TaxInfoDialogComponent,
+    TaxInfoListNewComponent,
+    TaxInfoInputNewComponent
+  ],
   imports: [
     ActionModule,
     CommonModule,
@@ -39,7 +47,13 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatSlideToggleModule,
     TranslateModule,
     BaseListModule,
+    SharedModule,
   ],
-  exports: [TaxInfoListComponent, TaxInfoDialogComponent],
+  exports: [
+    TaxInfoListComponent, 
+    TaxInfoDialogComponent,
+    TaxInfoListNewComponent,
+    TaxInfoInputNewComponent
+  ],
 })
 export class TaxInfoModule {}

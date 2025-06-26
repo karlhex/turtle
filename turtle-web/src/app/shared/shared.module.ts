@@ -8,6 +8,8 @@ import { RouterModule } from '@angular/router';
 import { ConfirmDialogComponent } from '../components/confirmdialog/confirm-dialog.component';
 import { PaymentTotalPipe } from '../pipes/payment-total.pipe';
 import { HasPermissionDirective } from '../directives/has-permission.directive';
+import { ListPageComponent } from '../components/list-page/list-page.component';
+import { InputPageComponent } from '../components/input-page/input-page.component';
 
 // Material Modules
 import { MatCardModule } from '@angular/material/card';
@@ -35,6 +37,10 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -67,6 +73,10 @@ const MATERIAL_MODULES = [
   MatListModule,
   MatChipsModule,
   MatMenuModule,
+  MatCheckboxModule,
+  MatRadioModule,
+  MatStepperModule,
+  MatExpansionModule,
 ];
 
 const SHARED_MODULES = [
@@ -80,8 +90,21 @@ const SHARED_MODULES = [
 ];
 
 @NgModule({
-  declarations: [ConfirmDialogComponent, PaymentTotalPipe, HasPermissionDirective],
+  declarations: [
+    ConfirmDialogComponent, 
+    PaymentTotalPipe, 
+    HasPermissionDirective,
+    ListPageComponent,
+    InputPageComponent
+  ],
   imports: [...SHARED_MODULES],
-  exports: [...SHARED_MODULES, ConfirmDialogComponent, PaymentTotalPipe, HasPermissionDirective],
+  exports: [
+    ...SHARED_MODULES, 
+    ConfirmDialogComponent, 
+    PaymentTotalPipe, 
+    HasPermissionDirective,
+    ListPageComponent,
+    InputPageComponent
+  ],
 })
 export class SharedModule {}

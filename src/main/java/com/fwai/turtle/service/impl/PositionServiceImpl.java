@@ -36,11 +36,14 @@ public class PositionServiceImpl implements PositionService {
         Position position = positionRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Position not found with id: " + id));
         
-        Position updatedPosition = positionMapper.toEntity(positionDTO);
-        updatedPosition.setId(id);
-        updatedPosition = positionRepository.save(updatedPosition);
+        // Update position properties
+        position.setName(positionDTO.getName());
+        position.setDescription(positionDTO.getDescription());
+        position.setIsActive(positionDTO.getIsActive());
         
-        return positionMapper.toDTO(updatedPosition);
+        position = positionRepository.save(position);
+        
+        return positionMapper.toDTO(position);
     }
 
     @Override

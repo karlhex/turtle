@@ -1,0 +1,24 @@
+<app-list-page
+  [config]="config"
+  [data]="data"
+  [loading]="loading"
+  [totalItems]="totalItems"
+  [bulkActions]="bulkActions"
+  [onAdd]="onAdd.bind(this)"
+  (pageChange)="onPageChange($event)"
+  (sortChange)="onSortChange($event)"
+  (searchChange)="onSearch($event)"
+  (refresh)="onRefresh()"
+  (export)="onExport()">
+</app-list-page>
+
+<!-- Add Button -->
+<div class="add-button-container">
+  <button 
+    mat-fab 
+    color="primary" 
+    (click)="onAdd()"
+    matTooltip="添加公司">
+    <mat-icon>add</mat-icon>
+  </button>
+</div> 

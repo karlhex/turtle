@@ -454,6 +454,30 @@
     "create_success": "Company created successfully",
     "update_success": "Company updated successfully",
     "status_updated": "Company status updated successfully",
+    "primary_updated": "Primary company set successfully",
+    "set_primary_title": "Set Primary Company",
+    "set_primary_confirm": "Are you sure you want to set this company as primary?",
+    "delete_title": "Delete Company",
+    "search_placeholder": "Search company name, address or phone",
+    "toggle_status": "Toggle Status",
+    "activate_selected": "Activate Selected",
+    "deactivate_selected": "Deactivate Selected",
+    "full_name": "Full Name",
+    "short_name": "Short Name",
+    "address": "Address",
+    "phone": "Phone",
+    "email": "Email",
+    "website": "Website",
+    "type": "Type",
+    "status": "Status",
+    "remarks": "Remarks",
+    "full_name_placeholder": "Enter company full name",
+    "short_name_placeholder": "Enter company short name",
+    "address_placeholder": "Enter company address",
+    "phone_placeholder": "Enter company phone",
+    "email_placeholder": "Enter company email",
+    "website_placeholder": "Enter company website",
+    "remarks_placeholder": "Enter remarks",
     "fields": {
       "fullName": "Full Name",
       "shortName": "Short Name",
@@ -468,6 +492,12 @@
       "address_required": "Address is required",
       "phone_required": "Phone is required",
       "email_invalid": "Please enter a valid email address"
+    },
+    "type": {
+      "PRIMARY": "Primary",
+      "CUSTOMER": "Customer",
+      "SUPPLIER": "Supplier",
+      "PROSPECT": "Prospect"
     }
   },
   "contract": {
@@ -827,7 +857,10 @@
     "LOAD_COMPANIES": "Failed to load companies",
     "SAVE_COMPANY": "Failed to save company",
     "DELETE_COMPANY": "Failed to delete company",
-    "UPDATE_STATUS": "Failed to update company status"
+    "UPDATE_STATUS": "Failed to update company status",
+    "SET_PRIMARY": "Failed to set primary company",
+    "REQUIRED_FIELDS": "Please fill in required fields",
+    "INVALID_EMAIL": "Please enter a valid email address"
   },
   "bank_account": {
     "title": "Bank Account Management",
@@ -929,7 +962,13 @@
     "CANCEL": "Cancel",
     "SAVE": "Save",
     "ADD": "Add",
-    "FIELD_REQUIRED": "This field is required"
+    "FIELD_REQUIRED": "This field is required",
+    "TITLE": "Actions",
+    "EDIT": "Edit",
+    "DELETE": "Delete",
+    "DELETE_SELECTED": "Delete Selected",
+    "CONFIRM": "Confirm",
+    "CLOSE": "Close"
   },
   "CONTACT": {
     "TITLE": "Contact Management",

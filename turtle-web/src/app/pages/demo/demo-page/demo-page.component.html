@@ -1,0 +1,131 @@
+<div class="demo-container">
+  <!-- Demo Navigation -->
+  <div class="demo-navigation">
+    <div class="nav-header">
+      <h1>通用页面组件演示</h1>
+      <p>展示 List Page 和 Input Page 组件的功能和使用方法</p>
+    </div>
+    
+    <div class="nav-tabs">
+      <button 
+        mat-raised-button 
+        [color]="!showInputForm ? 'primary' : 'default'"
+        (click)="showListDemo()">
+        <mat-icon>list</mat-icon>
+        列表页面演示
+      </button>
+      
+      <button 
+        mat-raised-button 
+        [color]="showInputForm ? 'primary' : 'default'"
+        (click)="showInputDemo()">
+        <mat-icon>edit</mat-icon>
+        输入页面演示
+      </button>
+    </div>
+  </div>
+
+  <!-- Demo Content -->
+  <div class="demo-content">
+    <!-- List Page Demo -->
+    <div *ngIf="!showInputForm" class="list-demo">
+      <div class="demo-description">
+        <h3>List Page Component 功能特性</h3>
+        <ul>
+          <li>✅ 数据表格展示</li>
+          <li>✅ 分页功能</li>
+          <li>✅ 搜索/过滤</li>
+          <li>✅ 排序功能</li>
+          <li>✅ 批量操作</li>
+          <li>✅ 导出功能</li>
+          <li>✅ 响应式设计</li>
+          <li>✅ 加载状态</li>
+          <li>✅ 空数据状态</li>
+        </ul>
+      </div>
+
+      <app-list-page
+        [config]="listConfig"
+        [data]="employees"
+        [loading]="loading"
+        [totalItems]="totalEmployees"
+        [bulkActions]="bulkActions"
+        (pageChange)="onPageChange($event)"
+        (searchChange)="onSearch($event)"
+        (sortChange)="onSortChange($event)"
+        (refresh)="onRefresh()"
+        (export)="onExport()">
+      </app-list-page>
+    </div>
+
+    <!-- Input Page Demo -->
+    <div *ngIf="showInputForm" class="input-demo">
+      <div class="demo-description">
+        <h3>Input Page Component 功能特性</h3>
+        <ul>
+          <li>✅ 动态表单字段</li>
+          <li>✅ 多种布局模式 (单列/双列/步骤)</li>
+          <li>✅ 表单验证</li>
+          <li>✅ 自动保存</li>
+          <li>✅ 文件上传</li>
+          <li>✅ 响应式设计</li>
+          <li>✅ 加载状态</li>
+          <li>✅ 自定义组件支持</li>
+        </ul>
+      </div>
+
+      <app-input-page
+        [config]="inputConfig"
+        [data]="employeeData"
+        [loading]="false"
+        [saving]="saving"
+        (save)="onSave($event)"
+        (cancel)="onCancel()"
+        (reset)="onReset()"
+        (fieldChange)="onFieldChange($event)"
+        (validationChange)="onValidationChange($event)">
+      </app-input-page>
+    </div>
+  </div>
+
+  <!-- Demo Instructions -->
+  <div class="demo-instructions">
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <mat-icon>help</mat-icon>
+          使用说明
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      
+      <div class="instructions-content">
+        <h4>List Page 组件使用说明：</h4>
+        <ol>
+          <li>点击表格列标题可以进行排序</li>
+          <li>使用搜索框可以过滤数据</li>
+          <li>选择复选框可以进行批量操作</li>
+          <li>点击操作列的按钮可以编辑或删除记录</li>
+          <li>使用分页器可以浏览更多数据</li>
+        </ol>
+
+        <h4>Input Page 组件使用说明：</h4>
+        <ol>
+          <li>表单支持实时验证，必填字段会显示红色星号</li>
+          <li>邮箱和手机号有格式验证</li>
+          <li>薪资字段只接受数字输入</li>
+          <li>可以上传头像文件</li>
+          <li>表单支持自动保存（30秒间隔）</li>
+          <li>点击重置按钮可以清空表单</li>
+        </ol>
+
+        <h4>开发提示：</h4>
+        <ul>
+          <li>打开浏览器控制台查看事件日志</li>
+          <li>组件配置可以通过 TypeScript 接口进行类型检查</li>
+          <li>所有事件都会触发相应的回调函数</li>
+          <li>组件支持响应式设计，可以调整浏览器窗口大小测试</li>
+        </ul>
+      </div>
+    </mat-expansion-panel>
+  </div>
+</div> 

@@ -15,11 +15,19 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { DepartmentListComponent } from './department-list.component';
 import { DepartmentDialogComponent } from './department-dialog.component';
+import { DepartmentListNewComponent } from './department-list-new.component';
+import { DepartmentInputNewComponent } from './department-input-new.component';
 import { BaseListModule } from '../../components/base-list/base-list.module';
 import { ActionModule } from '@app/components/action/action.module';
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
-  declarations: [DepartmentListComponent, DepartmentDialogComponent],
+  declarations: [
+    DepartmentListComponent, 
+    DepartmentDialogComponent,
+    DepartmentListNewComponent,
+    DepartmentInputNewComponent
+  ],
   imports: [
     ActionModule,
     CommonModule,
@@ -37,7 +45,13 @@ import { ActionModule } from '@app/components/action/action.module';
     MatTooltipModule,
     TranslateModule,
     BaseListModule,
+    SharedModule,
   ],
-  exports: [DepartmentListComponent, DepartmentDialogComponent],
+  exports: [
+    DepartmentListComponent, 
+    DepartmentDialogComponent,
+    DepartmentListNewComponent,
+    DepartmentInputNewComponent
+  ],
 })
 export class DepartmentModule {}

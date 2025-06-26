@@ -18,10 +18,13 @@ import { UserManagementComponent } from './user-management.component';
 import { UserEditDialogComponent } from './user-edit-dialog/user-edit-dialog.component';
 import { UserEmployeeMappingComponent } from './user-employee-mapping/user-employee-mapping.component';
 import { ChangePasswordDialogComponent } from './change-password-dialog/change-password-dialog.component';
+import { UserListNewComponent } from './user-list-new.component';
+import { UserInputNewComponent } from './user-input-new.component';
 import { BaseListModule } from '../../components/base-list/base-list.module';
 import { MatCardModule } from '@angular/material/card';
 import { ActionModule } from '@app/components/action/action.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -29,6 +32,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     UserEditDialogComponent,
     UserEmployeeMappingComponent,
     ChangePasswordDialogComponent,
+    UserListNewComponent,
+    UserInputNewComponent,
   ],
   imports: [
     ActionModule,
@@ -50,12 +55,15 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatProgressSpinnerModule,
     TranslateModule,
     BaseListModule,
+    SharedModule,
   ],
   exports: [
     UserManagementComponent,
     UserEditDialogComponent,
     UserEmployeeMappingComponent,
     ChangePasswordDialogComponent,
+    UserListNewComponent,
+    UserInputNewComponent,
   ],
 })
 export class UserManagementModule {}

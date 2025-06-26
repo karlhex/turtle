@@ -1,0 +1,496 @@
+<div class="input-page-container">
+  <!-- Header -->
+  <div class="input-page-header">
+    <div class="header-content">
+      <h2 class="page-title">{{ config.title.toLowerCase() | translate }}</h2>
+      <p class="page-subtitle" *ngIf="config.subtitle">{{ config.subtitle }}</p>
+    </div>
+  </div>
+
+  <!-- Loading Spinner -->
+  <div class="loading-overlay" *ngIf="loading">
+    <mat-spinner diameter="40"></mat-spinner>
+    <span>加载中...</span>
+  </div>
+
+  <!-- Form Container -->
+  <div class="form-container" [class.loading]="loading || saving">
+    <form [formGroup]="form" (ngSubmit)="onSave()">
+      
+      <!-- Single Column Layout -->
+      <div class="form-layout single" *ngIf="actualLayout === 'single'">
+        <ng-container *ngFor="let field of visibleFields">
+          <div [class]="getFieldClass(field)">
+            <ng-container [ngSwitch]="field.type">
+              
+              <!-- Text Input -->
+              <mat-form-field appearance="outline" class="full-width" *ngSwitchCase="'text'">
+                <mat-label>
+                  {{ field.label.toLowerCase() | translate }}
+                  <span class="required-indicator" *ngIf="field.required">*</span>
+                </mat-label>
+                <input 
+                  matInput 
+                  [formControlName]="field.key"
+                  [placeholder]="field.placeholder || ''"
+                  [disabled]="isFieldDisabled(field)"
+                  (input)="onInputChange($event, field.key)">
+                <mat-hint *ngIf="field.helpText">{{ field.helpText }}</mat-hint>
+                <mat-error *ngIf="getFieldError(field)">
+                  {{ getFieldError(field) }}
+                </mat-error>
+              </mat-form-field>
+
+              <!-- Number Input -->
+              <mat-form-field appearance="outline" class="full-width" *ngSwitchCase="'number'">
+                <mat-label>
+                  {{ field.label.toLowerCase() | translate }}
+                  <span class="required-indicator" *ngIf="field.required">*</span>
+                </mat-label>
+                <input 
+                  matInput 
+                  type="number"
+                  [formControlName]="field.key"
+                  [placeholder]="field.placeholder || ''"
+                  [min]="field.min || null"
+                  [max]="field.max || null"
+                  [step]="field.step || 1"
+                  [disabled]="isFieldDisabled(field)"
+                  (input)="onInputChange($event, field.key)">
+                <mat-hint *ngIf="field.helpText">{{ field.helpText }}</mat-hint>
+                <mat-error *ngIf="getFieldError(field)">
+                  {{ getFieldError(field) }}
+                </mat-error>
+              </mat-form-field>
+
+              <!-- Email Input -->
+              <mat-form-field appearance="outline" class="full-width" *ngSwitchCase="'email'">
+                <mat-label>
+                  {{ field.label.toLowerCase() | translate }}
+                  <span class="required-indicator" *ngIf="field.required">*</span>
+                </mat-label>
+                <input 
+                  matInput 
+                  type="email"
+                  [formControlName]="field.key"
+                  [placeholder]="field.placeholder || ''"
+                  [disabled]="isFieldDisabled(field)"
+                  (input)="onInputChange($event, field.key)">
+                <mat-hint *ngIf="field.helpText">{{ field.helpText }}</mat-hint>
+                <mat-error *ngIf="getFieldError(field)">
+                  {{ getFieldError(field) }}
+                </mat-error>
+              </mat-form-field>
+
+              <!-- Password Input -->
+              <mat-form-field appearance="outline" class="full-width" *ngSwitchCase="'password'">
+                <mat-label>
+                  {{ field.label.toLowerCase() | translate }}
+                  <span class="required-indicator" *ngIf="field.required">*</span>
+                </mat-label>
+                <input 
+                  matInput 
+                  type="password"
+                  [formControlName]="field.key"
+                  [placeholder]="field.placeholder || ''"
+                  [disabled]="isFieldDisabled(field)"
+                  (input)="onInputChange($event, field.key)">
+                <mat-hint *ngIf="field.helpText">{{ field.helpText }}</mat-hint>
+                <mat-error *ngIf="getFieldError(field)">
+                  {{ getFieldError(field) }}
+                </mat-error>
+              </mat-form-field>
+            
+              <!-- Textarea -->
+              <mat-form-field appearance="outline" class="full-width" *ngSwitchCase="'textarea'">
+                <mat-label>
+                  {{ field.label.toLowerCase() | translate }}
+                  <span class="required-indicator" *ngIf="field.required">*</span>
+                </mat-label>
+                <textarea 
+                  matInput 
+                  [formControlName]="field.key"
+                  [placeholder]="field.placeholder || ''"
+                  [rows]="field.rows || 3"
+                  [maxLength]="field.maxLength"
+                  [disabled]="isFieldDisabled(field)"
+                  (input)="onTextareaChange($event, field.key)">
+                </textarea>
+                <mat-hint *ngIf="field.helpText">{{ field.helpText }}</mat-hint>
+                <mat-error *ngIf="getFieldError(field)">
+                  {{ getFieldError(field) }}
+                </mat-error>
+              </mat-form-field>
+              
+              <!-- Select -->
+              <mat-form-field appearance="outline" class="full-width" *ngSwitchCase="'select'">
+                <mat-label>
+                  {{ field.label.toLowerCase() | translate }}
+                  <span class="required-indicator" *ngIf="field.required">*</span>
+                </mat-label>
+                <mat-select 
+                  [formControlName]="field.key"
+                  [disabled]="isFieldDisabled(field)"
+                  (selectionChange)="onSelectChange($event, field.key)">
+                  <mat-option 
+                    *ngFor="let option of field.options" 
+                    [value]="option.value"
+                    [disabled]="option.disabled">
+                    {{ option.label }}
+                  </mat-option>
+                </mat-select>
+                <mat-hint *ngIf="field.helpText">{{ field.helpText }}</mat-hint>
+                <mat-error *ngIf="getFieldError(field)">
+                  {{ getFieldError(field) }}
+                </mat-error>
+              </mat-form-field>
+              
+              <!-- Date Picker -->
+              <mat-form-field appearance="outline" class="full-width" *ngSwitchCase="'date'">
+                <mat-label>
+                  {{ field.label.toLowerCase() | translate }}
+                  <span class="required-indicator" *ngIf="field.required">*</span>
+                </mat-label>
+                <input 
+                  matInput 
+                  [matDatepicker]="datePicker"
+                  [formControlName]="field.key"
+                  [placeholder]="field.placeholder || ''"
+                  [disabled]="isFieldDisabled(field)"
+                  (dateChange)="onDateChange($event, field.key)">
+                <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
+                <mat-datepicker #datePicker></mat-datepicker>
+                <mat-hint *ngIf="field.helpText">{{ field.helpText }}</mat-hint>
+                <mat-error *ngIf="getFieldError(field)">
+                  {{ getFieldError(field) }}
+                </mat-error>
+              </mat-form-field>
+              
+              <!-- File Input -->
+              <div *ngSwitchCase="'file'" class="file-input-container">
+                <label class="file-label">
+                  {{ field.label.toLowerCase() | translate }}
+                  <span class="required-indicator" *ngIf="field.required">*</span>
+                </label>
+                <input 
+                  type="file"
+                  [accept]="field.accept"
+                  [multiple]="field.multiple"
+                  [disabled]="isFieldDisabled(field)"
+                  (change)="onFileSelect($event, field)"
+                  class="file-input">
+                <div class="help-text" *ngIf="field.helpText">{{ field.helpText }}</div>
+                <div class="error-text" *ngIf="getFieldError(field)">
+                  {{ getFieldError(field) }}
+                </div>
+              </div>
+              
+              <!-- Checkbox -->
+              <mat-checkbox 
+                [formControlName]="field.key"
+                [disabled]="isFieldDisabled(field)"
+                (change)="onCheckboxChange($event, field.key)"
+                *ngSwitchCase="'checkbox'"
+                class="checkbox-field">
+                {{ field.label.toLowerCase() | translate }}
+                <span class="required-indicator" *ngIf="field.required">*</span>
+              </mat-checkbox>
+              
+              <!-- Radio Group -->
+              <div *ngSwitchCase="'radio'" class="radio-group">
+                <label class="radio-group-label">
+                  {{ field.label.toLowerCase() | translate }}
+                  <span class="required-indicator" *ngIf="field.required">*</span>
+                </label>
+                <mat-radio-group [formControlName]="field.key" (change)="onRadioChange($event, field.key)">
+                  <mat-radio-button 
+                    *ngFor="let option of field.options" 
+                    [value]="option.value"
+                    [disabled]="option.disabled || isFieldDisabled(field)">
+                    {{ option.label }}
+                  </mat-radio-button>
+                </mat-radio-group>
+              </div>
+              
+              <!-- Custom Component -->
+              <ng-container *ngSwitchCase="'custom'">
+                <ng-content [attr.select]="field.customComponent"></ng-content>
+              </ng-container>
+              
+            </ng-container>
+          </div>
+        </ng-container>
+      </div>
+      
+      <!-- Grid Layout (替代两列) -->
+      <div class="form-layout grid-layout" *ngIf="actualLayout === 'two-column'">
+        <ng-container *ngFor="let field of visibleFields">
+          <div [class]="getFieldClass(field)">
+            <ng-container [ngSwitch]="field.type">
+              <!-- Text Input -->
+              <mat-form-field appearance="outline" class="full-width" *ngSwitchCase="'text'">
+                <mat-label>
+                  {{ field.label.toLowerCase() | translate  }}
+                  <span class="required-indicator" *ngIf="field.required">*</span>
+                </mat-label>
+                <input 
+                  matInput 
+                  [formControlName]="field.key"
+                  [placeholder]="field.placeholder || ''"
+                  [disabled]="isFieldDisabled(field)"
+                  (input)="onInputChange($event, field.key)">
+                <mat-hint *ngIf="field.helpText">{{ field.helpText }}</mat-hint>
+                <mat-error *ngIf="getFieldError(field)">
+                  {{ getFieldError(field) }}
+                </mat-error>
+              </mat-form-field>
+              <!-- Number Input -->
+              <mat-form-field appearance="outline" class="full-width" *ngSwitchCase="'number'">
+                <mat-label>
+                    {{ field.label.toLowerCase() | translate }}
+                  <span class="required-indicator" *ngIf="field.required">*</span>
+                </mat-label>
+                <input 
+                  matInput 
+                  type="number"
+                  [formControlName]="field.key"
+                  [placeholder]="field.placeholder || ''"
+                  [min]="field.min || null"
+                  [max]="field.max || null"
+                  [step]="field.step || 1"
+                  [disabled]="isFieldDisabled(field)"
+                  (input)="onInputChange($event, field.key)">
+                <mat-hint *ngIf="field.helpText">{{ field.helpText }}</mat-hint>
+                <mat-error *ngIf="getFieldError(field)">
+                  {{ getFieldError(field) }}
+                </mat-error>
+              </mat-form-field>
+              <!-- Email Input -->
+              <mat-form-field appearance="outline" class="full-width" *ngSwitchCase="'email'">
+                <mat-label>
+                  {{ field.label.toLowerCase() | translate }}
+                  <span class="required-indicator" *ngIf="field.required">*</span>
+                </mat-label>
+                <input 
+                  matInput 
+                  type="email"
+                  [formControlName]="field.key"
+                  [placeholder]="field.placeholder || ''"
+                  [disabled]="isFieldDisabled(field)"
+                  (input)="onInputChange($event, field.key)">
+                <mat-hint *ngIf="field.helpText">{{ field.helpText }}</mat-hint>
+                <mat-error *ngIf="getFieldError(field)">
+                  {{ getFieldError(field) }}
+                </mat-error>
+              </mat-form-field>
+              <!-- Password Input -->
+              <mat-form-field appearance="outline" class="full-width" *ngSwitchCase="'password'">
+                <mat-label>
+                  {{ field.label.toLowerCase() | translate }}
+                  <span class="required-indicator" *ngIf="field.required">*</span>
+                </mat-label>
+                <input 
+                  matInput 
+                  type="password"
+                  [formControlName]="field.key"
+                  [placeholder]="field.placeholder || ''"
+                  [disabled]="isFieldDisabled(field)"
+                  (input)="onInputChange($event, field.key)">
+                <mat-hint *ngIf="field.helpText">{{ field.helpText }}</mat-hint>
+                <mat-error *ngIf="getFieldError(field)">
+                  {{ getFieldError(field) }}
+                </mat-error>
+              </mat-form-field>
+              <!-- Textarea -->
+              <mat-form-field appearance="outline" class="full-width" *ngSwitchCase="'textarea'">
+                <mat-label>
+                  {{ field.label.toLowerCase() | translate }}
+                  <span class="required-indicator" *ngIf="field.required">*</span>
+                </mat-label>
+                <textarea 
+                  matInput 
+                  [formControlName]="field.key"
+                  [placeholder]="field.placeholder || ''"
+                  [rows]="field.rows || 3"
+                  [maxLength]="field.maxLength"
+                  [disabled]="isFieldDisabled(field)"
+                  (input)="onTextareaChange($event, field.key)">
+                </textarea>
+                <mat-hint *ngIf="field.helpText">{{ field.helpText }}</mat-hint>
+                <mat-error *ngIf="getFieldError(field)">
+                  {{ getFieldError(field) }}
+                </mat-error>
+              </mat-form-field>
+              <!-- Select -->
+              <mat-form-field appearance="outline" class="full-width" *ngSwitchCase="'select'">
+                <mat-label>
+                  {{ field.label.toLowerCase() | translate }}
+                  <span class="required-indicator" *ngIf="field.required">*</span>
+                </mat-label>
+                <mat-select 
+                  [formControlName]="field.key"
+                  [disabled]="isFieldDisabled(field)"
+                  (selectionChange)="onSelectChange($event, field.key)">
+                  <mat-option 
+                    *ngFor="let option of field.options" 
+                    [value]="option.value"
+                    [disabled]="option.disabled">
+                    {{ option.label }}
+                  </mat-option>
+                </mat-select>
+                <mat-hint *ngIf="field.helpText">{{ field.helpText }}</mat-hint>
+                <mat-error *ngIf="getFieldError(field)">
+                  {{ getFieldError(field) }}
+                </mat-error>
+              </mat-form-field>
+              <!-- Date Picker -->
+              <mat-form-field appearance="outline" class="full-width" *ngSwitchCase="'date'">
+                <mat-label>
+                  {{ field.label }}
+                  <span class="required-indicator" *ngIf="field.required">*</span>
+                </mat-label>
+                <input 
+                  matInput 
+                  [matDatepicker]="datePicker"
+                  [formControlName]="field.key"
+                  [placeholder]="field.placeholder || ''"
+                  [disabled]="isFieldDisabled(field)"
+                  (dateChange)="onDateChange($event, field.key)">
+                <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
+                <mat-datepicker #datePicker></mat-datepicker>
+                <mat-hint *ngIf="field.helpText">{{ field.helpText }}</mat-hint>
+                <mat-error *ngIf="getFieldError(field)">
+                  {{ getFieldError(field) }}
+                </mat-error>
+              </mat-form-field>
+              <!-- File Input -->
+              <div *ngSwitchCase="'file'" class="file-input-container">
+                <label class="file-label">
+                  {{ field.label.toLowerCase() | translate }}
+                  <span class="required-indicator" *ngIf="field.required">*</span>
+                </label>
+                <input 
+                  type="file"
+                  [accept]="field.accept"
+                  [multiple]="field.multiple"
+                  [disabled]="isFieldDisabled(field)"
+                  (change)="onFileSelect($event, field)"
+                  class="file-input">
+                <div class="help-text" *ngIf="field.helpText">{{ field.helpText }}</div>
+                <div class="error-text" *ngIf="getFieldError(field)">
+                  {{ getFieldError(field) }}
+                </div>
+              </div>
+              <!-- Checkbox -->
+              <mat-checkbox 
+                [formControlName]="field.key"
+                [disabled]="isFieldDisabled(field)"
+                (change)="onCheckboxChange($event, field.key)"
+                *ngSwitchCase="'checkbox'"
+                class="checkbox-field">
+                {{ field.label.toLowerCase() | translate }}
+                <span class="required-indicator" *ngIf="field.required">*</span>
+              </mat-checkbox>
+              <!-- Radio Group -->
+              <div *ngSwitchCase="'radio'" class="radio-group">
+                <label class="radio-group-label">
+                  {{ field.label.toLowerCase() | translate }}
+                  <span class="required-indicator" *ngIf="field.required">*</span>
+                </label>
+                <mat-radio-group [formControlName]="field.key" (change)="onRadioChange($event, field.key)">
+                  <mat-radio-button 
+                    *ngFor="let option of field.options" 
+                    [value]="option.value"
+                    [disabled]="option.disabled || isFieldDisabled(field)">
+                    {{ option.label }}
+                  </mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <!-- Custom Component -->
+              <ng-container *ngSwitchCase="'custom'">
+                <ng-content [attr.select]="field.customComponent"></ng-content>
+              </ng-container>
+            </ng-container>
+          </div>
+        </ng-container>
+      </div>
+      
+      <!-- Stepper Layout -->
+      <mat-stepper 
+        #stepper 
+        [linear]="true" 
+        *ngIf="actualLayout === 'stepper'"
+        class="stepper-layout">
+        <mat-step 
+          *ngFor="let step of visibleFields; let stepIndex = index"
+          [stepControl]="form.get(step.key)!"
+          [label]="step.label">
+          <div [class]="getFieldClass(step)">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>
+                {{ step.label.toLowerCase()  | translate  }}
+                <span class="required-indicator" *ngIf="step.required">*</span>
+              </mat-label>
+              <input 
+                matInput 
+                [formControlName]="step.key"
+                [placeholder]="step.placeholder || ''"
+                [type]="step.type"
+                [disabled]="isFieldDisabled(step)"
+                (input)="onInputChange($event, step.key)">
+              <mat-error *ngIf="getFieldError(step)">
+                {{ getFieldError(step) }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+          
+          <div class="stepper-actions">
+            <button 
+              mat-button 
+              matStepperPrevious 
+              *ngIf="stepIndex > 0">
+              上一步
+            </button>
+            <button 
+              mat-raised-button 
+              color="primary" 
+              matStepperNext 
+              *ngIf="stepIndex < visibleFields.length - 1">
+              下一步
+            </button>
+            <button 
+              mat-raised-button 
+              color="primary"
+              (click)="onSave()" 
+              *ngIf="stepIndex === visibleFields.length - 1">
+              完成
+            </button>
+          </div>
+        </mat-step>
+      </mat-stepper>
+
+    </form>
+  </div>
+  
+  <!-- Auto Save Indicator -->
+  <div class="auto-save-indicator" *ngIf="config.autoSave && form.dirty">
+    <mat-icon>schedule</mat-icon>
+    <span>自动保存已启用</span>
+  </div>
+
+  <!-- Form Actions -->
+  <div class="form-actions" *ngIf="config.showSaveButton || config.showCancelButton || config.showResetButton">
+    <button mat-button (click)="onReset()" [disabled]="loading || saving" *ngIf="config.showResetButton">
+      <mat-icon>refresh</mat-icon>
+      {{ config.resetButtonText || '重置' }}
+    </button>
+    <button mat-button (click)="onCancel()" [disabled]="loading || saving" *ngIf="config.showCancelButton">
+      <mat-icon>close</mat-icon>
+      {{ config.cancelButtonText || '取消' }}
+    </button>
+    <button mat-raised-button color="primary" (click)="onSave()" [disabled]="loading || saving || !form.valid" *ngIf="config.showSaveButton">
+      <mat-icon>save</mat-icon>
+      {{ config.saveButtonText || '保存' }}
+    </button>
+  </div>
+</div> 
