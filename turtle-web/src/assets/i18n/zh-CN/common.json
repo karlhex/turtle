@@ -1,0 +1,25 @@
+{
+  "common": {
+    "action": {
+      "add": "添加",
+      "view": "查看",
+      "edit": "编辑",
+      "delete": "删除",
+      "save": "保存",
+      "cancel": "取消",
+      "ok": "确定"
+    },
+    "button": {
+      "confirm": "确定",
+      "cancel": "取消"
+    },
+    "status": {
+      "active": "启用",
+      "inactive": "禁用"
+    },
+    "actions": "操作",
+    "save": "保存",
+    "cancel": "取消",
+    "close": "关闭"
+  }
+}

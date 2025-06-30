@@ -1,0 +1,237 @@
+{
+  "employee": {
+    "title": "员工管理",
+    "search": {
+      "label": "搜索员工",
+      "placeholder": "搜索姓名、邮箱或部门"
+    },
+    "actions": {
+      "add": "添加员工",
+      "view": "查看员工",
+      "edit": "编辑员工",
+      "delete": "删除员工",
+      "save": "保存",
+      "cancel": "取消",
+      "ok": "确定"
+    },
+    "list": {
+      "id": "工号",
+      "name": "姓名",
+      "email": "邮箱",
+      "department": "部门",
+      "position": "职位",
+      "hire_date": "入职日期",
+      "status": "状态",
+      "actions": "操作",
+      "noResults": "没有找到员工",
+      "matching": "匹配"
+    },
+    "status": {
+      "active": "在职",
+      "inactive": "离职"
+    },
+    "tabs": {
+      "basic": "基本信息",
+      "education": "教育经历",
+      "jobHistory": "工作经历"
+    },
+    "form": {
+      "basic": {
+        "title": "基本信息",
+        "employee_number": "工号",
+        "name": "姓名",
+        "email": "邮箱",
+        "phone": "电话"
+      },
+      "department": {
+        "title": "部门与职位",
+        "department": "部门",
+        "position": "职位",
+        "hire_date": "入职日期",
+        "leave_date": "离职日期"
+      },
+      "personal": {
+        "title": "个人信息",
+        "birthday": "出生日期",
+        "gender_name": "性别",
+        "gender": {
+          "male": "男",
+          "female": "女",
+          "other": "其他"
+        },
+        "idNumber": "身份证号",
+        "ethnicity": "民族",
+        "idType": "证件类型",
+        "idTypeCell": {
+          "idCard": "身份证",
+          "passport": "护照",
+          "other": "其他"
+        }
+      },
+      "emergency": {
+        "title": "紧急联系人",
+        "person": "选择联系人",
+        "name": "姓名",
+        "phone": "联系电话",
+        "email": "电子邮箱",
+        "address": "联系地址"
+      },
+      "contract": {
+        "title": "合同信息",
+        "type_name": "合同类型",
+        "type": {
+          "full_time": "全职",
+          "part_time": "兼职",
+          "contractor": "外包",
+          "intern": "实习"
+        },
+        "duration": "合同期限(月)",
+        "startDate": "合同开始日期"
+      },
+      "additional": {
+        "title": "备注",
+        "remarks": "备注信息",
+        "status": "在职状态"
+      }
+    },
+    "education": {
+      "title": "教育经历",
+      "add": "添加教育经历",
+      "institution": "学校/院校",
+      "school": "学校/院校",
+      "degree_name": "学历",
+      "degree": {
+        "bachelor": "本科",
+        "master": "硕士",
+        "doctor": "博士",
+        "phd": "博士",
+        "associate": "专科",
+        "high_school": "高中",
+        "other": "其他"
+      },
+      "major": "专业",
+      "start_date": "开始日期",
+      "end_date": "结束日期",
+      "remarks": "备注",
+      "list": {
+        "empty": "暂无教育经历",
+        "noData": "未添加任何教育经历",
+        "addFirst": "添加第一条教育经历"
+      },
+      "actions": {
+        "add": "添加教育经历",
+        "edit": "编辑教育经历",
+        "delete": "删除教育经历",
+        "save": "保存",
+        "cancel": "取消"
+      },
+      "form": {
+        "school": "学校/院校",
+        "major": "专业/学科",
+        "degreeName": "学历",
+        "degree": {
+          "bachelor": "本科",
+          "master": "硕士",
+          "doctor": "博士",
+          "phd": "博士",
+          "associate": "专科",
+          "high_school": "高中",
+          "other": "其他"
+        },
+        "startDate": "开始日期",
+        "endDate": "结束日期",
+        "certificateNumber": "证书编号",
+        "isHighestDegree": "最高学历",
+        "remarks": "备注",
+        "degreecombo": {
+          "bachelor": "本科",
+          "master": "硕士",
+          "doctor": "博士",
+          "other": "其他"
+        }
+      },
+      "validation": {
+        "required": {
+          "school": "请输入学校名称",
+          "major": "请输入专业",
+          "degree": "请选择学历",
+          "startDate": "请选择开始日期"
+        }
+      },
+      "table": {
+        "school": "学校",
+        "major": "专业",
+        "degree": "学历",
+        "startDate": "开始日期",
+        "endDate": "结束日期",
+        "actions": "操作"
+      }
+    },
+    "job_history": {
+      "tab": "工作经历",
+      "title": "工作经历",
+      "dialog": {
+        "edit": "编辑工作经历",
+        "view": "查看工作经历",
+        "add": "添加工作经历"
+      },
+      "company": "公司名称",
+      "department": "所在部门",
+      "position": "担任职位",
+      "start_date": "入职日期",
+      "end_date": "离职日期",
+      "description": "工作职责",
+      "achievements": "工作业绩",
+      "leavingReason": "离职原因",
+      "referenceContact": "证明人联系方式",
+      "remarks": "备注说明",
+      "button": {
+        "add": "添加工作经历",
+        "edit": "编辑",
+        "delete": "删除",
+        "save": "保存",
+        "cancel": "取消",
+        "close": "关闭"
+      },
+      "validation": {
+        "companyNameRequired": "请输入公司名称",
+        "departmentRequired": "请输入所在部门",
+        "positionRequired": "请输入担任职位",
+        "startDateRequired": "请选择入职日期",
+        "endDateInvalid": "离职日期必须晚于入职日期",
+        "descriptionMaxLength": "工作职责不能超过500个字符",
+        "achievementsMaxLength": "工作业绩不能超过500个字符"
+      },
+      "list": {
+        "companyName": "公司",
+        "department": "部门",
+        "position": "职位",
+        "duration": "任职时间",
+        "actions": "操作", 
+        "empty": "暂无工作经历",
+        "noData": "未添加任何工作经历",
+        "addFirst": "添加第一份工作经历"
+      }
+    },
+    "validation": {
+      "required": {
+        "employeeNumber": "工号不能为空",
+        "name": "姓名不能为空",
+        "email": "邮箱不能为空",
+        "department": "部门不能为空",
+        "position": "职位不能为空",
+        "hireDate": "入职日期不能为空",
+        "idNumber": "身份证号不能为空"
+      },
+      "email": {
+        "invalid": "请输入有效的邮箱地址"
+      }
+    },
+    "dialog": {
+      "cancel": "取消",
+      "create": "创建",
+      "update": "更新",
+      "apply": "申请入职"
+    }
+  }
+} 

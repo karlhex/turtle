@@ -51,7 +51,7 @@
       "email": "邮箱",
       "department": "部门",
       "position": "职位",
-      "hireDate": "入职日期",
+      "hire_date": "入职日期",
       "status": "状态",
       "actions": "操作",
       "noResults": "没有找到员工",
@@ -69,7 +69,7 @@
     "form": {
       "basic": {
         "title": "基本信息",
-        "employeeNumber": "工号",
+        "employee_number": "工号",
         "name": "姓名",
         "email": "邮箱",
         "phone": "电话"
@@ -78,12 +78,13 @@
         "title": "部门与职位",
         "department": "部门",
         "position": "职位",
-        "hireDate": "入职日期",
-        "leaveDate": "离职日期"
+        "hire_date": "入职日期",
+        "leave_date": "离职日期"
       },
       "personal": {
         "title": "个人信息",
         "birthday": "出生日期",
+        "gender_name": "性别",
         "gender": {
           "male": "男",
           "female": "女",
@@ -108,9 +109,10 @@
       },
       "contract": {
         "title": "合同信息",
+        "type_name": "合同类型",
         "type": {
-          "fullTime": "全职",
-          "partTime": "兼职",
+          "full_time": "全职",
+          "part_time": "兼职",
           "contractor": "外包",
           "intern": "实习"
         },
@@ -128,7 +130,7 @@
       "add": "添加教育经历",
       "institution": "学校/院校",
       "school": "学校/院校",
-      "degreeName": "学历",
+      "degree_name": "学历",
       "degree": {
         "bachelor": "本科",
         "master": "硕士",
@@ -139,8 +141,9 @@
         "other": "其他"
       },
       "major": "专业",
-      "startDate": "开始日期",
-      "endDate": "结束日期",
+      "start_date": "开始日期",
+      "end_date": "结束日期",
+      "remarks": "备注",
       "list": {
         "empty": "暂无教育经历",
         "noData": "未添加任何教育经历",
@@ -195,7 +198,7 @@
         "actions": "操作"
       }
     },
-    "jobHistory": {
+    "job_history": {
       "tab": "工作经历",
       "title": "工作经历",
       "dialog": {
@@ -203,12 +206,12 @@
         "view": "查看工作经历",
         "add": "添加工作经历"
       },
-      "companyName": "公司名称",
+      "company": "公司名称",
       "department": "所在部门",
       "position": "担任职位",
-      "startDate": "入职日期",
-      "endDate": "离职日期",
-      "jobDescription": "工作职责",
+      "start_date": "入职日期",
+      "end_date": "离职日期",
+      "description": "工作职责",
       "achievements": "工作业绩",
       "leavingReason": "离职原因",
       "referenceContact": "证明人联系方式",
@@ -221,13 +224,6 @@
         "cancel": "取消",
         "close": "关闭"
       },
-      "table": {
-        "companyName": "公司",
-        "department": "部门",
-        "position": "职位",
-        "duration": "任职时间",
-        "actions": "操作"
-      },
       "validation": {
         "companyNameRequired": "请输入公司名称",
         "departmentRequired": "请输入所在部门",
@@ -238,6 +234,11 @@
         "achievementsMaxLength": "工作业绩不能超过500个字符"
       },
       "list": {
+        "companyName": "公司",
+        "department": "部门",
+        "position": "职位",
+        "duration": "任职时间",
+        "actions": "操作", 
         "empty": "暂无工作经历",
         "noData": "未添加任何工作经历",
         "addFirst": "添加第一份工作经历"

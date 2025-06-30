@@ -104,7 +104,12 @@
             
             <!-- Date Type -->
             <span *ngIf="column.type === 'date'">
-              {{ getColumnValue(row, column) | date:'yyyy-MM-dd HH:mm' }}
+              <span *ngIf="column.formatter; else defaultDate">
+                {{ getColumnValue(row, column) }}
+              </span>
+              <ng-template #defaultDate>
+                {{ getColumnValue(row, column) | date:'yyyy-MM-dd' }}
+              </ng-template>
             </span>
             
             <!-- Boolean Type -->

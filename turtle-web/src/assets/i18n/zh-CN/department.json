@@ -1,0 +1,33 @@
+{
+  "department": {
+    "title": "部门管理",
+    "search": {
+      "label": "搜索部门",
+      "placeholder": "按名称、代码或描述搜索"
+    },
+    "button": {
+      "add": "添加部门",
+      "edit": "编辑部门",
+      "delete": "删除部门",
+      "save": "保存",
+      "cancel": "取消"
+    },
+    "add": "添加部门",
+    "edit": "编辑部门",
+    "name": "部门名称",
+    "code": "部门代码",
+    "description": "部门描述",
+    "parentDepartment": "上级部门",
+    "manager": "负责人",
+    "nameRequired": "请输入部门名称",
+    "codeRequired": "请输入部门代码",
+    "descriptionRequired": "请输入部门描述",
+    "status": "启用状态",
+    "message": {
+      "saveSuccess": "保存成功",
+      "deleteSuccess": "删除成功",
+      "deleteConfirm": "确定要删除此部门吗？",
+      "error": "操作失败"
+    }
+  }
+}

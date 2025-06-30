@@ -1,0 +1,30 @@
+{
+  "inventory": {
+    "title": "库存管理",
+    "search_placeholder": "搜索库存",
+    "dialog_title": "库存操作",
+    "action_type": "操作类型",
+    "action": {
+      "storage": "入库",
+      "outbound": "出库",
+      "borrow": "借出",
+      "return": "归还"
+    },
+    "product": "产品",
+    "quantity": "数量",
+    "license": "许可证",
+    "purchase_contract": "采购合同",
+    "sales_contract": "销售合同",
+    "storage_time": "入库时间",
+    "out_time": "出库时间",
+    "handling_employee": "经办员工",
+    "shipping_method": "运输方式",
+    "shipping_address": "发货地址",
+    "receiver_name": "收货人",
+    "receiver_phone": "收货人电话",
+    "express_tracking_number": "快递单号",
+    "status_title": "状态",
+    "borrowed_company": "借出公司",
+    "remarks": "备注"
+  }
+}

@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './pages/login/login.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { GuestDashboardComponent } from './pages/guest/guest-dashboard.component';
-import { EmployeeListComponent } from './pages/employee/employee-list.component';
+import { EmployeeListNewComponent } from './pages/employee/employee-list-new.component';
 import { DepartmentListNewComponent } from './pages/department/department-list-new.component';
 import { UserManagementComponent } from './pages/user-management/user-management.component';
 import { UserEmployeeMappingComponent } from './pages/user-management/user-employee-mapping/user-employee-mapping.component';
@@ -32,7 +32,7 @@ const routes: Routes = [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardComponent },
       { path: 'guest-dashboard', component: GuestDashboardComponent },
-      { path: 'employees', component: EmployeeListComponent },
+      { path: 'employees', component: EmployeeListNewComponent },
       { path: 'departments', component: DepartmentListNewComponent },
       { path: 'users', component: UserManagementComponent },
       { path: 'user-employee-mapping', component: UserEmployeeMappingComponent },

@@ -1,0 +1,49 @@
+{
+  "reimbursement": {
+    "title": "报销管理",
+    "dialog": {
+      "createTitle": "新建报销单",
+      "editTitle": "编辑报销单",
+      "actions": {
+        "save": "保存草稿",
+        "submit": "提交报销单"
+      }
+    },
+    "search": {
+      "label": "搜索报销单",
+      "placeholder": "搜索报销单号或申请人"
+    },
+    "field": {
+      "reimbursementNo": "报销单号",
+      "applicationDate": "申请日期",
+      "applicant": "申请人",
+      "approvalDate": "审批日期",
+      "approver": "审批人",
+      "project": "所属项目",
+      "totalAmount": "总金额",
+      "remarks": "备注",
+      "status": "状态"
+    },
+    "item": {
+      "title": "报销明细",
+      "amount": "金额",
+      "reason": "事由",
+      "occurrenceDate": "发生日期",
+      "remarks": "备注"
+    },
+    "action": {
+      "add": "新建报销单",
+      "edit": "编辑报销单",
+      "delete": "删除报销单",
+      "addItem": "添加明细",
+      "removeItem": "删除明细",
+      "approve": "审批通过",
+      "reject": "审批拒绝"
+    },
+    "status": {
+      "PENDING": "待审批",
+      "APPROVED": "已通过",
+      "REJECTED": "已拒绝"
+    }
+  }
+}

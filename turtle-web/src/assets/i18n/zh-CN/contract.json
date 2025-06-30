@@ -1,0 +1,87 @@
+{
+  "contract": {
+    "title": "合同信息",
+    "contractNo": "合同编号",
+    "type": "合同类型",
+    "purchaseTotal": "采购合同总额",
+    "purchasePaid": "采购已付金额",
+    "salesTotal": "销售合同总额",
+    "salesPaid": "销售已付金额",
+    "total": "合计",
+    "dialog": {
+      "title": {
+        "create": "新建合同",
+        "edit": "编辑合同"
+      },
+      "sections": {
+        "basic": "基本信息",
+        "dates": "日期信息",
+        "contact": "联系信息",
+        "project": "项目信息",
+        "amount": "金额信息"
+      },
+      "fields": {
+        "contractNo": "合同编号",
+        "title": "标题",
+        "buyerCompany": "买方公司",
+        "sellerCompany": "卖方公司",
+        "type": "合同类型",
+        "status": "合同状态",
+        "signingDate": "签署日期",
+        "startDate": "开始日期",
+        "endDate": "结束日期",
+        "contactPerson": "联系人",
+        "contactPhone": "联系电话",
+        "contactEmail": "联系邮箱",
+        "project": "关联项目",
+        "projectNo": "项目编号",
+        "totalAmount": "合同金额",
+        "currency": "币种",
+        "description": "描述",
+        "remarks": "备注",
+        "paymentTerms": "付款条件",
+        "deliveryTerms": "交付条件",
+        "warrantyTerms": "质保条件",
+        "filePath": "合同文件"
+      },
+      "validation": {
+        "contractNo": "请输入合同编号",
+        "title": "请输入标题",
+        "buyerCompany": "请选择买方公司",
+        "sellerCompany": "请选择卖方公司",
+        "type": "请选择合同类型",
+        "status": "请选择合同状态",
+        "signingDate": "请选择签署日期",
+        "startDate": "请选择开始日期",
+        "endDate": "请选择结束日期",
+        "contactPerson": "请输入联系人",
+        "totalAmount": {
+          "required": "请输入合同金额",
+          "min": "金额不能小于0"
+        }
+      }
+    },
+    "items": {
+      "tab": "合同明细",
+      "add": "添加明细",
+      "edit": "编辑明细",
+      "delete": "删除明细"
+    },
+    "downPayment": {
+      "tab": "首付款信息",
+      "add": "添加首付款",
+      "edit": "编辑首付款",
+      "delete": "删除首付款",
+      "title": "首付款",
+      "paymentInstruction": "付款说明",
+      "debitCreditType": "借贷类型",
+      "plannedDate": "计划日期",
+      "actualDate": "实际日期",
+      "amount": "金额",
+      "bankAccountNo": "银行账号",
+      "bankName": "开户行",
+      "paymentStatus": "付款状态",
+      "remarks": "备注"
+    }
+  }
+}

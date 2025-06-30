@@ -1,0 +1,42 @@
+{
+  "user": {
+    "title": "用户管理",
+    "search": {
+      "placeholder": "搜索用户名或邮箱"
+    },
+    "list": {
+      "id": "ID",
+      "username": "用户名",
+      "email": "邮箱",
+      "roles": "角色",
+      "actions": "操作"
+    },
+    "dialog": {
+      "create": "创建用户",
+      "edit": "编辑用户",
+      "delete": "删除用户",
+      "deleteConfirm": "确定要删除此用户吗？"
+    },
+    "form": {
+      "username": "用户名",
+      "email": "邮箱",
+      "password": "密码",
+      "roles": "角色"
+    },
+    "validation": {
+      "required": {
+        "username": "请输入用户名",
+        "email": "请输入邮箱",
+        "password": "请输入密码",
+        "roles": "请至少选择一个角色"
+      },
+      "email": "请输入有效的邮箱地址"
+    },
+    "messages": {
+      "createSuccess": "用户创建成功",
+      "updateSuccess": "用户更新成功",
+      "deleteSuccess": "用户删除成功",
+      "error": "操作失败"
+    }
+  }
+}

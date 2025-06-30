@@ -1,0 +1,22 @@
+{
+  "bank_account": {
+    "title": "银行账户管理",
+    "create": "新增银行账户",
+    "edit": "编辑银行账户",
+    "fields": {
+      "name": "账户名称",
+      "accountNo": "账号",
+      "bankName": "银行名称",
+      "bankBranch": "开户行支行",
+      "balance": "余额",
+      "company": "所属公司",
+      "currency": "币种",
+      "type": "账户类型",
+      "swiftCode": "SWIFT代码",
+      "contactPerson": "联系人",
+      "contactPhone": "联系电话",
+      "description": "描述",
+      "active": "启用"
+    }
+  }
+}

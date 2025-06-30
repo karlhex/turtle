@@ -1,0 +1,44 @@
+<div class="employee-input-container">
+  <!-- Tabs for all data -->
+  <mat-tab-group>
+    <!-- Basic Information Tab -->
+    <mat-tab [label]="'EMPLOYEE.FORM.BASIC.TITLE'.toLowerCase() | translate">
+      <div class="tab-content">
+        <app-input-page
+          [config]="config"
+          [data]="initialData"
+          [loading]="loading"
+          (save)="onSave($event)"
+          (cancel)="onCancel()"
+          (reset)="onReset()"
+          (fieldChange)="onFieldChange($event.key, $event.value)"
+          (validationChange)="onValidationChange($event.valid, $event.errors)">
+        </app-input-page>
+      </div>
+    </mat-tab>
+
+    <!-- Education Tab -->
+    <mat-tab [label]="'EMPLOYEE.EDUCATION.TITLE'.toLowerCase() | translate" *ngIf="data.mode !== 'create'">
+      <div class="tab-content">
+        <app-education-list-new
+          [employeeId]="employeeId!"
+          [educations]="educations"
+          [editMode]="isEditMode"
+          (educationEdited)="onEducationEdited($event)">
+        </app-education-list-new>
+      </div>
+    </mat-tab>
+
+    <!-- Job History Tab -->
+    <mat-tab [label]="'EMPLOYEE.JOB_HISTORY.TITLE'.toLowerCase() | translate" *ngIf="data.mode !== 'create'">
+      <div class="tab-content">
+        <app-job-history-list-new
+          [employeeId]="employeeId!"
+          [jobHistories]="jobHistories"
+          [editMode]="isEditMode"
+          (jobHistoryEdited)="onJobHistoryEdited($event)">
+        </app-job-history-list-new>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div> 

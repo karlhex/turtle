@@ -1,0 +1,141 @@
+{
+  "types": {
+    "attendancestatus": {
+      "pending": "待审核",
+      "approved": "已审核",
+      "rejected": "已拒绝",
+      "abnormal": "异常"
+    },
+    "attendancetype": {
+      "normal": "正常上班",
+      "overtime": "加班",
+      "business_trip": "出差",
+      "work_from_home": "远程办公",
+      "leave": "请假"
+    },
+    "bankaccounttype": {
+      "company_basic": "公司基本账户",
+      "company_general": "公司往来账户",
+      "company_other": "其他公司账户",
+      "personal": "个人账户"
+    },
+    "clienttype": {
+      "contract": "合同",
+      "project": "项目",
+      "product": "产品",
+      "user": "用户"
+    },
+    "companytype": {
+      "primary": "主公司",
+      "customer": "客户",
+      "supplier": "供应商",
+      "prospect": "潜在客户"
+    },
+    "contractstatus": {
+      "pending_signature": "等待签署",
+      "in_progress": "执行中",
+      "completed": "已结束",
+      "cancelled": "已取消",
+      "suspended": "已挂起"
+    },
+    "contracttype": {
+      "purchase": "采购合同",
+      "sales": "销售合同"
+    },
+    "debitcredittype": {
+      "debit": "借",
+      "credit": "贷"
+    },
+    "employeecontracttype": {
+      "fixed_term": "固定期限",
+      "non_fixed_term": "无固定期限",
+      "internship": "实习",
+      "part_time": "兼职",
+      "probation": "试用期"
+    },
+    "employeestatus": {
+      "application": "申请",
+      "active": "在职",
+      "resigned": "离职",
+      "suspended": "暂停"
+    },
+    "filetype": {
+      "document": "文档",
+      "image": "图片",
+      "video": "视频",
+      "audio": "音频",
+      "other": "其他"
+    },
+    "gender": {
+      "male": "男",
+      "female": "女",
+      "other": "其他"
+    },
+    "idtype": {
+      "id_card": "身份证",
+      "passport": "护照",
+      "work_permit": "工作许可证",
+      "other": "其他"
+    },
+    "inventorystatus": {
+      "in_stock": "在库",
+      "out_of_stock": "缺货",
+      "damaged": "损坏",
+      "lost": "丢失"
+    },
+    "invoicetype": {
+      "vat_normal": "增值税普通发票",
+      "vat_special": "增值税专用发票"
+    },
+    "leavetype": {
+      "annual": "年假",
+      "sick": "病假",
+      "personal": "事假",
+      "marriage": "婚假",
+      "maternity": "产假",
+      "bereavement": "丧假",
+      "other": "其他"
+    },
+    "payrollstatus": {
+      "pending": "待发放",
+      "paid": "已发放",
+      "cancelled": "已取消"
+    },
+    "producttype": {
+      "software": "软件产品",
+      "hardware": "硬件产品",
+      "service": "服务产品"
+    },
+    "projectstatus": {
+      "planning": "规划中",
+      "in_progress": "进行中",
+      "completed": "已完成",
+      "suspended": "已暂停",
+      "cancelled": "已取消"
+    },
+    "reimbursementstatus": {
+      "draft": "草稿",
+      "pending": "待审批",
+      "approved": "已通过",
+      "rejected": "已拒绝"
+    },
+    "shippingmethod": {
+      "express": "快递",
+      "self_delivery": "自送"
+    },
+    "trainingstatus": {
+      "planned": "计划中",
+      "ongoing": "进行中",
+      "completed": "已完成",
+      "cancelled": "已取消"
+    },
+    "trainingtype": {
+      "onboarding": "入职培训",
+      "professional": "专业技能",
+      "safety": "安全培训",
+      "management": "管理培训",
+      "certification": "认证培训",
+      "other": "其他"
+    }
+  }
+}

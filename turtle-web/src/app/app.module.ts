@@ -33,8 +33,8 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './pages/login/login.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { GuestDashboardComponent } from './pages/guest/guest-dashboard.component';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
 import { SidebarMenuComponent } from './components/sidebar-menu/sidebar-menu.component';
 
 // Services and Interceptors
@@ -67,7 +67,9 @@ import { DemoPageComponent } from './pages/demo/demo-page/demo-page.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+  return new MultiTranslateHttpLoader(http, [
+    { prefix: './assets/i18n/zh-CN/', suffix: '.json' }
+  ]);
 }
 
 @NgModule({
@@ -136,12 +138,11 @@ export function HttpLoaderFactory(http: HttpClient) {
 
     // Translation
     TranslateModule.forRoot({
-      defaultLanguage: 'zh',
       loader: {
         provide: TranslateLoader,
         useFactory: HttpLoaderFactory,
-        deps: [HttpClient],
-      },
+        deps: [HttpClient]
+      }
     }),
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],

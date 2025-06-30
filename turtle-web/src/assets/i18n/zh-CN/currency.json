@@ -1,0 +1,48 @@
+{
+  "currency": {
+    "title": "货币管理",
+    "search": {
+      "placeholder": "搜索货币代码或名称"
+    },
+    "add": "新增货币",
+    "edit": "编辑货币",
+    "delete": "删除货币",
+    "code": "货币代码",
+    "codePlaceholder": "请输入货币代码",
+    "codeHint": "例如: CNY, USD, EUR",
+    "codeRequired": "货币代码不能为空",
+    "codeMaxLength": "货币代码不能超过3个字符",
+    "base_currency": "基准货币标识",
+    "name": "货币名称",
+    "namePlaceholder": "请输入货币名称",
+    "nameRequired": "货币名称不能为空",
+    "nameMaxLength": "货币名称不能超过50个字符",
+    "symbol": "货币符号",
+    "symbolPlaceholder": "请输入货币符号",
+    "symbolRequired": "货币符号不能为空",
+    "symbolMaxLength": "货币符号不能超过5个字符",
+    "decimal_places": "小数位数",
+    "decimal_places_required": "小数位数不能为空",
+    "decimal_places_min": "小数位数不能小于0",
+    "decimal_places_max": "小数位数不能大于4",
+    "country": "使用国家/地区",
+    "country_placeholder": "请输入使用国家/地区",
+    "country_max_length": "国家/地区名称不能超过50个字符",
+    "exchange_rate": "汇率",
+    "exchange_rate_placeholder": "请输入汇率",
+    "exchangeRateHint": "相对于基准货币的汇率",
+    "exchangeRateMin": "汇率必须大于0",
+    "status": "启用状态",
+    "action": {
+      "setAsBase": "设为基准货币"
+    },
+    "message": {
+      "createSuccess": "货币创建成功",
+      "updateSuccess": "货币更新成功",
+      "deleteSuccess": "货币删除成功",
+      "setBaseSuccess": "基准货币设置成功",
+      "deleteConfirm": "确定要删除该货币吗？",
+      "cannotDeleteBase": "不能删除基准货币"
+    }
+  }
+}

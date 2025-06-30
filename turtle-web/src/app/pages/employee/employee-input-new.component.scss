@@ -1,0 +1,197 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.employee-input-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.tab-content {
+  padding: 20px;
+  height: 100%;
+  overflow: auto;
+}
+
+// Force light theme
+:host ::ng-deep {
+  .mat-mdc-dialog-container {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  .mat-mdc-dialog-title {
+    color: #000000 !important;
+  }
+
+  .mat-mdc-form-field {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  .mat-mdc-input-element {
+    color: #000000 !important;
+  }
+
+  .mat-mdc-form-field-label {
+    color: #666666 !important;
+  }
+
+  .mat-mdc-select {
+    color: #000000 !important;
+  }
+
+  .mat-mdc-select-value {
+    color: #000000 !important;
+  }
+
+  .mat-mdc-select-arrow {
+    color: #000000 !important;
+  }
+
+  .mat-mdc-button {
+    color: #000000 !important;
+  }
+
+  .mat-mdc-raised-button {
+    background-color: #1976d2 !important;
+    color: #ffffff !important;
+  }
+
+  .mat-mdc-checkbox {
+    color: #000000 !important;
+  }
+
+  .mat-mdc-radio-button {
+    color: #000000 !important;
+  }
+
+  .mat-mdc-slide-toggle {
+    color: #000000 !important;
+  }
+
+  .mat-mdc-datepicker {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  .mat-mdc-datepicker-toggle {
+    color: #000000 !important;
+  }
+
+  .mat-mdc-text-field-wrapper {
+    background-color: #ffffff !important;
+  }
+
+  .mat-mdc-form-field-focus-overlay {
+    background-color: #ffffff !important;
+  }
+
+  .mat-mdc-form-field-subscript-wrapper {
+    color: #666666 !important;
+  }
+
+  .mat-mdc-form-field-error {
+    color: #d32f2f !important;
+  }
+
+  .mat-mdc-form-field-hint {
+    color: #666666 !important;
+  }
+
+  // Tab styles
+  .mat-mdc-tab-group {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    height: 100%;
+  }
+
+  .mat-mdc-tab-header {
+    background-color: #f5f5f5 !important;
+    color: #000000 !important;
+  }
+
+  .mat-mdc-tab-label {
+    color: #000000 !important;
+  }
+
+  .mat-mdc-tab-label-active {
+    color: #1976d2 !important;
+  }
+
+  .mat-mdc-tab-header-pagination {
+    color: #000000 !important;
+  }
+
+  .mat-mdc-tab-body-content {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    height: 100%;
+  }
+
+  .mat-mdc-tab-body {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    height: 100%;
+  }
+
+  .mat-mdc-tab-body-wrapper {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    height: 100%;
+  }
+
+  .mat-mdc-tab-nav-bar {
+    background-color: #f5f5f5 !important;
+    color: #000000 !important;
+  }
+
+  .mat-mdc-tab-link {
+    color: #000000 !important;
+  }
+
+  .mat-mdc-tab-link-active {
+    color: #1976d2 !important;
+  }
+
+  .mat-mdc-tab-header-pagination-chevron {
+    color: #000000 !important;
+  }
+
+  .mat-mdc-tab-header-pagination-disabled {
+    color: #cccccc !important;
+  }
+
+  // Education and Job History tab specific styles
+  app-education-list-new,
+  app-job-history-list-new {
+    display: block;
+    height: 100%;
+    max-height: 600px;
+    overflow: hidden;
+  }
+
+  // List page component height control
+  app-list-page {
+    display: block;
+    height: 100%;
+    max-height: 600px;
+    overflow: hidden;
+  }
+
+  // Table container height control
+  .mat-mdc-table-container {
+    max-height: 500px;
+    overflow: auto;
+  }
+
+  // Paginator positioning
+  .mat-mdc-paginator {
+    position: sticky;
+    bottom: 0;
+    background-color: #ffffff !important;
+    z-index: 10;
+  }
+} 

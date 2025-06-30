@@ -1,0 +1,25 @@
+{
+  "invoice": {
+    "title": "发票管理",
+    "tab": "发票信息",
+    "add": "添加发票",
+    "add_title": "新增发票",
+    "edit_title": "编辑发票",
+    "delete_confirm": "确定要删除这张发票吗？",
+    "no": "发票号码",
+    "type": "发票类型",
+    "amount": "金额",
+    "tax_rate": "税率",
+    "tax_amount": "税额",
+    "total_amount": "总金额",
+    "invoice_date": "发票日期",
+    "buyer": "购方",
+    "seller": "销方",
+    "batch_no": "发票批次号",
+    "verification_code": "校验码",
+    "machine_code": "机器编号",
+    "cancelled": "已作废",
+    "cancel_date": "作废日期",
+    "remarks": "备注"
+  }
+}

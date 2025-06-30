@@ -22,6 +22,12 @@ import { EducationListComponent } from './education-list.component';
 import { EducationDialogComponent } from './education-dialog.component';
 import { JobHistoryListComponent } from './job-history-list.component';
 import { JobHistoryDialogComponent } from './job-history-dialog.component';
+import { EmployeeListNewComponent } from './employee-list-new.component';
+import { EmployeeInputNewComponent } from './employee-input-new.component';
+import { EducationListNewComponent } from './education-list-new.component';
+import { EducationInputNewComponent } from './education-input-new.component';
+import { JobHistoryListNewComponent } from './job-history-list-new.component';
+import { JobHistoryInputNewComponent } from './job-history-input-new.component';
 import { CompanyFilterSelectInputModule } from '../../components/company-filter-select-input/company-filter-select-input.module';
 import { BaseListModule } from '../../components/base-list/base-list.module';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -39,6 +45,12 @@ import { PositionFilterSelectInputModule } from '@app/components/position-filter
     EducationDialogComponent,
     JobHistoryListComponent,
     JobHistoryDialogComponent,
+    EmployeeListNewComponent,
+    EmployeeInputNewComponent,
+    EducationListNewComponent,
+    EducationInputNewComponent,
+    JobHistoryListNewComponent,
+    JobHistoryInputNewComponent,
   ],
   imports: [
     ActionModule,
@@ -74,6 +86,12 @@ import { PositionFilterSelectInputModule } from '@app/components/position-filter
     EducationDialogComponent,
     JobHistoryListComponent,
     JobHistoryDialogComponent,
+    EmployeeListNewComponent,
+    EmployeeInputNewComponent,
+    EducationListNewComponent,
+    EducationInputNewComponent,
+    JobHistoryListNewComponent,
+    JobHistoryInputNewComponent,
   ],
 })
 export class EmployeeModule {}

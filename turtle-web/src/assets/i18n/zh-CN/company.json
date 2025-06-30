@@ -1,0 +1,42 @@
+{
+  "company": {
+    "title": "公司管理",
+    "add_title": "新增公司",
+    "edit_title": "编辑公司",
+    "confirm_delete": "确定要删除该公司吗？",
+    "delete_success": "删除公司成功",
+    "create_success": "创建公司成功",
+    "update_success": "更新公司成功",
+    "status_updated": "公司状态已更新",
+    "primary_updated": "主公司设置成功",
+    "set_primary_title": "设置主公司",
+    "set_primary_confirm": "确定要将该公司设置为主公司吗？",
+    "delete_title": "删除公司",
+    "search_placeholder": "搜索公司名称、地址或电话",
+    "toggle_status": "切换状态",
+    "activate_selected": "批量激活",
+    "deactivate_selected": "批量停用",
+    "full_name": "公司全称",
+    "short_name": "公司简称",
+    "address": "公司地址",
+    "phone": "公司电话",
+    "email": "公司邮箱",
+    "website": "公司网站",
+    "type": "公司类型",
+    "status": "公司状态",
+    "remarks": "备注",
+    "full_name_placeholder": "请输入公司全称",
+    "short_name_placeholder": "请输入公司简称",
+    "address_placeholder": "请输入公司地址",
+    "phone_placeholder": "请输入公司电话",
+    "email_placeholder": "请输入公司邮箱",
+    "website_placeholder": "请输入公司网站",
+    "remarks_placeholder": "请输入备注信息",
+    "types": {
+      "PRIMARY": "主公司",
+      "CUSTOMER": "客户",
+      "SUPPLIER": "供应商",
+      "PROSPECT": "潜在客户"
+    }
+  }
+}

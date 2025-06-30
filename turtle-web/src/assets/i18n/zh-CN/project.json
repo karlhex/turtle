@@ -1,0 +1,47 @@
+{
+  "project": {
+    "title": "项目管理",
+    "search": {
+      "placeholder": "搜索项目编号或名称"
+    },
+    "field": {
+      "projectNo": "项目编号",
+      "projectName": "项目名称",
+      "startDate": "开始日期",
+      "endDate": "结束日期",
+      "status": "状态",
+      "manager": "负责人",
+      "remarks": "备注"
+    },
+    "actions": {
+      "add": "添加项目",
+      "edit": "编辑项目",
+      "delete": "删除项目",
+      "save": "保存",
+      "cancel": "取消"
+    },
+    "dialog": {
+      "create": "创建项目",
+      "edit": "编辑项目",
+      "basicInfo": "基本信息",
+      "contracts": "合同信息",
+      "projectNo": "项目编号",
+      "projectName": "项目名称",
+      "status": "项目状态",
+      "manager": "项目经理",
+      "startDate": "开始日期",
+      "endDate": "结束日期",
+      "remarks": "备注"
+    },
+    "validation": {
+      "required": {
+        "projectNo": "项目编号不能为空",
+        "projectName": "项目名称不能为空",
+        "status": "项目状态不能为空",
+        "manager": "项目经理不能为空",
+        "startDate": "开始日期不能为空",
+        "endDate": "结束日期不能为空"
+      }
+    }
+  }
+}
