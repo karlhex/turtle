@@ -1,4 +1,71 @@
 * README
+
+** 项目结构
+```
+turtle/
+├── backend/           # 后端项目 (Spring Boot)
+│   ├── src/          # 源代码
+│   ├── pom.xml       # Maven 配置文件
+│   ├── mvnw          # Maven Wrapper
+│   ├── deployment/   # 部署配置
+│   └── target/       # 构建输出
+├── frontend/         # 前端项目 (Angular)
+│   └── turtle-web/   # Angular 应用
+├── scripts/          # 开发脚本
+│   └── dev-setup.sh  # 开发环境设置脚本
+├── .git/            # Git 仓库
+├── .cursor/         # Cursor IDE 配置
+├── .husky/          # Git hooks
+├── .vscode/         # VS Code 配置
+├── LICENSE          # 许可证
+├── .gitignore       # Git 忽略文件
+├── Makefile         # 开发命令
+└── README.org       # 项目说明
+```
+
+** 快速开始
+
+*** 环境要求
+- Java 17+
+- Node.js 16+
+- npm 8+
+
+*** 开发命令
+```bash
+# 检查开发环境
+make check
+
+# 设置开发环境
+make setup
+
+# 启动后端服务
+make start-backend
+
+# 启动前端服务
+make start-frontend
+
+# 启动所有服务
+make start
+
+# 清理构建文件
+make clean
+
+# 构建项目
+make build
+```
+
+*** 手动启动
+```bash
+# 后端
+cd backend
+./mvnw spring-boot:run
+
+# 前端
+cd frontend/turtle-web
+npm install
+npm start
+```
+
 ** 系统介绍
 Turtle企业管理系统是一个全面的企业管理解决方案，旨在帮助公司简化和优化其业务流程。该系统采用现代化的 MVC 架构设计，提供高效、灵活的管理工具。
 
