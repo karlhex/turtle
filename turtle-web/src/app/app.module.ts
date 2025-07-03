@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule, HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS, HttpClient, HttpBackend } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // Material Modules
@@ -66,9 +66,28 @@ import { PositionModule } from './pages/position/position.module';
 import { DemoPageComponent } from './pages/demo/demo-page/demo-page.component';
 
 // AoT requires an exported function for factories
-export function HttpLoaderFactory(http: HttpClient) {
-  return new MultiTranslateHttpLoader(http, [
-    { prefix: './assets/i18n/zh-CN/', suffix: '.json' }
+export function HttpLoaderFactory(handler: HttpBackend) {
+  return new MultiTranslateHttpLoader(handler, [
+    { prefix: './assets/i18n/', suffix:'/menu.json' },
+    { prefix: './assets/i18n/', suffix:'/common.json' },
+    { prefix: './assets/i18n/', suffix:'/types.json' },
+    { prefix: './assets/i18n/', suffix:'/contract.json' },
+    { prefix: './assets/i18n/', suffix:'/currency.json' },
+    { prefix: './assets/i18n/', suffix:'/department.json' },
+    { prefix: './assets/i18n/', suffix:'/employee.json' },
+    { prefix: './assets/i18n/', suffix:'/inventory.json' },
+    { prefix: './assets/i18n/', suffix:'/project.json' },
+    { prefix: './assets/i18n/', suffix:'/role-permission.json' },
+    { prefix: './assets/i18n/', suffix:'/user-management.json' },
+    { prefix: './assets/i18n/', suffix:'/reimbursement.json' },
+    { prefix: './assets/i18n/', suffix:'/tax-info.json' },
+    { prefix: './assets/i18n/', suffix:'/bank-account.json' },
+    { prefix: './assets/i18n/', suffix:'/contact.json' },
+    { prefix: './assets/i18n/', suffix:'/position.json' },
+    { prefix: './assets/i18n/', suffix:'/user-management.json' },
+    { prefix: './assets/i18n/', suffix:'/reimbursement.json' },
+    { prefix: './assets/i18n/', suffix:'/tax-info.json' },
+    { prefix: './assets/i18n/', suffix:'/bank-account.json' },
   ]);
 }
 
@@ -141,7 +160,7 @@ export function HttpLoaderFactory(http: HttpClient) {
       loader: {
         provide: TranslateLoader,
         useFactory: HttpLoaderFactory,
-        deps: [HttpClient]
+        deps: [HttpBackend]
       }
     }),
   ],

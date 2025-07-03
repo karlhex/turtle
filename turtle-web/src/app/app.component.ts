@@ -28,8 +28,8 @@ export class AppComponent implements OnInit {
     private dialog: MatDialog
   ) {
     // Initialize translations
-    translate.setDefaultLang('zh');
-    translate.use('zh');
+    translate.setDefaultLang('zh-CN');
+    translate.use('zh-CN');
 
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))

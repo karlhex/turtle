@@ -59,7 +59,7 @@
           "female": "女",
           "other": "其他"
         },
-        "idNumber": "身份证号",
+        "id_number": "身份证号",
         "ethnicity": "民族",
         "idType": "证件类型",
         "idTypeCell": {
@@ -79,19 +79,14 @@
       "contract": {
         "title": "合同信息",
         "type_name": "合同类型",
-        "type": {
-          "full_time": "全职",
-          "part_time": "兼职",
-          "contractor": "外包",
-          "intern": "实习"
-        },
         "duration": "合同期限(月)",
-        "startDate": "合同开始日期"
+        "start_date": "合同开始日期",
+        "role": "合同角色",
+        "status": "合同状态"
       },
       "additional": {
         "title": "备注",
-        "remarks": "备注信息",
-        "status": "在职状态"
+        "remarks": "备注信息"
       }
     },
     "education": {

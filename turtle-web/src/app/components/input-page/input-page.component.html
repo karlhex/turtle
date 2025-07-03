@@ -346,7 +346,7 @@
               <!-- Date Picker -->
               <mat-form-field appearance="outline" class="full-width" *ngSwitchCase="'date'">
                 <mat-label>
-                  {{ field.label }}
+                  {{ field.label.toLowerCase() | translate }}
                   <span class="required-indicator" *ngIf="field.required">*</span>
                 </mat-label>
                 <input 

@@ -157,28 +157,28 @@ export class SidebarMenuComponent implements OnInit, OnDestroy {
 
   menuItems: MenuItem[] = [
     {
-      title: 'app.menu.dashboard',
+      title: 'menu.dashboard',
       icon: 'dashboard',
       route: '/dashboard',
     },
     {
-      title: 'app.menu.hr',
+      title: 'menu.hr',
       icon: 'people',
       children: [
         {
-          title: 'app.menu.employees',
+          title: 'menu.employees',
           icon: 'badge',
           route: '/employees',
           permission: 'hr.employee.view',
         },
         {
-          title: 'app.menu.departments',
+          title: 'menu.departments',
           icon: 'business',
           route: '/departments',
           permission: 'hr.department.view',
         },
         {
-          title: 'app.menu.positions',
+          title: 'menu.positions',
           icon: 'work',
           route: '/positions',
         },
@@ -186,17 +186,17 @@ export class SidebarMenuComponent implements OnInit, OnDestroy {
       divider: true,
     },
     {
-      title: 'app.menu.crm',
+      title: 'menu.crm',
       icon: 'contacts',
       children: [
         {
-          title: 'app.menu.companies',
+          title: 'menu.companies',
           icon: 'business',
           route: '/companies',
           permission: 'crm.company.view',
         },
         {
-          title: 'app.menu.contacts',
+          title: 'menu.contacts',
           icon: 'person',
           route: '/contacts',
           permission: 'crm.contact.view',
@@ -205,31 +205,31 @@ export class SidebarMenuComponent implements OnInit, OnDestroy {
       divider: true,
     },
     {
-      title: 'app.menu.contract_management',
+      title: 'menu.contract_management',
       icon: 'description',
       children: [
         {
-          title: 'app.menu.contracts',
+          title: 'menu.contracts',
           icon: 'description',
           route: '/contracts',
         },
         {
-          title: 'app.menu.projects',
+          title: 'menu.projects',
           icon: 'calendar_today',
           route: '/projects',
         },
         {
-          title: 'app.menu.products',
+          title: 'menu.products',
           icon: 'inventory_2',
           route: '/products',
         },
         {
-          title: 'app.menu.tax_info',
+        title: 'menu.tax_info',
           icon: 'receipt',
           route: '/tax-infos',
         },
         {
-          title: 'inventory.title',
+          title: 'menu.inventory',
           icon: 'inventory_2',
           route: '/inventories',
         },
@@ -237,21 +237,21 @@ export class SidebarMenuComponent implements OnInit, OnDestroy {
       divider: true,
     },
     {
-      title: 'app.menu.financial',
+      title: 'menu.financial',
       icon: 'account_balance',
       children: [
         {
-          title: 'app.menu.bank_accounts',
+          title: 'menu.bank_accounts',
           icon: 'account_balance_wallet',
           route: '/bank-accounts',
         },
         {
-          title: 'app.menu.reimbursement',
+          title: 'menu.reimbursement',
           icon: 'receipt_long',
           route: '/reimbursements',
         },
         {
-          title: 'app.menu.currencies',
+          title: 'menu.currencies',
           icon: 'currency_exchange',
           route: '/currencies',
         },
@@ -259,16 +259,16 @@ export class SidebarMenuComponent implements OnInit, OnDestroy {
       divider: true,
     },
     {
-      title: 'app.menu.system',
+      title: 'menu.system',
       icon: 'settings',
       children: [
         {
-          title: 'app.menu.users',
+          title: 'menu.users',
           icon: 'manage_accounts',
           route: '/users',
         },
         {
-          title: 'app.menu.role_permissions',
+          title: 'menu.role_permissions',
           icon: 'security',
           route: '/role-permissions',
         },

@@ -67,20 +67,22 @@ export interface Employee extends BaseModel {
   employeeNumber: string;
   email?: string;
   phone?: string;
+  departmentId?: number;
+  positionId?: number;
   department?: Department;
   position?: Position;
   status: EmployeeStatus;
-  hireDate?: Date;
-  leaveDate?: Date;
+  hireDate?: string | Date;
+  leaveDate?: string | Date;
   remarks?: string;
   emergencyContactName?: string;
   emergencyContactPhone?: string;
-  birthday?: Date;
+  birthday?: string | Date;
   gender?: string;
   ethnicity?: string;
   contractType?: string;
   contractDuration?: number;
-  contractStartDate?: Date;
+  contractStartDate?: string | Date;
   idType?: string;
   idNumber: string;
   user?: User;
@@ -88,5 +90,4 @@ export interface Employee extends BaseModel {
   attendances?: EmployeeAttendance[];
   leaves?: EmployeeLeave[];
   jobHistories?: EmployeeJobHistory[];
-  role?: EmployeeRole;
 }

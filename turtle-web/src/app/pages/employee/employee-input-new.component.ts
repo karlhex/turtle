@@ -164,28 +164,15 @@ export class EmployeeInputNewComponent implements OnInit {
       },
       {
         key: 'status',
-        label: 'EMPLOYEE.FORM.ADDITIONAL.STATUS',
+        label: 'EMPLOYEE.FORM.CONTRACT.STATUS',
         type: 'select',
         required: true,
         width: 2,
         options: [
-          { value: EmployeeStatus.APPLICATION, label: 'EMPLOYEE.STATUS.APPLICATION' },
-          { value: EmployeeStatus.ACTIVE, label: 'EMPLOYEE.STATUS.ACTIVE' },
-          { value: EmployeeStatus.RESIGNED, label: 'EMPLOYEE.STATUS.RESIGNED' },
-          { value: EmployeeStatus.SUSPENDED, label: 'EMPLOYEE.STATUS.SUSPENDED' }
-        ]
-      },
-      {
-        key: 'role',
-        label: 'EMPLOYEE.ROLE',
-        type: 'select',
-        required: false,
-        width: 2,
-        options: [
-          { value: EmployeeRole.HR_SPECIALIST, label: 'EMPLOYEE.ROLE.HR_SPECIALIST' },
-          { value: EmployeeRole.FINANCIAL_MANAGER, label: 'EMPLOYEE.ROLE.FINANCIAL_MANAGER' },
-          { value: EmployeeRole.DEPARTMENT_MANAGER, label: 'EMPLOYEE.ROLE.DEPARTMENT_MANAGER' },
-          { value: EmployeeRole.REGULAR_EMPLOYEE, label: 'EMPLOYEE.ROLE.REGULAR_EMPLOYEE' }
+          { value: EmployeeStatus.APPLICATION, label: this.translate.instant('types.employeestatus.application') },
+          { value: EmployeeStatus.ACTIVE, label: this.translate.instant('types.employeestatus.active') },
+          { value: EmployeeStatus.RESIGNED, label: this.translate.instant('types.employeestatus.resigned') },
+          { value: EmployeeStatus.SUSPENDED, label: this.translate.instant('types.employeestatus.suspended') }
         ]
       },
       {
@@ -202,9 +189,9 @@ export class EmployeeInputNewComponent implements OnInit {
     showSaveButton: true,
     showCancelButton: true,
     showResetButton: true,
-    saveButtonText: 'COMMON.SAVE',
-    cancelButtonText: 'COMMON.CANCEL',
-    resetButtonText: 'COMMON.RESET'
+    saveButtonText: this.translate.instant('common.button.save'),
+    cancelButtonText: this.translate.instant('common.button.cancel'),
+    resetButtonText: this.translate.instant('common.button.reset')
   };
 
   initialData: any = {};

@@ -25,6 +25,7 @@
     "changePassword": "修改密码",
     "crm": "客户关系",
     "contacts": "联系人管理",
-    "companies": "公司管理"
+    "companies": "公司管理",
+    "inventory": "库存管理"
   }
 }
