@@ -274,5 +274,18 @@ export class SidebarMenuComponent implements OnInit, OnDestroy {
         },
       ],
     },
+    {
+      title: 'menu.workflow',
+      icon: 'account_tree',
+      children: [
+        // Workflow configurator removed (migrated to Flowable BPMN)
+        {
+          title: 'menu.flowable_admin',
+          icon: 'admin_panel_settings',
+          route: '/workflow/flowable-admin',
+ //         permission: 'workflow.admin',
+        },
+      ],
+    },
   ];
 }

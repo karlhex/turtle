@@ -1,0 +1,43 @@
+{
+    "folders": [
+        {
+            "name": "Turtle Root",
+            "path": "."
+        },
+        {
+            "name": "Backend",
+            "path": "./backend"
+        },
+        {
+            "name": "Frontend",
+            "path": "./frontend/turtle-web"
+        }
+    ],
+    "settings": {
+        "java.configuration.updateBuildConfiguration": "interactive",
+        "java.import.maven.enabled": true,
+        "java.import.gradle.enabled": false,
+        "maven.executable.path": "./mvnw",
+        "java.home": "",
+        "java.compile.nullAnalysis.mode": "automatic"
+    },
+    "launch": {
+        "configurations": [
+            {
+                "type": "java",
+                "name": "Launch TurtleBackendApplication",
+                "request": "launch",
+                "mainClass": "com.fwai.turtle.TurtleBackendApplication",
+                "projectName": "turtle",
+                "args": "",
+                "vmArgs": "",
+                "env": {
+                    "SPRING_PROFILES_ACTIVE": "dev"
+                },
+                "cwd": "${workspaceFolder}/backend",
+                "console": "integratedTerminal",
+                "stopOnEntry": false
+            }
+        ]
+    }
+}

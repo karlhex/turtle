@@ -21,9 +21,13 @@ public interface ReimbursementService {
     
     ReimbursementDTO apply(Long id);
     
+    ReimbursementDTO submitForApproval(Long id);
+    
     ReimbursementDTO approve(Long id);
     
     ReimbursementDTO reject(Long id, String reason);
+    
+    ReimbursementDTO resubmit(Long id);
     
     void delete(Long id);
 

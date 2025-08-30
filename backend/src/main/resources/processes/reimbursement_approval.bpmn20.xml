@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:flowable="http://flowable.org/bpmn"
+             targetNamespace="http://www.flowable.org/processdef">
+
+  <process id="reimbursement-approval" name="报销审批流程" isExecutable="true">
+    
+    <!-- 开始事件 - 提交报销申请 -->
+    <startEvent id="start" name="提交报销申请">
+      <documentation>员工提交报销申请，状态从DRAFT变为PENDING</documentation>
+    </startEvent>
+    
+    <!-- 更新状态为PENDING -->
+    <serviceTask id="updateToPending" name="更新状态为PENDING"
+                 flowable:expression="${reimbursementApprovalService.updateStatus(execution.getVariable('reimbursementId'), 'PENDING')}">
+      <documentation>将报销单状态更新为PENDING</documentation>
+    </serviceTask>
+    
+    <!-- 部门领导审批 -->
+    <userTask id="deptLeaderApproval" name="部门领导审批" 
+              flowable:candidateGroups="DEPT_LEADER"
+              flowable:formKey="deptLeaderApprovalForm">
+      <documentation>部门领导审批报销申请</documentation>
+    </userTask>
+    
+    <!-- 部门领导审批结果网关 -->
+    <exclusiveGateway id="deptApprovalGateway" name="部门领导审批结果">
+      <documentation>判断部门领导审批结果</documentation>
+    </exclusiveGateway>
+    
+    <!-- 财务审批 -->
+    <userTask id="financeApproval" name="财务审批"
+              flowable:candidateGroups="FINANCE_MANAGER"
+              flowable:formKey="financeApprovalForm">
+      <documentation>财务部门审批报销申请</documentation>
+    </userTask>
+    
+    <!-- 财务审批结果网关 -->
+    <exclusiveGateway id="financeApprovalGateway" name="财务审批结果">
+      <documentation>判断财务审批结果</documentation>
+    </exclusiveGateway>
+    
+    <!-- 金额判断网关 -->
+    <exclusiveGateway id="amountGateway" name="金额判断">
+      <documentation>根据报销金额决定是否需要总经理审批</documentation>
+    </exclusiveGateway>
+    
+    <!-- 总经理审批 (金额>1000时) -->
+    <userTask id="generalManagerApproval" name="总经理审批"
+              flowable:candidateGroups="GENERAL_MANAGER"
+              flowable:formKey="generalManagerApprovalForm">
+      <documentation>总经理审批高金额报销(>1000)</documentation>
+    </userTask>
+    
+    <!-- 总经理审批结果网关 -->
+    <exclusiveGateway id="generalManagerApprovalGateway" name="总经理审批结果">
+      <documentation>判断总经理审批结果</documentation>
+    </exclusiveGateway>
+    
+    <!-- 审批通过处理 -->
+    <serviceTask id="processApproval" name="处理审批通过"
+                 flowable:expression="${reimbursementApprovalService.processApproval(execution)}">
+      <documentation>处理审批通过，更新状态为APPROVED，通知申请人和财务</documentation>
+    </serviceTask>
+    
+    <!-- 审批拒绝处理 -->
+    <serviceTask id="processRejection" name="处理审批拒绝"
+                 flowable:expression="${reimbursementApprovalService.processRejection(execution)}">
+      <documentation>处理审批拒绝，更新状态为REJECTED，申请人可转回DRAFT重新申请</documentation>
+    </serviceTask>
+    
+    <!-- 审批通过结束事件 -->
+    <endEvent id="endApproved" name="审批通过">
+      <documentation>报销审批流程完成，申请通过</documentation>
+    </endEvent>
+    
+    <!-- 审批拒绝结束事件 -->
+    <endEvent id="endRejected" name="审批拒绝">
+      <documentation>报销审批流程完成，申请被拒绝</documentation>
+    </endEvent>
+    
+    <!-- 流程连接 -->
+    <!-- 开始 -> 更新状态为PENDING -->
+    <sequenceFlow id="flow1" sourceRef="start" targetRef="updateToPending"/>
+    
+    <!-- 更新状态 -> 部门领导审批 -->
+    <sequenceFlow id="flow2" sourceRef="updateToPending" targetRef="deptLeaderApproval"/>
+    
+    <!-- 部门领导审批 -> 判断结果 -->
+    <sequenceFlow id="flow3" sourceRef="deptLeaderApproval" targetRef="deptApprovalGateway"/>
+    
+    <!-- 部门领导审批通过 -> 财务审批 -->
+    <sequenceFlow id="flow4" sourceRef="deptApprovalGateway" targetRef="financeApproval">
+      <conditionExpression xsi:type="tFormalExpression">${approved == true}</conditionExpression>
+    </sequenceFlow>
+    
+    <!-- 部门领导审批拒绝 -> 处理拒绝 -->
+    <sequenceFlow id="flow5" sourceRef="deptApprovalGateway" targetRef="processRejection">
+      <conditionExpression xsi:type="tFormalExpression">${approved == false}</conditionExpression>
+    </sequenceFlow>
+    
+    <!-- 财务审批 -> 判断结果 -->
+    <sequenceFlow id="flow6" sourceRef="financeApproval" targetRef="financeApprovalGateway"/>
+    
+    <!-- 财务审批拒绝 -> 处理拒绝 -->
+    <sequenceFlow id="flow7" sourceRef="financeApprovalGateway" targetRef="processRejection">
+      <conditionExpression xsi:type="tFormalExpression">${approved == false}</conditionExpression>
+    </sequenceFlow>
+    
+    <!-- 财务审批通过 -> 金额判断 -->
+    <sequenceFlow id="flow8" sourceRef="financeApprovalGateway" targetRef="amountGateway">
+      <conditionExpression xsi:type="tFormalExpression">${approved == true}</conditionExpression>
+    </sequenceFlow>
+    
+    <!-- 金额<=1000 -> 处理通过 -->
+    <sequenceFlow id="flow9" sourceRef="amountGateway" targetRef="processApproval">
+      <conditionExpression xsi:type="tFormalExpression">${amount &lt;= 1000}</conditionExpression>
+    </sequenceFlow>
+    
+    <!-- 金额>1000 -> 总经理审批 -->
+    <sequenceFlow id="flow10" sourceRef="amountGateway" targetRef="generalManagerApproval">
+      <conditionExpression xsi:type="tFormalExpression">${amount &gt; 1000}</conditionExpression>
+    </sequenceFlow>
+    
+    <!-- 总经理审批 -> 判断结果 -->
+    <sequenceFlow id="flow11" sourceRef="generalManagerApproval" targetRef="generalManagerApprovalGateway"/>
+    
+    <!-- 总经理审批通过 -> 处理通过 -->
+    <sequenceFlow id="flow12" sourceRef="generalManagerApprovalGateway" targetRef="processApproval">
+      <conditionExpression xsi:type="tFormalExpression">${approved == true}</conditionExpression>
+    </sequenceFlow>
+    
+    <!-- 总经理审批拒绝 -> 处理拒绝 -->
+    <sequenceFlow id="flow13" sourceRef="generalManagerApprovalGateway" targetRef="processRejection">
+      <conditionExpression xsi:type="tFormalExpression">${approved == false}</conditionExpression>
+    </sequenceFlow>
+    
+    <!-- 处理通过 -> 结束(通过) -->
+    <sequenceFlow id="flow14" sourceRef="processApproval" targetRef="endApproved"/>
+    
+    <!-- 处理拒绝 -> 结束(拒绝) -->
+    <sequenceFlow id="flow15" sourceRef="processRejection" targetRef="endRejected"/>
+    
+  </process>
+</definitions>

@@ -1,0 +1,65 @@
+<div class="toolbar">
+  
+  <!-- 左侧：工作流名称 -->
+  <div class="toolbar-left">
+    <mat-form-field class="name-field">
+      <mat-label>工作流名称</mat-label>
+      <input matInput [(ngModel)]="workflowName" placeholder="输入工作流名称">
+      <mat-icon matSuffix>title</mat-icon>
+    </mat-form-field>
+  </div>
+
+  <!-- 中间：操作按钮 -->
+  <div class="toolbar-center">
+    <button mat-raised-button color="primary" 
+            (click)="saveWorkflow()" 
+            [disabled]="isSaving || !workflowName.trim()"
+            matTooltip="保存当前工作流">
+      <mat-icon *ngIf="!isSaving" fontIcon="save"></mat-icon>
+      <mat-progress-spinner *ngIf="isSaving" diameter="20" mode="indeterminate"></mat-progress-spinner>
+      {{isSaving ? '保存中...' : '保存'}}
+    </button>
+
+    <button mat-raised-button 
+            (click)="validateWorkflow()" 
+            [disabled]="isValidating"
+            matTooltip="验证工作流逻辑">
+      <mat-icon *ngIf="!isValidating" fontIcon="check_circle"></mat-icon>
+      <mat-progress-spinner *ngIf="isValidating" diameter="20" mode="indeterminate"></mat-progress-spinner>
+      {{isValidating ? '验证中...' : '验证'}}
+    </button>
+
+    <button mat-raised-button 
+            (click)="loadSampleWorkflow()"
+            matTooltip="加载示例工作流">
+      <mat-icon fontIcon="description"></mat-icon>
+      示例
+    </button>
+  </div>
+
+  <!-- 右侧：导入导出 -->
+  <div class="toolbar-right">
+        <button mat-stroked-button 
+            (click)="exportWorkflow()"
+            matTooltip="导出工作流为JSON">
+      <mat-icon fontIcon="download">download</mat-icon>
+      导出
+    </button>
+
+    <button mat-stroked-button 
+            (click)="fileInput.click()"
+            matTooltip="从JSON文件导入">
+      <mat-icon fontIcon="upload">upload</mat-icon>
+      导入
+      <input #fileInput type="file" accept=".json" (change)="importWorkflow($event)" hidden>
+    </button>
+
+    <button mat-stroked-button color="warn" 
+            (click)="clearWorkflow()"
+            matTooltip="清空当前工作流">
+      <mat-icon fontIcon="delete_outline">delete_outline</mat-icon>
+      清空
+    </button>
+  </div>
+
+</div>

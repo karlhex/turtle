@@ -1,14 +1,6 @@
 {
   "reimbursement": {
     "title": "报销管理",
-    "dialog": {
-      "createTitle": "新建报销单",
-      "editTitle": "编辑报销单",
-      "actions": {
-        "save": "保存草稿",
-        "submit": "提交报销单"
-      }
-    },
     "search": {
       "label": "搜索报销单",
       "placeholder": "搜索报销单号或申请人"
@@ -38,12 +30,48 @@
       "addItem": "添加明细",
       "removeItem": "删除明细",
       "approve": "审批通过",
-      "reject": "审批拒绝"
+      "reject": "审批拒绝",
+      "submit": "提交审批",
+      "submitForApproval": "提交审批",
+      "cancelApproval": "取消审批"
     },
     "status": {
+      "DRAFT": "草稿",
       "PENDING": "待审批",
       "APPROVED": "已通过",
       "REJECTED": "已拒绝"
+    },
+    "workflow": {
+      "status": "审批状态",
+      "currentStatus": "当前状态",
+      "currentStep": "当前步骤",
+      "currentApprover": "当前审批人",
+      "approvalSteps": "审批步骤",
+      "approvalHistory": "审批历史",
+      "submitConfirm": "确定要提交报销单进行审批吗？",
+      "submitSuccess": "报销单已成功提交审批",
+      "approveSuccess": "报销单审批通过",
+      "rejectSuccess": "报销单已拒绝",
+      "approveComments": "请输入审批意见：",
+      "rejectComments": "请输入拒绝原因："
+    },
+    "resubmit": "重新提交",
+    "dialog": {
+      "createTitle": "新建报销单",
+      "editTitle": "编辑报销单",
+      "deleteTitle": "删除报销单",
+      "resubmitTitle": "重新提交报销单",
+      "resubmitMessage": "确定要重新提交报销单 {{no}} 吗？",
+      "actions": {
+        "save": "保存草稿",
+        "submit": "提交报销单"
+      }
+    },
+    "success": {
+      "resubmitted": "报销单已成功重新提交"
+    },
+    "error": {
+      "resubmitFailed": "重新提交失败"
     }
   }
 }

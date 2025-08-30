@@ -1,0 +1,105 @@
+<div class="canvas-container" 
+     #canvas
+     (click)="onCanvasClick($event)"
+     (drop)="onCanvasDrop($event)"
+     (dragover)="onCanvasDragOver($event)"
+     [class.connecting]="isConnecting">
+  
+  <!-- 网格背景 -->
+  <div class="grid-background"></div>
+  
+  <!-- 连接线 -->
+  <svg class="workflow-canvas" width="100%" height="100%" #svg>
+    <!-- 临时连线 -->
+    <g *ngIf="isConnecting && tempConnection">
+      <line 
+        [attr.x1]="getNodeCoordinates(connectionSource).x"
+        [attr.y1]="getNodeCoordinates(connectionSource).y"
+        [attr.x2]="tempConnection.x"
+        [attr.y2]="tempConnection.y"
+        class="temp-edge"></line>
+    </g>
+    
+    <!-- 正式连线 -->
+    <g *ngFor="let edge of edges">
+      <line 
+        [attr.x1]="getNodeCoordinates(edge.source).x"
+        [attr.y1]="getNodeCoordinates(edge.source).y"
+        [attr.x2]="getNodeCoordinates(edge.target).x"
+        [attr.y2]="getNodeCoordinates(edge.target).y"
+        [ngClass]="getEdgeClass(edge)"></line>
+      
+      <!-- 连线标签 -->
+      <text 
+        [attr.x]="getEdgeMidpoint(edge).x"
+        [attr.y]="getEdgeMidpoint(edge).y - 5"
+        class="edge-label"
+        *ngIf="edge.label">
+        {{edge.label}}
+      </text>
+      
+      <!-- 箭头 -->
+      <polygon 
+        [attr.points]="getArrowPoints(edge)"
+        class="edge-arrow"></polygon>
+    </g>
+  </svg>
+  
+  <!-- 节点 -->
+  <div class="nodes-container">
+    <div *ngFor="let node of nodes"
+         class="workflow-node"
+         [ngClass]="getNodeClass(node)"
+         [style.left.px]="node.position.x - 30"
+         [style.top.px]="node.position.y - 15"
+         (mousedown)="onNodeMouseDown(node, $event)"
+         (click)="onNodeClick(node, $event)">
+      
+      <!-- 节点图标和标签 -->
+      <div class="node-content">
+        <mat-icon class="node-icon" fontIcon="{{getNodeIcon(node.type)}}">{{getNodeIcon(node.type)}}</mat-icon>
+        <span class="node-label">{{node.label}}</span>
+      </div>
+      
+      <      <!-- 节点操作按钮 -->
+      <div class="node-actions" *ngIf="selectedNode?.id === node.id">
+        <button mat-mini-fab 
+                class="connect-btn"
+                (click)="startConnection(node.id); $event.stopPropagation()"
+                matTooltip="开始连线"
+                color="primary"
+                style="background: #1976d2; color: white;">
+          <mat-icon fontIcon="link">🔗</mat-icon>
+        </button>
+        <button mat-mini-fab 
+                class="delete-btn"
+                (click)="deleteNode(node.id); $event.stopPropagation()"
+                matTooltip="删除节点"
+                color="warn"
+                style="background: #d32f2f; color: white;">
+          <mat-icon fontIcon="delete">🗑️</mat-icon>
+        </button>
+      </div>
+      
+      <!-- 连接目标区域（当连线模式时显示） -->
+      <div class="connection-target" 
+           *ngIf="isConnecting && connectionSource !== node.id"
+           (click)="finishConnection(node.id); $event.stopPropagation()">
+      </div>
+    </div>
+  </div>
+  
+  <!-- 提示信息 -->
+  <div class="canvas-hints" *ngIf="nodes.length === 0">
+    <div class="hint-text">
+      <mat-icon>info</mat-icon>
+      <p>从左侧拖拽节点到画布开始创建流程</p>
+    </div>
+  </div>
+  
+  <!-- 连线提示 -->
+  <div class="connection-hint" *ngIf="isConnecting">
+    <mat-icon>gesture</mat-icon>
+    <span>点击目标节点完成连线</span>
+  </div>
+</div>

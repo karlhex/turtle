@@ -14,7 +14,7 @@ import { CompanyListNewComponent } from './pages/company/company-list-new.compon
 import { ProductListNewComponent } from './pages/product/product-list-new.component';
 import { ProjectListComponent } from './pages/project/project-list.component';
 import { BankAccountListNewComponent } from './pages/bank-account/bank-account-list-new.component';
-import { ReimbursementListNewComponent } from './pages/reimbursement/reimbursement-list-new.component';
+import { ReimbursementListComponent } from './pages/reimbursement/reimbursement-list/reimbursement-list.component';
 import { RolePermissionListComponent } from './pages/role-permission/role-permission-list.component';
 import { ChangePasswordDialogComponent } from './pages/user-management/change-password-dialog/change-password-dialog.component';
 import { AuthGuard } from './guards/auth.guard';
@@ -22,6 +22,7 @@ import { InventoryListNewComponent } from './pages/inventory/inventory-list-new.
 import { ContactListNewComponent } from './pages/contact/contact-list-new.component';
 import { PositionListNewComponent } from './pages/position/position-list-new.component';
 import { DemoPageComponent } from './pages/demo/demo-page/demo-page.component';
+import { FlowableAdminComponent } from './pages/workflow/flowable-admin/flowable-admin.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -43,13 +44,16 @@ const routes: Routes = [
       { path: 'products', component: ProductListNewComponent },
       { path: 'projects', component: ProjectListComponent },
       { path: 'bank-accounts', component: BankAccountListNewComponent },
-      { path: 'reimbursements', component: ReimbursementListNewComponent },
+      { path: 'reimbursements', component: ReimbursementListComponent },
       { path: 'role-permissions', component: RolePermissionListComponent },
       { path: 'change-password', component: ChangePasswordDialogComponent },
       { path: 'inventories', component: InventoryListNewComponent },
       { path: 'contacts', component: ContactListNewComponent },
       { path: 'positions', component: PositionListNewComponent },
       { path: 'demo', component: DemoPageComponent },
+
+      // Workflow configuration - removed (migrated to Flowable BPMN)
+      { path: 'workflow/flowable-admin', component: FlowableAdminComponent },
 
       // Placeholder routes for future implementation
       { path: 'attendance', component: DashboardComponent },

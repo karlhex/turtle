@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:flowable="http://flowable.org/bpmn"
+             targetNamespace="http://www.flowable.org/processdef">
+
+  <process id="contract_approval" name="合同审批流程" isExecutable="true">
+    
+    <!-- 开始事件 -->
+    <startEvent id="start" name="提交合同审批">
+      <documentation>提交合同审批申请</documentation>
+    </startEvent>
+    
+    <!-- 项目经理初审 -->
+    <userTask id="projectManagerReview" name="项目经理初审" 
+              flowable:candidateGroups="PROJECT_MANAGER"
+              flowable:formKey="projectManagerReviewForm">
+      <documentation>项目经理对合同进行初步审查</documentation>
+    </userTask>
+    
+    <!-- 合同金额判断 -->
+    <exclusiveGateway id="contractAmountGateway" name="合同金额判断">
+      <documentation>根据合同金额决定审批流程</documentation>
+    </exclusiveGateway>
+    
+    <!-- 法务审核 (>10万) -->
+    <userTask id="legalReview" name="法务审核"
+              flowable:candidateGroups="LEGAL"
+              flowable:formKey="legalReviewForm">
+      <documentation>法务部门审核合同条款</documentation>
+    </userTask>
+    
+    <!-- 财务审核 -->
+    <userTask id="financeReview" name="财务审核"
+              flowable:candidateGroups="FINANCE_MANAGER"
+              flowable:formKey="financeReviewForm">
+      <documentation>财务部门审核合同财务条款</documentation>
+    </userTask>
+    
+    <!-- 总经理审批 (>50万) -->
+    <userTask id="generalManagerApproval" name="总经理审批"
+              flowable:candidateGroups="GENERAL_MANAGER"
+              flowable:formKey="generalManagerApprovalForm">
+      <documentation>总经理审批大额合同</documentation>
+    </userTask>
+    
+    <!-- CEO审批 (>100万) -->
+    <userTask id="ceoApproval" name="CEO审批"
+              flowable:candidateGroups="CEO"
+              flowable:formKey="ceoApprovalForm">
+      <documentation>CEO审批特大金额合同</documentation>
+    </userTask>
+    
+    <!-- 并行网关开始 -->
+    <parallelGateway id="parallelSplit" name="并行审核开始"/>
+    
+    <!-- 并行网关结束 -->
+    <parallelGateway id="parallelJoin" name="并行审核结束"/>
+    
+    <!-- 合同生效处理 -->
+    <serviceTask id="contractActivation" name="合同生效处理"
+                 flowable:expression="${contractApprovalService.activateContract(execution)}">
+      <documentation>处理合同审批通过后的生效逻辑</documentation>
+    </serviceTask>
+    
+    <!-- 合同拒绝处理 -->
+    <serviceTask id="contractRejection" name="合同拒绝处理"
+                 flowable:expression="${contractApprovalService.rejectContract(execution)}">
+      <documentation>处理合同审批拒绝后的业务逻辑</documentation>
+    </serviceTask>
+    
+    <!-- 审批通过结束 -->
+    <endEvent id="endApproved" name="合同生效">
+      <documentation>合同审批通过并生效</documentation>
+    </endEvent>
+    
+    <!-- 审批拒绝结束 -->
+    <endEvent id="endRejected" name="合同被拒">
+      <documentation>合同审批被拒绝</documentation>
+    </endEvent>
+    
+    <!-- 流程连接 -->
+    <sequenceFlow id="flow1" sourceRef="start" targetRef="projectManagerReview"/>
+    
+    <sequenceFlow id="flow2" sourceRef="projectManagerReview" targetRef="contractAmountGateway">
+      <conditionExpression xsi:type="tFormalExpression">${approved == true}</conditionExpression>
+    </sequenceFlow>
+    
+    <!-- 小额合同直接财务审核 -->
+    <sequenceFlow id="flow3" sourceRef="contractAmountGateway" targetRef="financeReview">
+      <conditionExpression xsi:type="tFormalExpression">${amount &lt;= 100000}</conditionExpression>
+    </sequenceFlow>
+    
+    <!-- 中额合同需要法务和财务并行审核 -->
+    <sequenceFlow id="flow4" sourceRef="contractAmountGateway" targetRef="parallelSplit">
+      <conditionExpression xsi:type="tFormalExpression">${amount &gt; 100000 &amp;&amp; amount &lt;= 500000}</conditionExpression>
+    </sequenceFlow>
+    
+    <!-- 大额合同需要法务、财务、总经理审批 -->
+    <sequenceFlow id="flow5" sourceRef="contractAmountGateway" targetRef="parallelSplit">
+      <conditionExpression xsi:type="tFormalExpression">${amount &gt; 500000 &amp;&amp; amount &lt;= 1000000}</conditionExpression>
+    </sequenceFlow>
+    
+    <!-- 特大额合同需要CEO最终审批 -->
+    <sequenceFlow id="flow6" sourceRef="contractAmountGateway" targetRef="parallelSplit">
+      <conditionExpression xsi:type="tFormalExpression">${amount &gt; 1000000}</conditionExpression>
+    </sequenceFlow>
+    
+    <!-- 并行审核分支 -->
+    <sequenceFlow id="flow7" sourceRef="parallelSplit" targetRef="legalReview"/>
+    <sequenceFlow id="flow8" sourceRef="parallelSplit" targetRef="financeReview"/>
+    
+    <!-- 并行审核汇聚 -->
+    <sequenceFlow id="flow9" sourceRef="legalReview" targetRef="parallelJoin"/>
+    <sequenceFlow id="flow10" sourceRef="financeReview" targetRef="parallelJoin"/>
+    
+    <!-- 根据金额决定后续审批 -->
+    <sequenceFlow id="flow11" sourceRef="parallelJoin" targetRef="generalManagerApproval">
+      <conditionExpression xsi:type="tFormalExpression">${amount &gt; 500000 &amp;&amp; amount &lt;= 1000000}</conditionExpression>
+    </sequenceFlow>
+    
+    <sequenceFlow id="flow12" sourceRef="parallelJoin" targetRef="ceoApproval">
+      <conditionExpression xsi:type="tFormalExpression">${amount &gt; 1000000}</conditionExpression>
+    </sequenceFlow>
+    
+    <sequenceFlow id="flow13" sourceRef="parallelJoin" targetRef="contractActivation">
+      <conditionExpression xsi:type="tFormalExpression">${amount &lt;= 500000}</conditionExpression>
+    </sequenceFlow>
+    
+    <!-- 最终审批到生效 -->
+    <sequenceFlow id="flow14" sourceRef="generalManagerApproval" targetRef="contractActivation">
+      <conditionExpression xsi:type="tFormalExpression">${approved == true}</conditionExpression>
+    </sequenceFlow>
+    
+    <sequenceFlow id="flow15" sourceRef="ceoApproval" targetRef="contractActivation">
+      <conditionExpression xsi:type="tFormalExpression">${approved == true}</conditionExpression>
+    </sequenceFlow>
+    
+    <!-- 小额合同直接审核流程 -->
+    <sequenceFlow id="flow16" sourceRef="financeReview" targetRef="contractActivation">
+      <conditionExpression xsi:type="tFormalExpression">${approved == true &amp;&amp; amount &lt;= 100000}</conditionExpression>
+    </sequenceFlow>
+    
+    <sequenceFlow id="flow17" sourceRef="contractActivation" targetRef="endApproved"/>
+    
+    <!-- 拒绝流程 -->
+    <sequenceFlow id="flow18" sourceRef="projectManagerReview" targetRef="contractRejection">
+      <conditionExpression xsi:type="tFormalExpression">${approved == false}</conditionExpression>
+    </sequenceFlow>
+    
+    <sequenceFlow id="flow19" sourceRef="financeReview" targetRef="contractRejection">
+      <conditionExpression xsi:type="tFormalExpression">${approved == false}</conditionExpression>
+    </sequenceFlow>
+    
+    <sequenceFlow id="flow20" sourceRef="generalManagerApproval" targetRef="contractRejection">
+      <conditionExpression xsi:type="tFormalExpression">${approved == false}</conditionExpression>
+    </sequenceFlow>
+    
+    <sequenceFlow id="flow21" sourceRef="ceoApproval" targetRef="contractRejection">
+      <conditionExpression xsi:type="tFormalExpression">${approved == false}</conditionExpression>
+    </sequenceFlow>
+    
+    <sequenceFlow id="flow22" sourceRef="contractRejection" targetRef="endRejected"/>
+    
+  </process>
+</definitions>

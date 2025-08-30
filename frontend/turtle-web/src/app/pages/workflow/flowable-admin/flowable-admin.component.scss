@@ -1,0 +1,228 @@
+.flowable-admin-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.mat-card {
+  margin-bottom: 20px;
+}
+
+.mat-card-header {
+  margin-bottom: 20px;
+}
+
+.mat-card-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.tab-content {
+  padding: 20px 0;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  
+  h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #333;
+  }
+}
+
+.filter-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  
+  mat-form-field {
+    width: 200px;
+  }
+}
+
+// 表格样式
+.mat-table {
+  width: 100%;
+  background: white;
+  
+  .mat-header-cell {
+    font-weight: 600;
+    color: #666;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .mat-cell {
+    border-bottom: 1px solid #f0f0f0;
+  }
+  
+  .mat-row {
+    &:hover {
+      background-color: #f8f9fa;
+    }
+  }
+}
+
+.instance-id {
+  font-family: 'Courier New', monospace;
+  font-size: 0.85em;
+  color: #666;
+  background-color: #f5f5f5;
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+// Chip 样式
+.mat-chip {
+  font-size: 0.8rem;
+  min-height: 24px;
+  line-height: 22px;
+  
+  &.mat-chip-selected {
+    &.mat-primary {
+      background-color: #4caf50;
+      color: white;
+    }
+    
+    &.mat-warn {
+      background-color: #ff9800;
+      color: white;
+    }
+    
+    &.mat-accent {
+      background-color: #2196f3;
+      color: white;
+    }
+  }
+}
+
+// 流程图覆盖层
+.diagram-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.diagram-container {
+  background: white;
+  border-radius: 8px;
+  max-width: 90%;
+  max-height: 90%;
+  overflow: auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.diagram-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  border-bottom: 1px solid #e0e0e0;
+  background-color: #f8f9fa;
+  
+  h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #333;
+  }
+}
+
+.diagram-content {
+  padding: 20px;
+  text-align: center;
+  
+  img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+  }
+}
+
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 40px;
+  color: #666;
+}
+
+// 响应式设计
+@media (max-width: 768px) {
+  .flowable-admin-container {
+    padding: 10px;
+  }
+  
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .filter-controls {
+    width: 100%;
+    
+    mat-form-field {
+      width: 100%;
+    }
+  }
+  
+  .diagram-container {
+    margin: 10px;
+    max-width: calc(100% - 20px);
+    max-height: calc(100% - 20px);
+  }
+  
+  .diagram-header {
+    padding: 12px 16px;
+  }
+  
+  .diagram-content {
+    padding: 12px;
+  }
+}
+
+// 按钮样式优化
+.mat-raised-button {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  
+  &:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.mat-icon-button {
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+  }
+  
+  &[color="warn"]:hover {
+    background-color: rgba(244, 67, 54, 0.04);
+  }
+}
+
+// Tab 样式
+.mat-tab-group {
+  .mat-tab-header {
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .mat-tab-body-content {
+    overflow: visible;
+  }
+}

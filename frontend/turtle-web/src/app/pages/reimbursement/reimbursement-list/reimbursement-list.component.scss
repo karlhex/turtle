@@ -30,3 +30,41 @@ table {
 .mat-column-approver {
   width: 120px;
 }
+
+.mat-column-workflowStatus {
+  width: 150px;
+}
+
+.status-badge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  display: inline-block;
+  margin-right: 8px;
+
+  &.status-draft {
+    background-color: #e3f2fd;
+    color: #1976d2;
+  }
+
+  &.status-pending {
+    background-color: #fff3e0;
+    color: #f57c00;
+  }
+
+  &.status-approved {
+    background-color: #e8f5e8;
+    color: #388e3c;
+  }
+
+  &.status-rejected {
+    background-color: #ffebee;
+    color: #d32f2f;
+  }
+
+  &.status-completed {
+    background-color: #e8f5e8;
+    color: #388e3c;
+  }
+}

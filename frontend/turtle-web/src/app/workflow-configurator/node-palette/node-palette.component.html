@@ -1,0 +1,36 @@
+<div class="palette-container">
+  <div class="palette-header">
+    <h3>节点库</h3>
+    <mat-icon class="header-icon">widgets</mat-icon>
+  </div>
+  
+  <div class="node-list">
+    <div *ngFor="let nodeType of nodeTypes"
+         class="node-item"
+         draggable="true"
+         (dragstart)="onDragStart($event, nodeType.type)"
+         (dragend)="onDragEnd($event)"
+         matTooltip="{{nodeType.description}}"
+         matTooltipPosition="right">
+      
+      <div class="node-preview"
+           [ngClass]="'preview-' + nodeType.type">
+        <mat-icon>{{nodeType.icon}}</mat-icon>
+      </div>
+      
+      <div class="node-info">
+        <div class="node-label">{{nodeType.label}}</div>
+        <div class="node-description">{{nodeType.description}}</div>
+      </div>
+      
+      <mat-icon class="drag-handle">drag_indicator</mat-icon>
+    </div>
+  </div>
+  
+  <div class="palette-footer">
+    <div class="usage-tips">
+      <mat-icon>lightbulb_outline</mat-icon>
+      <span>拖拽节点到画布创建流程</span>
+    </div>
+  </div>
+</div>

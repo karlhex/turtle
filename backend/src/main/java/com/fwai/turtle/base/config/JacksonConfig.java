@@ -1,4 +1,4 @@
-package com.fwai.turtle.config;
+package com.fwai.turtle.base.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:flowable="http://flowable.org/bpmn"
+             targetNamespace="http://www.flyingum.org/processdef">
+
+  <process id="flyingum-sales-contract-approval" name="FlyingUM销售合同审批流程" isExecutable="true">
+    
+    <!-- 开始事件 -->
+    <startEvent id="start" name="创建销售合同">
+      <documentation>销售人员输入销售合同数据，STATUS=DRAFT</documentation>
+    </startEvent>
+    
+    <!-- 更新状态为PENDING -->
+    <serviceTask id="updateToPending" name="更新状态为PENDING"
+                 flowable:expression="${flyingUMSalesContractService.updateStatus(execution.getVariable('contractId'), 'PENDING')}">
+      <documentation>销售人员提交合同，状态更新为PENDING</documentation>
+    </serviceTask>
+    
+    <!-- 分配给采购人员验证 -->
+    <userTask id="purchasingValidation" name="采购人员验证"
+              flowable:candidateGroups="PURCHASING"
+              flowable:formKey="purchasingValidationForm">
+      <documentation>分配给采购人员检查合同并批准</documentation>
+      <extensionElements>
+        <flowable:taskListener event="create" expression="${flyingUMSalesContractService.assignPurchasing(task, execution)}"/>
+      </extensionElements>
+    </userTask>
+    
+    <!-- 采购验证结果网关 -->
+    <exclusiveGateway id="purchasingValidationGateway" name="采购验证结果"/>
+    
+    <!-- 更新状态为VALIDATED -->
+    <serviceTask id="updateToValidated" name="更新状态为VALIDATED"
+                 flowable:expression="${flyingUMSalesContractService.updateStatus(execution.getVariable('contractId'), 'VALIDATED')}">
+      <documentation>采购验证通过，状态更新为VALIDATED</documentation>
+    </serviceTask>
+    
+    <!-- 销售经理审批 -->
+    <userTask id="salesManagerApproval" name="销售经理审批"
+              flowable:candidateGroups="SALES_LEADER"
+              flowable:formKey="salesManagerApprovalForm">
+      <documentation>销售经理审批合同</documentation>
+    </userTask>
+    
+    <!-- 销售经理审批结果网关 -->
+    <exclusiveGateway id="salesManagerGateway" name="销售经理审批结果"/>
+    
+    <!-- 金额判断网关 -->
+    <exclusiveGateway id="amountGateway" name="金额判断">
+      <documentation>如果金额>100,000，需要CEO审批</documentation>
+    </exclusiveGateway>
+    
+    <!-- CEO审批 -->
+    <userTask id="ceoApproval" name="CEO审批"
+              flowable:candidateGroups="CEO"
+              flowable:formKey="ceoApprovalForm">
+      <documentation>CEO审批高金额销售合同(>100,000)</documentation>
+    </userTask>
+    
+    <!-- CEO审批结果网关 -->
+    <exclusiveGateway id="ceoApprovalGateway" name="CEO审批结果"/>
+    
+    <!-- 审批通过处理 -->
+    <serviceTask id="processApproval" name="处理审批通过"
+                 flowable:expression="${flyingUMSalesContractService.processApproval(execution)}">
+      <documentation>所有审批通过，STATUS=APPROVED</documentation>
+    </serviceTask>
+    
+    <!-- 审批拒绝处理 -->
+    <serviceTask id="processRejection" name="处理审批拒绝"
+                 flowable:expression="${flyingUMSalesContractService.processRejection(execution)}">
+      <documentation>审批拒绝，STATUS=REJECTED</documentation>
+    </serviceTask>
+    
+    <!-- 结束事件 -->
+    <endEvent id="endApproved" name="合同批准"/>
+    <endEvent id="endRejected" name="合同拒绝"/>
+    
+    <!-- 流程连接 -->
+    <sequenceFlow id="flow1" sourceRef="start" targetRef="updateToPending"/>
+    <sequenceFlow id="flow2" sourceRef="updateToPending" targetRef="purchasingValidation"/>
+    <sequenceFlow id="flow3" sourceRef="purchasingValidation" targetRef="purchasingValidationGateway"/>
+    
+    <!-- 采购验证通过 -->
+    <sequenceFlow id="flow4" sourceRef="purchasingValidationGateway" targetRef="updateToValidated">
+      <conditionExpression xsi:type="tFormalExpression">${approved == true}</conditionExpression>
+    </sequenceFlow>
+    <!-- 采购验证拒绝 -->
+    <sequenceFlow id="flow5" sourceRef="purchasingValidationGateway" targetRef="processRejection">
+      <conditionExpression xsi:type="tFormalExpression">${approved == false}</conditionExpression>
+    </sequenceFlow>
+    
+    <sequenceFlow id="flow6" sourceRef="updateToValidated" targetRef="salesManagerApproval"/>
+    <sequenceFlow id="flow7" sourceRef="salesManagerApproval" targetRef="salesManagerGateway"/>
+    
+    <!-- 销售经理审批通过 -->
+    <sequenceFlow id="flow8" sourceRef="salesManagerGateway" targetRef="amountGateway">
+      <conditionExpression xsi:type="tFormalExpression">${approved == true}</conditionExpression>
+    </sequenceFlow>
+    <!-- 销售经理审批拒绝 -->
+    <sequenceFlow id="flow9" sourceRef="salesManagerGateway" targetRef="processRejection">
+      <conditionExpression xsi:type="tFormalExpression">${approved == false}</conditionExpression>
+    </sequenceFlow>
+    
+    <!-- 金额<=100,000 直接通过 -->
+    <sequenceFlow id="flow10" sourceRef="amountGateway" targetRef="processApproval">
+      <conditionExpression xsi:type="tFormalExpression">${amount &lt;= 100000}</conditionExpression>
+    </sequenceFlow>
+    <!-- 金额>100,000 需要CEO审批 -->
+    <sequenceFlow id="flow11" sourceRef="amountGateway" targetRef="ceoApproval">
+      <conditionExpression xsi:type="tFormalExpression">${amount &gt; 100000}</conditionExpression>
+    </sequenceFlow>
+    
+    <sequenceFlow id="flow12" sourceRef="ceoApproval" targetRef="ceoApprovalGateway"/>
+    <sequenceFlow id="flow13" sourceRef="ceoApprovalGateway" targetRef="processApproval">
+      <conditionExpression xsi:type="tFormalExpression">${approved == true}</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow14" sourceRef="ceoApprovalGateway" targetRef="processRejection">
+      <conditionExpression xsi:type="tFormalExpression">${approved == false}</conditionExpression>
+    </sequenceFlow>
+    
+    <sequenceFlow id="flow15" sourceRef="processApproval" targetRef="endApproved"/>
+    <sequenceFlow id="flow16" sourceRef="processRejection" targetRef="endRejected"/>
+    
+  </process>
+</definitions>

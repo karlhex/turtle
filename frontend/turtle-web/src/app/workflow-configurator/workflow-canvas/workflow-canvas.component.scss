@@ -1,0 +1,258 @@
+.canvas-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #fafafa;
+  overflow: hidden;
+  border: 1px solid #e0e0e0;
+  
+  &.connecting {
+    cursor: crosshair;
+  }
+}
+
+.grid-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(circle, #ddd 1px, transparent 1px);
+  background-size: 20px 20px;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.workflow-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  
+  .temp-edge {
+    stroke: #1976d2;
+    stroke-width: 2;
+    stroke-dasharray: 5,5;
+    fill: none;
+  }
+  
+  .workflow-edge {
+    stroke: #666;
+    stroke-width: 2;
+    fill: none;
+    
+    &.selected {
+      stroke: #d32f2f;
+      stroke-width: 3;
+    }
+  }
+  
+  .edge-label {
+    font-size: 12px;
+    fill: #333;
+    text-anchor: middle;
+    background: white;
+    padding: 2px 4px;
+    border-radius: 2px;
+  }
+  
+  .edge-arrow {
+    fill: #666;
+    stroke: #666;
+    stroke-width: 1;
+  }
+}
+
+.nodes-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.workflow-node {
+  position: absolute;
+  width: 120px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  cursor: move;
+  pointer-events: auto;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+  
+  .node-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    
+    .node-icon {
+      font-size: 24px;
+      margin-bottom: 4px;
+    }
+    
+    .node-label {
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 1.2;
+    }
+  }
+  
+  &.node-start {
+    background: #4caf50;
+    color: white;
+    
+    &:hover {
+      background: #66bb6a;
+    }
+    
+    .node-icon {
+      color: white;
+    }
+  }
+  
+  &.node-approval {
+    background: #ff9800;
+    color: white;
+    
+    &:hover {
+      background: #ffb74d;
+    }
+    
+    .node-icon {
+      color: white;
+    }
+  }
+  
+  &.node-condition {
+    background: #2196f3;
+    color: white;
+    transform: rotate(45deg);
+    
+    &:hover {
+      background: #42a5f5;
+    }
+    
+    .node-content {
+      transform: rotate(-45deg);
+    }
+    
+    .node-icon {
+      color: white;
+    }
+  }
+  
+  &.node-end {
+    background: #f44336;
+    color: white;
+    
+    &:hover {
+      background: #ef5350;
+    }
+    
+    .node-icon {
+      color: white;
+    }
+  }
+  
+  &.selected {
+    border: 2px solid #d32f2f;
+    box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.2);
+  }
+}
+
+.node-actions {
+  position: absolute;
+  top: -45px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 1000;
+  
+  button {
+    width: 36px;
+    height: 36px;
+    line-height: 36px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+  }
+}
+
+.connection-target {
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  border: 2px dashed #1976d2;
+  border-radius: 12px;
+  background: rgba(25, 118, 210, 0.1);
+  cursor: pointer;
+  
+  &:hover {
+    background: rgba(25, 118, 210, 0.2);
+  }
+}
+
+.canvas-hints {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: #666;
+  
+  .hint-text {
+    mat-icon {
+      font-size: 48px;
+      color: #ccc;
+      margin-bottom: 16px;
+    }
+    
+    p {
+      font-size: 16px;
+      color: #666;
+      margin: 0;
+    }
+  }
+}
+
+.connection-hint {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1976d2;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  z-index: 1000;
+  
+  mat-icon {
+    font-size: 18px;
+  }
+}

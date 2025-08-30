@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:flowable="http://flowable.org/bpmn"
+             targetNamespace="http://www.flyingum.org/processdef">
+
+  <process id="flyingum-reimbursement-approval" name="FlyingUM报销审批流程" isExecutable="true">
+    
+    <!-- 开始事件 -->
+    <startEvent id="start" name="提交报销申请">
+      <documentation>员工输入数据，STATUS=DRAFT，然后提交审批，STATUS=PENDING</documentation>
+    </startEvent>
+    
+    <!-- 更新状态为PENDING -->
+    <serviceTask id="updateToPending" name="更新状态为PENDING"
+                 flowable:expression="${flyingUMReimbursementService.updateStatus(execution.getVariable('reimbursementId'), 'PENDING')}">
+      <documentation>将报销单状态更新为PENDING</documentation>
+    </serviceTask>
+    
+    <!-- 部门经理审批 - 使用复杂角色逻辑 -->
+    <userTask id="deptManagerApproval" name="部门经理审批" 
+              flowable:candidateGroups="DEPT_MANAGER"
+              flowable:formKey="deptManagerApprovalForm">
+      <documentation>部门经理审批：根据申请人的部门动态确定审批人</documentation>
+      <extensionElements>
+        <flowable:taskListener event="create" expression="${flyingUMRoleService.assignDeptManager(task, execution)}"/>
+      </extensionElements>
+    </userTask>
+    
+    <!-- 部门经理审批结果网关 -->
+    <exclusiveGateway id="deptApprovalGateway" name="部门经理审批结果"/>
+    
+    <!-- 会计审批 -->
+    <userTask id="accountantApproval" name="会计审批"
+              flowable:candidateGroups="ACCOUNTANT"
+              flowable:formKey="accountantApprovalForm">
+      <documentation>会计审批报销申请</documentation>
+    </userTask>
+    
+    <!-- 会计审批结果网关 -->
+    <exclusiveGateway id="accountantApprovalGateway" name="会计审批结果"/>
+    
+    <!-- 金额判断网关 -->
+    <exclusiveGateway id="amountGateway" name="金额判断">
+      <documentation>如果金额超过1000，需要CEO审批</documentation>
+    </exclusiveGateway>
+    
+    <!-- CEO审批 -->
+    <userTask id="ceoApproval" name="CEO审批"
+              flowable:candidateGroups="CEO"
+              flowable:formKey="ceoApprovalForm">
+      <documentation>CEO审批高金额报销(>1000)</documentation>
+    </userTask>
+    
+    <!-- CEO审批结果网关 -->
+    <exclusiveGateway id="ceoApprovalGateway" name="CEO审批结果"/>
+    
+    <!-- 审批通过处理 -->
+    <serviceTask id="processApproval" name="处理审批通过"
+                 flowable:expression="${flyingUMReimbursementService.processApproval(execution)}">
+      <documentation>审批通过，STATUS=APPROVED，通知申请人和财务</documentation>
+    </serviceTask>
+    
+    <!-- 审批拒绝处理 -->
+    <serviceTask id="processRejection" name="处理审批拒绝"
+                 flowable:expression="${flyingUMReimbursementService.processRejection(execution)}">
+      <documentation>审批拒绝，STATUS=REJECTED，申请人可以转回DRAFT重新申请</documentation>
+    </serviceTask>
+    
+    <!-- 结束事件 -->
+    <endEvent id="endApproved" name="审批通过"/>
+    <endEvent id="endRejected" name="审批拒绝"/>
+    
+    <!-- 流程连接 -->
+    <sequenceFlow id="flow1" sourceRef="start" targetRef="updateToPending"/>
+    <sequenceFlow id="flow2" sourceRef="updateToPending" targetRef="deptManagerApproval"/>
+    <sequenceFlow id="flow3" sourceRef="deptManagerApproval" targetRef="deptApprovalGateway"/>
+    
+    <sequenceFlow id="flow4" sourceRef="deptApprovalGateway" targetRef="accountantApproval">
+      <conditionExpression xsi:type="tFormalExpression">${approved == true}</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow5" sourceRef="deptApprovalGateway" targetRef="processRejection">
+      <conditionExpression xsi:type="tFormalExpression">${approved == false}</conditionExpression>
+    </sequenceFlow>
+    
+    <sequenceFlow id="flow6" sourceRef="accountantApproval" targetRef="accountantApprovalGateway"/>
+    <sequenceFlow id="flow7" sourceRef="accountantApprovalGateway" targetRef="processRejection">
+      <conditionExpression xsi:type="tFormalExpression">${approved == false}</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow8" sourceRef="accountantApprovalGateway" targetRef="amountGateway">
+      <conditionExpression xsi:type="tFormalExpression">${approved == true}</conditionExpression>
+    </sequenceFlow>
+    
+    <sequenceFlow id="flow9" sourceRef="amountGateway" targetRef="processApproval">
+      <conditionExpression xsi:type="tFormalExpression">${amount &lt;= 1000}</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow10" sourceRef="amountGateway" targetRef="ceoApproval">
+      <conditionExpression xsi:type="tFormalExpression">${amount &gt; 1000}</conditionExpression>
+    </sequenceFlow>
+    
+    <sequenceFlow id="flow11" sourceRef="ceoApproval" targetRef="ceoApprovalGateway"/>
+    <sequenceFlow id="flow12" sourceRef="ceoApprovalGateway" targetRef="processApproval">
+      <conditionExpression xsi:type="tFormalExpression">${approved == true}</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow13" sourceRef="ceoApprovalGateway" targetRef="processRejection">
+      <conditionExpression xsi:type="tFormalExpression">${approved == false}</conditionExpression>
+    </sequenceFlow>
+    
+    <sequenceFlow id="flow14" sourceRef="processApproval" targetRef="endApproved"/>
+    <sequenceFlow id="flow15" sourceRef="processRejection" targetRef="endRejected"/>
+    
+  </process>
+</definitions>

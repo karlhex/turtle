@@ -23,7 +23,7 @@ import com.fwai.turtle.base.types.IdType;
  * 员工信息表
  */
 @Data
-@ToString(exclude = {"user", "educations", "attendances", "leaves", "jobHistories"})
+@ToString(exclude = {"user", "educations", "attendances", "leaves", "jobHistories", "department", "position"})
 @Entity
 @Builder
 @NoArgsConstructor
@@ -107,7 +107,7 @@ public class Employee {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    @JsonIgnoreProperties({"employee"})
+    @JsonIgnoreProperties({"employee", "roles"})
     private User user;            // 关联用户账号
 
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)

@@ -26,6 +26,10 @@
     "crm": "客户关系",
     "contacts": "联系人管理",
     "companies": "公司管理",
-    "inventory": "库存管理"
+    "inventory": "库存管理",
+    "workflow": "工作流管理",
+    "workflow_configurator": "流程配置",
+    "approvals": "审批管理",
+    "flowable_admin": "Flowable管理"
   }
 }

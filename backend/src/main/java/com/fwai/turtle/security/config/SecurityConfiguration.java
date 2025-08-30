@@ -38,7 +38,12 @@ public class SecurityConfiguration {
   private static final String[] AUTH_WHITELIST = {
       "/api/auth/**",
       "/h2-console/**",
-      "/hello"
+      "/hello",
+      "/actuator/health",
+      "/actuator/info",
+      "/actuator/metrics/**",
+      "/flowable-rest/**",
+      "/workflow/flowable-admin"
   };
 
   @Bean

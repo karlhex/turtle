@@ -1,0 +1,136 @@
+<div class="property-panel" *ngIf="selectedNode; else emptyPanel">
+  <!-- 面板头部 -->
+  <div class="panel-header">
+    <div class="header-content">
+      <mat-icon class="node-icon" [class]="'node-' + selectedNode.type">
+        {{getNodeTypeIcon()}}
+      </mat-icon>
+      <div class="header-text">
+        <h3 class="node-type-title">{{getNodeTypeTitle()}}</h3>
+        <span class="node-id">ID: {{selectedNode.id}}</span>
+      </div>
+    </div>
+    <button mat-icon-button (click)="deselectNode()" matTooltip="取消选择">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <!-- 属性表单 -->
+  <div class="panel-content">
+    <form [formGroup]="propertyForm">
+      <!-- 通用字段 -->
+      <div class="form-section" *ngIf="isFieldVisible('label')">
+        <mat-form-field class="full-width">
+          <mat-label>节点名称</mat-label>
+          <input matInput formControlName="label" placeholder="输入节点名称">
+          <mat-error *ngIf="getErrorMessage('label')">
+            {{getErrorMessage('label')}}
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- 审批节点字段 -->
+      <div class="form-section" *ngIf="isFieldVisible('approver')">
+        <mat-form-field class="full-width">
+          <mat-label>审批人</mat-label>
+          <input matInput formControlName="approver" placeholder="具体审批人姓名">
+        </mat-form-field>
+      </div>
+
+      <div class="form-section" *ngIf="isFieldVisible('department')">
+        <mat-form-field class="full-width">
+          <mat-label>部门</mat-label>
+          <mat-select formControlName="department">
+            <mat-option *ngFor="let dept of departments" [value]="dept.value">
+              {{dept.label}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="form-section" *ngIf="isFieldVisible('role')">
+        <mat-form-field class="full-width">
+          <mat-label>角色</mat-label>
+          <mat-select formControlName="role">
+            <mat-option *ngFor="let role of roles" [value]="role.value">
+              {{role.label}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <!-- 条件节点字段 -->
+      <div class="form-section" *ngIf="isFieldVisible('condition')">
+        <mat-form-field class="full-width">
+          <mat-label>条件表达式</mat-label>
+          <textarea matInput formControlName="condition" 
+                    rows="3" 
+                    placeholder="例如: amount > 1000">
+          </textarea>
+          <mat-hint>支持简单的条件表达式</mat-hint>
+        </mat-form-field>
+      </div>
+
+      <div class="form-section" *ngIf="isFieldVisible('amountThreshold')">
+        <mat-form-field class="full-width">
+          <mat-label>金额阈值</mat-label>
+          <input matInput type="number" formControlName="amountThreshold" 
+                 placeholder="0">
+          <span matSuffix>元</span>
+          <mat-error *ngIf="getErrorMessage('amountThreshold')">
+            {{getErrorMessage('amountThreshold')}}
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- 描述字段 -->
+      <div class="form-section" *ngIf="isFieldVisible('description')">
+        <mat-form-field class="full-width">
+          <mat-label>描述</mat-label>
+          <textarea matInput formControlName="description" 
+                    rows="3" 
+                    placeholder="节点功能描述">
+          </textarea>
+          <mat-hint>用于说明节点的作用</mat-hint>
+          <mat-error *ngIf="getErrorMessage('description')">
+            {{getErrorMessage('description')}}
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </form>
+  </div>
+
+  <!-- 操作按钮 -->
+  <div class="panel-actions">
+    <button mat-raised-button color="primary" 
+            (click)="resetNodePosition()"
+            matTooltip="重置节点位置到画布中心">
+      <mat-icon>my_location</mat-icon>
+      重置位置
+    </button>
+    <button mat-raised-button color="warn" 
+            (click)="deleteSelectedNode()"
+            matTooltip="删除当前节点">
+      <mat-icon>delete</mat-icon>
+      删除节点
+    </button>
+  </div>
+
+  <!-- 节点预览 -->
+  <div class="node-preview-section">
+    <h4>节点预览</h4>
+    <div class="preview-container" [ngClass]="'preview-' + selectedNode.type">
+      <mat-icon>{{getNodeTypeIcon()}}</mat-icon>
+      <span>{{selectedNode.label}}</span>
+    </div>
+  </div>
+</div>
+
+<!-- 空状态 -->
+<ng-template #emptyPanel>
+  <div class="empty-panel">
+    <mat-icon class="empty-icon">touch_app</mat-icon>
+    <h3>选择节点</h3>
+    <p>点击画布中的节点来编辑其属性</p>
+  </div>
+</ng-template>

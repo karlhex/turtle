@@ -115,7 +115,8 @@
               "browserTarget": "turtle-web:build:production"
             },
             "development": {
-              "browserTarget": "turtle-web:build:development"
+              "browserTarget": "turtle-web:build:development",
+              "proxyConfig": "src/proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"

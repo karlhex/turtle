@@ -1,0 +1,131 @@
+# Production configuration for Flowable workflow integration
+spring:
+  datasource:
+    hikari:
+      # 连接池优化
+      maximum-pool-size: 20
+      minimum-idle: 5
+      idle-timeout: 300000
+      max-lifetime: 1800000
+      connection-timeout: 30000
+      validation-timeout: 5000
+      leak-detection-threshold: 60000
+  jpa:
+    show-sql: false
+    properties:
+      hibernate:
+        # 批处理优化
+        jdbc:
+          batch_size: 25
+          order_inserts: true
+          order_updates: true
+        # 缓存配置
+        cache:
+          use_second_level_cache: true
+          use_query_cache: true
+          region:
+            factory_class: org.hibernate.cache.ehcache.EhCacheRegionFactory
+  # Redis缓存优化
+  data:
+    redis:
+      timeout: 5000
+      lettuce:
+        pool:
+          max-active: 20
+          max-wait: -1
+          max-idle: 10
+          min-idle: 2
+        shutdown-timeout: 2000
+
+# Flowable生产环境配置
+flowable:
+  # 数据库配置
+  database-schema-update: true  # 生产环境建议设为false，手动管理schema
+  db-identity-used: true
+  
+  # 异步执行器优化
+  async-executor-activate: true
+  async-executor:
+    core-pool-size: 4
+    max-pool-size: 20
+    keep-alive-time: 10000
+    queue-capacity: 500
+    thread-name-prefix: flowable-async-job-
+    timer-lock-time: 300000
+    async-job-lock-time: 300000
+    default-async-job-acquire-wait-time: 10000
+    default-timer-job-acquire-wait-time: 10000
+    max-async-jobs-due-per-acquisition: 1
+  
+  # 历史数据管理
+  history-level: audit
+  history-cleanup:
+    enabled: true
+    batch-size: 100
+    
+  # 事件监听器
+  enable-event-dispatcher: true
+  
+  # 性能优化
+  enable-safe-xml-parsing: false
+  disable-event-registry: false
+  
+  # 作业执行器配置
+  job-executor:
+    max-pool-size: 10
+    core-pool-size: 2
+    queue-capacity: 100
+    keep-alive-time: 5000
+    
+  # 数据库配置
+  database:
+    type: postgres
+    
+# 日志配置
+logging:
+  level:
+    org.flowable: WARN
+    com.fwai.turtle.modules.workflow: INFO
+    org.springframework.transaction: WARN
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/turtle-workflow.log
+    max-size: 10MB
+    max-history: 30
+
+# 监控和度量
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,flowable
+  endpoint:
+    health:
+      show-details: when-authorized
+  metrics:
+    enable:
+      flowable: true
+    export:
+      prometheus:
+        enabled: true
+
+# 工作流性能配置
+workflow:
+  performance:
+    # 批处理大小
+    batch-size: 50
+    # 查询超时时间（毫秒）
+    query-timeout: 30000
+    # 任务完成超时时间（毫秒）
+    task-completion-timeout: 60000
+    # 流程实例清理配置
+    cleanup:
+      enabled: true
+      # 保留完成流程实例的天数
+      retention-days: 90
+      # 清理任务执行间隔（小时）
+      cleanup-interval-hours: 24
+      # 每次清理的批次大小
+      cleanup-batch-size: 100

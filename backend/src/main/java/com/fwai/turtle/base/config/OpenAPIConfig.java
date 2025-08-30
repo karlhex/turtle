@@ -1,4 +1,4 @@
-package com.fwai.turtle.config;
+package com.fwai.turtle.base.config;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;

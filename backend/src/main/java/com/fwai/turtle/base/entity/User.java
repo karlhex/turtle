@@ -30,7 +30,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Data
-@ToString(exclude = "employee")
+@ToString(exclude = {"employee", "roles","password"})
 @Entity
 @Builder
 @NoArgsConstructor
@@ -83,7 +83,7 @@ public class User {
     private Set<Role> roles = new HashSet<>();
 
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
-    @JsonIgnoreProperties({"user","educations", "attendances", "leaves", "jobHistories"})
+    @JsonIgnoreProperties({"user","educations", "attendances", "leaves", "jobHistories", "department", "position"})
     private Employee employee;    // 关联员工信息
 
     @CreationTimestamp

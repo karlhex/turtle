@@ -4,6 +4,8 @@ import com.fwai.turtle.base.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -11,11 +13,13 @@ import java.time.LocalDate;
 @Data
 @Entity
 @Table(name = "reimbursement_items")
+@ToString(exclude = "reimbursement")
 @EqualsAndHashCode(callSuper = true)
 public class ReimbursementItem extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reimbursement_id", nullable = false)
+    @JsonIgnore
     private Reimbursement reimbursement;  // 所属报销单
 
     @Column(nullable = false, precision = 19, scale = 2)

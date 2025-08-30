@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { ReimbursementService } from '../../../services/reimbursement.service';
@@ -16,6 +16,7 @@ import { Employee } from '../../../models/employee.model';
 import { Project } from '../../../models/project.model';
 import { ProjectStatus } from '../../../types/project-status.enum';
 import { ReimbursementStatus } from '../../../types/reimbursement-status.enum';
+import { ConfirmDialogComponent } from '../../../components/confirm-dialog/confirm-dialog.component';
 
 interface DialogData {
   mode: 'create' | 'edit';
@@ -38,19 +39,35 @@ export class ReimbursementDialogComponent implements OnInit {
 
   get isReadOnly(): boolean {
     return (
-      this.status === ReimbursementStatus.PENDING || this.status === ReimbursementStatus.APPROVED
+      this.status === ReimbursementStatus.PENDING || 
+      this.status === ReimbursementStatus.APPROVED ||
+      this.status === ReimbursementStatus.REJECTED
     );
+  }
+
+  // 计算权限的方法
+  get canSubmit(): boolean {
+    return !this.isReadOnly && this.data.reimbursement?.status === ReimbursementStatus.DRAFT;
+  }
+
+  get canApprove(): boolean {
+    return this.data.reimbursement?.status === ReimbursementStatus.PENDING;
+  }
+
+  get canReject(): boolean {
+    return this.data.reimbursement?.status === ReimbursementStatus.PENDING;
   }
 
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<ReimbursementDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) private data: DialogData,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private reimbursementService: ReimbursementService,
     private employeeService: EmployeeService,
     private projectService: ProjectService,
     private snackBar: MatSnackBar,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private dialog: MatDialog
   ) {
     this.mode = data.mode;
     this.form = this.createForm();
@@ -196,7 +213,7 @@ export class ReimbursementDialogComponent implements OnInit {
       };
 
       this.reimbursementService.create(request).subscribe({
-        next: () => {
+        next: (reimbursement: Reimbursement) => {
           this.snackBar.open(
             this.translate.instant('reimbursement.message.createSuccess'),
             this.translate.instant('common.action.close'),
@@ -222,7 +239,7 @@ export class ReimbursementDialogComponent implements OnInit {
       };
 
       this.reimbursementService.update(this.data.reimbursement!.id, request).subscribe({
-        next: () => {
+        next: (reimbursement: Reimbursement) => {
           this.snackBar.open(
             this.translate.instant('reimbursement.message.updateSuccess'),
             this.translate.instant('common.action.close'),
@@ -247,26 +264,38 @@ export class ReimbursementDialogComponent implements OnInit {
     if (this.form.invalid) return;
 
     this.loading = true;
-    const formValue = this.form.value;
-    formValue.status = ReimbursementStatus.PENDING;
 
     if (this.mode === 'create') {
       const request: CreateReimbursementRequest = {
-        ...formValue,
+        ...this.form.value,
         totalAmount: this.totalAmount,
       };
 
       this.reimbursementService.create(request).subscribe({
-        next: () => {
-          this.snackBar.open(
-            this.translate.instant('reimbursement.message.submitSuccess'),
-            this.translate.instant('common.action.close'),
-            { duration: 3000 }
-          );
-          this.dialogRef.close(true);
+        next: (reimbursement: Reimbursement) => {
+          // After creating, submit for approval
+          this.reimbursementService.submitForApproval(reimbursement.id).subscribe({
+            next: (reimbursement: Reimbursement) => {
+              this.snackBar.open(
+                this.translate.instant('reimbursement.message.submitSuccess'),
+                this.translate.instant('common.action.close'),
+                { duration: 3000 }
+              );
+              this.dialogRef.close(true);
+            },
+            error: error => {
+              console.error('Error submitting for approval:', error);
+              this.snackBar.open(
+                this.translate.instant('reimbursement.message.submitError'),
+                this.translate.instant('common.action.close'),
+                { duration: 3000 }
+              );
+              this.loading = false;
+            }
+          });
         },
         error: error => {
-          console.error('Error submitting reimbursement:', error);
+          console.error('Error creating reimbursement:', error);
           this.snackBar.open(
             this.translate.instant('reimbursement.message.submitError'),
             this.translate.instant('common.action.close'),
@@ -276,25 +305,41 @@ export class ReimbursementDialogComponent implements OnInit {
         },
       });
     } else {
+      // 编辑模式下，先保存再提交工作流
       const request: UpdateReimbursementRequest = {
-        ...formValue,
+        ...this.form.value,
         id: this.data.reimbursement!.id,
         totalAmount: this.totalAmount,
+        status: ReimbursementStatus.DRAFT // 确保状态保持为DRAFT
       };
 
       this.reimbursementService.update(this.data.reimbursement!.id, request).subscribe({
-        next: () => {
-          this.snackBar.open(
-            this.translate.instant('reimbursement.message.submitSuccess'),
-            this.translate.instant('common.action.close'),
-            { duration: 3000 }
-          );
-          this.dialogRef.close(true);
+        next: (reimbursement: Reimbursement) => {
+          // 保存成功后，提交审批
+          this.reimbursementService.submitForApproval(this.data.reimbursement!.id).subscribe({
+            next: (reimbursement: Reimbursement) => {
+              this.snackBar.open(
+                this.translate.instant('reimbursement.message.submitForApprovalSuccess'),
+                this.translate.instant('common.action.close'),
+                { duration: 3000 }
+              );
+              this.dialogRef.close(true);
+            },
+            error: error => {
+              console.error('Error submitting for approval:', error);
+              this.snackBar.open(
+                this.translate.instant('reimbursement.message.submitForApprovalError'),
+                this.translate.instant('common.action.close'),
+                { duration: 3000 }
+              );
+              this.loading = false;
+            },
+          });
         },
         error: error => {
-          console.error('Error submitting reimbursement:', error);
+          console.error('Error updating reimbursement:', error);
           this.snackBar.open(
-            this.translate.instant('reimbursement.message.submitError'),
+            this.translate.instant('reimbursement.message.updateError'),
             this.translate.instant('common.action.close'),
             { duration: 3000 }
           );
@@ -303,6 +348,42 @@ export class ReimbursementDialogComponent implements OnInit {
       });
     }
   }
+
+  submitForApproval(): void {
+    if (!this.data.reimbursement?.id) return;
+
+    this.loading = true;
+    this.reimbursementService.submitForApproval(this.data.reimbursement.id).subscribe({
+      next: (reimbursement: Reimbursement) => {
+        this.snackBar.open(
+          this.translate.instant('reimbursement.message.submitForApprovalSuccess'),
+          this.translate.instant('common.action.close'),
+          { duration: 3000 }
+        );
+        this.dialogRef.close(true);
+      },
+      error: error => {
+        console.error('Error submitting for approval:', error);
+        this.snackBar.open(
+          this.translate.instant('reimbursement.message.submitForApprovalError'),
+          this.translate.instant('common.action.close'),
+          { duration: 3000 }
+        );
+        this.loading = false;
+      },
+    });
+  }
+
+  approveReimbursement(): void {
+    // TODO: Implement Flowable-based approval
+    console.log('Approve functionality moved to Flowable workflow engine');
+  }
+
+  rejectReimbursement(): void {
+    // TODO: Implement Flowable-based rejection
+    console.log('Reject functionality moved to Flowable workflow engine');
+  }
+
 
   onCancel(): void {
     this.dialogRef.close();

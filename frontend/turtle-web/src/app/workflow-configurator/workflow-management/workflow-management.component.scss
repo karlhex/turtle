@@ -1,0 +1,42 @@
+.workflow-container {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 64px); /* 减去顶部工具栏高度 */
+  background: #f5f5f5;
+  overflow: hidden;
+  
+  h1 {
+    text-align: center;
+    color: #333;
+    margin: 16px 0;
+  }
+  
+  p {
+    text-align: center;
+    color: #666;
+    margin-bottom: 16px;
+  }
+}
+
+.workflow-content {
+  display: flex;
+  flex: 1;
+  min-height: 0; // 防止flex子项溢出
+  
+  app-node-palette {
+    flex: 0 0 200px;
+    background: white;
+    border-right: 1px solid #e0e0e0;
+  }
+  
+  app-workflow-canvas {
+    flex: 1;
+    background: #fafafa;
+  }
+  
+  app-property-panel {
+    flex: 0 0 300px;
+    background: white;
+    border-left: 1px solid #e0e0e0;
+  }
+}

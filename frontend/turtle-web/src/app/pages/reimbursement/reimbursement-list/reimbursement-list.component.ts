@@ -25,6 +25,7 @@ export class ReimbursementListComponent implements OnInit {
     'applicant',
     'project',
     'totalAmount',
+    'workflowStatus',
     'approvalDate',
     'approver',
     'actions',
@@ -147,6 +148,50 @@ export class ReimbursementListComponent implements OnInit {
             console.error('Error deleting reimbursement:', error);
             this.snackBar.open(
               this.translate.instant('reimbursement.error.deleteFailed'),
+              this.translate.instant('common.action.close'),
+              { duration: 3000 }
+            );
+            this.loading = false;
+          },
+        });
+      }
+    });
+  }
+
+  onView(reimbursement: Reimbursement): void {
+    const dialogRef = this.dialog.open(ReimbursementDialogComponent, {
+      width: '800px',
+      data: { mode: 'view', reimbursement },
+    });
+  }
+
+  onResubmit(reimbursement: Reimbursement): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        title: this.translate.instant('reimbursement.dialog.resubmitTitle'),
+        message: this.translate.instant('reimbursement.dialog.resubmitMessage', {
+          no: reimbursement.reimbursementNo,
+        }),
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.loading = true;
+        this.reimbursementService.resubmit(reimbursement.id).subscribe({
+          next: () => {
+            this.snackBar.open(
+              this.translate.instant('reimbursement.success.resubmitted'),
+              this.translate.instant('common.action.close'),
+              { duration: 3000 }
+            );
+            this.loadReimbursements();
+          },
+          error: error => {
+            console.error('Error resubmitting reimbursement:', error);
+            this.snackBar.open(
+              this.translate.instant('reimbursement.error.resubmitFailed'),
               this.translate.instant('common.action.close'),
               { duration: 3000 }
             );

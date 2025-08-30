@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import {
   Reimbursement,
   ReimbursementResponse,
@@ -31,39 +32,53 @@ export class ReimbursementService {
     if (params.approverId) httpParams = httpParams.set('approverId', params.approverId.toString());
     if (params.projectId) httpParams = httpParams.set('projectId', params.projectId.toString());
 
-    return this.http.get<ReimbursementResponse>(this.apiUrl, { params: httpParams });
+    return this.http.get<any>(this.apiUrl, { params: httpParams })
+      .pipe(map(response => response.data));
   }
 
   getById(id: number): Observable<Reimbursement> {
-    return this.http.get<Reimbursement>(`${this.apiUrl}/${id}`);
+    return this.http.get<any>(`${this.apiUrl}/${id}`)
+      .pipe(map(response => response.data));
   }
 
   getByReimbursementNo(reimbursementNo: string): Observable<Reimbursement> {
-    return this.http.get<Reimbursement>(`${this.apiUrl}/no/${reimbursementNo}`);
+    return this.http.get<any>(`${this.apiUrl}/no/${reimbursementNo}`)
+      .pipe(map(response => response.data));
   }
 
   create(request: CreateReimbursementRequest): Observable<Reimbursement> {
-    return this.http.post<Reimbursement>(this.apiUrl, request);
+    return this.http.post<any>(this.apiUrl, request)
+      .pipe(map(response => response.data));
   }
 
   update(id: number, request: UpdateReimbursementRequest): Observable<Reimbursement> {
-    return this.http.put<Reimbursement>(`${this.apiUrl}/${id}`, request);
+    return this.http.put<any>(`${this.apiUrl}/${id}`, request)
+      .pipe(map(response => response.data));
   }
 
   delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.http.delete<any>(`${this.apiUrl}/${id}`)
+      .pipe(map(response => response.data));
+  }
+
+  submitForApproval(id: number): Observable<Reimbursement> {
+    return this.http.post<any>(`${this.apiUrl}/${id}/submit`, {})
+      .pipe(map(response => response.data));
   }
 
   getByApplicant(applicantId: number): Observable<Reimbursement[]> {
-    return this.http.get<Reimbursement[]>(`${this.apiUrl}/applicant/${applicantId}`);
+    return this.http.get<any>(`${this.apiUrl}/applicant/${applicantId}`)
+      .pipe(map(response => response.data));
   }
 
   getByApprover(approverId: number): Observable<Reimbursement[]> {
-    return this.http.get<Reimbursement[]>(`${this.apiUrl}/approver/${approverId}`);
+    return this.http.get<any>(`${this.apiUrl}/approver/${approverId}`)
+      .pipe(map(response => response.data));
   }
 
   getByProject(projectId: number): Observable<Reimbursement[]> {
-    return this.http.get<Reimbursement[]>(`${this.apiUrl}/project/${projectId}`);
+    return this.http.get<any>(`${this.apiUrl}/project/${projectId}`)
+      .pipe(map(response => response.data));
   }
 
   getByDateRange(
@@ -78,6 +93,26 @@ export class ReimbursementService {
       .set('page', page.toString())
       .set('size', size.toString());
 
-    return this.http.get<ReimbursementResponse>(`${this.apiUrl}/date-range`, { params });
+    return this.http.get<any>(`${this.apiUrl}/date-range`, { params })
+      .pipe(map(response => response.data));
   }
+
+  approve(id: number): Observable<Reimbursement> {
+    return this.http.post<any>(`${this.apiUrl}/${id}/approve`, {})
+      .pipe(map(response => response.data));
+  }
+
+  reject(id: number, reason: string): Observable<Reimbursement> {
+    const params = new HttpParams().set('reason', reason);
+    return this.http.post<any>(`${this.apiUrl}/${id}/reject`, {}, { params })
+      .pipe(map(response => response.data));
+  }
+
+  resubmit(id: number): Observable<Reimbursement> {
+    return this.http.post<any>(`${this.apiUrl}/${id}/resubmit`, {})
+      .pipe(map(response => response.data));
+  }
+
+  // Reimbursement-specific business methods only
+  // Workflow operations are now handled by WorkflowService
 }

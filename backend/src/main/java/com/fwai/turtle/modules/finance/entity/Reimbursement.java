@@ -36,7 +36,7 @@ public class Reimbursement extends BaseEntity {
     @Column(name = "approval_comments")
     private String approvalComments;  // 审批意见
 
-    @Column(name = "project_id", nullable = false)
+    @Column(name = "project_id", nullable = true)
     private Long projectId;  // 关联项目ID
 
     @Column(name = "total_amount", nullable = false, precision = 19, scale = 2)
@@ -51,6 +51,7 @@ public class Reimbursement extends BaseEntity {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private ReimbursementStatus status;  // 状态：DRAFT-草稿, PENDING-待审批, APPROVED-已通过, REJECTED-已拒绝
+
 
     @PrePersist
     @PreUpdate

@@ -47,5 +47,6 @@ public interface ReimbursementMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "projectId", expression = "java(dto.getProjectId() == null ? 0L : dto.getProjectId())")
     void updateEntityFromDTO(ReimbursementDTO dto, @MappingTarget Reimbursement reimbursement);
 }

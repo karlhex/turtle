@@ -1,0 +1,312 @@
+<div class="flowable-admin-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>settings</mat-icon>
+        Flowable 工作流管理
+      </mat-card-title>
+      <mat-card-subtitle>流程定义、流程实例、任务管理</mat-card-subtitle>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <!-- Tab导航 -->
+      <mat-tab-group [(selectedIndex)]="selectedTabIndex" animationDuration="300ms">
+        
+        <!-- 流程定义管理 -->
+        <mat-tab label="流程定义">
+          <div class="tab-content">
+            <div class="section-header">
+              <h3>流程定义列表</h3>
+              <button mat-raised-button color="primary" (click)="refreshProcessDefinitions()">
+                <mat-icon>refresh</mat-icon>
+                刷新
+              </button>
+            </div>
+            
+            <mat-table [dataSource]="processDefinitionsDataSource" class="mat-elevation-z2">
+              <ng-container matColumnDef="key">
+                <mat-header-cell *matHeaderCellDef>流程KEY</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{ element.key }}</mat-cell>
+              </ng-container>
+              
+              <ng-container matColumnDef="name">
+                <mat-header-cell *matHeaderCellDef>流程名称</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{ element.name }}</mat-cell>
+              </ng-container>
+              
+              <ng-container matColumnDef="version">
+                <mat-header-cell *matHeaderCellDef>版本</mat-header-cell>
+                <mat-cell *matCellDef="let element">v{{ element.version }}</mat-cell>
+              </ng-container>
+              
+              <ng-container matColumnDef="deploymentId">
+                <mat-header-cell *matHeaderCellDef>部署ID</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{ element.deploymentId }}</mat-cell>
+              </ng-container>
+              
+              <ng-container matColumnDef="suspended">
+                <mat-header-cell *matHeaderCellDef>状态</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  <mat-chip [color]="element.suspended ? 'warn' : 'primary'" selected>
+                    {{ element.suspended ? '已暂停' : '活跃' }}
+                  </mat-chip>
+                </mat-cell>
+              </ng-container>
+              
+              <ng-container matColumnDef="actions">
+                <mat-header-cell *matHeaderCellDef>操作</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  <button mat-icon-button matTooltip="查看详情" (click)="viewProcessDefinition(element)">
+                    <mat-icon>visibility</mat-icon>
+                  </button>
+                  <button mat-icon-button matTooltip="启动流程" (click)="startProcessInstance(element.key)">
+                    <mat-icon>play_arrow</mat-icon>
+                  </button>
+                </mat-cell>
+              </ng-container>
+              
+              <mat-header-row *matHeaderRowDef="processDefinitionsColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: processDefinitionsColumns;"></mat-row>
+            </mat-table>
+          </div>
+        </mat-tab>
+        
+        <!-- 流程实例管理 -->
+        <mat-tab label="流程实例">
+          <div class="tab-content">
+            <div class="section-header">
+              <h3>运行中的流程实例</h3>
+              <button mat-raised-button color="primary" (click)="refreshProcessInstances()">
+                <mat-icon>refresh</mat-icon>
+                刷新
+              </button>
+            </div>
+            
+            <mat-table [dataSource]="processInstancesDataSource" class="mat-elevation-z2">
+              <ng-container matColumnDef="id">
+                <mat-header-cell *matHeaderCellDef>实例ID</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  <span class="instance-id">{{ element.id }}</span>
+                </mat-cell>
+              </ng-container>
+              
+              <ng-container matColumnDef="processDefinitionKey">
+                <mat-header-cell *matHeaderCellDef>流程KEY</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{ element.processDefinitionKey }}</mat-cell>
+              </ng-container>
+              
+              <ng-container matColumnDef="businessKey">
+                <mat-header-cell *matHeaderCellDef>业务KEY</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{ element.businessKey || '-' }}</mat-cell>
+              </ng-container>
+              
+              <ng-container matColumnDef="startTime">
+                <mat-header-cell *matHeaderCellDef>开始时间</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{ element.startTime | date:'yyyy-MM-dd HH:mm:ss' }}</mat-cell>
+              </ng-container>
+              
+              <ng-container matColumnDef="startUserId">
+                <mat-header-cell *matHeaderCellDef>启动用户</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{ element.startUserId || '-' }}</mat-cell>
+              </ng-container>
+              
+              <ng-container matColumnDef="suspended">
+                <mat-header-cell *matHeaderCellDef>状态</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  <mat-chip [color]="getInstanceStatusColor(element)" selected>
+                    {{ getInstanceStatusText(element) }}
+                  </mat-chip>
+                </mat-cell>
+              </ng-container>
+              
+              <ng-container matColumnDef="actions">
+                <mat-header-cell *matHeaderCellDef>操作</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  <button mat-icon-button matTooltip="查看流程图" (click)="viewProcessDiagram(element.id)">
+                    <mat-icon>account_tree</mat-icon>
+                  </button>
+                  <button mat-icon-button matTooltip="查看历史" (click)="viewProcessHistory(element.id)">
+                    <mat-icon>history</mat-icon>
+                  </button>
+                  <button mat-icon-button 
+                          [matTooltip]="element.suspended ? '激活' : '暂停'" 
+                          (click)="toggleProcessInstanceSuspension(element)">
+                    <mat-icon>{{ element.suspended ? 'play_arrow' : 'pause' }}</mat-icon>
+                  </button>
+                  <button mat-icon-button matTooltip="删除" color="warn" (click)="deleteProcessInstance(element.id)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </mat-cell>
+              </ng-container>
+              
+              <mat-header-row *matHeaderRowDef="processInstancesColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: processInstancesColumns;"></mat-row>
+            </mat-table>
+          </div>
+        </mat-tab>
+        
+        <!-- 任务管理 -->
+        <mat-tab label="任务管理">
+          <div class="tab-content">
+            <div class="section-header">
+              <h3>待办任务</h3>
+              <div class="user-controls">
+                <mat-form-field appearance="outline">
+                  <mat-label>当前用户ID</mat-label>
+                  <input matInput [(ngModel)]="currentUserId" placeholder="数字用户ID">
+                  <button mat-icon-button matSuffix (click)="setCurrentUser(currentUserId)">
+                    <mat-icon>person</mat-icon>
+                  </button>
+                </mat-form-field>
+                
+                <mat-form-field appearance="outline">
+                  <mat-label>按用户ID筛选</mat-label>
+                  <input matInput [(ngModel)]="taskFilterUserId" placeholder="输入数字用户ID">
+                  <button mat-icon-button matSuffix (click)="filterTasksByUser()">
+                    <mat-icon>search</mat-icon>
+                  </button>
+                </mat-form-field>
+                
+                <button mat-raised-button color="primary" (click)="refreshTasks()">
+                  <mat-icon>refresh</mat-icon>
+                  刷新
+                </button>
+                <button mat-raised-button color="accent" (click)="loadDebugInfo()">
+                  <mat-icon>bug_report</mat-icon>
+                  调试
+                </button>
+                <button mat-raised-button (click)="toggleDebugInfo()" *ngIf="debugInfo">
+                  <mat-icon>{{ showDebugInfo ? 'visibility_off' : 'visibility' }}</mat-icon>
+                  {{ showDebugInfo ? '隐藏' : '显示' }}调试信息
+                </button>
+              </div>
+            </div>
+            
+            <!-- Debug Information Section -->
+            <div *ngIf="showDebugInfo && debugInfo" class="debug-section">
+              <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>调试信息</mat-panel-title>
+                  <mat-panel-description>用户任务和角色信息</mat-panel-description>
+                </mat-expansion-panel-header>
+                
+                <div class="debug-content">
+                  <h4>用户信息</h4>
+                  <pre>{{ debugInfo.userDebugInfo | json }}</pre>
+                  
+                  <h4>任务统计</h4>
+                  <ul>
+                    <li>总活动任务: {{ debugInfo.totalActiveTasks }}</li>
+                    <li>用户任务: {{ debugInfo.userTasksCount }}</li>
+                    <li>已分配任务: {{ debugInfo.userAssignedTasksCount }}</li>
+                    <li>候选任务: {{ debugInfo.userCandidateTasksCount }}</li>
+                  </ul>
+                  
+                  <h4>候选组任务</h4>
+                  <ul>
+                    <li>部门经理任务: {{ debugInfo.deptLeaderTasksCount }}</li>
+                    <li>财务经理任务: {{ debugInfo.financeManagerTasksCount }}</li>
+                    <li>总经理任务: {{ debugInfo.generalManagerTasksCount }}</li>
+                  </ul>
+                </div>
+              </mat-expansion-panel>
+            </div>
+            
+            <mat-table [dataSource]="tasksDataSource" class="mat-elevation-z2">
+              <ng-container matColumnDef="name">
+                <mat-header-cell *matHeaderCellDef>任务名称</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{ element.name }}</mat-cell>
+              </ng-container>
+              
+              <ng-container matColumnDef="assignee">
+                <mat-header-cell *matHeaderCellDef>处理人</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{ element.assignee || '未分配' }}</mat-cell>
+              </ng-container>
+              
+              <ng-container matColumnDef="candidateGroups">
+                <mat-header-cell *matHeaderCellDef>候选组</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  <span *ngIf="element.candidateGroups && element.candidateGroups.length > 0">
+                    {{ element.candidateGroups.join(', ') }}
+                  </span>
+                  <span *ngIf="!element.candidateGroups || element.candidateGroups.length === 0">-</span>
+                </mat-cell>
+              </ng-container>
+              
+              <ng-container matColumnDef="createTime">
+                <mat-header-cell *matHeaderCellDef>创建时间</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{ element.createTime | date:'yyyy-MM-dd HH:mm:ss' }}</mat-cell>
+              </ng-container>
+              
+              <ng-container matColumnDef="processDefinitionKey">
+                <mat-header-cell *matHeaderCellDef>所属流程</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{ element.processDefinitionKey }}</mat-cell>
+              </ng-container>
+              
+              <ng-container matColumnDef="processInstanceId">
+                <mat-header-cell *matHeaderCellDef>流程实例ID</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  <span class="instance-id">{{ element.processInstanceId }}</span>
+                </mat-cell>
+              </ng-container>
+              
+              <ng-container matColumnDef="actions">
+                <mat-header-cell *matHeaderCellDef>操作</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  <button mat-icon-button matTooltip="认领任务(当前用户)" 
+                          [disabled]="!canClaimTask(element)" 
+                          (click)="claimTaskForCurrentUser(element.id)">
+                    <mat-icon>person_add</mat-icon>
+                  </button>
+                  <button mat-icon-button matTooltip="认领任务(筛选用户)" 
+                          [disabled]="!canClaimTask(element) || !taskFilterUserId.trim()" 
+                          (click)="claimTaskForFilterUser(element.id)">
+                    <mat-icon>group_add</mat-icon>
+                  </button>
+                  <button mat-icon-button matTooltip="批准任务" 
+                          [disabled]="!element.assignee" 
+                          (click)="approveTask(element.id)" 
+                          color="primary">
+                    <mat-icon>check_circle</mat-icon>
+                  </button>
+                  <button mat-icon-button matTooltip="拒绝任务" 
+                          [disabled]="!element.assignee" 
+                          (click)="rejectTask(element.id)" 
+                          color="warn">
+                    <mat-icon>cancel</mat-icon>
+                  </button>
+                  <button mat-icon-button matTooltip="查看详情" (click)="viewTaskDetails(element)">
+                    <mat-icon>visibility</mat-icon>
+                  </button>
+                </mat-cell>
+              </ng-container>
+              
+              <mat-header-row *matHeaderRowDef="tasksColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: tasksColumns;"></mat-row>
+            </mat-table>
+          </div>
+        </mat-tab>
+        
+      </mat-tab-group>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<!-- 流程图查看对话框 -->
+<div *ngIf="showProcessDiagram" class="diagram-overlay" (click)="closeProcessDiagram()">
+  <div class="diagram-container" (click)="$event.stopPropagation()">
+    <div class="diagram-header">
+      <h3>流程图</h3>
+      <button mat-icon-button (click)="closeProcessDiagram()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <div class="diagram-content">
+      <img [src]="processDiagramUrl" alt="Process Diagram" *ngIf="processDiagramUrl">
+      <div *ngIf="!processDiagramUrl" class="loading">
+        <mat-spinner></mat-spinner>
+        <p>加载中...</p>
+      </div>
+    </div>
+  </div>
+</div>

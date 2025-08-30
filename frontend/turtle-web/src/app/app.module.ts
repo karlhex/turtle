@@ -27,6 +27,10 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatCardModule } from '@angular/material/card';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -64,6 +68,7 @@ import { SharedModule } from './shared/shared.module';
 import { ContactModule } from './pages/contact/contact.module';
 import { PositionModule } from './pages/position/position.module';
 import { DemoPageComponent } from './pages/demo/demo-page/demo-page.component';
+import { FlowableAdminComponent } from './pages/workflow/flowable-admin/flowable-admin.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(handler: HttpBackend) {
@@ -99,6 +104,7 @@ export function HttpLoaderFactory(handler: HttpBackend) {
     GuestDashboardComponent,
     SidebarMenuComponent,
     DemoPageComponent,
+    FlowableAdminComponent,
   ],
   imports: [
     // Feature Modules
@@ -154,6 +160,10 @@ export function HttpLoaderFactory(handler: HttpBackend) {
     MatProgressSpinnerModule,
     MatTooltipModule,
     MatExpansionModule,
+    MatTabsModule,
+    MatCardModule,
+    MatChipsModule,
+    MatSnackBarModule,
 
     // Translation
     TranslateModule.forRoot({

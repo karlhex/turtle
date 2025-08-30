@@ -1,0 +1,17 @@
+<h2 mat-dialog-title>{{ data.title }}</h2>
+
+<mat-dialog-content>
+  <p>{{ data.message }}</p>
+  
+  <mat-form-field *ngIf="data.showInput" appearance="outline" class="full-width">
+    <mat-label>{{ data.inputLabel || 'Reason' }}</mat-label>
+    <textarea matInput [formControl]="inputControl" rows="3"></textarea>
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">{{ 'common.action.cancel' | translate }}</button>
+  <button mat-raised-button color="primary" (click)="onConfirm()">
+    {{ 'common.action.confirm' | translate }}
+  </button>
+</mat-dialog-actions>

@@ -80,13 +80,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
       response.getWriter().write(objectMapper.writeValueAsString(
           ApiResponse.error(401, "Token expired")
       ));
-    } catch (Exception e) {
-      log.error("Cannot set user authentication: {}", e.getMessage());
+    } catch (io.jsonwebtoken.JwtException e) {
+      log.error("JWT token validation failed: {}", e.getMessage());
       response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
       response.setContentType("application/json");
       response.getWriter().write(objectMapper.writeValueAsString(
           ApiResponse.error(401, "Invalid token")
       ));
+    } catch (Exception e) {
+      log.error("Unexpected error during authentication: {}", e.getMessage(), e);
+      // Don't catch non-authentication exceptions, let them propagate
+      throw e;
     }
   }
 }

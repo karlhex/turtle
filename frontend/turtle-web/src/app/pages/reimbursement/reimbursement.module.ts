@@ -13,12 +13,15 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatCardModule } from '@angular/material/card';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatListModule } from '@angular/material/list';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { ReimbursementListComponent } from './reimbursement-list/reimbursement-list.component';
 import { ReimbursementDialogComponent } from './reimbursement-dialog/reimbursement-dialog.component';
-import { ReimbursementListNewComponent } from './reimbursement-list-new.component';
-import { ReimbursementInputNewComponent } from './reimbursement-input-new.component';
+import { ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-dialog.component';
 import { BaseListModule } from '../../components/base-list/base-list.module';
 import { ActionModule } from '@app/components/action/action.module';
 import { SharedModule } from '../../shared/shared.module';
@@ -27,8 +30,7 @@ import { SharedModule } from '../../shared/shared.module';
   declarations: [
     ReimbursementListComponent, 
     ReimbursementDialogComponent,
-    ReimbursementListNewComponent,
-    ReimbursementInputNewComponent
+    ConfirmDialogComponent,
   ],
   imports: [
     ActionModule,
@@ -47,6 +49,10 @@ import { SharedModule } from '../../shared/shared.module';
     MatMenuModule,
     MatProgressBarModule,
     MatTooltipModule,
+    MatCardModule,
+    MatStepperModule,
+    MatListModule,
+    MatProgressSpinnerModule,
     TranslateModule,
     BaseListModule,
     SharedModule,
@@ -54,8 +60,6 @@ import { SharedModule } from '../../shared/shared.module';
   exports: [
     ReimbursementListComponent, 
     ReimbursementDialogComponent,
-    ReimbursementListNewComponent,
-    ReimbursementInputNewComponent
   ],
 })
 export class ReimbursementModule {}
