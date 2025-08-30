@@ -38,6 +38,10 @@ backend/.mvn/wrapper/maven-wrapper.jar
 !backend/src/main/**/target/
 !backend/src/test/**/target/
 
+# Configuration files - exclude sensitive configs
+backend/src/main/resources/application*.yml
+!backend/src/main/resources/application.yml.template
+
 ### STS ###
 backend/.apt_generated
 backend/.classpath
