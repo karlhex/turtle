@@ -1,0 +1,117 @@
+app:
+  name: "Turtle"
+  version: "1.0.0"
+  upload:
+    dir: /tmp
+
+spring:
+  main:
+    allow-circular-references: true
+  jackson:
+    date-format: yyyy-MM-dd
+    time-zone: GMT+8
+  profiles:
+    active: dev
+  datasource:
+    url: jdbc:postgresql://127.0.0.1:5432/YOUR_DATABASE_NAME
+    username: YOUR_DB_USERNAME
+    password: YOUR_DB_PASSWORD
+    driverClassName: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    show_sql: false
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    locations: classpath:db/migration
+    validate-on-migrate: false
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      database: 0
+      timeout: 60000
+      lettuce:
+        pool:
+          max-active: 8
+          max-wait: -1
+          max-idle: 8
+          min-idle: 0
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,flowable
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: when-authorized
+
+logging:
+  level:
+    '[org.springframework.security]': DEBUG
+    '[com.fwai.turtle]': DEBUG
+    '[org.springframework.web]': DEBUG
+
+workflow:
+  # 工作流引擎选择: legacy (原有系统) 或 flowable
+  engine: flowable
+  reimbursement:
+    general-manager-approval-threshold: 1000.00
+    ceo-approval-threshold: 5000.00
+    department-leader-role: DEPT_LEADER
+    finance-manager-role: FINANCE_MANAGER
+    general-manager-role: GENERAL_MANAGER
+    ceo-role: CEO
+    default-due-days: 3
+    urgent-due-days: 1
+
+flowable:
+  # 基础配置
+  database-schema-update: true
+  db-identity-used: true
+  process-definition-location-prefix: classpath*:/processes/
+  # UI配置
+  modeler:
+    app:
+      deployment-id: flowableModelerApp
+      rest-enabled: true
+  admin:
+    app:
+      deployment-id: flowableAdminApp
+      rest-enabled: true
+  # 任务配置
+  task:
+    app:
+      deployment-id: flowableTaskApp
+      rest-enabled: true
+  # 历史配置
+  history-level: audit
+  # 性能优化配置
+  async-executor-activate: true
+  async-executor:
+    core-pool-size: 2
+    max-pool-size: 10
+    keep-alive-time: 5000
+    queue-capacity: 100
+    thread-name-prefix: flowable-async-executor-
+  # 数据库连接池优化（使用HikariCP默认配置）
+  database:
+    type: postgresql
+  # 缓存配置
+  enable-safe-xml-parsing: false
+  enable-event-dispatcher: true
+
+token:
+  signing:
+    secretKey: "CHANGE_THIS_TO_A_SECURE_256_BIT_KEY_FOR_PRODUCTION_USE_GENERATE_A_RANDOM_256_BIT_SECRET_KEY"
+    issuer: "fwai"
+  access:
+    expiration: 900
+  refresh:
+    expiration: 604800
