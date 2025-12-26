@@ -75,16 +75,27 @@ export class PropertyPanelComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    // Initialize form with default values
+    this.propertyForm.reset();
+    
+    // TODO: Implement selectedNode$ subscription when WorkflowService is ready
     // this.workflowService.selectedNode$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(node => {
-        this.selectedNode = node;
-        if (node) {
-          this.updateFormValues(node);
-        }
-      });
+    //   .pipe(takeUntil(this.destroy$))
+    //   .subscribe(node => {
+    //     this.selectedNode = node;
+    //     if (node) {
+    //       this.updateFormValues(node);
+    //     }
+    //   });
+  }
 
-    // 监听表单变化并更新节点
+  private handleNodeSelection() {
+    // Placeholder for handling node selection
+    // TODO: Implement when WorkflowService is available
+  }
+
+  private subscribeToFormChanges() {
+    // Monitor form changes and update nodes
     this.propertyForm.valueChanges
       .pipe(takeUntil(this.destroy$))
       .subscribe(values => {

@@ -43,3 +43,13 @@ body {
   margin: 0;
   font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
+
+/* Temporary Password Snackbar Styling */
+.temp-password-snackbar {
+  background-color: #4caf50 !important; /* Green background */
+  color: white !important;
+  font-weight: 500 !important;
+  white-space: pre-line !important; /* Allow line breaks */
+  max-width: 400px !important;
+  word-wrap: break-word !important;
+}

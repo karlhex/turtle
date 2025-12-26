@@ -19,8 +19,10 @@ export class EmployeeListComponent implements OnInit {
     'employeeNumber',
     'name',
     'email',
+    'gender',
     'department',
     'position',
+    'contractType',
     'hireDate',
     'status',
     'actions',
@@ -152,6 +154,36 @@ export class EmployeeListComponent implements OnInit {
 
   getDepartmentName(employee: Employee): string {
     return employee.department?.name || '-';
+  }
+
+  getPositionName(employee: Employee): string {
+    return employee.position?.name || '-';
+  }
+
+  getGenderLabel(gender: string | undefined): string {
+    if (!gender) return '-';
+    
+    const genderLabels: { [key: string]: string } = {
+      'MALE': '男',
+      'FEMALE': '女',
+      'OTHER': '其他'
+    };
+    
+    return genderLabels[gender] || gender;
+  }
+
+  getContractTypeLabel(contractType: string | undefined): string {
+    if (!contractType) return '-';
+    
+    const contractTypeLabels: { [key: string]: string } = {
+      'FIXED_TERM': '固定期限',
+      'NON_FIXED_TERM': '无固定期限',
+      'INTERNSHIP': '实习',
+      'PART_TIME': '兼职',
+      'PROBATION': '试用期'
+    };
+    
+    return contractTypeLabels[contractType] || contractType;
   }
 
   getStatusChipClass(status: EmployeeStatus): string {

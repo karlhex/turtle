@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { User } from '../../../services/user.service';
+import { User } from '../../../models/user.model';
 import { RoleService } from '../../../services/role.service';
 import { Role } from '../../../models/role.model';
 
@@ -26,7 +26,7 @@ export class UserEditDialogComponent implements OnInit {
     this.isEditMode = !!data.user;
 
     // Extract role names from the user's roles if they exist
-    const roleNames = data.user?.roleNames?.map(role => 'ROLE_' + role) || [];
+    const roleNames = data.user?.roles ? Array.from(data.user.roles).map((role: any) => 'ROLE_' + role) : [];
     console.log('Initial user data:', data.user);
     console.log('Initial roleNames:', roleNames);
 
@@ -34,6 +34,7 @@ export class UserEditDialogComponent implements OnInit {
       id: [data.user?.id],
       username: [data.user?.username || '', [Validators.required]],
       email: [data.user?.email || '', [Validators.required, Validators.email]],
+      userType: [data.user?.userType || 'EMPLOYEE', [Validators.required]],
       roleNames: [roleNames, [Validators.required]],
     });
   }
@@ -73,6 +74,12 @@ export class UserEditDialogComponent implements OnInit {
 
   onCancel(): void {
     this.dialogRef.close();
+  }
+
+  onUserTypeChange(): void {
+    const userType = this.userForm.get('userType')?.value;
+    // 可以根据用户类型调整可用角色
+    console.log('User type changed to:', userType);
   }
 
   // 获取角色显示名称（去除ROLE_前缀）

@@ -1,0 +1,30 @@
+.education-form {
+  min-width: 500px;
+}
+
+.form-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+
+  .full-width {
+    width: 100%;
+  }
+
+  .half-width {
+    flex: 1;
+  }
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+mat-dialog-content {
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+mat-dialog-actions {
+  padding: 16px 24px;
+}

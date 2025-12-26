@@ -1,0 +1,393 @@
+.hr-application-list {
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e0e0e0;
+
+    .title-section {
+      h2 {
+        color: #1976d2;
+        margin: 0 0 8px 0;
+        font-size: 28px;
+        font-weight: 500;
+      }
+
+      p {
+        color: #666;
+        margin: 0;
+        font-size: 16px;
+      }
+    }
+
+    .action-section {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .export-btn {
+        background-color: #4caf50;
+        color: white;
+        
+        mat-icon {
+          margin-right: 8px;
+        }
+      }
+
+      .refresh-btn {
+        color: #666;
+
+        mat-icon.spinning {
+          animation: spin 1s linear infinite;
+        }
+      }
+    }
+
+    // Responsive design
+    @media (max-width: 768px) {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 16px;
+
+      .action-section {
+        justify-content: flex-start;
+      }
+    }
+  }
+
+  .statistics-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+
+    .stat-card {
+      border-radius: 12px;
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      mat-card-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px !important;
+
+        .stat-content {
+          .stat-number {
+            font-size: 32px;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 4px;
+          }
+
+          .stat-label {
+            font-size: 14px;
+            font-weight: 500;
+            opacity: 0.8;
+          }
+        }
+
+        .stat-icon {
+          font-size: 40px;
+          width: 40px;
+          height: 40px;
+          opacity: 0.7;
+        }
+      }
+
+      &.total-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+      }
+
+      &.pending-card {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        color: white;
+      }
+
+      &.approved-card {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        color: white;
+      }
+
+      &.rejected-card {
+        background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        color: white;
+      }
+    }
+  }
+
+  .filters {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+    align-items: flex-end;
+
+    .status-filter {
+      min-width: 160px;
+    }
+
+    .search-field {
+      flex: 1;
+      max-width: 300px;
+    }
+
+    // Responsive design
+    @media (max-width: 768px) {
+      flex-direction: column;
+      align-items: stretch;
+
+      .search-field {
+        max-width: none;
+      }
+    }
+  }
+
+  .table-container {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    .applications-table {
+      width: 100%;
+
+      .mat-mdc-header-row {
+        background-color: #f8f9fa;
+
+        .mat-mdc-header-cell {
+          font-weight: 600;
+          color: #424242;
+          border-bottom: 2px solid #e0e0e0;
+        }
+      }
+
+      .mat-mdc-row {
+        &:hover {
+          background-color: #f5f5f5;
+        }
+
+        &.highlighted-row {
+          background-color: #fff8e1;
+          border-left: 4px solid #ff9800;
+
+          &:hover {
+            background-color: #fff3c4;
+          }
+        }
+
+        .mat-mdc-cell {
+          border-bottom: 1px solid #f0f0f0;
+          padding: 16px;
+          vertical-align: middle;
+
+          .application-id {
+            font-weight: 600;
+            color: #1976d2;
+          }
+
+          .applicant-info {
+            .name {
+              font-weight: 500;
+              color: #212121;
+              margin-bottom: 2px;
+            }
+
+            .id-number {
+              font-size: 12px;
+              color: #666;
+            }
+          }
+
+          .status-cell {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            .status-icon {
+              font-size: 18px;
+              width: 18px;
+              height: 18px;
+              color: #666;
+            }
+
+            .status-badge {
+              display: inline-block;
+              padding: 6px 12px;
+              border-radius: 16px;
+              font-size: 11px;
+              font-weight: 600;
+              text-align: center;
+              min-width: 70px;
+              text-transform: uppercase;
+              letter-spacing: 0.5px;
+
+              &.status-submitted {
+                background-color: #e3f2fd;
+                color: #1565c0;
+                border: 1px solid #bbdefb;
+              }
+
+              &.status-under-review {
+                background-color: #fff8e1;
+                color: #ef6c00;
+                border: 1px solid #ffcc02;
+              }
+
+              &.status-approved {
+                background-color: #e8f5e8;
+                color: #2e7d32;
+                border: 1px solid #c8e6c9;
+              }
+
+              &.status-rejected {
+                background-color: #ffebee;
+                color: #c62828;
+                border: 1px solid #ffcdd2;
+              }
+
+              &.status-supplementary-required {
+                background-color: #f3e5f5;
+                color: #7b1fa2;
+                border: 1px solid #e1bee7;
+              }
+            }
+          }
+
+          .action-buttons {
+            display: flex;
+            gap: 4px;
+
+            button {
+              width: 36px;
+              height: 36px;
+              border-radius: 50%;
+
+              &.view-btn {
+                color: #1976d2;
+                
+                &:hover {
+                  background-color: #e3f2fd;
+                }
+              }
+
+              &.review-btn {
+                color: #ff9800;
+                
+                &:hover:not(.disabled) {
+                  background-color: #fff8e1;
+                }
+
+                &.disabled {
+                  color: #bbb;
+                  cursor: not-allowed;
+                }
+              }
+
+              &.convert-btn {
+                color: #4caf50;
+                
+                &:hover:not(.disabled) {
+                  background-color: #e8f5e8;
+                }
+
+                &.disabled {
+                  color: #bbb;
+                  cursor: not-allowed;
+                }
+              }
+
+              mat-icon {
+                font-size: 18px;
+                width: 18px;
+                height: 18px;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .table-paginator {
+      border-top: 1px solid #e0e0e0;
+      background-color: #fafafa;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 64px 24px;
+
+      .empty-icon {
+        font-size: 64px;
+        width: 64px;
+        height: 64px;
+        color: #bbb;
+        margin-bottom: 16px;
+      }
+
+      h3 {
+        color: #666;
+        margin: 0 0 8px 0;
+        font-size: 20px;
+        font-weight: 500;
+      }
+
+      p {
+        color: #999;
+        margin: 0 0 24px 0;
+        font-size: 16px;
+      }
+
+      button {
+        color: #1976d2;
+      }
+    }
+
+    // Mobile responsive
+    @media (max-width: 768px) {
+      .applications-table {
+        .mat-mdc-header-row,
+        .mat-mdc-row {
+          .mat-mdc-header-cell,
+          .mat-mdc-cell {
+            &:nth-child(4),
+            &:nth-child(5) {
+              display: none; // Hide position and salary on mobile
+            }
+          }
+        }
+      }
+    }
+
+    @media (max-width: 480px) {
+      .applications-table {
+        .mat-mdc-header-row,
+        .mat-mdc-row {
+          .mat-mdc-header-cell,
+          .mat-mdc-cell {
+            &:nth-child(3) {
+              display: none; // Hide email on small mobile
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Animation for spinning refresh icon
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

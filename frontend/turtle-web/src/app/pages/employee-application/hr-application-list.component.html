@@ -1,0 +1,207 @@
+<div class="hr-application-list">
+  <!-- 页面头部 -->
+  <div class="header">
+    <div class="title-section">
+      <h2>入职申请管理</h2>
+      <p>审核和管理所有员工入职申请</p>
+    </div>
+    <div class="action-section">
+      <button mat-raised-button (click)="exportApplications()" class="export-btn">
+        <mat-icon>download</mat-icon>
+        导出
+      </button>
+      <button mat-icon-button (click)="refresh()" [disabled]="loading" class="refresh-btn">
+        <mat-icon [class.spinning]="loading">refresh</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- 统计卡片 -->
+  <div *ngIf="statistics" class="statistics-cards">
+    <mat-card class="stat-card total-card">
+      <mat-card-content>
+        <div class="stat-content">
+          <div class="stat-number">{{ statistics.totalApplications }}</div>
+          <div class="stat-label">总申请数</div>
+        </div>
+        <mat-icon class="stat-icon">description</mat-icon>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card pending-card">
+      <mat-card-content>
+        <div class="stat-content">
+          <div class="stat-number">{{ getPendingCount() }}</div>
+          <div class="stat-label">待处理</div>
+        </div>
+        <mat-icon class="stat-icon">pending</mat-icon>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card approved-card">
+      <mat-card-content>
+        <div class="stat-content">
+          <div class="stat-number">{{ statistics.approvedCount }}</div>
+          <div class="stat-label">已批准</div>
+        </div>
+        <mat-icon class="stat-icon">check_circle</mat-icon>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card rejected-card">
+      <mat-card-content>
+        <div class="stat-content">
+          <div class="stat-number">{{ statistics.rejectedCount }}</div>
+          <div class="stat-label">已拒绝</div>
+        </div>
+        <mat-icon class="stat-icon">cancel</mat-icon>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- 筛选和搜索 -->
+  <div class="filters">
+    <mat-form-field class="status-filter">
+      <mat-label>状态筛选</mat-label>
+      <mat-select [(value)]="statusFilter" (selectionChange)="onStatusFilterChange()">
+        <mat-option *ngFor="let option of statusOptions" [value]="option.value">
+          {{ option.label }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="search-field">
+      <mat-label>搜索申请人</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="输入姓名、邮箱或职位">
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+  </div>
+
+  <!-- 申请列表 -->
+  <div class="table-container">
+    <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+    
+    <table mat-table [dataSource]="dataSource" matSort class="applications-table mat-elevation-2">
+      
+      <!-- 申请编号列 -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>编号</th>
+        <td mat-cell *matCellDef="let application">
+          <span class="application-id">#{{ application.id }}</span>
+        </td>
+      </ng-container>
+
+      <!-- 姓名列 -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>申请人</th>
+        <td mat-cell *matCellDef="let application">
+          <div class="applicant-info">
+            <div class="name">{{ application.name || '-' }}</div>
+            <div class="id-number" *ngIf="application.idNumber">
+              {{ application.idNumber }}
+            </div>
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- 邮箱列 -->
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>邮箱</th>
+        <td mat-cell *matCellDef="let application">
+          {{ application.email || '-' }}
+        </td>
+      </ng-container>
+
+      <!-- 期望职位列 -->
+      <ng-container matColumnDef="desiredPosition">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>期望职位</th>
+        <td mat-cell *matCellDef="let application">
+          {{ application.desiredPosition || '-' }}
+        </td>
+      </ng-container>
+
+      <!-- 期望薪资列 -->
+      <ng-container matColumnDef="expectedSalary">
+        <th mat-header-cell *matHeaderCellDef>期望薪资</th>
+        <td mat-cell *matCellDef="let application">
+          {{ application.expectedSalary || '-' }}
+        </td>
+      </ng-container>
+
+      <!-- 状态列 -->
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>状态</th>
+        <td mat-cell *matCellDef="let application">
+          <div class="status-cell">
+            <mat-icon class="status-icon">{{ getStatusIcon(application.status) }}</mat-icon>
+            <span class="status-badge" [ngClass]="getStatusClass(application.status)">
+              {{ getStatusLabel(application.status) }}
+            </span>
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- 提交时间列 -->
+      <ng-container matColumnDef="submittedAt">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>提交时间</th>
+        <td mat-cell *matCellDef="let application">
+          {{ formatDate(application.submittedAt) }}
+        </td>
+      </ng-container>
+
+      <!-- 操作列 -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>操作</th>
+        <td mat-cell *matCellDef="let application">
+          <div class="action-buttons">
+            <button mat-icon-button 
+                    (click)="viewApplication(application)"
+                    matTooltip="查看详情"
+                    class="view-btn">
+              <mat-icon>visibility</mat-icon>
+            </button>
+            
+            <button mat-icon-button 
+                    (click)="reviewApplication(application)"
+                    [disabled]="!canReview(application)"
+                    [matTooltip]="canReview(application) ? '审核申请' : '当前状态不允许审核'"
+                    class="review-btn"
+                    [class.disabled]="!canReview(application)">
+              <mat-icon>rate_review</mat-icon>
+            </button>
+            
+            <button mat-icon-button 
+                    (click)="approveAndConvert(application)"
+                    [disabled]="!canConvert(application)"
+                    [matTooltip]="canConvert(application) ? '转为员工' : '需先批准申请'"
+                    class="convert-btn"
+                    [class.disabled]="!canConvert(application)">
+              <mat-icon>person_add</mat-icon>
+            </button>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" 
+          [class.highlighted-row]="row.status === 'SUBMITTED' || row.status === 'SUPPLEMENTARY_REQUIRED'"></tr>
+    </table>
+
+    <!-- 分页器 -->
+    <mat-paginator [pageSizeOptions]="[10, 20, 50, 100]" 
+                   [showFirstLastButtons]="true"
+                   class="table-paginator">
+    </mat-paginator>
+
+    <!-- 空状态 -->
+    <div *ngIf="!loading && dataSource.data.length === 0" class="empty-state">
+      <mat-icon class="empty-icon">inbox</mat-icon>
+      <h3>暂无申请记录</h3>
+      <p *ngIf="statusFilter !== 'ALL'">当前筛选条件下没有找到申请</p>
+      <p *ngIf="statusFilter === 'ALL'">还没有收到任何入职申请</p>
+      <button *ngIf="statusFilter !== 'ALL'" mat-button (click)="statusFilter = 'ALL'; onStatusFilterChange()">
+        查看所有申请
+      </button>
+    </div>
+  </div>
+</div>

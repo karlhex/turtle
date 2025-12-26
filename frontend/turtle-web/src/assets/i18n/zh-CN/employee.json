@@ -18,8 +18,11 @@
       "id": "工号",
       "name": "姓名",
       "email": "邮箱",
+      "gender": "性别",
       "department": "部门",
       "position": "职位",
+      "contractType": "合同类型",
+      "hireDate": "入职日期",
       "hire_date": "入职日期",
       "status": "状态",
       "actions": "操作",
@@ -53,6 +56,7 @@
       "personal": {
         "title": "个人信息",
         "birthday": "出生日期",
+        "gender": "性别",
         "gender_name": "性别",
         "gender": {
           "male": "男",
@@ -78,15 +82,31 @@
       },
       "contract": {
         "title": "合同信息",
+        "type": "合同类型",
         "type_name": "合同类型",
         "duration": "合同期限(月)",
+        "startDate": "合同开始日期",
         "start_date": "合同开始日期",
         "role": "合同角色",
-        "status": "合同状态"
+        "status": "合同状态",
+        "type": {
+          "fixed_term": "固定期限",
+          "non_fixed_term": "无固定期限",
+          "internship": "实习",
+          "part_time": "兼职",
+          "probation": "试用期"
+        }
       },
       "additional": {
         "title": "备注",
         "remarks": "备注信息"
+      },
+      "status": {
+        "label": "状态",
+        "application": "申请中",
+        "active": "在职",
+        "resigned": "离职",
+        "suspended": "停职"
       }
     },
     "education": {

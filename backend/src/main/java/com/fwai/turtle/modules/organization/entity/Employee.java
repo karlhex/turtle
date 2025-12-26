@@ -105,6 +105,18 @@ public class Employee {
     @Column(unique = true)
     private String idNumber;                // 证件号码
 
+    @Column
+    private String socialSecurityNumber;    // 社保号
+
+    @Column 
+    private String providentFundNumber;     // 公积金账号
+
+    @Column
+    private String bankAccount;             // 银行账号
+
+    @Column
+    private String bankName;                // 开户银行
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     @JsonIgnoreProperties({"employee", "roles"})

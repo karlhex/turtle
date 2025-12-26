@@ -1,0 +1,72 @@
+<div class="certification-list-container">
+  <div class="section-header">
+    <h3>证书信息</h3>
+    <button *ngIf="editable" mat-raised-button color="primary" (click)="onAddCertification()">
+      <mat-icon>add</mat-icon>
+      添加证书
+    </button>
+  </div>
+
+  <div *ngIf="certifications.length === 0" class="empty-state">
+    <mat-icon>verified</mat-icon>
+    <p>暂无证书信息，点击上方按钮添加</p>
+  </div>
+
+  <mat-table *ngIf="certifications.length > 0" [dataSource]="certifications" class="certification-table">
+
+    <!-- 证书名称列 -->
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef>证书名称</mat-header-cell>
+      <mat-cell *matCellDef="let certification">{{ certification.name || '-' }}</mat-cell>
+    </ng-container>
+
+    <!-- 颁发机构列 -->
+    <ng-container matColumnDef="issuer">
+      <mat-header-cell *matHeaderCellDef>颁发机构</mat-header-cell>
+      <mat-cell *matCellDef="let certification">{{ certification.issuer || '-' }}</mat-cell>
+    </ng-container>
+
+    <!-- 颁发日期列 -->
+    <ng-container matColumnDef="issueDate">
+      <mat-header-cell *matHeaderCellDef>颁发日期</mat-header-cell>
+      <mat-cell *matCellDef="let certification">{{ formatDate(certification.issueDate) }}</mat-cell>
+    </ng-container>
+
+    <!-- 有效期列 -->
+    <ng-container matColumnDef="expiryDate">
+      <mat-header-cell *matHeaderCellDef>有效期</mat-header-cell>
+      <mat-cell *matCellDef="let certification">
+        <span *ngIf="!certification.expiryDate" class="no-expiry">长期有效</span>
+        <span *ngIf="certification.expiryDate" [ngClass]="{
+          'expired': isExpired(certification.expiryDate),
+          'expiring-soon': isExpiringSoon(certification.expiryDate),
+          'valid': !isExpired(certification.expiryDate) && !isExpiringSoon(certification.expiryDate)
+        }">
+          {{ formatDate(certification.expiryDate) }}
+        </span>
+      </mat-cell>
+    </ng-container>
+
+    <!-- 证书编号列 -->
+    <ng-container matColumnDef="certificateNumber">
+      <mat-header-cell *matHeaderCellDef>证书编号</mat-header-cell>
+      <mat-cell *matCellDef="let certification">{{ certification.certificateNumber || '-' }}</mat-cell>
+    </ng-container>
+
+    <!-- 操作列 -->
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef>操作</mat-header-cell>
+      <mat-cell *matCellDef="let certification; let i = index">
+        <button *ngIf="editable" mat-icon-button color="primary" (click)="onEditCertification(certification, i)" matTooltip="编辑">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button *ngIf="editable" mat-icon-button color="warn" (click)="onDeleteCertification(i)" matTooltip="删除">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+</div>

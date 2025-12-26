@@ -1,0 +1,17 @@
+export interface ApiResponse<T> {
+  code: number;
+  message: string;
+  data: T;
+  timestamp?: string;
+}
+
+export interface PagedResponse<T> {
+  content: T[];
+  totalElements: number;
+  totalPages: number;
+  size: number;
+  number: number;
+  first: boolean;
+  last: boolean;
+  empty: boolean;
+}

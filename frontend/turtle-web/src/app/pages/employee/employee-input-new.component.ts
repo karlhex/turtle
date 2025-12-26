@@ -9,6 +9,8 @@ import { DepartmentService } from '../../services/department.service';
 import { PositionService } from '../../services/position.service';
 import { Department } from '../../models/department.model';
 import { Position } from '../../models/position.model';
+import { Gender } from '@app/models/employee-application.model';
+import { EmployeeContractType } from '../../types/employee-contract-type.enum';
 
 @Component({
   selector: 'app-employee-input-new',
@@ -95,9 +97,9 @@ export class EmployeeInputNewComponent implements OnInit {
         required: false,
         width: 2,
         options: [
-          { value: 'male', label: this.translate.instant('employee.form.personal.gender.male') },
-          { value: 'female', label: this.translate.instant('employee.form.personal.gender.female') },
-          { value: 'other', label: this.translate.instant('employee.form.personal.gender.other') }
+          { value: Gender.MALE, label: this.translate.instant('employee.form.personal.gender.male') },
+          { value: Gender.FEMALE, label: this.translate.instant('employee.form.personal.gender.female') },
+          { value: Gender.OTHER, label: this.translate.instant('employee.form.personal.gender.other') }
         ]
       },
       {
@@ -139,10 +141,11 @@ export class EmployeeInputNewComponent implements OnInit {
         required: false,
         width: 2,
         options: [
-          { value: 'fullTime', label: this.translate.instant('employee.form.contract.type.full_time') },
-          { value: 'partTime', label: this.translate.instant('employee.form.contract.type.part_time') },
-          { value: 'contractor', label: this.translate.instant('employee.form.contract.type.contractor') },
-          { value: 'intern', label: this.translate.instant('employee.form.contract.type.intern') },
+          { value: EmployeeContractType.FIXED_TERM, label: this.translate.instant('employee.form.contract.type.fixed_term') },
+          { value: EmployeeContractType.NON_FIXED_TERM, label: this.translate.instant('employee.form.contract.type.non_fixed_term') },
+          { value: EmployeeContractType.INTERNSHIP, label: this.translate.instant('employee.form.contract.type.internship') },
+          { value: EmployeeContractType.PART_TIME, label: this.translate.instant('employee.form.contract.type.part_time') },
+          { value: EmployeeContractType.PROBATION, label: this.translate.instant('employee.form.contract.type.probation') },
         ]
       },
       {
@@ -241,10 +244,8 @@ export class EmployeeInputNewComponent implements OnInit {
       this.employeeId = data.employee.id!;
       this.educations = data.employee.educations || [];
       this.jobHistories = data.employee.jobHistories || [];
-      // Disable form for view mode
-      this.config.fields.forEach(field => {
-        field.disabled = true;
-      });
+      // Set disabled config for view mode - input-page component will handle FormControl disabled state
+      this.setViewModeConfig();
       this.config.showSaveButton = false;
       this.config.showResetButton = false;
     } else {
@@ -428,5 +429,16 @@ export class EmployeeInputNewComponent implements OnInit {
   private isValidEmail(email: string): boolean {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
+  }
+
+  private setViewModeConfig(): void {
+    // Create a deep copy of the config and set disabled on each field
+    this.config = {
+      ...this.config,
+      fields: this.config.fields.map(field => ({
+        ...field,
+        disabled: true
+      }))
+    };
   }
 } 

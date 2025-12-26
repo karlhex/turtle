@@ -10,6 +10,8 @@ import com.fwai.turtle.modules.organization.mapper.EmployeeJobHistoryMapper;
 import com.fwai.turtle.modules.organization.mapper.EmployeeMapper;
 import com.fwai.turtle.modules.organization.repository.EmployeeRepository;
 import com.fwai.turtle.base.types.EmployeeStatus;
+import com.fwai.turtle.base.entity.User;
+import com.fwai.turtle.base.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +38,7 @@ public class EmployeeService {
     private final EmployeeMapper employeeMapper;
     private final EmployeeEducationMapper employeeEducationMapper;
     private final EmployeeJobHistoryMapper employeeJobHistoryMapper;
+    private final UserRepository userRepository;
 
     @Transactional
     public EmployeeDTO create(EmployeeDTO employeeDTO) {
@@ -212,5 +215,24 @@ public class EmployeeService {
     public Optional<EmployeeDTO> findByEmail(String email) {
         return employeeRepository.findByEmail(email)
                 .map(employeeMapper::toDTO);
+    }
+
+    /**
+     * 更新员工的用户关联
+     */
+    @Transactional
+    public void updateUserAssociation(Long employeeId, Long userId) {
+        log.info("Updating employee {} user association to user {}", employeeId, userId);
+        
+        Employee employee = employeeRepository.findById(employeeId)
+            .orElseThrow(() -> new ResourceNotFoundException("Employee not found: " + employeeId));
+        
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new ResourceNotFoundException("User not found: " + userId));
+        
+        employee.setUser(user);
+        employeeRepository.save(employee);
+        
+        log.info("Employee {} successfully associated with user {}", employeeId, userId);
     }
 }

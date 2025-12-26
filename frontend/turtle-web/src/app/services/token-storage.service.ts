@@ -18,7 +18,9 @@ export class TokenStorageService {
   private tokenSubject = new BehaviorSubject<string | null>(this.getToken());
   private userInfoSubject = new BehaviorSubject<any>(this.getUserInfo());
 
-  constructor() {}
+  constructor() {
+    // Initialize token storage service
+  }
 
   setToken(token: string): void {
     localStorage.setItem(this.TOKEN_KEY, token);

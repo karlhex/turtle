@@ -1,0 +1,111 @@
+<div class="approval-history">
+  <!-- 页面头部 -->
+  <div class="header">
+    <div class="title-section">
+      <h2>审批历史</h2>
+      <p *ngIf="applicationId">申请 #{{applicationId}} 的审批历史记录</p>
+      <p *ngIf="!applicationId">查看所有审批历史记录</p>
+    </div>
+    <div class="action-section">
+      <button mat-icon-button (click)="refresh()" [disabled]="loading" class="refresh-btn">
+        <mat-icon [class.spinning]="loading">refresh</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- 筛选和搜索 -->
+  <div class="filters">
+    <mat-form-field class="search-field">
+      <mat-label>搜索审批记录</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="输入审批人或步骤类型">
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+  </div>
+
+  <!-- 审批历史表格 -->
+  <div class="table-container">
+    <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+    
+    <table mat-table [dataSource]="dataSource" matSort class="history-table mat-elevation-2">
+      
+      <!-- 审批步骤列 -->
+      <ng-container matColumnDef="stepType">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>审批步骤</th>
+        <td mat-cell *matCellDef="let record">
+          <span class="step-badge" [ngClass]="getStepClass(record.stepType)">
+            {{ record.stepType }}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- 审批人列 -->
+      <ng-container matColumnDef="assigneeName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>审批人</th>
+        <td mat-cell *matCellDef="let record">
+          {{ record.assigneeName }}
+        </td>
+      </ng-container>
+
+      <!-- 开始时间列 -->
+      <ng-container matColumnDef="startTime">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>开始时间</th>
+        <td mat-cell *matCellDef="let record">
+          {{ formatDate(record.startTime) }}
+        </td>
+      </ng-container>
+
+      <!-- 结束时间列 -->
+      <ng-container matColumnDef="endTime">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>结束时间</th>
+        <td mat-cell *matCellDef="let record">
+          {{ formatDate(record.endTime) }}
+        </td>
+      </ng-container>
+
+      <!-- 持续时间列 -->
+      <ng-container matColumnDef="duration">
+        <th mat-header-cell *matHeaderCellDef>持续时间</th>
+        <td mat-cell *matCellDef="let record">
+          {{ record.duration }}
+        </td>
+      </ng-container>
+
+      <!-- 审批结果列 -->
+      <ng-container matColumnDef="decision">
+        <th mat-header-cell *matHeaderCellDef>审批结果</th>
+        <td mat-cell *matCellDef="let record">
+          <span class="decision-badge" [ngClass]="getDecisionClass(record.decision)">
+            {{ record.decision }}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- 审批意见列 -->
+      <ng-container matColumnDef="comments">
+        <th mat-header-cell *matHeaderCellDef>审批意见</th>
+        <td mat-cell *matCellDef="let record">
+          <div class="comments-cell">
+            {{ record.comments }}
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="history-row"></tr>
+    </table>
+
+    <!-- 分页器 -->
+    <mat-paginator [pageSizeOptions]="[10, 20, 50]" 
+                   [showFirstLastButtons]="true"
+                   class="table-paginator">
+    </mat-paginator>
+
+    <!-- 空状态 -->
+    <div *ngIf="!loading && dataSource.data.length === 0" class="empty-state">
+      <mat-icon class="empty-icon">history</mat-icon>
+      <h3>暂无审批历史</h3>
+      <p *ngIf="applicationId">该申请还没有审批历史记录</p>
+      <p *ngIf="!applicationId">当前没有任何审批历史记录</p>
+    </div>
+  </div>
+</div>

@@ -5,6 +5,13 @@ import { environment } from '../../environments/environment';
 import { ApiResponse } from '../models/api.model';
 import { ChangePasswordRequest } from '../models/change-password-request.model';
 
+export interface ExpiredPasswordChangeRequest {
+  username: string;
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}
+
 export interface Role {
   id: number;
   name: string;
@@ -31,6 +38,11 @@ export interface CreateUserDto {
   password: string;
   status?: string;
   roleNames: string[];
+}
+
+export interface UserCreationResult {
+  user: User;
+  tempPassword: string;
 }
 
 @Injectable({
@@ -69,8 +81,8 @@ export class UserService {
     return this.http.delete<ApiResponse<User>>(`${this.API_URL}/${id}`);
   }
 
-  createUser(user: CreateUserDto): Observable<ApiResponse<User>> {
-    return this.http.post<ApiResponse<User>>(this.API_URL, user);
+  createUser(user: CreateUserDto): Observable<ApiResponse<UserCreationResult>> {
+    return this.http.post<ApiResponse<UserCreationResult>>(this.API_URL, user);
   }
 
   searchUsers(
@@ -88,6 +100,13 @@ export class UserService {
     return this.http.post<ApiResponse<void>>(
       `${this.API_URL}/change-password`,
       changePasswordRequest
+    );
+  }
+
+  changeExpiredPassword(expiredPasswordChangeRequest: ExpiredPasswordChangeRequest): Observable<ApiResponse<string>> {
+    return this.http.post<ApiResponse<string>>(
+      `${this.API_URL}/change-password`,
+      expiredPasswordChangeRequest
     );
   }
 

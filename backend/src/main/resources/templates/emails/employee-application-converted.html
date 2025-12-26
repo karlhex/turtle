@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>入职申请已转换为员工记录</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #FF9800;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #FF9800;
+            margin: 0;
+            font-size: 24px;
+        }
+        .success-banner {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .success-banner h2 {
+            margin: 0 0 10px 0;
+            font-size: 20px;
+        }
+        .employee-info {
+            background-color: #fff3e0;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 5px solid #FF9800;
+            margin: 20px 0;
+        }
+        .detail-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .detail-table th,
+        .detail-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .detail-table th {
+            background-color: #f5f5f5;
+            font-weight: bold;
+            width: 30%;
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: #FF9800;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .next-steps {
+            background-color: #e3f2fd;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            color: #666;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎉 申请转换成功</h1>
+        </div>
+
+        <div class="success-banner">
+            <h2>恭喜！您的入职申请已成功转换为员工记录</h2>
+            <p>欢迎加入我们的团队！</p>
+        </div>
+
+        <div class="content">
+            <p>亲爱的 <strong th:text="${applicantName}">员工姓名</strong>，</p>
+
+            <p>我们很高兴地通知您，您的入职申请已经通过审核并成功转换为正式员工记录。</p>
+
+            <div class="employee-info">
+                <h3>🆔 您的员工信息</h3>
+                <table class="detail-table">
+                    <tr>
+                        <th>员工ID</th>
+                        <td th:text="${employeeId}">员工ID</td>
+                    </tr>
+                    <tr>
+                        <th>姓名</th>
+                        <td th:text="${applicantName}">员工姓名</td>
+                    </tr>
+                    <tr>
+                        <th>原申请编号</th>
+                        <td th:text="${applicationId}">申请编号</td>
+                    </tr>
+                    <tr>
+                        <th>转换时间</th>
+                        <td th:text="${convertedAt}">转换时间</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="next-steps">
+                <h3>📋 接下来的步骤</h3>
+                <ul>
+                    <li><strong>系统访问：</strong>您现在可以使用员工账户登录系统</li>
+                    <li><strong>入职培训：</strong>人力资源部门将与您联系安排入职培训</li>
+                    <li><strong>工作安排：</strong>您的直属主管将联系您安排具体工作事宜</li>
+                    <li><strong>相关资料：</strong>请准备好入职所需的相关证件和资料</li>
+                </ul>
+            </div>
+
+            <div style="text-align: center;">
+                <a th:href="${frontendUrl + '/dashboard'}" class="button">
+                    登录员工系统
+                </a>
+            </div>
+
+            <p><strong>重要提醒：</strong>如果您有任何疑问或需要帮助，请随时联系人力资源部门。</p>
+        </div>
+
+        <div class="footer">
+            <p>此邮件由人力资源管理系统自动发送。</p>
+            <p>再次欢迎您加入我们的团队！</p>
+        </div>
+    </div>
+</body>
+</html>

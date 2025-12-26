@@ -1,0 +1,64 @@
+<div class="employee-application-container">
+  <mat-card>
+    <mat-card-content>
+      <mat-tab-group>
+        <!-- 基本信息标签页 -->
+        <mat-tab label="基本信息">
+          <div class="tab-content">
+            <app-input-page
+              [config]="basicInfoConfig"
+              [data]="initialData"
+              [loading]="loading"
+              [saving]="false"
+              (fieldChange)="onFieldChange($event.key, $event.value)"
+              (validationChange)="onValidationChange($event.valid, $event.errors)">
+            </app-input-page>
+          </div>
+        </mat-tab>
+
+        <!-- 教育经历标签页 -->
+        <mat-tab label="教育经历">
+          <div class="tab-content">
+            <app-application-education-list
+              [educations]="educations"
+              [editable]="true"
+              (educationsChange)="onEducationEdited($event)">
+            </app-application-education-list>
+          </div>
+        </mat-tab>
+
+        <!-- 工作经历标签页 -->
+        <mat-tab label="工作经历">
+          <div class="tab-content">
+            <app-application-job-history-list
+              [jobHistories]="jobHistories"
+              [editable]="true"
+              (jobHistoriesChange)="onJobHistoryEdited($event)">
+            </app-application-job-history-list>
+          </div>
+        </mat-tab>
+
+        <!-- 证书信息标签页 -->
+        <mat-tab label="证书信息">
+          <div class="tab-content">
+            <app-application-certification-list
+              [certifications]="certifications"
+              [editable]="true"
+              (certificationsChange)="onCertificationEdited($event)">
+            </app-application-certification-list>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </mat-card-content>
+
+    <mat-card-actions align="end">
+      <button mat-button type="button" (click)="onReset()" [disabled]="saving">
+        重置
+      </button>
+      <button mat-raised-button color="primary" (click)="submitForm()" [disabled]="saving || !isFormValid()">
+        <mat-spinner *ngIf="saving" diameter="20" style="margin-right: 8px;"></mat-spinner>
+        提交申请
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

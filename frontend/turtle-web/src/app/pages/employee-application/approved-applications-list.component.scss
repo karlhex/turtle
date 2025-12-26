@@ -1,0 +1,129 @@
+.approved-applications-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  .header-card {
+    margin-bottom: 20px;
+    
+    mat-card-header {
+      display: flex;
+      align-items: center;
+      
+      mat-card-title {
+        display: flex;
+        align-items: center;
+        
+        mat-icon {
+          margin-right: 8px;
+          color: #2196f3;
+        }
+      }
+    }
+    
+    mat-card-actions {
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+
+  .content-card {
+    .search-container {
+      padding: 16px;
+      border-bottom: 1px solid #e0e0e0;
+      
+      .search-field {
+        width: 100%;
+        max-width: 400px;
+      }
+    }
+
+    .loading-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 20px;
+      
+      p {
+        margin-top: 16px;
+        color: #666;
+      }
+    }
+
+    .table-container {
+      .full-width-table {
+        width: 100%;
+        
+        th, td {
+          padding: 12px 8px;
+        }
+        
+        .status-badge {
+          padding: 4px 8px;
+          border-radius: 12px;
+          font-size: 12px;
+          font-weight: 500;
+          
+          &.status-approved {
+            background-color: #e8f5e8;
+            color: #2e7d32;
+          }
+          
+          &.status-rejected {
+            background-color: #ffebee;
+            color: #c62828;
+          }
+          
+          &.status-submitted {
+            background-color: #e3f2fd;
+            color: #1565c0;
+          }
+          
+          &.status-under-review {
+            background-color: #fff3e0;
+            color: #ef6c00;
+          }
+          
+          &.status-supplementary {
+            background-color: #fce4ec;
+            color: #c2185b;
+          }
+        }
+      }
+
+      .no-data {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 60px 20px;
+        color: #666;
+        
+        mat-icon {
+          font-size: 48px;
+          width: 48px;
+          height: 48px;
+          margin-bottom: 16px;
+          color: #ccc;
+        }
+        
+        p {
+          margin: 0;
+          font-size: 16px;
+        }
+      }
+    }
+  }
+}
+
+// 响应式设计
+@media (max-width: 768px) {
+  .approved-applications-container {
+    padding: 10px;
+    
+    .table-container {
+      overflow-x: auto;
+    }
+  }
+}

@@ -8,7 +8,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class WorkflowManagementComponent implements OnInit {
   
-  constructor(/* private workflowService: WorkflowDesignService */) {}
+  constructor() {
+    // TODO: Inject WorkflowDesignService when available
+  }
   
   ngOnInit() {
     console.log('WorkflowManagementComponent initialized');

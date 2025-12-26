@@ -1,16 +1,39 @@
 <div class="guest-dashboard">
   <mat-card class="welcome-card">
     <mat-card-header>
-      <mat-card-title>{{ 'GUEST.WELCOME' | translate }}</mat-card-title>
+      <mat-card-title>{{ 'guest.welcome' | translate }}</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <p>{{ 'GUEST.WELCOME_MESSAGE' | translate }}</p>
+      <p>{{ 'guest.welcome_message' | translate }}</p>
     </mat-card-content>
     <mat-card-actions>
       <button mat-raised-button color="primary" (click)="openApplicationForm()">
         <mat-icon>work</mat-icon>
-        {{ 'GUEST.APPLY_JOB' | translate }}
+        {{ 'guest.apply_job' | translate }}
+      </button>
+      <button mat-stroked-button color="primary" (click)="viewMyApplications()" style="margin-left: 12px;">
+        <mat-icon>list_alt</mat-icon>
+        {{ 'guest.my_applications' | translate }}
       </button>
     </mat-card-actions>
+  </mat-card>
+
+  <!-- Quick Actions Section -->
+  <mat-card class="quick-actions-card" style="margin-top: 20px;">
+    <mat-card-header>
+      <mat-card-title>{{ 'guest.quick_actions' | translate }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="action-buttons">
+        <button mat-button (click)="openApplicationForm()" class="action-button">
+          <mat-icon>add_circle_outline</mat-icon>
+          <span>{{ 'guest.new_application' | translate }}</span>
+        </button>
+        <button mat-button (click)="viewMyApplications()" class="action-button">
+          <mat-icon>assignment</mat-icon>
+          <span>{{ 'guest.view_applications' | translate }}</span>
+        </button>
+      </div>
+    </mat-card-content>
   </mat-card>
 </div>

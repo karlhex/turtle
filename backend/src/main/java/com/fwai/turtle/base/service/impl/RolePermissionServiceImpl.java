@@ -3,9 +3,13 @@ package com.fwai.turtle.base.service.impl;
 import com.fwai.turtle.base.dto.RolePermissionDTO;
 import com.fwai.turtle.base.entity.Role;
 import com.fwai.turtle.base.entity.RolePermission;
+import com.fwai.turtle.base.entity.User;
+import com.fwai.turtle.base.enums.PermissionType;
+import com.fwai.turtle.base.enums.UserType;
 import com.fwai.turtle.base.mapper.RolePermissionMapper;
 import com.fwai.turtle.base.repository.RolePermissionRepository;
 import com.fwai.turtle.base.repository.RoleRepository;
+import com.fwai.turtle.base.repository.UserRepository;
 import com.fwai.turtle.base.service.RolePermissionService;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -31,7 +35,21 @@ public class RolePermissionServiceImpl implements RolePermissionService {
 
     private final RolePermissionRepository rolePermissionRepository;
     private final RoleRepository roleRepository;
+    private final UserRepository userRepository;
     private final RolePermissionMapper rolePermissionMapper;
+
+    @Override
+    public boolean hasPermissionByUsername(String username, String transactionPath) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new EntityNotFoundException("User not found: " + username));
+        
+        // System users have all permissions
+        if (user.getUserType() == UserType.SYSTEM) {
+            return true;
+        }
+        
+        return hasPermission(user.getRoles(), transactionPath);
+    }
 
     public boolean hasPermission(Set<Role> roles, String transactionPath) {
         if (roles.stream().anyMatch(role -> SYSTEM_ROLE.equals(role.getName()))) {
@@ -44,7 +62,18 @@ public class RolePermissionServiceImpl implements RolePermissionService {
                 
         List<RolePermission> permissions = rolePermissionRepository.findByRolesAndActive(roleNames);
         
+        // Check for *ALL permissions first
+        if (permissions.stream()
+                .anyMatch(permission -> 
+                    permission.getPermissionType() == PermissionType.ALL &&
+                    "*ALL".equals(permission.getTransactionPattern())
+                )) {
+            return true;
+        }
+        
+        // Check specific permissions
         return permissions.stream()
+                .filter(permission -> permission.getPermissionType() == PermissionType.SPECIFIC)
                 .anyMatch(permission -> 
                     Pattern.compile(permission.getTransactionPattern())
                            .matcher(transactionPath)

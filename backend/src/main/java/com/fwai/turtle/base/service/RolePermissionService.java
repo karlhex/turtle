@@ -16,7 +16,9 @@ public interface RolePermissionService {
     void delete(Long id);
     List<RolePermissionDTO> findByRoleName(String roleName);
 
-    boolean hasPermission(Set<Role> roles, String transactionPath); // Add this method
+    boolean hasPermission(Set<Role> roles, String transactionPath);
+    
+    boolean hasPermissionByUsername(String username, String transactionPath);
 
     Set<String> getPermittedPatterns(Set<Role> roles); // Add this method
 

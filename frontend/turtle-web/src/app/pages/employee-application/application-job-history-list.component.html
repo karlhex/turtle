@@ -1,0 +1,63 @@
+<div class="job-history-list-container">
+  <div class="section-header">
+    <h3>工作经历</h3>
+    <button *ngIf="editable" mat-raised-button color="primary" (click)="onAddJobHistory()">
+      <mat-icon>add</mat-icon>
+      添加工作经历
+    </button>
+  </div>
+
+  <div *ngIf="jobHistories.length === 0" class="empty-state">
+    <mat-icon>work</mat-icon>
+    <p>暂无工作经历，点击上方按钮添加</p>
+  </div>
+
+  <mat-table *ngIf="jobHistories.length > 0" [dataSource]="jobHistories" class="job-history-table">
+
+    <!-- 公司名称列 -->
+    <ng-container matColumnDef="companyName">
+      <mat-header-cell *matHeaderCellDef>公司名称</mat-header-cell>
+      <mat-cell *matCellDef="let jobHistory">{{ jobHistory.companyName || '-' }}</mat-cell>
+    </ng-container>
+
+    <!-- 职位列 -->
+    <ng-container matColumnDef="position">
+      <mat-header-cell *matHeaderCellDef>职位</mat-header-cell>
+      <mat-cell *matCellDef="let jobHistory">{{ jobHistory.position || '-' }}</mat-cell>
+    </ng-container>
+
+    <!-- 部门列 -->
+    <ng-container matColumnDef="department">
+      <mat-header-cell *matHeaderCellDef>部门</mat-header-cell>
+      <mat-cell *matCellDef="let jobHistory">{{ jobHistory.department || '-' }}</mat-cell>
+    </ng-container>
+
+    <!-- 开始日期列 -->
+    <ng-container matColumnDef="startDate">
+      <mat-header-cell *matHeaderCellDef>开始日期</mat-header-cell>
+      <mat-cell *matCellDef="let jobHistory">{{ formatDate(jobHistory.startDate) }}</mat-cell>
+    </ng-container>
+
+    <!-- 结束日期列 -->
+    <ng-container matColumnDef="endDate">
+      <mat-header-cell *matHeaderCellDef>结束日期</mat-header-cell>
+      <mat-cell *matCellDef="let jobHistory">{{ formatDate(jobHistory.endDate) || '至今' }}</mat-cell>
+    </ng-container>
+
+    <!-- 操作列 -->
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef>操作</mat-header-cell>
+      <mat-cell *matCellDef="let jobHistory; let i = index">
+        <button *ngIf="editable" mat-icon-button color="primary" (click)="onEditJobHistory(jobHistory, i)" matTooltip="编辑">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button *ngIf="editable" mat-icon-button color="warn" (click)="onDeleteJobHistory(i)" matTooltip="删除">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+</div>

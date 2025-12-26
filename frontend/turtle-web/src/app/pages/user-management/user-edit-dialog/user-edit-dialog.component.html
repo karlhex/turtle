@@ -25,6 +25,25 @@
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="full-width">
+        <mat-label>{{ 'user.form.userType' | translate }}</mat-label>
+        <mat-select formControlName="userType" required (selectionChange)="onUserTypeChange()">
+          <mat-option value="SYSTEM">
+            <span class="user-type-option system">{{ 'user.userType.system' | translate }}</span>
+          </mat-option>
+          <mat-option value="EMPLOYEE">
+            <span class="user-type-option employee">{{ 'user.userType.employee' | translate }}</span>
+          </mat-option>
+          <mat-option value="GUEST">
+            <span class="user-type-option guest">{{ 'user.userType.guest' | translate }}</span>
+          </mat-option>
+        </mat-select>
+        <mat-hint>{{ 'user.form.userTypeHint' | translate }}</mat-hint>
+        <mat-error *ngIf="userForm.get('userType')?.hasError('required')">
+          {{ 'user.validation.required.userType' | translate }}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
         <mat-label>{{ 'user.form.roles' | translate }}</mat-label>
         <mat-select formControlName="roleNames" multiple required>
           <mat-option *ngIf="isLoading">

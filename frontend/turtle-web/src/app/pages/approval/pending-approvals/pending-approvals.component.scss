@@ -1,0 +1,178 @@
+.pending-approvals {
+  padding: 20px;
+  background: #f5f5f5;
+  min-height: calc(100vh - 64px);
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 30px;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+
+    .title-section {
+      h2 {
+        margin: 0 0 8px 0;
+        color: #333;
+        font-weight: 500;
+      }
+
+      p {
+        margin: 0;
+        color: #666;
+        font-size: 14px;
+      }
+    }
+
+    .action-section {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+
+      .refresh-btn {
+        .spinning {
+          animation: spin 1s linear infinite;
+        }
+      }
+    }
+  }
+
+  .filters {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+
+    .search-field {
+      min-width: 300px;
+    }
+  }
+
+  .table-container {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    overflow: hidden;
+
+    .pending-tasks-table {
+      width: 100%;
+
+      .mat-mdc-header-cell {
+        background: #f8f9fa;
+        font-weight: 600;
+        color: #333;
+        border-bottom: 2px solid #e9ecef;
+      }
+
+      .task-row {
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+
+        &:hover {
+          background-color: #f8f9fa;
+        }
+      }
+
+      .application-id {
+        font-weight: 500;
+        color: #1976d2;
+      }
+
+      .applicant-info {
+        .name {
+          font-weight: 500;
+          margin-bottom: 2px;
+        }
+      }
+
+      .step-badge {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 500;
+        text-align: center;
+        min-width: 80px;
+
+        &.step-HR初审 {
+          background-color: #e3f2fd;
+          color: #1976d2;
+        }
+
+        &.step-部门审批 {
+          background-color: #fff3e0;
+          color: #f57c00;
+        }
+
+        &.step-总经理审批 {
+          background-color: #fce4ec;
+          color: #c2185b;
+        }
+      }
+
+      .action-buttons {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+
+        .view-btn {
+          color: #666;
+
+          &:hover {
+            color: #1976d2;
+          }
+        }
+
+        .process-btn {
+          font-size: 12px;
+          padding: 6px 16px;
+          
+          mat-icon {
+            font-size: 16px;
+            margin-right: 4px;
+          }
+        }
+      }
+    }
+
+    .table-paginator {
+      background: #f8f9fa;
+      border-top: 1px solid #e9ecef;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #666;
+
+      .empty-icon {
+        font-size: 72px;
+        width: 72px;
+        height: 72px;
+        margin-bottom: 20px;
+        color: #ccc;
+      }
+
+      h3 {
+        margin: 0 0 12px 0;
+        font-weight: 500;
+      }
+
+      p {
+        margin: 0;
+        font-size: 14px;
+      }
+    }
+  }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

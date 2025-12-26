@@ -50,6 +50,9 @@ export class WorkflowToolbarComponent {
   }
 
   exportWorkflow() {
+    // TODO: Implement Flowable-based workflow export
+    this.snackBar.open('工作流导出功能已迁移至 Flowable', '关闭', { duration: 3000 });
+    /*
     this.workflowService.exportCurrentWorkflow().subscribe(workflow => {
       const blob = new Blob([JSON.stringify(workflow, null, 2)], { 
         type: 'application/json' 
@@ -63,6 +66,7 @@ export class WorkflowToolbarComponent {
       
       this.snackBar.open('工作流已导出', '关闭', { duration: 3000 });
     });
+    */
   }
 
   importWorkflow(event: any) {
@@ -84,14 +88,16 @@ export class WorkflowToolbarComponent {
 
   clearWorkflow() {
     if (confirm('确定要清空当前工作流吗？此操作不可撤销。')) {
-      this.workflowService.clearWorkflow();
+      // TODO: Implement Flowable-based workflow clearing
+      // this.workflowService.clearWorkflow();
       this.workflowName = '';
       this.snackBar.open('工作流已清空', '关闭', { duration: 3000 });
     }
   }
 
   loadSampleWorkflow() {
-    this.workflowService.loadSampleWorkflow();
+    // TODO: Implement Flowable-based sample workflow loading
+    // this.workflowService.loadSampleWorkflow();
     this.workflowName = '报销审批流程';
     this.snackBar.open('已加载示例工作流', '关闭', { duration: 3000 });
   }

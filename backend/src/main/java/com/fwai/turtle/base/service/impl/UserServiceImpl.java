@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 
 import com.fwai.turtle.base.service.UserService;
 import com.fwai.turtle.security.dto.UserDTO;
+import com.fwai.turtle.security.dto.UserCreationResult;
 import com.fwai.turtle.security.dto.ChangePasswordRequest;
+import com.fwai.turtle.security.dto.ExpiredPasswordChangeRequest;
 import com.fwai.turtle.base.exception.InvalidCredentialsException;
 
 import lombok.RequiredArgsConstructor;
@@ -117,10 +119,68 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User createUserFromDTO(UserDTO userDTO) {
+        try {
+            log.info("Creating new user from DTO: {}", userDTO);
+            
+            // Validate role names based on user type
+            validateRolesByUserType(userDTO);
+            
+            User user = userMapper.toEntity(userDTO);
+            log.info("After mapper.toEntity() - User userType: {}", user.getUserType());
+            
+            // Set default password (user will be required to change it on first login)
+            String tempPassword = generateSecurePassword();
+            user.setPassword(passwordEncoder.encode(tempPassword));
+            user.setPasswordExpired(true);
+            
+            log.info("Creating user with temp password, will require password change on first login");
+            log.info("Before save - User userType: {}", user.getUserType());
+            User savedUser = userRepository.save(user);
+            log.info("After save - User userType: {}", savedUser.getUserType());
+            return savedUser;
+        } catch (Exception e) {
+            log.error("Error creating new user from DTO", e);
+            throw e;
+        }
+    }
+
+    @Override
+    public UserCreationResult createUserWithTempPassword(UserDTO userDTO) {
+        try {
+            log.info("Creating new user with temp password from DTO: {}", userDTO);
+            
+            // Validate role names based on user type
+            validateRolesByUserType(userDTO);
+            
+            User user = userMapper.toEntity(userDTO);
+            log.info("After mapper.toEntity() - User userType: {}", user.getUserType());
+            
+            // Set default password (user will be required to change it on first login)
+            String tempPassword = generateSecurePassword();
+            user.setPassword(passwordEncoder.encode(tempPassword));
+            user.setPasswordExpired(true);
+            
+            log.info("Creating user with temp password, will require password change on first login");
+            log.info("Before save - User userType: {}", user.getUserType());
+            User savedUser = userRepository.save(user);
+            log.info("After save - User userType: {}, temp password generated", savedUser.getUserType());
+            
+            return new UserCreationResult(savedUser, tempPassword);
+        } catch (Exception e) {
+            log.error("Error creating new user with temp password from DTO", e);
+            throw e;
+        }
+    }
+
+    @Override
     public User updateUser(UserDTO userDTO) {
         try {
             User oldUser = userRepository.findById(userDTO.getId())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+            
+            // Validate role names based on user type
+            validateRolesByUserType(userDTO);
             
             User user = userMapper.toEntity(userDTO);
 
@@ -214,6 +274,58 @@ public class UserServiceImpl implements UserService {
         userRepository.save(currentUser);
 
         log.info("用户 {} 密码修改成功", currentUser.getUsername());
+    }
+
+    @Override
+    public void changeExpiredPassword(ExpiredPasswordChangeRequest expiredPasswordChangeRequest) {
+        // 1. 检查新密码和确认密码是否一致
+        if (!expiredPasswordChangeRequest.getNewPassword().equals(expiredPasswordChangeRequest.getConfirmPassword())) {
+            throw new IllegalArgumentException("新密码和确认密码不一致");
+        }
+
+        // 2. 根据用户名查找用户
+        User user = userRepository.findByUsername(expiredPasswordChangeRequest.getUsername())
+            .orElseThrow(() -> new IllegalArgumentException("用户名不存在"));
+
+        // 3. 检查密码是否确实已过期
+        if (!user.isPasswordExpired()) {
+            throw new IllegalStateException("密码未过期，无法使用此接口修改密码");
+        }
+
+        // 4. 检查账户是否被锁定
+        if (user.isAccountLocked()) {
+            if (user.getAccountLockedUntil() != null && 
+                user.getAccountLockedUntil().isAfter(LocalDateTime.now())) {
+                throw new IllegalStateException("账户已被锁定，请稍后再试");
+            } else {
+                // 如果锁定时间已过，重置锁定状态
+                user.resetFailedLoginAttempts();
+            }
+        }
+
+        // 5. 验证当前密码是否正确
+        if (!passwordEncoder.matches(expiredPasswordChangeRequest.getCurrentPassword(), user.getPassword())) {
+            throw new IllegalArgumentException("当前密码不正确");
+        }
+
+        // 6. 验证新密码的强度
+        List<String> validationErrors = passwordValidationService.validatePassword(expiredPasswordChangeRequest.getNewPassword());
+        if (!validationErrors.isEmpty()) {
+            throw new IllegalArgumentException(String.join(", ", validationErrors));
+        }
+
+        // 7. 检查是否是常见密码
+        if (passwordValidationService.isCommonPassword(expiredPasswordChangeRequest.getNewPassword())) {
+            throw new IllegalArgumentException("请勿使用常见密码");
+        }
+
+        // 8. 更新密码并清除过期标记
+        user.updatePassword(passwordEncoder.encode(expiredPasswordChangeRequest.getNewPassword()));
+        user.setPasswordExpired(false);
+        user.setPasswordUpdatedAt(LocalDateTime.now());
+        userRepository.save(user);
+
+        log.info("用户 {} 过期密码修改成功", user.getUsername());
     }
 
     @Override
@@ -319,5 +431,50 @@ public class UserServiceImpl implements UserService {
         }
         
         return new String(passwordArray);
+    }
+
+    /**
+     * 根据用户类型验证角色名称
+     * SYSTEM 用户只能有 SYSTEM 角色
+     * GUEST 用户只能有 GUEST 角色
+     * EMPLOYEE 用户可以有除 SYSTEM 和 GUEST 之外的角色
+     */
+    private void validateRolesByUserType(UserDTO userDTO) {
+        if (userDTO.getUserType() == null || userDTO.getRoleNames() == null || userDTO.getRoleNames().isEmpty()) {
+            return;
+        }
+
+        Set<String> roleNames = userDTO.getRoleNames();
+        
+        switch (userDTO.getUserType()) {
+            case SYSTEM:
+                // SYSTEM 用户只能有 SYSTEM 角色
+                if (roleNames.size() != 1 || !roleNames.contains("SYSTEM")) {
+                    throw new IllegalArgumentException("SYSTEM 用户只能分配 SYSTEM 角色");
+                }
+                break;
+                
+            case GUEST:
+                // GUEST 用户只能有 GUEST 角色
+                if (roleNames.size() != 1 || !roleNames.contains("GUEST")) {
+                    throw new IllegalArgumentException("GUEST 用户只能分配 GUEST 角色");
+                }
+                break;
+                
+            case EMPLOYEE:
+                // EMPLOYEE 用户不能有 SYSTEM 或 GUEST 角色
+                if (roleNames.contains("SYSTEM")) {
+                    throw new IllegalArgumentException("EMPLOYEE 用户不能分配 SYSTEM 角色");
+                }
+                if (roleNames.contains("GUEST")) {
+                    throw new IllegalArgumentException("EMPLOYEE 用户不能分配 GUEST 角色");
+                }
+                break;
+                
+            default:
+                throw new IllegalArgumentException("不支持的用户类型: " + userDTO.getUserType());
+        }
+        
+        log.info("角色验证通过 - 用户类型: {}, 角色: {}", userDTO.getUserType(), roleNames);
     }
 }

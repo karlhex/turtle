@@ -30,8 +30,12 @@ export abstract class BaseFilterSelectInputComponent<T extends BaseItem>
 
   private _items: T[] = [];
   private _initialValue: any;
-  protected onChange: (value: any) => void = () => {};
-  protected onTouched: () => void = () => {};
+  protected onChange: (value: any) => void = () => {
+    // ControlValueAccessor onChange callback
+  };
+  protected onTouched: () => void = () => {
+    // ControlValueAccessor onTouched callback
+  };
 
   constructor() {
     this.filteredItems = this.itemCtrl.valueChanges.pipe(

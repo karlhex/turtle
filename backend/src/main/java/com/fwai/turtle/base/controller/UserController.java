@@ -19,8 +19,12 @@ import com.fwai.turtle.base.entity.User;
 import com.fwai.turtle.base.service.UserService;
 import com.fwai.turtle.base.dto.ApiResponse;
 import com.fwai.turtle.security.dto.UserDTO;
+import com.fwai.turtle.security.dto.UserCreationResult;
 import com.fwai.turtle.security.dto.ChangePasswordRequest;
+import com.fwai.turtle.security.dto.ExpiredPasswordChangeRequest;
 import com.fwai.turtle.base.exception.ResourceNotFoundException;
+
+import java.util.Map;
 
 import lombok.extern.slf4j.Slf4j;
 import jakarta.validation.Valid;
@@ -68,9 +72,14 @@ public class UserController {
   }
 
   @PostMapping
-  public ApiResponse<User> createUser(@RequestBody User user) {
-    log.info("createUser: {}", user);
-    return ApiResponse.ok(userService.newUser(user));
+  public ApiResponse<UserCreationResult> createUser(@Valid @RequestBody UserDTO userDTO) {
+    log.info("createUser - incoming UserDTO: {}", userDTO);
+    log.info("createUser - userType: {}, roleNames: {}", userDTO.getUserType(), userDTO.getRoleNames());
+    UserCreationResult result = userService.createUserWithTempPassword(userDTO);
+    log.info("createUser - created User: {}", result.getUser());
+    log.info("createUser - created User userType: {}", result.getUser().getUserType());
+    log.info("createUser - temporary password generated successfully");
+    return ApiResponse.ok(result);
   }
 
   @DeleteMapping("/{id}")
@@ -92,10 +101,38 @@ public class UserController {
   }
 
   @PostMapping("/change-password")
-  public ApiResponse<String> changePassword(
-      @Valid @RequestBody ChangePasswordRequest changePasswordRequest) {
-    log.info("Changing password for user");
-    userService.changePassword(changePasswordRequest);
-    return ApiResponse.ok("密码修改成功");
+  public ApiResponse<String> changePassword(@RequestBody Map<String, Object> requestMap) {
+    try {
+      // 验证必要字段
+      if (!requestMap.containsKey("currentPassword") || !requestMap.containsKey("newPassword") || !requestMap.containsKey("confirmPassword")) {
+        throw new IllegalArgumentException("缺少必要的密码字段");
+      }
+      
+      if (requestMap.containsKey("username")) {
+        // 包含用户名，说明是过期密码修改请求
+        ExpiredPasswordChangeRequest expiredPasswordChangeRequest = new ExpiredPasswordChangeRequest();
+        expiredPasswordChangeRequest.setUsername((String) requestMap.get("username"));
+        expiredPasswordChangeRequest.setCurrentPassword((String) requestMap.get("currentPassword"));
+        expiredPasswordChangeRequest.setNewPassword((String) requestMap.get("newPassword"));
+        expiredPasswordChangeRequest.setConfirmPassword((String) requestMap.get("confirmPassword"));
+        
+        log.info("Changing expired password for user: {}", expiredPasswordChangeRequest.getUsername());
+        userService.changeExpiredPassword(expiredPasswordChangeRequest);
+        return ApiResponse.ok("密码修改成功");
+      } else {
+        // 不包含用户名，说明是普通密码修改请求
+        ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest();
+        changePasswordRequest.setCurrentPassword((String) requestMap.get("currentPassword"));
+        changePasswordRequest.setNewPassword((String) requestMap.get("newPassword"));
+        changePasswordRequest.setConfirmPassword((String) requestMap.get("confirmPassword"));
+        
+        log.info("Changing password for current user");
+        userService.changePassword(changePasswordRequest);
+        return ApiResponse.ok("密码修改成功");
+      }
+    } catch (Exception e) {
+      log.error("Error changing password", e);
+      throw e;
+    }
   }
 }

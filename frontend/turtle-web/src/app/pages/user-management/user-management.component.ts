@@ -26,7 +26,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatMenuModule } from '@angular/material/menu';
 import { ConfirmDialogComponent } from '../../components/confirmdialog/confirm-dialog.component';
-import { User, UserService } from '../../services/user.service';
+import { User, UserService, UserCreationResult } from '../../services/user.service';
 import { UserEmployeeMappingComponent } from './user-employee-mapping/user-employee-mapping.component';
 import { UserEditDialogComponent } from './user-edit-dialog/user-edit-dialog.component';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -39,7 +39,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class UserManagementComponent implements OnInit, AfterViewInit {
   dataSource: MatTableDataSource<User>;
   isLoading = false;
-  displayedColumns: string[] = ['id', 'username', 'email', 'roles', 'employeeName', 'actions'];
+  displayedColumns: string[] = ['id', 'username', 'email', 'userType', 'roles', 'employeeName', 'actions'];
   totalElements = 0;
   pageSize = 10;
   searchQuery = '';
@@ -111,13 +111,23 @@ export class UserManagementComponent implements OnInit, AfterViewInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.userService.createUser(result).subscribe({
-          next: () => {
-            this.loadUsers();
-            this.snackBar.open(
-              this.translate.instant('user.message.create.success'),
-              this.translate.instant('common.close'),
-              { duration: 3000 }
-            );
+          next: (response: any) => {
+            if (response.code === 200) {
+              const userCreationResult: UserCreationResult = response.data;
+              
+              this.loadUsers();
+              
+              // Show success message with temporary password
+              const message = `${this.translate.instant('user.messages.createSuccess')}\n${this.translate.instant('user.messages.tempPassword')}: ${userCreationResult.tempPassword}`;
+              this.snackBar.open(
+                message,
+                this.translate.instant('common.close'),
+                { 
+                  duration: 10000, // Longer duration to read temp password
+                  panelClass: ['temp-password-snackbar']
+                }
+              );
+            }
           },
           error: error => {
             this.handleError(error);
@@ -204,6 +214,32 @@ export class UserManagementComponent implements OnInit, AfterViewInit {
 
   onSortChange(sort: Sort): void {
     this.loadUsers();
+  }
+
+  getUserTypeText(userType?: string): string {
+    switch (userType) {
+      case 'SYSTEM':
+        return '系统用户';
+      case 'EMPLOYEE':
+        return '员工用户';
+      case 'GUEST':
+        return '访客用户';
+      default:
+        return '员工用户'; // Default
+    }
+  }
+
+  getUserTypeClass(userType?: string): string {
+    switch (userType) {
+      case 'SYSTEM':
+        return 'user-type-system';
+      case 'EMPLOYEE':
+        return 'user-type-employee';
+      case 'GUEST':
+        return 'user-type-guest';
+      default:
+        return 'user-type-employee';
+    }
   }
 
   private handleError(error: HttpErrorResponse): void {

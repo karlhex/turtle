@@ -68,6 +68,7 @@ public class AuthServiceImpl implements AuthService {
                 .employeeDepartment(department == null ? null : department.getName())
                 .employeePosition(employee == null ? null : employee.getPosition() == null ? null : employee.getPosition().getName())
                 .isSystemUser(user.getRoles().stream().anyMatch(role -> role.getName().equals("ROLE_SYSTEM_USER")))
+                .userType(user.getUserType())
                 .permissions(permissions)
                 .build();
     }
@@ -112,6 +113,7 @@ public class AuthServiceImpl implements AuthService {
                 .employeeDepartment(department == null ? null : department.getName())
                 .employeePosition(employee == null ? null : employee.getPosition() == null ? null : employee.getPosition().getName())
                 .isSystemUser(user.getRoles().stream().anyMatch(role -> role.getName().equals("ROLE_SYSTEM_USER")))
+                .userType(user.getUserType())
                 .permissions(permissions)
                 .build();
     }
@@ -141,6 +143,7 @@ public class AuthServiceImpl implements AuthService {
                 .employeeDepartment(department == null ? null : department.getName())
                 .employeePosition(employee == null ? null : employee.getPosition() == null ? null : employee.getPosition().getName())
                 .isSystemUser(user.getRoles().stream().anyMatch(role -> role.getName().equals("ROLE_SYSTEM_USER")))
+                .userType(user.getUserType())
                 .permissions(permissions)
                 .build();
     }

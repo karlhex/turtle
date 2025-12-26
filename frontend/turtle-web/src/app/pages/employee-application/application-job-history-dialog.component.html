@@ -1,0 +1,115 @@
+<h2 mat-dialog-title>{{ isEditMode ? '编辑' : '添加' }}工作经历</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="jobHistoryForm" class="job-history-form">
+    <!-- 基本信息 -->
+    <div class="form-section">
+      <h4>基本信息</h4>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>公司名称 *</mat-label>
+          <input matInput formControlName="companyName" placeholder="请输入公司名称">
+          <mat-error *ngIf="jobHistoryForm.get('companyName')?.invalid && jobHistoryForm.get('companyName')?.touched">
+            {{ getErrorMessage('companyName') }}
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="half-width">
+          <mat-label>职位 *</mat-label>
+          <input matInput formControlName="position" placeholder="请输入职位名称">
+          <mat-error *ngIf="jobHistoryForm.get('position')?.invalid && jobHistoryForm.get('position')?.touched">
+            {{ getErrorMessage('position') }}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="half-width">
+          <mat-label>部门</mat-label>
+          <input matInput formControlName="department" placeholder="请输入部门名称">
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="half-width">
+          <mat-label>开始日期 *</mat-label>
+          <input matInput [matDatepicker]="startPicker" formControlName="startDate" placeholder="选择开始日期">
+          <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+          <mat-datepicker #startPicker></mat-datepicker>
+          <mat-error *ngIf="jobHistoryForm.get('startDate')?.invalid && jobHistoryForm.get('startDate')?.touched">
+            {{ getErrorMessage('startDate') }}
+          </mat-error>
+        </mat-form-field>
+
+        <div class="half-width">
+          <mat-checkbox [(ngModel)]="isCurrentJob" (change)="onCurrentJobChange()" [ngModelOptions]="{standalone: true}">
+            目前在职
+          </mat-checkbox>
+
+          <mat-form-field appearance="outline" class="full-width" *ngIf="!isCurrentJob">
+            <mat-label>结束日期 *</mat-label>
+            <input matInput [matDatepicker]="endPicker" formControlName="endDate" placeholder="选择结束日期">
+            <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+            <mat-datepicker #endPicker></mat-datepicker>
+            <mat-error *ngIf="jobHistoryForm.get('endDate')?.invalid && jobHistoryForm.get('endDate')?.touched">
+              {{ getErrorMessage('endDate') }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
+    <!-- 工作描述 -->
+    <div class="form-section">
+      <h4>工作描述</h4>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>工作内容</mat-label>
+          <textarea matInput formControlName="jobDescription" rows="3" placeholder="请描述主要工作内容和职责"></textarea>
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>主要成就</mat-label>
+          <textarea matInput formControlName="achievements" rows="3" placeholder="请描述在该工作中取得的主要成就"></textarea>
+        </mat-form-field>
+      </div>
+
+      <div class="form-row" *ngIf="!isCurrentJob">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>离职原因</mat-label>
+          <input matInput formControlName="leavingReason" placeholder="请输入离职原因">
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!-- 其他信息 -->
+    <div class="form-section">
+      <h4>其他信息</h4>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>推荐人联系方式</mat-label>
+          <input matInput formControlName="referenceContact" placeholder="请输入推荐人姓名和联系方式">
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>备注</mat-label>
+          <textarea matInput formControlName="remarks" rows="2" placeholder="请输入备注信息（可选）"></textarea>
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">取消</button>
+  <button mat-raised-button color="primary" (click)="onSave()" [disabled]="jobHistoryForm.invalid">
+    {{ isEditMode ? '更新' : '保存' }}
+  </button>
+</mat-dialog-actions>

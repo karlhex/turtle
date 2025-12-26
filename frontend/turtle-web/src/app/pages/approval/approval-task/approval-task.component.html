@@ -1,0 +1,202 @@
+<div class="approval-task-container">
+  <!-- 加载状态 -->
+  <div *ngIf="loading" class="loading-container">
+    <mat-spinner></mat-spinner>
+    <p>加载中...</p>
+  </div>
+
+  <!-- 主要内容 -->
+  <div *ngIf="!loading" class="content">
+    <!-- 头部信息 -->
+    <mat-card class="header-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>assignment</mat-icon>
+          审批任务处理
+        </mat-card-title>
+        <mat-card-subtitle>
+          {{ requestType === 'EMPLOYEE_APPLICATION' ? '员工入职申请' : '其他申请' }} - 
+          申请ID: {{ applicationId }}
+        </mat-card-subtitle>
+      </mat-card-header>
+      
+      <mat-card-actions>
+        <button mat-stroked-button (click)="goBack()">
+          <mat-icon>arrow_back</mat-icon>
+          返回列表
+        </button>
+      </mat-card-actions>
+    </mat-card>
+
+    <div class="content-layout">
+      <!-- 左侧：申请详情 -->
+      <div class="left-panel">
+        <mat-card class="application-details" *ngIf="applicationData">
+          <mat-card-header>
+            <mat-card-title>申请详情</mat-card-title>
+          </mat-card-header>
+          
+          <mat-card-content>
+            <div class="details-grid" *ngIf="requestType === 'EMPLOYEE_APPLICATION'">
+              <div class="detail-item">
+                <label>申请人姓名：</label>
+                <span>{{ applicationData.name }}</span>
+              </div>
+              <div class="detail-item">
+                <label>邮箱：</label>
+                <span>{{ applicationData.email }}</span>
+              </div>
+              <div class="detail-item">
+                <label>电话：</label>
+                <span>{{ applicationData.phone || '-' }}</span>
+              </div>
+              <div class="detail-item">
+                <label>期望职位：</label>
+                <span>{{ applicationData.desiredPosition || '-' }}</span>
+              </div>
+              <div class="detail-item">
+                <label>期望薪资：</label>
+                <span>{{ applicationData.expectedSalary || '-' }}</span>
+              </div>
+              <div class="detail-item">
+                <label>当前状态：</label>
+                <span [ngClass]="getStatusClass(applicationData.status)">
+                  {{ getStatusLabel(applicationData.status) }}
+                </span>
+              </div>
+              <div class="detail-item">
+                <label>提交时间：</label>
+                <span>{{ formatDate(applicationData.submittedAt) }}</span>
+              </div>
+              <div class="detail-item full-width" *ngIf="applicationData.selfIntroduction">
+                <label>自我介绍：</label>
+                <p class="multiline-text">{{ applicationData.selfIntroduction }}</p>
+              </div>
+              <div class="detail-item full-width" *ngIf="applicationData.workExperience">
+                <label>工作经验：</label>
+                <p class="multiline-text">{{ applicationData.workExperience }}</p>
+              </div>
+              <div class="detail-item full-width" *ngIf="applicationData.educationBackground">
+                <label>教育背景：</label>
+                <p class="multiline-text">{{ applicationData.educationBackground }}</p>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- 审批历史 -->
+        <mat-card class="approval-history" *ngIf="approvalHistory.length > 0">
+          <mat-card-header>
+            <mat-card-title>审批历史</mat-card-title>
+          </mat-card-header>
+          
+          <mat-card-content>
+            <div class="history-timeline">
+              <div *ngFor="let item of approvalHistory" class="history-item">
+                <div class="history-marker"></div>
+                <div class="history-content">
+                  <div class="history-header">
+                    <span class="step-name">{{ item.stepName }}</span>
+                    <span class="assignee">{{ item.assigneeName }}</span>
+                  </div>
+                  <div class="history-details">
+                    <p><strong>决定：</strong>{{ item.decision }}</p>
+                    <p *ngIf="item.comments"><strong>意见：</strong>{{ item.comments }}</p>
+                    <p class="timestamp">{{ formatDate(item.endTime) }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <!-- 右侧：审批操作 -->
+      <div class="right-panel">
+        <mat-card class="approval-actions">
+          <mat-card-header>
+            <mat-card-title>审批操作</mat-card-title>
+            <mat-card-subtitle *ngIf="currentTask">
+              当前任务：{{ currentTask.name }}
+            </mat-card-subtitle>
+          </mat-card-header>
+          
+          <mat-card-content>
+            <form [formGroup]="approvalForm" class="approval-form">
+              <!-- 审批决定 -->
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>审批决定</mat-label>
+                <mat-select formControlName="decision" required>
+                  <mat-option *ngFor="let option of decisionOptions" [value]="option.value">
+                    <span [class]="'decision-' + option.color">{{ option.label }}</span>
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="approvalForm.get('decision')?.hasError('required')">
+                  请选择审批决定
+                </mat-error>
+              </mat-form-field>
+
+              <!-- 审批意见 -->
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>审批意见</mat-label>
+                <textarea 
+                  matInput 
+                  formControlName="comments"
+                  rows="4"
+                  placeholder="请输入审批意见（可选）">
+                </textarea>
+              </mat-form-field>
+            </form>
+          </mat-card-content>
+          
+          <mat-card-actions class="actions">
+            <button 
+              mat-raised-button 
+              color="primary"
+              [disabled]="processing || approvalForm.invalid"
+              (click)="processApproval()">
+              <mat-icon *ngIf="!processing">check</mat-icon>
+              <mat-spinner diameter="20" *ngIf="processing"></mat-spinner>
+              {{ processing ? '处理中...' : '提交审批' }}
+            </button>
+            
+            <button 
+              mat-stroked-button 
+              (click)="goBack()"
+              [disabled]="processing">
+              取消
+            </button>
+          </mat-card-actions>
+        </mat-card>
+
+        <!-- 当前任务信息 -->
+        <mat-card class="current-task" *ngIf="currentTask">
+          <mat-card-header>
+            <mat-card-title>当前任务信息</mat-card-title>
+          </mat-card-header>
+          
+          <mat-card-content>
+            <div class="task-details">
+              <div class="task-item">
+                <label>任务名称：</label>
+                <span>{{ currentTask.name }}</span>
+              </div>
+              <div class="task-item">
+                <label>创建时间：</label>
+                <span>{{ formatDate(currentTask.createTime) }}</span>
+              </div>
+              <div class="task-item" *ngIf="currentTask.assignee">
+                <label>指定处理人：</label>
+                <span>{{ currentTask.assignee }}</span>
+              </div>
+              <div class="task-item" *ngIf="currentTask.description">
+                <label>任务描述：</label>
+                <span>{{ currentTask.description }}</span>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>

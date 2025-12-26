@@ -26,7 +26,9 @@ export class WorkflowCanvasComponent implements OnInit {
   connectionSource: string | null = null;
   tempConnection: { x: number; y: number } | null = null;
   
-  constructor(// private workflowService: WorkflowDesignService) {}
+  constructor() {
+    // TODO: Inject WorkflowDesignService when available
+  }
   
   ngOnInit() {
     // TODO: Subscribe to Flowable workflow state

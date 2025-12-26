@@ -1,0 +1,179 @@
+<div class="approval-list">
+  <!-- 页面头部 -->
+  <div class="header">
+    <div class="title-section">
+      <h2>统一审批管理</h2>
+      <p>管理所有类型的审批请求</p>
+    </div>
+    <div class="action-section">
+      <button mat-raised-button color="primary" (click)="exportData()">
+        <mat-icon>download</mat-icon>
+        导出数据
+      </button>
+      <button mat-icon-button (click)="refresh()" [disabled]="loading" class="refresh-btn">
+        <mat-icon [class.spinning]="loading">refresh</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- 筛选和搜索 -->
+  <div class="filters">
+    <mat-form-field class="filter-field">
+      <mat-label>申请类型</mat-label>
+      <mat-select [(value)]="selectedRequestType" (selectionChange)="onFilterChange()">
+        <mat-option value="">全部类型</mat-option>
+        <mat-option *ngFor="let type of requestTypes" [value]="type.value">
+          {{ type.label }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="filter-field">
+      <mat-label>审批状态</mat-label>
+      <mat-select [(value)]="selectedStatus" (selectionChange)="onFilterChange()">
+        <mat-option value="">全部状态</mat-option>
+        <mat-option *ngFor="let status of statusOptions" [value]="status.value">
+          {{ status.label }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="filter-field">
+      <mat-label>优先级</mat-label>
+      <mat-select [(value)]="selectedPriority" (selectionChange)="onFilterChange()">
+        <mat-option value="">全部优先级</mat-option>
+        <mat-option *ngFor="let priority of priorityOptions" [value]="priority.value">
+          {{ priority.label }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="search-field">
+      <mat-label>搜索申请</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="输入申请人姓名或描述">
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+  </div>
+
+  <!-- 审批请求表格 -->
+  <div class="table-container">
+    <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+    
+    <table mat-table [dataSource]="dataSource" matSort class="approval-table mat-elevation-2">
+      
+      <!-- 申请ID列 -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>申请ID</th>
+        <td mat-cell *matCellDef="let request">
+          <span class="application-id">#{{ request.id }}</span>
+        </td>
+      </ng-container>
+
+      <!-- 申请类型列 -->
+      <ng-container matColumnDef="requestType">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>申请类型</th>
+        <td mat-cell *matCellDef="let request">
+          <span class="request-type-badge">
+            {{ getRequestTypeLabel(request.requestType) }}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- 申请人列 -->
+      <ng-container matColumnDef="applicantName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>申请人</th>
+        <td mat-cell *matCellDef="let request">
+          <div class="applicant-info">
+            <div class="name">{{ request.applicantName }}</div>
+            <div class="email">{{ request.applicantEmail }}</div>
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- 提交时间列 -->
+      <ng-container matColumnDef="submitTime">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>提交时间</th>
+        <td mat-cell *matCellDef="let request">
+          {{ formatDate(request.submitTime) }}
+        </td>
+      </ng-container>
+
+      <!-- 当前步骤列 -->
+      <ng-container matColumnDef="currentStep">
+        <th mat-header-cell *matHeaderCellDef>当前步骤</th>
+        <td mat-cell *matCellDef="let request">
+          <span class="step-badge">{{ request.currentStep }}</span>
+        </td>
+      </ng-container>
+
+      <!-- 状态列 -->
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>状态</th>
+        <td mat-cell *matCellDef="let request">
+          <span class="status-badge" [ngClass]="getStatusClass(request.status)">
+            {{ getStatusLabel(request.status) }}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- 优先级列 -->
+      <ng-container matColumnDef="priority">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>优先级</th>
+        <td mat-cell *matCellDef="let request">
+          <span class="priority-badge" [ngClass]="getPriorityClass(request.priority)">
+            {{ getPriorityLabel(request.priority) }}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- 操作列 -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>操作</th>
+        <td mat-cell *matCellDef="let request">
+          <div class="action-buttons">
+            <button mat-icon-button 
+                    (click)="viewDetails(request)" 
+                    matTooltip="查看详情"
+                    class="view-btn">
+              <mat-icon>visibility</mat-icon>
+            </button>
+            
+            <button mat-raised-button 
+                    *ngIf="request.status === 'PENDING' || request.status === 'IN_PROGRESS'"
+                    (click)="processApproval(request)" 
+                    color="primary"
+                    class="process-btn">
+              <mat-icon>assignment_turned_in</mat-icon>
+              处理
+            </button>
+
+            <button mat-icon-button 
+                    (click)="viewHistory(request)" 
+                    matTooltip="查看审批历史"
+                    class="history-btn">
+              <mat-icon>history</mat-icon>
+            </button>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" 
+          class="approval-row" 
+          (click)="viewDetails(row)"></tr>
+    </table>
+
+    <!-- 分页器 -->
+    <mat-paginator [pageSizeOptions]="[10, 20, 50]" 
+                   [showFirstLastButtons]="true"
+                   class="table-paginator">
+    </mat-paginator>
+
+    <!-- 空状态 -->
+    <div *ngIf="!loading && dataSource.data.length === 0" class="empty-state">
+      <mat-icon class="empty-icon">assignment</mat-icon>
+      <h3>暂无审批请求</h3>
+      <p>当前没有符合条件的审批请求</p>
+    </div>
+  </div>
+</div>

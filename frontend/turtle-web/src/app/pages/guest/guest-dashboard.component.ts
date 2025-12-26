@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { EmployeeDialogComponent } from '../employee/employee-dialog.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-guest-dashboard',
@@ -8,15 +7,13 @@ import { EmployeeDialogComponent } from '../employee/employee-dialog.component';
   styleUrls: ['./guest-dashboard.component.scss'],
 })
 export class GuestDashboardComponent {
-  constructor(private dialog: MatDialog) {}
+  constructor(private router: Router) {}
 
   openApplicationForm(): void {
-    this.dialog.open(EmployeeDialogComponent, {
-      width: '80%',
-      data: {
-        mode: 'application',
-        employee: {},
-      },
-    });
+    this.router.navigate(['/employee-application/new']);
+  }
+
+  viewMyApplications(): void {
+    this.router.navigate(['/employee-application/my-applications']);
   }
 }

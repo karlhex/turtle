@@ -2,6 +2,10 @@
   "guest": {
     "welcome": "欢迎来到我们公司",
     "welcome_message": "感谢您对加入我们团队感兴趣。我们很期待了解更多关于您的信息！",
-    "apply_job": "申请入职"
+    "apply_job": "申请入职",
+    "my_applications": "我的申请",
+    "quick_actions": "快速操作",
+    "new_application": "新建申请",
+    "view_applications": "查看申请"
   }
 }

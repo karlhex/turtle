@@ -280,7 +280,7 @@ export class FlowableAdminComponent implements OnInit {
     }
   }
 
-  completeTask(taskId: string, approved: boolean = true): void {
+  completeTask(taskId: string, approved = true): void {
     // 简单的任务完成，实际应该有表单收集用户输入
     const variables = {
       approved: approved,

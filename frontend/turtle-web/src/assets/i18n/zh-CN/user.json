@@ -8,7 +8,9 @@
       "id": "ID",
       "username": "用户名",
       "email": "邮箱",
+      "userType": "用户类型",
       "roles": "角色",
+      "employeeName": "关联员工",
       "actions": "操作"
     },
     "dialog": {
@@ -21,13 +23,24 @@
       "username": "用户名",
       "email": "邮箱",
       "password": "密码",
+      "userType": "用户类型",
+      "userTypeHint": "系统用户拥有最高权限，员工用户需要关联员工，访客用户用于求职等场景",
       "roles": "角色"
+    },
+    "userType": {
+      "system": "系统用户",
+      "employee": "员工用户",
+      "guest": "访客用户"
+    },
+    "actions": {
+      "mapEmployee": "关联员工"
     },
     "validation": {
       "required": {
         "username": "请输入用户名",
         "email": "请输入邮箱",
         "password": "请输入密码",
+        "userType": "请选择用户类型",
         "roles": "请至少选择一个角色"
       },
       "email": "请输入有效的邮箱地址"
@@ -36,7 +49,8 @@
       "createSuccess": "用户创建成功",
       "updateSuccess": "用户更新成功",
       "deleteSuccess": "用户删除成功",
-      "error": "操作失败"
+      "error": "操作失败",
+      "tempPassword": "临时密码"
     }
   }
 }

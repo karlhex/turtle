@@ -89,10 +89,8 @@ export function HttpLoaderFactory(handler: HttpBackend) {
     { prefix: './assets/i18n/', suffix:'/bank-account.json' },
     { prefix: './assets/i18n/', suffix:'/contact.json' },
     { prefix: './assets/i18n/', suffix:'/position.json' },
-    { prefix: './assets/i18n/', suffix:'/user-management.json' },
-    { prefix: './assets/i18n/', suffix:'/reimbursement.json' },
-    { prefix: './assets/i18n/', suffix:'/tax-info.json' },
-    { prefix: './assets/i18n/', suffix:'/bank-account.json' },
+    { prefix: './assets/i18n/', suffix:'/guest.json' },
+    { prefix: './assets/i18n/', suffix:'/employee-application.json' },
   ]);
 }
 

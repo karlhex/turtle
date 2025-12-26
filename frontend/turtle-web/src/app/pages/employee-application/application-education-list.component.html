@@ -1,0 +1,63 @@
+<div class="education-list-container">
+  <div class="section-header">
+    <h3>教育经历</h3>
+    <button *ngIf="editable" mat-raised-button color="primary" (click)="onAddEducation()">
+      <mat-icon>add</mat-icon>
+      添加教育经历
+    </button>
+  </div>
+
+  <div *ngIf="educations.length === 0" class="empty-state">
+    <mat-icon>school</mat-icon>
+    <p>暂无教育经历，点击上方按钮添加</p>
+  </div>
+
+  <mat-table *ngIf="educations.length > 0" [dataSource]="educations" class="education-table">
+
+    <!-- 学校列 -->
+    <ng-container matColumnDef="school">
+      <mat-header-cell *matHeaderCellDef>学校</mat-header-cell>
+      <mat-cell *matCellDef="let education">{{ education.school || '-' }}</mat-cell>
+    </ng-container>
+
+    <!-- 学历列 -->
+    <ng-container matColumnDef="degree">
+      <mat-header-cell *matHeaderCellDef>学历</mat-header-cell>
+      <mat-cell *matCellDef="let education">{{ education.degree || '-' }}</mat-cell>
+    </ng-container>
+
+    <!-- 专业列 -->
+    <ng-container matColumnDef="major">
+      <mat-header-cell *matHeaderCellDef>专业</mat-header-cell>
+      <mat-cell *matCellDef="let education">{{ education.major || '-' }}</mat-cell>
+    </ng-container>
+
+    <!-- 开始日期列 -->
+    <ng-container matColumnDef="startDate">
+      <mat-header-cell *matHeaderCellDef>开始日期</mat-header-cell>
+      <mat-cell *matCellDef="let education">{{ formatDate(education.startDate) }}</mat-cell>
+    </ng-container>
+
+    <!-- 结束日期列 -->
+    <ng-container matColumnDef="endDate">
+      <mat-header-cell *matHeaderCellDef>结束日期</mat-header-cell>
+      <mat-cell *matCellDef="let education">{{ formatDate(education.endDate) }}</mat-cell>
+    </ng-container>
+
+    <!-- 操作列 -->
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef>操作</mat-header-cell>
+      <mat-cell *matCellDef="let education; let i = index">
+        <button *ngIf="editable" mat-icon-button color="primary" (click)="onEditEducation(education, i)" matTooltip="编辑">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button *ngIf="editable" mat-icon-button color="warn" (click)="onDeleteEducation(i)" matTooltip="删除">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+</div>

@@ -12,6 +12,7 @@ import com.fwai.turtle.base.mapper.UserMapper;
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
         uses = {
             DepartmentMapper.class, 
+            PositionMapper.class,
             UserMapper.class,
             EmployeeEducationMapper.class, 
             EmployeeJobHistoryMapper.class, 
@@ -25,6 +26,8 @@ public interface EmployeeMapper {
     @Mapping(target = "user", ignore = true)
     @Mapping(target = "departmentId", source = "department.id")
     @Mapping(target = "positionId", source = "position.id")
+    @Mapping(target = "department", source = "department")
+    @Mapping(target = "position", source = "position")
     EmployeeDTO toDTO(Employee employee);
 
     @Mapping(target = "department", source = "departmentId")

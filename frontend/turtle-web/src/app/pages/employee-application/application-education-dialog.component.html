@@ -1,0 +1,73 @@
+<h2 mat-dialog-title>{{ isEditMode ? '编辑' : '添加' }}教育经历</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="educationForm" class="education-form">
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>学校 *</mat-label>
+        <input matInput formControlName="school" placeholder="请输入学校名称">
+        <mat-error *ngIf="educationForm.get('school')?.invalid && educationForm.get('school')?.touched">
+          {{ getErrorMessage('school') }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>学历 *</mat-label>
+        <mat-select formControlName="degree">
+          <mat-option *ngFor="let degree of degreeOptions" [value]="degree">
+            {{ degree }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="educationForm.get('degree')?.invalid && educationForm.get('degree')?.touched">
+          {{ getErrorMessage('degree') }}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>专业 *</mat-label>
+        <input matInput formControlName="major" placeholder="请输入专业名称">
+        <mat-error *ngIf="educationForm.get('major')?.invalid && educationForm.get('major')?.touched">
+          {{ getErrorMessage('major') }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>开始日期 *</mat-label>
+        <input matInput [matDatepicker]="startPicker" formControlName="startDate" placeholder="选择开始日期">
+        <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+        <mat-datepicker #startPicker></mat-datepicker>
+        <mat-error *ngIf="educationForm.get('startDate')?.invalid && educationForm.get('startDate')?.touched">
+          {{ getErrorMessage('startDate') }}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>结束日期 *</mat-label>
+        <input matInput [matDatepicker]="endPicker" formControlName="endDate" placeholder="选择结束日期">
+        <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+        <mat-datepicker #endPicker></mat-datepicker>
+        <mat-error *ngIf="educationForm.get('endDate')?.invalid && educationForm.get('endDate')?.touched">
+          {{ getErrorMessage('endDate') }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>备注</mat-label>
+        <textarea matInput formControlName="remarks" rows="3" placeholder="请输入备注信息（可选）"></textarea>
+      </mat-form-field>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">取消</button>
+  <button mat-raised-button color="primary" (click)="onSave()" [disabled]="educationForm.invalid">
+    {{ isEditMode ? '更新' : '保存' }}
+  </button>
+</mat-dialog-actions>

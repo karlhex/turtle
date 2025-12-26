@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { PermissionService } from '../../services/permission.service';
+import { AuthService } from '../../services/auth.service';
 import { map, shareReplay, take, filter, takeUntil } from 'rxjs/operators';
 import { Observable, of, combineLatest, Subject } from 'rxjs';
 import { MatIconModule } from '@angular/material/icon';
@@ -17,6 +18,8 @@ interface MenuItem {
   permission?: string;
   children?: MenuItem[];
   divider?: boolean;
+  roles?: string[]; // Allow specific roles to see this menu item
+  hideForRoles?: string[]; // Hide for specific roles
 }
 
 @Component({
@@ -34,7 +37,7 @@ export class SidebarMenuComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   private activeItemCache = new Map<string, boolean>();
 
-  constructor(private router: Router, private permissionService: PermissionService) {
+  constructor(private router: Router, private permissionService: PermissionService, private authService: AuthService) {
     // 监听路由事件，更新活动状态缓存
     this.router.events
       .pipe(
@@ -82,6 +85,36 @@ export class SidebarMenuComponent implements OnInit, OnDestroy {
 
   // 检查菜单项是否应该显示
   checkPermission(item: MenuItem): Observable<boolean> {
+    return combineLatest([
+      this.checkRolePermission(item),
+      this.checkItemPermission(item)
+    ]).pipe(
+      map(([hasRolePermission, hasItemPermission]) => hasRolePermission && hasItemPermission)
+    );
+  }
+
+  // 检查角色权限
+  private checkRolePermission(item: MenuItem): Observable<boolean> {
+    return this.authService.getUserRole().pipe(
+      map(userRole => {
+        // 如果指定了允许的角色，检查用户角色是否在允许列表中
+        if (item.roles && item.roles.length > 0) {
+          return item.roles.includes(userRole);
+        }
+        
+        // 如果指定了禁止的角色，检查用户角色是否在禁止列表中
+        if (item.hideForRoles && item.hideForRoles.length > 0) {
+          return !item.hideForRoles.includes(userRole);
+        }
+        
+        // 默认允许显示
+        return true;
+      })
+    );
+  }
+
+  // 检查具体权限
+  private checkItemPermission(item: MenuItem): Observable<boolean> {
     if (!item.permission) {
       return of(true);
     }
@@ -164,6 +197,7 @@ export class SidebarMenuComponent implements OnInit, OnDestroy {
     {
       title: 'menu.hr',
       icon: 'people',
+      roles: ['SYSTEM', 'EMPLOYEE'], // Only system users and employees can see HR module
       children: [
         {
           title: 'menu.employees',
@@ -182,12 +216,71 @@ export class SidebarMenuComponent implements OnInit, OnDestroy {
           icon: 'work',
           route: '/positions',
         },
+        {
+          title: 'menu.employee_applications',
+          icon: 'person_add',
+          route: '/employee-application/hr/list',
+          permission: 'hr.application.read',
+        },
+        {
+          title: 'menu.application_to_employee',
+          icon: 'how_to_reg',
+          route: '/employee-application/hr/approved',
+          permission: 'hr.application.approve',
+        },
+      ],
+      divider: true,
+    },
+    {
+      title: 'menu.approval_management',
+      icon: 'approval',
+      hideForRoles: ['GUEST'], // Hide from guest users
+      children: [
+        {
+          title: 'menu.unified_approval',
+          icon: 'assignment_turned_in',
+          route: '/approval/list',
+          // 移除权限要求，所有非GUEST员工都能查看
+        },
+        {
+          title: 'menu.my_pending_approvals',
+          icon: 'pending_actions',
+          route: '/approval/pending',
+          // 移除权限要求，所有非GUEST员工都能查看自己的任务
+        },
+        {
+          title: 'menu.approval_history',
+          icon: 'history',
+          route: '/approval/history',
+          // 移除权限要求，所有非GUEST员工都能查看历史
+        },
+      ],
+      divider: true,
+    },
+    {
+      title: 'menu.guest_applications',
+      icon: 'assignment',
+      roles: ['GUEST'], // Only guest users see this menu
+      children: [
+        {
+          title: 'menu.new_application',
+          icon: 'add_box',
+          route: '/employee-application/new',
+          permission: 'guest.application.create',
+        },
+        {
+          title: 'menu.my_applications',
+          icon: 'list_alt',
+          route: '/employee-application/my-applications',
+          permission: 'guest.application.view',
+        },
       ],
       divider: true,
     },
     {
       title: 'menu.crm',
       icon: 'contacts',
+      hideForRoles: ['GUEST'], // Hide from guest users
       children: [
         {
           title: 'menu.companies',
@@ -207,6 +300,7 @@ export class SidebarMenuComponent implements OnInit, OnDestroy {
     {
       title: 'menu.contract_management',
       icon: 'description',
+      hideForRoles: ['GUEST'], // Hide from guest users
       children: [
         {
           title: 'menu.contracts',
@@ -239,6 +333,7 @@ export class SidebarMenuComponent implements OnInit, OnDestroy {
     {
       title: 'menu.financial',
       icon: 'account_balance',
+      hideForRoles: ['GUEST'], // Hide from guest users
       children: [
         {
           title: 'menu.bank_accounts',
@@ -261,6 +356,7 @@ export class SidebarMenuComponent implements OnInit, OnDestroy {
     {
       title: 'menu.system',
       icon: 'settings',
+      roles: ['SYSTEM'], // Only system users see this menu
       children: [
         {
           title: 'menu.users',
@@ -277,13 +373,14 @@ export class SidebarMenuComponent implements OnInit, OnDestroy {
     {
       title: 'menu.workflow',
       icon: 'account_tree',
+      roles: ['SYSTEM', 'EMPLOYEE'], // System and employees can see workflow
       children: [
         // Workflow configurator removed (migrated to Flowable BPMN)
         {
           title: 'menu.flowable_admin',
           icon: 'admin_panel_settings',
           route: '/workflow/flowable-admin',
- //         permission: 'workflow.admin',
+          permission: 'workflow.admin',
         },
       ],
     },

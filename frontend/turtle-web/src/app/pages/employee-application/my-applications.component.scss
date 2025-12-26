@@ -1,0 +1,281 @@
+.my-applications {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 32px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e0e0e0;
+
+    .title-section {
+      h2 {
+        color: #1976d2;
+        margin: 0 0 8px 0;
+        font-size: 28px;
+        font-weight: 500;
+      }
+
+      p {
+        color: #666;
+        margin: 0;
+        font-size: 16px;
+      }
+    }
+
+    .action-section {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .new-application-btn {
+        background-color: #1976d2;
+        color: white;
+        
+        mat-icon {
+          margin-right: 8px;
+        }
+      }
+
+      .refresh-btn {
+        color: #666;
+
+        mat-icon.spinning {
+          animation: spin 1s linear infinite;
+        }
+      }
+    }
+
+    // Responsive design
+    @media (max-width: 768px) {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 16px;
+
+      .action-section {
+        justify-content: flex-start;
+      }
+    }
+  }
+
+  .content {
+    .loading-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 64px 0;
+
+      mat-spinner {
+        margin-bottom: 16px;
+      }
+
+      p {
+        color: #666;
+        font-size: 16px;
+      }
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 64px 0;
+
+      .empty-icon {
+        font-size: 64px;
+        width: 64px;
+        height: 64px;
+        color: #bbb;
+        margin-bottom: 16px;
+      }
+
+      h3 {
+        color: #666;
+        margin: 0 0 8px 0;
+        font-size: 20px;
+        font-weight: 500;
+      }
+
+      p {
+        color: #999;
+        margin: 0 0 24px 0;
+        font-size: 16px;
+      }
+
+      button {
+        background-color: #1976d2;
+        color: white;
+      }
+    }
+
+    .applications-table {
+      .mat-mdc-table {
+        border-radius: 8px;
+        overflow: hidden;
+
+        .mat-mdc-header-row {
+          background-color: #f5f5f5;
+          
+          .mat-mdc-header-cell {
+            font-weight: 600;
+            color: #424242;
+            border-bottom: 1px solid #e0e0e0;
+          }
+        }
+
+        .mat-mdc-row {
+          &:hover {
+            background-color: #f9f9f9;
+          }
+
+          .mat-mdc-cell {
+            border-bottom: 1px solid #f0f0f0;
+            padding: 12px 16px;
+
+            .application-id {
+              font-weight: 600;
+              color: #1976d2;
+            }
+
+            .status-badge {
+              display: inline-block;
+              padding: 4px 12px;
+              border-radius: 16px;
+              font-size: 12px;
+              font-weight: 500;
+              text-align: center;
+              min-width: 80px;
+
+              &.status-submitted {
+                background-color: #e3f2fd;
+                color: #1976d2;
+                border: 1px solid #bbdefb;
+              }
+
+              &.status-under-review {
+                background-color: #fff3e0;
+                color: #f57c00;
+                border: 1px solid #ffcc02;
+              }
+
+              &.status-approved {
+                background-color: #e8f5e8;
+                color: #4caf50;
+                border: 1px solid #c8e6c9;
+              }
+
+              &.status-rejected {
+                background-color: #ffebee;
+                color: #f44336;
+                border: 1px solid #ffcdd2;
+              }
+
+              &.status-supplementary-required {
+                background-color: #f3e5f5;
+                color: #9c27b0;
+                border: 1px solid #e1bee7;
+              }
+            }
+
+            .action-btn {
+              margin-right: 8px;
+              min-width: auto;
+              padding: 8px 12px;
+              
+              &.view-btn {
+                color: #1976d2;
+              }
+
+              &.edit-btn {
+                color: #ff9800;
+
+                &.disabled {
+                  color: #bbb;
+                  cursor: not-allowed;
+                }
+              }
+
+              mat-icon {
+                font-size: 18px;
+                width: 18px;
+                height: 18px;
+                margin-right: 4px;
+              }
+
+              &:last-child {
+                margin-right: 0;
+              }
+            }
+          }
+        }
+      }
+
+      // Mobile responsive table
+      @media (max-width: 768px) {
+        .mat-mdc-table {
+          .mat-mdc-header-row,
+          .mat-mdc-row {
+            .mat-mdc-header-cell,
+            .mat-mdc-cell {
+              &:nth-child(2),
+              &:nth-child(3) {
+                display: none; // Hide name and position columns on mobile
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .status-legend {
+    margin-top: 32px;
+    padding: 24px;
+    background-color: #fafafa;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+
+    h4 {
+      margin: 0 0 16px 0;
+      color: #424242;
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .legend-items {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 12px;
+
+      .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+
+        .status-badge {
+          flex-shrink: 0;
+        }
+
+        span:last-child {
+          color: #666;
+          font-size: 14px;
+        }
+      }
+    }
+
+    // Mobile responsive
+    @media (max-width: 768px) {
+      .legend-items {
+        grid-template-columns: 1fr;
+      }
+    }
+  }
+}
+
+// Animation for spinning refresh icon
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

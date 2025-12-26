@@ -26,4 +26,8 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long>, JpaSp
     
     Page<Employee> findByNameContainingIgnoreCaseOrEmailContainingIgnoreCaseOrDepartmentNameContainingIgnoreCase(
         String name, String email, String departmentName, Pageable pageable);
+    
+    // 动态角色判断相关方法
+    Optional<Employee> findByUser_Id(Long userId);
+    List<Employee> findByDepartment_IdAndUser_IdIsNotNull(Long departmentId);
 }

@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:flowable="http://flowable.org/bpmn"
+             targetNamespace="http://www.flowable.org/processdef">
+
+  <process id="employee-application-approval" name="员工入职申请审批流程" isExecutable="true">
+    
+    <!-- 开始事件 - 提交入职申请 -->
+    <startEvent id="start" name="提交入职申请">
+      <documentation>用户提交员工入职申请</documentation>
+    </startEvent>
+    
+    <!-- 更新状态为审核中 -->
+    <serviceTask id="updateToUnderReview" name="更新状态为审核中"
+                 flowable:expression="${employeeApplicationApprovalServiceImpl.updateStatus(execution.getVariable('applicationId'), 'UNDER_REVIEW')}">
+      <documentation>将申请状态更新为UNDER_REVIEW</documentation>
+    </serviceTask>
+    
+    <!-- HR初审 -->
+    <userTask id="hrInitialReview" name="HR初审" 
+              flowable:candidateGroups="HR_STAFF"
+              flowable:formKey="hrInitialReviewForm">
+      <documentation>HR进行初步审核，检查申请材料的完整性和基本条件</documentation>
+    </userTask>
+    
+    <!-- HR初审结果网关 -->
+    <exclusiveGateway id="hrReviewGateway" name="HR初审结果">
+      <documentation>判断HR初审结果</documentation>
+    </exclusiveGateway>
+    
+    <!-- 要求补充资料 -->
+    <serviceTask id="requestSupplementary" name="要求补充资料"
+                 flowable:expression="${employeeApplicationApprovalServiceImpl.updateStatus(execution.getVariable('applicationId'), 'SUPPLEMENTARY_REQUIRED')}">
+      <documentation>HR要求申请人补充资料</documentation>
+    </serviceTask>
+    
+    <!-- 等待补充资料 -->
+    <userTask id="waitForSupplementary" name="等待申请人补充资料" 
+              flowable:assignee="${execution.getVariable('applicantUserId')}"
+              flowable:formKey="supplementaryForm">
+      <documentation>申请人补充资料后重新提交</documentation>
+    </userTask>
+    
+    <!-- 部门经理审批 -->
+    <userTask id="deptManagerApproval" name="部门经理审批" 
+              flowable:candidateGroups="DEPT_LEADER"
+              flowable:formKey="deptManagerApprovalForm">
+      <documentation>部门经理审批入职申请</documentation>
+    </userTask>
+    
+    <!-- 部门经理审批结果网关 -->
+    <exclusiveGateway id="deptApprovalGateway" name="部门经理审批结果">
+      <documentation>判断部门经理审批结果</documentation>
+    </exclusiveGateway>
+    
+    <!-- 薪资审批判断网关 -->
+    <exclusiveGateway id="salaryApprovalGateway" name="薪资审批判断">
+      <documentation>判断是否需要总经理审批（高薪资）</documentation>
+    </exclusiveGateway>
+    
+    <!-- 总经理审批（高薪资职位） -->
+    <userTask id="generalManagerApproval" name="总经理审批" 
+              flowable:candidateGroups="GENERAL_MANAGER"
+              flowable:formKey="generalManagerApprovalForm">
+      <documentation>总经理审批高薪资入职申请</documentation>
+    </userTask>
+    
+    <!-- 总经理审批结果网关 -->
+    <exclusiveGateway id="gmApprovalGateway" name="总经理审批结果">
+      <documentation>判断总经理审批结果</documentation>
+    </exclusiveGateway>
+    
+    <!-- 最终批准 -->
+    <serviceTask id="approveApplication" name="批准申请"
+                 flowable:expression="${employeeApplicationApprovalServiceImpl.updateStatus(execution.getVariable('applicationId'), 'APPROVED')}">
+      <documentation>批准入职申请</documentation>
+    </serviceTask>
+    
+    <!-- 拒绝申请 -->
+    <serviceTask id="rejectApplication" name="拒绝申请"
+                 flowable:expression="${employeeApplicationApprovalServiceImpl.updateStatus(execution.getVariable('applicationId'), 'REJECTED')}">
+      <documentation>拒绝入职申请</documentation>
+    </serviceTask>
+    
+    <!-- 结束事件 - 已批准 -->
+    <endEvent id="endApproved" name="申请已批准">
+      <documentation>入职申请审批通过</documentation>
+    </endEvent>
+    
+    <!-- 结束事件 - 已拒绝 -->
+    <endEvent id="endRejected" name="申请已拒绝">
+      <documentation>入职申请被拒绝</documentation>
+    </endEvent>
+    
+    <!-- 连接线定义 -->
+    <sequenceFlow id="flow1" sourceRef="start" targetRef="updateToUnderReview" />
+    <sequenceFlow id="flow2" sourceRef="updateToUnderReview" targetRef="hrInitialReview" />
+    <sequenceFlow id="flow3" sourceRef="hrInitialReview" targetRef="hrReviewGateway" />
+    
+    <!-- HR初审通过 -->
+    <sequenceFlow id="flow4" sourceRef="hrReviewGateway" targetRef="deptManagerApproval">
+      <conditionExpression xsi:type="tFormalExpression">${hrApprovalDecision == 'APPROVED'}</conditionExpression>
+    </sequenceFlow>
+    
+    <!-- HR要求补充资料 -->
+    <sequenceFlow id="flow5" sourceRef="hrReviewGateway" targetRef="requestSupplementary">
+      <conditionExpression xsi:type="tFormalExpression">${hrApprovalDecision == 'SUPPLEMENTARY_REQUIRED'}</conditionExpression>
+    </sequenceFlow>
+    
+    <!-- HR直接拒绝 -->
+    <sequenceFlow id="flow6" sourceRef="hrReviewGateway" targetRef="rejectApplication">
+      <conditionExpression xsi:type="tFormalExpression">${hrApprovalDecision == 'REJECTED'}</conditionExpression>
+    </sequenceFlow>
+    
+    <sequenceFlow id="flow7" sourceRef="requestSupplementary" targetRef="waitForSupplementary" />
+    <sequenceFlow id="flow8" sourceRef="waitForSupplementary" targetRef="hrInitialReview" />
+    
+    <sequenceFlow id="flow9" sourceRef="deptManagerApproval" targetRef="deptApprovalGateway" />
+    
+    <!-- 部门经理批准 -->
+    <sequenceFlow id="flow10" sourceRef="deptApprovalGateway" targetRef="salaryApprovalGateway">
+      <conditionExpression xsi:type="tFormalExpression">${deptApprovalDecision == 'APPROVED'}</conditionExpression>
+    </sequenceFlow>
+    
+    <!-- 部门经理拒绝 -->
+    <sequenceFlow id="flow11" sourceRef="deptApprovalGateway" targetRef="rejectApplication">
+      <conditionExpression xsi:type="tFormalExpression">${deptApprovalDecision == 'REJECTED'}</conditionExpression>
+    </sequenceFlow>
+    
+    <!-- 高薪资需要总经理审批 -->
+    <sequenceFlow id="flow12" sourceRef="salaryApprovalGateway" targetRef="generalManagerApproval">
+      <conditionExpression xsi:type="tFormalExpression">${expectedSalary >= 20000}</conditionExpression>
+    </sequenceFlow>
+    
+    <!-- 低薪资直接批准 -->
+    <sequenceFlow id="flow13" sourceRef="salaryApprovalGateway" targetRef="approveApplication">
+      <conditionExpression xsi:type="tFormalExpression">${expectedSalary &lt; 20000}</conditionExpression>
+    </sequenceFlow>
+    
+    <sequenceFlow id="flow14" sourceRef="generalManagerApproval" targetRef="gmApprovalGateway" />
+    
+    <!-- 总经理批准 -->
+    <sequenceFlow id="flow15" sourceRef="gmApprovalGateway" targetRef="approveApplication">
+      <conditionExpression xsi:type="tFormalExpression">${gmApprovalDecision == 'APPROVED'}</conditionExpression>
+    </sequenceFlow>
+    
+    <!-- 总经理拒绝 -->
+    <sequenceFlow id="flow16" sourceRef="gmApprovalGateway" targetRef="rejectApplication">
+      <conditionExpression xsi:type="tFormalExpression">${gmApprovalDecision == 'REJECTED'}</conditionExpression>
+    </sequenceFlow>
+    
+    <sequenceFlow id="flow17" sourceRef="approveApplication" targetRef="endApproved" />
+    <sequenceFlow id="flow18" sourceRef="rejectApplication" targetRef="endRejected" />
+    
+  </process>
+</definitions>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:flowable="http://flowable.org/bpmn"
+             targetNamespace="http://flowable.org/processdef">
+
+  <process id="employee-application-approval-v2" name="员工入职申请审批流程v2" isExecutable="true">
+    
+    <!-- 开始事件 - GUEST输入入职申请 -->
+    <startEvent id="start" name="GUEST提交入职申请">
+      <documentation>GUEST用户提交员工入职申请（org-roam规范第1步）</documentation>
+    </startEvent>
+    
+    <!-- 更新状态为待审批 -->
+    <serviceTask id="updateToPending" name="更新状态为待审批"
+                 flowable:expression="${employeeApplicationApprovalServiceImpl.updateStatus(execution.getVariable('applicationId'), 'PENDING')}">
+      <documentation>将申请状态更新为PENDING</documentation>
+    </serviceTask>
+    
+    <!-- 1. HR_DIRECTOR审批 (org-roam规范第2步) -->
+    <userTask id="hrDirectorReview" name="HR总监审批" 
+              flowable:candidateGroups="HR_DIRECTOR"
+              flowable:formKey="hrDirectorReviewForm">
+      <documentation>HR_DIRECTOR对员工申请进行审核（org-roam规范第2步）</documentation>
+    </userTask>
+    
+    <!-- HR总监审核结果网关 -->
+    <exclusiveGateway id="hrDirectorGateway" name="HR总监审核结果">
+      <documentation>判断HR_DIRECTOR审核结果</documentation>
+    </exclusiveGateway>
+    
+    <!-- 更新状态为已验证 -->
+    <serviceTask id="updateToValidated" name="更新状态为已验证"
+                 flowable:expression="${employeeApplicationApprovalServiceImpl.updateStatus(execution.getVariable('applicationId'), 'VALIDATED')}">
+      <documentation>HR总监审批通过后，将申请状态更新为VALIDATED</documentation>
+    </serviceTask>
+    
+    <!-- 2. CEO审批 (org-roam规范第3步) -->
+    <userTask id="ceoApproval" name="CEO审批" 
+              flowable:candidateGroups="CEO"
+              flowable:formKey="ceoApprovalForm">
+      <documentation>CEO对员工申请进行最终审批（org-roam规范第3步）</documentation>
+    </userTask>
+    
+    <!-- CEO审批结果网关 -->
+    <exclusiveGateway id="ceoGateway" name="CEO审批结果">
+      <documentation>判断CEO审批结果</documentation>
+    </exclusiveGateway>
+    
+    <!-- 3. HR_SPECIALIST办理入职 (org-roam规范第4步) -->
+    <userTask id="hrSpecialistProcess" name="HR专员办理入职" 
+              flowable:candidateGroups="HR_SPECIALIST"
+              flowable:formKey="hrSpecialistProcessForm">
+      <documentation>HR_SPECIALIST办理员工入职手续（org-roam规范第4步）</documentation>
+    </userTask>
+    
+    <!-- 最终批准并完成入职 (org-roam规范第5步) -->
+    <serviceTask id="completeOnboarding" name="完成入职办理"
+                 flowable:expression="${employeeApplicationApprovalServiceImpl.completeOnboarding(execution.getVariable('applicationId'))}">
+      <documentation>完成入职办理，更新状态为APPROVED（org-roam规范第5步）</documentation>
+    </serviceTask>
+    
+    <!-- 拒绝申请 -->
+    <serviceTask id="rejectApplication" name="拒绝申请"
+                 flowable:expression="${employeeApplicationApprovalServiceImpl.updateStatus(execution.getVariable('applicationId'), 'REJECTED')}">
+      <documentation>拒绝入职申请</documentation>
+    </serviceTask>
+    
+    <!-- 结束事件 - 已批准 -->
+    <endEvent id="endApproved" name="入职完成">
+      <documentation>入职申请审批通过并完成办理</documentation>
+    </endEvent>
+    
+    <!-- 结束事件 - 已拒绝 -->
+    <endEvent id="endRejected" name="申请已拒绝">
+      <documentation>入职申请被拒绝</documentation>
+    </endEvent>
+    
+    <!-- 连接线定义 -->
+    <!-- 开始 -> 更新状态 -->
+    <sequenceFlow id="flow1" sourceRef="start" targetRef="updateToPending" />
+    
+    <!-- 更新状态 -> HR总监审批 -->
+    <sequenceFlow id="flow2" sourceRef="updateToPending" targetRef="hrDirectorReview" />
+    
+    <!-- HR总监审批 -> 决策网关 -->
+    <sequenceFlow id="flow3" sourceRef="hrDirectorReview" targetRef="hrDirectorGateway" />
+    
+    <!-- HR总监审批通过 -> 更新状态为已验证 -->
+    <sequenceFlow id="flow4" sourceRef="hrDirectorGateway" targetRef="updateToValidated">
+      <conditionExpression xsi:type="tFormalExpression">${hrDirectorApprovalDecision == 'APPROVED'}</conditionExpression>
+    </sequenceFlow>
+    
+    <!-- 更新状态为已验证 -> CEO审批 -->
+    <sequenceFlow id="flow4a" sourceRef="updateToValidated" targetRef="ceoApproval" />
+    
+    <!-- HR总监审批拒绝 -> 拒绝申请 -->
+    <sequenceFlow id="flow5" sourceRef="hrDirectorGateway" targetRef="rejectApplication">
+      <conditionExpression xsi:type="tFormalExpression">${hrDirectorApprovalDecision == 'REJECTED'}</conditionExpression>
+    </sequenceFlow>
+    
+    <!-- CEO审批 -> 决策网关 -->
+    <sequenceFlow id="flow6" sourceRef="ceoApproval" targetRef="ceoGateway" />
+    
+    <!-- CEO审批通过 -> HR专员办理 -->
+    <sequenceFlow id="flow7" sourceRef="ceoGateway" targetRef="hrSpecialistProcess">
+      <conditionExpression xsi:type="tFormalExpression">${ceoApprovalDecision == 'APPROVED'}</conditionExpression>
+    </sequenceFlow>
+    
+    <!-- CEO审批拒绝 -> 拒绝申请 -->
+    <sequenceFlow id="flow8" sourceRef="ceoGateway" targetRef="rejectApplication">
+      <conditionExpression xsi:type="tFormalExpression">${ceoApprovalDecision == 'REJECTED'}</conditionExpression>
+    </sequenceFlow>
+    
+    <!-- HR专员办理完成 -> 完成入职 -->
+    <sequenceFlow id="flow9" sourceRef="hrSpecialistProcess" targetRef="completeOnboarding" />
+    
+    <!-- 完成入职 -> 结束（已批准） -->
+    <sequenceFlow id="flow10" sourceRef="completeOnboarding" targetRef="endApproved" />
+    
+    <!-- 拒绝申请 -> 结束（已拒绝） -->
+    <sequenceFlow id="flow11" sourceRef="rejectApplication" targetRef="endRejected" />
+    
+  </process>
+</definitions>

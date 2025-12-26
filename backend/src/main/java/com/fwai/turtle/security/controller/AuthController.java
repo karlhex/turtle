@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 
 import com.fwai.turtle.security.dto.SigninAns;
 import com.fwai.turtle.security.dto.SigninReq;
@@ -23,7 +24,14 @@ public class AuthController {
 
   @PostMapping("/signin")
   public ApiResponse<SigninAns> signin(@RequestBody SigninReq signinReq) {
-    return ApiResponse.ok(authService.signin(signinReq));
+    try {
+      return ApiResponse.ok(authService.signin(signinReq));
+    } catch (InternalAuthenticationServiceException ex) {
+      if (ex.getMessage() != null && ex.getMessage().contains("Password has expired")) {
+        return ApiResponse.error(40301, "密码已过期，请修改密码");
+      }
+      throw ex; // Re-throw if it's not a password expiry issue
+    }
   }
 
   @PostMapping("/signup")

@@ -24,6 +24,10 @@ public class Sequence extends BaseEntity {
     @Column(nullable = false, length = 10)
     private String prefix;
 
+    @Comment("序列号长度")
+    @Column(nullable = false)
+    private Integer seqLength = 6;
+
     @Comment("是否包含年")
     private Boolean includeYear = false;
 

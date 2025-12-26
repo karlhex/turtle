@@ -44,8 +44,10 @@ public class SequenceServiceImpl implements SequenceService {
             sb.append(now.format(DateTimeFormatter.ofPattern("dd")));
         }
 
-        // 添加序号，默认6位，不足补0
-        sb.append(String.format("%06d", sequence.getCurrentValue()));
+        // 添加序号，根据配置的长度，不足补0
+        int seqLength = sequence.getSeqLength() != null ? sequence.getSeqLength() : 6;
+        String formatPattern = "%0" + seqLength + "d";
+        sb.append(String.format(formatPattern, sequence.getCurrentValue()));
 
         return sb.toString();
     }

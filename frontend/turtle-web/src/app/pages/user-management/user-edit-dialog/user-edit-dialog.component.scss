@@ -19,6 +19,22 @@
   margin-left: 0.5rem;
 }
 
+.user-type-option {
+  font-weight: 500;
+  
+  &.system {
+    color: #c62828;
+  }
+  
+  &.employee {
+    color: #2e7d32;
+  }
+  
+  &.guest {
+    color: #ef6c00;
+  }
+}
+
 :host ::ng-deep {
   .mat-mdc-select-value {
     font-weight: normal;

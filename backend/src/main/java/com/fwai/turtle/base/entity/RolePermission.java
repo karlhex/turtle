@@ -1,15 +1,18 @@
 package com.fwai.turtle.base.entity;
 
 import com.fwai.turtle.base.entity.BaseEntity;
+import com.fwai.turtle.base.enums.PermissionType;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
 @Entity
+@Builder
 @Table(name = "role_permissions")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,7 +29,13 @@ public class RolePermission extends BaseEntity{
     @Column(name = "description")
     private String description;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "permission_type", nullable = false)
+    @Builder.Default
+    private PermissionType permissionType = PermissionType.SPECIFIC;
+
     @Column(name = "is_active", nullable = false)
+    @Builder.Default
     private Boolean isActive = true;
 
 }

@@ -1,0 +1,104 @@
+{
+  "employee_application": {
+    "title": "员工入职申请",
+    "new_application": "新建申请",
+    "my_applications": "我的申请",
+    "application_management": "申请管理",
+    "application_details": "申请详情",
+    "application_review": "申请审核",
+    
+    "form": {
+      "basic_info": "基本信息",
+      "personal_info": "个人信息",
+      "contact_info": "联系信息",
+      "social_security_info": "社保公积金信息",
+      "job_info": "求职信息",
+      "education_info": "教育背景",
+      "work_experience": "工作经验",
+      
+      "name": "姓名",
+      "email": "邮箱",
+      "phone": "电话",
+      "birthday": "生日",
+      "gender": "性别",
+      "ethnicity": "民族",
+      "id_type": "证件类型",
+      "id_number": "证件号码",
+      "emergency_contact_name": "紧急联系人姓名",
+      "emergency_contact_phone": "紧急联系人电话",
+      
+      "social_security_number": "社保号",
+      "provident_fund_number": "公积金账号",
+      "bank_account": "银行账号",
+      "bank_name": "开户银行",
+      
+      "desired_position": "期望职位",
+      "expected_salary": "期望薪资",
+      "preferred_contract_type": "期望合同类型",
+      "self_introduction": "自我介绍",
+      "work_experience": "工作经验",
+      "education_background": "教育背景",
+      "certifications": "证书信息",
+      
+      "submit": "提交申请",
+      "save_draft": "保存草稿",
+      "reset": "重置",
+      "edit": "编辑",
+      "view": "查看"
+    },
+    
+    "status": {
+      "submitted": "已提交",
+      "under_review": "审核中",
+      "approved": "已批准",
+      "rejected": "已拒绝",
+      "supplementary_required": "需要补充资料"
+    },
+    
+    "actions": {
+      "approve": "批准",
+      "reject": "拒绝",
+      "request_supplement": "要求补充资料",
+      "convert_to_employee": "转为员工",
+      "download": "下载",
+      "print": "打印"
+    },
+    
+    "messages": {
+      "submit_success": "申请提交成功！",
+      "submit_failed": "提交失败，请重试",
+      "update_success": "更新成功！",
+      "update_failed": "更新失败，请重试",
+      "delete_confirm": "确定要删除这个申请吗？",
+      "id_number_exists": "该身份证号已存在申请",
+      "email_has_pending": "该邮箱已有待处理的申请",
+      "required_field": "此字段为必填项",
+      "invalid_email": "请输入有效的邮箱地址",
+      "invalid_phone": "请输入有效的手机号",
+      "invalid_format": "格式不正确"
+    },
+    
+    "placeholders": {
+      "enter_name": "请输入您的姓名",
+      "enter_email": "请输入邮箱地址",
+      "enter_phone": "请输入手机号",
+      "select_gender": "请选择性别",
+      "enter_ethnicity": "请输入民族",
+      "select_id_type": "请选择证件类型",
+      "enter_id_number": "请输入证件号码",
+      "enter_emergency_contact": "请输入紧急联系人",
+      "enter_emergency_phone": "请输入紧急联系人电话",
+      "enter_social_security": "请输入社保号",
+      "enter_provident_fund": "请输入公积金账号",
+      "enter_bank_account": "请输入银行账号",
+      "enter_bank_name": "请输入开户银行",
+      "enter_desired_position": "请输入期望职位",
+      "enter_expected_salary": "如：8000-12000",
+      "select_contract_type": "请选择合同类型",
+      "enter_self_introduction": "请简单介绍您的个人情况、兴趣爱好等",
+      "enter_work_experience": "请描述您的工作经验、主要职责和成就",
+      "enter_education": "请描述您的教育背景、专业、毕业院校等",
+      "enter_certifications": "请列出您获得的专业证书、技能认证等"
+    }
+  }
+}

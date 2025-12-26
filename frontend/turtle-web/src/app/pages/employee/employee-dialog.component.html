@@ -161,7 +161,7 @@
 
             <!-- status -->
             <mat-form-field>
-              <mat-label>{{ 'employee.form.status' | translate }}</mat-label>
+              <mat-label>{{ 'employee.form.status.label' | translate }}</mat-label>
               <mat-select formControlName="status">
                 <mat-option *ngFor="let status of employeeStatuses" [value]="status">
                   {{ 'employee.form.status.' + status.toLowerCase() | translate }}

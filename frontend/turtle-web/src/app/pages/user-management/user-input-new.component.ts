@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { InputPageConfig } from '../../components/input-page/input-page.component';
-import { User, CreateUserDto } from '../../services/user.service';
+import { User, CreateUserDto, UserCreationResult } from '../../services/user.service';
 import { UserService } from '../../services/user.service';
 
 @Component({
@@ -113,12 +113,20 @@ export class UserInputNewComponent implements OnInit {
         this.userService.createUser(createUserDto).subscribe({
           next: (response: any) => {
             if (response.code === 200) {
+              const userCreationResult: UserCreationResult = response.data;
+              
+              // Show success message with temporary password
+              const message = `${this.translate.instant('user.messages.createSuccess')}\n${this.translate.instant('user.messages.tempPassword')}: ${userCreationResult.tempPassword}`;
               this.snackBar.open(
-                this.translate.instant('USER.CREATE_SUCCESS'),
-                this.translate.instant('ACTIONS.CLOSE'),
-                { duration: 3000 }
+                message,
+                this.translate.instant('common.close'),
+                { 
+                  duration: 10000, // Longer duration to read temp password
+                  panelClass: ['temp-password-snackbar']
+                }
               );
-              this.dialogRef.close(response.data);
+              
+              this.dialogRef.close(userCreationResult);
             } else {
               this.snackBar.open(
                 response.message || this.translate.instant('ERROR.SAVE_USER'),

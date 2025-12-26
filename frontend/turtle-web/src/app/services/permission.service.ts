@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { environment } from '../../environments/environment';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Injectable({
@@ -10,7 +9,9 @@ export class PermissionService {
   private readonly PERMISSIONS_KEY = 'user_permissions';
   private permissionsSubject = new BehaviorSubject<Set<string>>(this.loadPermissions());
 
-  constructor() {}
+  constructor() {
+    // Initialize permission service
+  }
 
   setPermissions(permissions: string[]): void {
     const permissionSet = new Set(permissions);
@@ -73,5 +74,32 @@ export class PermissionService {
 
   getPermissionsObservable(): Observable<Set<string>> {
     return this.permissionsSubject.asObservable();
+  }
+
+  // Helper method to check if user has any of the specified permissions
+  hasAnyOfPermissions(permissions: string[]): Observable<boolean> {
+    if (!permissions || permissions.length === 0) {
+      return of(true);
+    }
+    return this.hasAnyPermission(permissions);
+  }
+
+  // Helper method to check role-based permissions
+  checkRoleBasedAccess(requiredRoles: string[], currentRole: string): boolean {
+    if (!requiredRoles || requiredRoles.length === 0) {
+      return true;
+    }
+    return requiredRoles.includes(currentRole);
+  }
+
+  // Enhanced permission check with role fallback
+  hasPermissionWithRoleFallback(permission: string, allowedRoles: string[], currentRole: string): Observable<boolean> {
+    // If user role is in allowed roles, grant access regardless of specific permissions
+    if (this.checkRoleBasedAccess(allowedRoles, currentRole)) {
+      return of(true);
+    }
+    
+    // Otherwise check specific permission
+    return this.hasPermission(permission);
   }
 }

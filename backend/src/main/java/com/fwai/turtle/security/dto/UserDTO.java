@@ -3,6 +3,7 @@ package com.fwai.turtle.security.dto;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+import com.fwai.turtle.base.enums.UserType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,6 +17,7 @@ public class UserDTO {
     private Long id;
     private String username;
     private String email;
+    private UserType userType;
     private Set<String> roleNames;
     private Long employeeId;
     private String employeeName;

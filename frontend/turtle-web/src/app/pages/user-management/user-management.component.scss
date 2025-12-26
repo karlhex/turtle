@@ -94,6 +94,31 @@
       line-height: 24px;
     }
   }
+
+  .user-type {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    
+    &.user-type-system {
+      background-color: #ffebee;
+      color: #c62828;
+      border: 1px solid #ffcdd2;
+    }
+    
+    &.user-type-employee {
+      background-color: #e8f5e8;
+      color: #2e7d32;
+      border: 1px solid #c8e6c9;
+    }
+    
+    &.user-type-guest {
+      background-color: #fff3e0;
+      color: #ef6c00;
+      border: 1px solid #ffcc02;
+    }
+  }
 }
 
 // Dialog styles

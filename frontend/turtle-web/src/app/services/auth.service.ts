@@ -7,8 +7,8 @@ import { TokenRefreshService } from './token-refresh.service';
 import { TokenStorageService } from './token-storage.service';
 import { PermissionService } from './permission.service';
 import { environment } from '../../environments/environment';
-import { ApiResponse } from '@app/models/api.model';
-import { TokenPair } from '@app/models/token.model';
+import { ApiResponse } from '../models/api.model';
+import { TokenPair } from '../models/token.model';
 
 export interface SigninRequest {
   username: string;
@@ -23,6 +23,7 @@ export interface SigninData {
   employeeDepartment?: string;
   employeePosition?: string;
   isSystemUser?: boolean;
+  userType?: string;
   permissions: any;
 }
 
@@ -68,6 +69,7 @@ export class AuthService {
           employeeDepartment: '',
           employeePosition: '',
           isSystemUser: false,
+          userType: undefined, // Will be populated on actual login
           permissions: permissions || [],
         },
         message: '',
@@ -92,6 +94,12 @@ export class AuthService {
             this.router.navigate(['/guest-dashboard']);
           }
           return response;
+        } else if (response.code === 40301) {
+          // Password expired - redirect to change password page
+          // Store username for password change
+          sessionStorage.setItem('pendingPasswordChange', credentials.username);
+          this.router.navigate(['/change-password']);
+          throw new Error(response.message || '密码已过期，请修改密码');
         }
         throw new Error(response.message || 'Login failed');
       })
@@ -121,8 +129,96 @@ export class AuthService {
     return this.userSubject.asObservable();
   }
 
+  isGuestUser(): boolean {
+    const user = this.getCurrentUser();
+    // Use userType if available, fallback to employeeId check
+    if (user?.data?.userType) {
+      return user.data.userType === 'GUEST';
+    }
+    // Fallback logic for backward compatibility
+    return !user?.data?.employeeId;
+  }
+
+  isEmployeeUser(): boolean {
+    const user = this.getCurrentUser();
+    // Use userType if available, fallback to employeeId check
+    if (user?.data?.userType) {
+      return user.data.userType === 'EMPLOYEE';
+    }
+    // Fallback logic for backward compatibility
+    return !!user?.data?.employeeId;
+  }
+
   // Add getToken method for backward compatibility
   getToken(): string | null {
     return this.tokenStorage.getToken();
+  }
+
+  // Enhanced role detection methods
+  getUserRole(): Observable<string> {
+    return this.authState$.pipe(
+      map(state => {
+        if (!state.isAuthenticated || !state.user?.data) {
+          return 'GUEST';
+        }
+        
+        const userData = state.user.data;
+        
+        // Use userType if available, fallback to old logic for compatibility
+        if (userData.userType) {
+          return userData.userType;
+        }
+        
+        // Fallback logic for backward compatibility
+        // Check if user is a system user
+        if (userData.isSystemUser) {
+          return 'SYSTEM';
+        }
+        
+        // Check if user has employee ID (employee vs guest)
+        if (!userData.employeeId) {
+          return 'GUEST';
+        }
+        
+        return 'EMPLOYEE';
+      })
+    );
+  }
+
+  hasRole(role: string): Observable<boolean> {
+    return this.getUserRole().pipe(
+      map(userRole => userRole === role)
+    );
+  }
+
+  isSystem(): Observable<boolean> {
+    return this.hasRole('SYSTEM');
+  }
+
+  isEmployee(): Observable<boolean> {
+    return this.hasRole('EMPLOYEE');
+  }
+
+  isGuest(): Observable<boolean> {
+    return this.hasRole('GUEST');
+  }
+
+  // Enhanced permission checking
+  canAccessHRModule(): Observable<boolean> {
+    return this.getUserRole().pipe(
+      map(role => role === 'SYSTEM' || role === 'EMPLOYEE')
+    );
+  }
+
+  canAccessGuestModule(): Observable<boolean> {
+    return this.getUserRole().pipe(
+      map(role => role === 'GUEST' || role === 'SYSTEM')
+    );
+  }
+
+  // Get user permissions
+  getUserPermissions(): string[] {
+    const user = this.getCurrentUser();
+    return user?.data?.permissions || [];
   }
 }

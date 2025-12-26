@@ -13,7 +13,9 @@ import com.fwai.turtle.base.entity.User;
 import com.fwai.turtle.base.repository.RoleRepository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class UserMapper {
@@ -33,8 +35,9 @@ public class UserMapper {
                 .id(user.getId())
                 .username(user.getUsername())
                 .email(user.getEmail())
+                .userType(user.getUserType())
                 .roleNames(user.getRoles().stream()
-                        .map(role -> role.getName().replace("ROLE_", ""))
+                        .map(role -> role.getName())
                         .collect(Collectors.toSet()))
                 .employeeName(employeeName)
                 .employeeId(employeeId)
@@ -58,12 +61,15 @@ public class UserMapper {
         user.setId(userDTO.getId());
         user.setUsername(userDTO.getUsername());
         user.setEmail(userDTO.getEmail());
+        user.setUserType(userDTO.getUserType());
+        
+        log.info("UserMapper.toEntity - DTO userType: {}, setting to User: {}", userDTO.getUserType(), userDTO.getUserType());
         
         // Convert role names to Role entities, adding ROLE_ prefix if not present
         if (userDTO.getRoleNames() != null) {
             Set<Role> roles = userDTO.getRoleNames().stream()
                 .map(name -> {
-                    String roleName = name.startsWith("ROLE_") ? name : "ROLE_" + name;
+                    String roleName = name;
                     return roleRepository.findByName(roleName)
                         .orElseThrow(() -> new RuntimeException("Role not found: " + roleName));
                 })

@@ -7,7 +7,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.fwai.turtle.security.dto.ChangePasswordRequest;
+import com.fwai.turtle.security.dto.ExpiredPasswordChangeRequest;
 import com.fwai.turtle.security.dto.UserDTO;
+import com.fwai.turtle.security.dto.UserCreationResult;
 import com.fwai.turtle.base.entity.User;
 
 public interface UserService {
@@ -15,6 +17,8 @@ public interface UserService {
     Optional<User> findById(Long id);
     Optional<User> findByUsername(String username);
     User newUser(User user);
+    User createUserFromDTO(UserDTO userDTO);
+    UserCreationResult createUserWithTempPassword(UserDTO userDTO);
     User updateUser(UserDTO user);
     User destroyUser(User user);
     Page<UserDTO> findAll(Pageable pageable);
@@ -28,6 +32,14 @@ public interface UserService {
      * @throws IllegalStateException 如果用户账户被锁定
      */
     void changePassword(ChangePasswordRequest changePasswordRequest);
+
+    /**
+     * 修改过期密码（无需认证）
+     * @param expiredPasswordChangeRequest 过期密码修改请求
+     * @throws IllegalArgumentException 如果密码不符合要求或用户名不存在
+     * @throws IllegalStateException 如果用户账户被锁定或密码未过期
+     */
+    void changeExpiredPassword(ExpiredPasswordChangeRequest expiredPasswordChangeRequest);
     
     /**
      * 重置用户密码

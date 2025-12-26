@@ -71,6 +71,12 @@ export class BaseListComponent {
   /** Total number of items in the list */
   @Input() totalElements = 0;
 
+  /** Flag to show/hide search functionality */
+  @Input() showSearch = true;
+
+  /** Flag to show/hide add button */
+  @Input() showAdd = true;
+
   /** Event emitted when user performs a search */
   @Output() search = new EventEmitter<string>();
 

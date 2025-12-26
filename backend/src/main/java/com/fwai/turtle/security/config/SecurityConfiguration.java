@@ -37,6 +37,7 @@ public class SecurityConfiguration {
 
   private static final String[] AUTH_WHITELIST = {
       "/api/auth/**",
+      "/api/users/change-password",
       "/h2-console/**",
       "/hello",
       "/actuator/health",

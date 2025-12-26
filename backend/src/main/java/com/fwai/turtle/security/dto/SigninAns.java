@@ -3,6 +3,7 @@ package com.fwai.turtle.security.dto;
 import lombok.Builder;
 import lombok.Data;
 import java.util.Set;
+import com.fwai.turtle.base.enums.UserType;
 
 @Data
 @Builder
@@ -14,6 +15,7 @@ public class SigninAns {
   private String employeeDepartment;
   private String employeePosition;
   private boolean isSystemUser;
+  private UserType userType;
   private Set<String> permissions;
   private String token;
 }

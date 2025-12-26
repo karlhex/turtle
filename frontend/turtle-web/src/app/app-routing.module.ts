@@ -26,6 +26,7 @@ import { FlowableAdminComponent } from './pages/workflow/flowable-admin/flowable
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
+  { path: 'change-password', component: ChangePasswordDialogComponent },
   {
     path: '',
     canActivate: [AuthGuard],
@@ -46,7 +47,8 @@ const routes: Routes = [
       { path: 'bank-accounts', component: BankAccountListNewComponent },
       { path: 'reimbursements', component: ReimbursementListComponent },
       { path: 'role-permissions', component: RolePermissionListComponent },
-      { path: 'change-password', component: ChangePasswordDialogComponent },
+      { path: 'employee-application', loadChildren: () => import('./pages/employee-application/employee-application.module').then(m => m.EmployeeApplicationModule) },
+      { path: 'approval', loadChildren: () => import('./pages/approval/approval.module').then(m => m.ApprovalModule) },
       { path: 'inventories', component: InventoryListNewComponent },
       { path: 'contacts', component: ContactListNewComponent },
       { path: 'positions', component: PositionListNewComponent },

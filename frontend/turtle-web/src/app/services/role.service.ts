@@ -68,4 +68,11 @@ export class RoleService {
   formatRoleName(name: string): string {
     return name.startsWith('ROLE_') ? name : `ROLE_${name}`;
   }
+
+  /**
+   * Alias for getAllRoles() for backward compatibility
+   */
+  findAll(): Observable<ApiResponse<Role[]>> {
+    return this.getAllRoles();
+  }
 }

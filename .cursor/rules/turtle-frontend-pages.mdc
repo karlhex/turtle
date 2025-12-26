@@ -1,0 +1,8 @@
+---
+description: 对前端pages要求遵循的原则
+globs: frontend/turtle-web/src/app/pages/*
+alwaysApply: true
+---
+
+- 对于list page，需要套用frontend/turtle-web/src/app/components/list-page模版
+- 对于input page, 需要套用frontend/turtle-web/src/app/components/input-page模版

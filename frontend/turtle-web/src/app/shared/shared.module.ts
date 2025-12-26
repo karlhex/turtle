@@ -8,6 +8,7 @@ import { RouterModule } from '@angular/router';
 import { ConfirmDialogComponent } from '../components/confirmdialog/confirm-dialog.component';
 import { PaymentTotalPipe } from '../pipes/payment-total.pipe';
 import { HasPermissionDirective } from '../directives/has-permission.directive';
+import { HasRoleDirective } from '../directives/has-role.directive';
 import { ListPageComponent } from '../components/list-page/list-page.component';
 import { InputPageComponent } from '../components/input-page/input-page.component';
 
@@ -94,6 +95,7 @@ const SHARED_MODULES = [
     ConfirmDialogComponent, 
     PaymentTotalPipe, 
     HasPermissionDirective,
+    HasRoleDirective,
     ListPageComponent,
     InputPageComponent
   ],
@@ -103,6 +105,7 @@ const SHARED_MODULES = [
     ConfirmDialogComponent, 
     PaymentTotalPipe, 
     HasPermissionDirective,
+    HasRoleDirective,
     ListPageComponent,
     InputPageComponent
   ],

@@ -3,6 +3,7 @@ import { BaseModel } from './base.model';
 export interface RolePermission extends BaseModel {
   roleName: string;
   transactionPattern: string;
+  permissionType?: 'SPECIFIC' | 'ALL';
   description?: string;
   isActive: boolean;
 }

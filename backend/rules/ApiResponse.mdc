@@ -1,0 +1,10 @@
+---
+description: 
+globs: **/src/main/java/com/fwai/turtle/*/controller/*.java
+alwaysApply: yes
+---
+---
+description: Sets the standards for entity class design including annotations, ID generation strategies, and relationship configurations for database interaction.
+globs: **/src/main/java/com/fwai/turtle/*/controller/*.java
+---
+- every end point in controller, use ApiReponse to return data, if return is ok, use ApiResponse.ok(message), else use ApiResponse.error(msgid, message)

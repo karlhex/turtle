@@ -1,0 +1,336 @@
+<div class="employee-conversion-container">
+  <mat-toolbar color="primary" class="page-header">
+    <button mat-icon-button (click)="goBack()" [attr.aria-label]="'返回'">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <span class="page-title">转换为员工</span>
+    <span class="spacer"></span>
+    <button
+      mat-raised-button
+      color="accent"
+      [disabled]="conversionForm.invalid || submitting || !canConvert()"
+      (click)="submitConversion()"
+      class="submit-button">
+      <mat-icon *ngIf="submitting" class="spinning">refresh</mat-icon>
+      <mat-icon *ngIf="!submitting && canConvert()">person_add</mat-icon>
+      <mat-icon *ngIf="!submitting && isAlreadyConverted()">check_circle</mat-icon>
+      {{ submitting ? '转换中...' : (isAlreadyConverted() ? '已转换' : '确认转换') }}
+    </button>
+  </mat-toolbar>
+
+  <div class="content-container" *ngIf="loading">
+    <div class="loading-container">
+      <mat-progress-spinner mode="indeterminate" diameter="60"></mat-progress-spinner>
+      <p>加载申请信息...</p>
+    </div>
+  </div>
+
+  <div class="content-container" *ngIf="!loading && application">
+    <!-- 申请信息概览 -->
+    <mat-card class="application-overview">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>assignment</mat-icon>
+          申请信息概览
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="overview-grid">
+          <div class="overview-item">
+            <label>申请人姓名：</label>
+            <span class="value">{{ application.name }}</span>
+          </div>
+          <div class="overview-item">
+            <label>邮箱：</label>
+            <span class="value">{{ application.email }}</span>
+          </div>
+          <div class="overview-item">
+            <label>手机号：</label>
+            <span class="value">{{ application.phone }}</span>
+          </div>
+          <div class="overview-item">
+            <label>身份证号：</label>
+            <span class="value">{{ application.idNumber }}</span>
+          </div>
+          <div class="overview-item">
+            <label>期望职位：</label>
+            <span class="value">{{ application.desiredPosition || '-' }}</span>
+          </div>
+          <div class="overview-item">
+            <label>申请状态：</label>
+            <span class="status-chip" [style.background-color]="getStatusColor(application.status)">
+              {{ getApplicationStatusLabel() }}
+            </span>
+          </div>
+          <div class="overview-item">
+            <label>转换状态：</label>
+            <span class="status-chip" [style.background-color]="isAlreadyConverted() ? '#4caf50' : '#ff9800'">
+              {{ getConversionStatusLabel() }}
+            </span>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- 已转换警告 -->
+    <mat-card class="warning-card" *ngIf="isAlreadyConverted()">
+      <mat-card-content>
+        <div class="warning-content">
+          <mat-icon color="warn">warning</mat-icon>
+          <div class="warning-text">
+            <h3>该申请已经转换为员工记录</h3>
+            <p>转换时间：{{ formatDate(application.convertedAt) }}</p>
+            <p>员工ID：{{ application.convertedEmployeeId }}</p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- 员工信息配置 -->
+    <mat-card class="employee-config">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>settings</mat-icon>
+          员工信息配置
+        </mat-card-title>
+        <mat-card-subtitle>
+          配置新员工的基本信息、职务和合同信息
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <form [formGroup]="conversionForm" class="conversion-form">
+          
+          <!-- 基本信息 -->
+          <div class="form-section">
+            <h3 class="section-title">
+              <mat-icon>badge</mat-icon>
+              基本信息
+            </h3>
+            <div class="form-row">
+              <mat-form-field appearance="outline">
+                <mat-label>员工编号</mat-label>
+                <input matInput formControlName="employeeNumber" placeholder="例：EMP240001">
+                <button 
+                  mat-icon-button 
+                  matSuffix 
+                  type="button"
+                  (click)="generateNewEmployeeNumber()"
+                  matTooltip="重新生成编号">
+                  <mat-icon>refresh</mat-icon>
+                </button>
+                <mat-error *ngIf="conversionForm.get('employeeNumber')?.hasError('required')">
+                  员工编号不能为空
+                </mat-error>
+                <mat-error *ngIf="conversionForm.get('employeeNumber')?.hasError('pattern')">
+                  员工编号格式不正确（6-10位字母数字组合）
+                </mat-error>
+              </mat-form-field>
+              
+              <mat-form-field appearance="outline">
+                <mat-label>入职日期</mat-label>
+                <input matInput [matDatepicker]="hireDatePicker" formControlName="hireDate">
+                <mat-datepicker-toggle matSuffix [for]="hireDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #hireDatePicker></mat-datepicker>
+                <mat-error *ngIf="conversionForm.get('hireDate')?.hasError('required')">
+                  入职日期不能为空
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <!-- 职务信息 -->
+          <div class="form-section">
+            <h3 class="section-title">
+              <mat-icon>work</mat-icon>
+              职务信息
+            </h3>
+            <div class="form-row">
+              <mat-form-field appearance="outline">
+                <mat-label>所属部门</mat-label>
+                <mat-select formControlName="departmentId" (selectionChange)="onDepartmentChange()">
+                  <mat-option value="">请选择部门</mat-option>
+                  <mat-option *ngFor="let dept of departments" [value]="dept.id">
+                    {{ dept.name }}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="conversionForm.get('departmentId')?.hasError('required')">
+                  请选择所属部门
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>职位</mat-label>
+                <mat-select formControlName="positionId">
+                  <mat-option value="">请选择职位</mat-option>
+                  <mat-option *ngFor="let position of positions" [value]="position.id">
+                    {{ position.name }}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="conversionForm.get('positionId')?.hasError('required')">
+                  请选择职位
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <!-- 角色信息 -->
+          <div class="form-section">
+            <h3 class="section-title">
+              <mat-icon>security</mat-icon>
+              角色权限
+            </h3>
+            <div class="form-row">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>用户角色</mat-label>
+                <mat-select formControlName="roles" multiple>
+                  <mat-option *ngFor="let role of roles" [value]="role.id">
+                    {{ role.description || role.name }}
+                    <span *ngIf="role.isSystem" class="system-badge">系统</span>
+                  </mat-option>
+                </mat-select>
+                <mat-hint>选择员工的系统角色，可多选</mat-hint>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <!-- 合同信息 -->
+          <div class="form-section">
+            <h3 class="section-title">
+              <mat-icon>description</mat-icon>
+              合同信息
+            </h3>
+            <div class="form-row">
+              <mat-form-field appearance="outline">
+                <mat-label>合同类型</mat-label>
+                <mat-select formControlName="contractType">
+                  <mat-option value="FULL_TIME">全职</mat-option>
+                  <mat-option value="PART_TIME">兼职</mat-option>
+                  <mat-option value="FIXED_TERM">固定期限</mat-option>
+                  <mat-option value="TEMPORARY">临时</mat-option>
+                </mat-select>
+                <mat-error *ngIf="conversionForm.get('contractType')?.hasError('required')">
+                  请选择合同类型
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>试用期（月）</mat-label>
+                <input matInput type="number" formControlName="probationPeriod" min="0" max="12">
+                <mat-error *ngIf="conversionForm.get('probationPeriod')?.hasError('min')">
+                  试用期不能小于0个月
+                </mat-error>
+                <mat-error *ngIf="conversionForm.get('probationPeriod')?.hasError('max')">
+                  试用期不能超过12个月
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="form-row">
+              <mat-form-field appearance="outline">
+                <mat-label>合同开始日期</mat-label>
+                <input matInput [matDatepicker]="contractStartPicker" formControlName="contractStartDate">
+                <mat-datepicker-toggle matSuffix [for]="contractStartPicker"></mat-datepicker-toggle>
+                <mat-datepicker #contractStartPicker></mat-datepicker>
+                <mat-error *ngIf="conversionForm.get('contractStartDate')?.hasError('required')">
+                  合同开始日期不能为空
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>合同结束日期</mat-label>
+                <input matInput [matDatepicker]="contractEndPicker" formControlName="contractEndDate">
+                <mat-datepicker-toggle matSuffix [for]="contractEndPicker"></mat-datepicker-toggle>
+                <mat-datepicker #contractEndPicker></mat-datepicker>
+                <mat-hint>{{ getContractEndDateHint() }}</mat-hint>
+                <mat-error *ngIf="conversionForm.get('contractEndDate')?.hasError('required')">
+                  固定期限合同必须填写结束日期
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <!-- 薪酬信息 -->
+          <div class="form-section">
+            <h3 class="section-title">
+              <mat-icon>payments</mat-icon>
+              薪酬信息
+            </h3>
+            <div class="form-row">
+              <mat-form-field appearance="outline">
+                <mat-label>基本工资</mat-label>
+                <input matInput type="number" formControlName="basicSalary" min="0">
+                <span matSuffix>元/月</span>
+                <mat-error *ngIf="conversionForm.get('basicSalary')?.hasError('min')">
+                  基本工资不能小于0
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <!-- 备注信息 -->
+          <div class="form-section">
+            <h3 class="section-title">
+              <mat-icon>note</mat-icon>
+              备注信息
+            </h3>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>转换备注</mat-label>
+              <textarea 
+                matInput 
+                formControlName="conversionNotes" 
+                rows="3"
+                placeholder="可选：记录转换过程中的特殊说明...">
+              </textarea>
+            </mat-form-field>
+          </div>
+
+        </form>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- 预览信息 -->
+    <mat-card class="preview-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>preview</mat-icon>
+          员工信息预览
+        </mat-card-title>
+        <mat-card-subtitle>
+          以下是即将创建的员工记录信息
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="preview-grid">
+          <div class="preview-item">
+            <label>员工姓名：</label>
+            <span>{{ application.name }}</span>
+          </div>
+          <div class="preview-item">
+            <label>员工编号：</label>
+            <span>{{ conversionForm.get('employeeNumber')?.value || '-' }}</span>
+          </div>
+          <div class="preview-item">
+            <label>入职日期：</label>
+            <span>{{ formatDate(conversionForm.get('hireDate')?.value) }}</span>
+          </div>
+          <div class="preview-item">
+            <label>所属部门：</label>
+            <span>{{ getDepartmentName(getFormValue('departmentId')) }}</span>
+          </div>
+          <div class="preview-item">
+            <label>职位：</label>
+            <span>{{ getPositionName(getFormValue('positionId')) }}</span>
+          </div>
+          <div class="preview-item">
+            <label>合同类型：</label>
+            <span>{{ getContractTypeLabel(getFormValue('contractType')) }}</span>
+          </div>
+          <div class="preview-item">
+            <label>用户角色：</label>
+            <span>{{ getSelectedRolesLabel() }}</span>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

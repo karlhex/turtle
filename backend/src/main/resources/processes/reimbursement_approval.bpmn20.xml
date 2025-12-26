@@ -17,45 +17,45 @@
       <documentation>将报销单状态更新为PENDING</documentation>
     </serviceTask>
     
-    <!-- 部门领导审批 -->
-    <userTask id="deptLeaderApproval" name="部门领导审批" 
-              flowable:candidateGroups="DEPT_LEADER"
-              flowable:formKey="deptLeaderApprovalForm">
-      <documentation>部门领导审批报销申请</documentation>
+    <!-- 1. DEPT_MANAGER审批 (org-roam规范第3a步) -->
+    <userTask id="deptManagerApproval" name="部门经理审批" 
+              flowable:candidateGroups="DEPT_MANAGER"
+              flowable:formKey="deptManagerApprovalForm">
+      <documentation>DEPT_MANAGER审批报销申请（org-roam规范第3a步）</documentation>
     </userTask>
     
-    <!-- 部门领导审批结果网关 -->
-    <exclusiveGateway id="deptApprovalGateway" name="部门领导审批结果">
-      <documentation>判断部门领导审批结果</documentation>
+    <!-- 部门经理审批结果网关 -->
+    <exclusiveGateway id="deptApprovalGateway" name="部门经理审批结果">
+      <documentation>判断部门经理审批结果</documentation>
     </exclusiveGateway>
     
-    <!-- 财务审批 -->
-    <userTask id="financeApproval" name="财务审批"
-              flowable:candidateGroups="FINANCE_MANAGER"
-              flowable:formKey="financeApprovalForm">
-      <documentation>财务部门审批报销申请</documentation>
+    <!-- 2. ACCOUNTANT审批 (org-roam规范第3b步) -->
+    <userTask id="accountantApproval" name="会计审批"
+              flowable:candidateGroups="ACCOUNTANT"
+              flowable:formKey="accountantApprovalForm">
+      <documentation>ACCOUNTANT审批报销申请（org-roam规范第3b步）</documentation>
     </userTask>
     
-    <!-- 财务审批结果网关 -->
-    <exclusiveGateway id="financeApprovalGateway" name="财务审批结果">
-      <documentation>判断财务审批结果</documentation>
+    <!-- 会计审批结果网关 -->
+    <exclusiveGateway id="accountantApprovalGateway" name="会计审批结果">
+      <documentation>判断会计审批结果</documentation>
     </exclusiveGateway>
     
-    <!-- 金额判断网关 -->
+    <!-- 金额判断网关 - 如果金额超过1000，CEO审批 -->
     <exclusiveGateway id="amountGateway" name="金额判断">
-      <documentation>根据报销金额决定是否需要总经理审批</documentation>
+      <documentation>检查报销金额是否超过1000（org-roam规范第3c步）</documentation>
     </exclusiveGateway>
     
-    <!-- 总经理审批 (金额>1000时) -->
-    <userTask id="generalManagerApproval" name="总经理审批"
-              flowable:candidateGroups="GENERAL_MANAGER"
-              flowable:formKey="generalManagerApprovalForm">
-      <documentation>总经理审批高金额报销(>1000)</documentation>
+    <!-- 3. CEO审批 (org-roam规范第3c步 - 金额超过1000) -->
+    <userTask id="ceoApproval" name="CEO审批"
+              flowable:candidateGroups="CEO"
+              flowable:formKey="ceoApprovalForm">
+      <documentation>CEO审批高金额报销申请（org-roam规范第3c步）</documentation>
     </userTask>
     
-    <!-- 总经理审批结果网关 -->
-    <exclusiveGateway id="generalManagerApprovalGateway" name="总经理审批结果">
-      <documentation>判断总经理审批结果</documentation>
+    <!-- CEO审批结果网关 -->
+    <exclusiveGateway id="ceoApprovalGateway" name="CEO审批结果">
+      <documentation>判断CEO审批结果</documentation>
     </exclusiveGateway>
     
     <!-- 审批通过处理 -->
@@ -84,56 +84,56 @@
     <!-- 开始 -> 更新状态为PENDING -->
     <sequenceFlow id="flow1" sourceRef="start" targetRef="updateToPending"/>
     
-    <!-- 更新状态 -> 部门领导审批 -->
-    <sequenceFlow id="flow2" sourceRef="updateToPending" targetRef="deptLeaderApproval"/>
+    <!-- 更新状态 -> 部门经理审批 -->
+    <sequenceFlow id="flow2" sourceRef="updateToPending" targetRef="deptManagerApproval"/>
     
-    <!-- 部门领导审批 -> 判断结果 -->
-    <sequenceFlow id="flow3" sourceRef="deptLeaderApproval" targetRef="deptApprovalGateway"/>
+    <!-- 部门经理审批 -> 判断结果 -->
+    <sequenceFlow id="flow3" sourceRef="deptManagerApproval" targetRef="deptApprovalGateway"/>
     
-    <!-- 部门领导审批通过 -> 财务审批 -->
-    <sequenceFlow id="flow4" sourceRef="deptApprovalGateway" targetRef="financeApproval">
-      <conditionExpression xsi:type="tFormalExpression">${approved == true}</conditionExpression>
+    <!-- 部门经理审批通过 -> 会计审批 -->
+    <sequenceFlow id="flow4" sourceRef="deptApprovalGateway" targetRef="accountantApproval">
+      <conditionExpression xsi:type="tFormalExpression">${deptManagerDecision == 'APPROVED'}</conditionExpression>
     </sequenceFlow>
     
-    <!-- 部门领导审批拒绝 -> 处理拒绝 -->
+    <!-- 部门经理审批拒绝 -> 处理拒绝 -->
     <sequenceFlow id="flow5" sourceRef="deptApprovalGateway" targetRef="processRejection">
-      <conditionExpression xsi:type="tFormalExpression">${approved == false}</conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression">${deptManagerDecision == 'REJECTED'}</conditionExpression>
     </sequenceFlow>
     
-    <!-- 财务审批 -> 判断结果 -->
-    <sequenceFlow id="flow6" sourceRef="financeApproval" targetRef="financeApprovalGateway"/>
+    <!-- 会计审批 -> 判断结果 -->
+    <sequenceFlow id="flow6" sourceRef="accountantApproval" targetRef="accountantApprovalGateway"/>
     
-    <!-- 财务审批拒绝 -> 处理拒绝 -->
-    <sequenceFlow id="flow7" sourceRef="financeApprovalGateway" targetRef="processRejection">
-      <conditionExpression xsi:type="tFormalExpression">${approved == false}</conditionExpression>
+    <!-- 会计审批拒绝 -> 处理拒绝 -->
+    <sequenceFlow id="flow7" sourceRef="accountantApprovalGateway" targetRef="processRejection">
+      <conditionExpression xsi:type="tFormalExpression">${accountantDecision == 'REJECTED'}</conditionExpression>
     </sequenceFlow>
     
-    <!-- 财务审批通过 -> 金额判断 -->
-    <sequenceFlow id="flow8" sourceRef="financeApprovalGateway" targetRef="amountGateway">
-      <conditionExpression xsi:type="tFormalExpression">${approved == true}</conditionExpression>
+    <!-- 会计审批通过 -> 金额判断 -->
+    <sequenceFlow id="flow8" sourceRef="accountantApprovalGateway" targetRef="amountGateway">
+      <conditionExpression xsi:type="tFormalExpression">${accountantDecision == 'APPROVED'}</conditionExpression>
     </sequenceFlow>
     
     <!-- 金额<=1000 -> 处理通过 -->
     <sequenceFlow id="flow9" sourceRef="amountGateway" targetRef="processApproval">
-      <conditionExpression xsi:type="tFormalExpression">${amount &lt;= 1000}</conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression">${reimbursementAmount &lt;= 1000}</conditionExpression>
     </sequenceFlow>
     
-    <!-- 金额>1000 -> 总经理审批 -->
-    <sequenceFlow id="flow10" sourceRef="amountGateway" targetRef="generalManagerApproval">
-      <conditionExpression xsi:type="tFormalExpression">${amount &gt; 1000}</conditionExpression>
+    <!-- 金额>1000 -> CEO审批 -->
+    <sequenceFlow id="flow10" sourceRef="amountGateway" targetRef="ceoApproval">
+      <conditionExpression xsi:type="tFormalExpression">${reimbursementAmount &gt; 1000}</conditionExpression>
     </sequenceFlow>
     
-    <!-- 总经理审批 -> 判断结果 -->
-    <sequenceFlow id="flow11" sourceRef="generalManagerApproval" targetRef="generalManagerApprovalGateway"/>
+    <!-- CEO审批 -> 判断结果 -->
+    <sequenceFlow id="flow11" sourceRef="ceoApproval" targetRef="ceoApprovalGateway"/>
     
-    <!-- 总经理审批通过 -> 处理通过 -->
-    <sequenceFlow id="flow12" sourceRef="generalManagerApprovalGateway" targetRef="processApproval">
-      <conditionExpression xsi:type="tFormalExpression">${approved == true}</conditionExpression>
+    <!-- CEO审批通过 -> 处理通过 -->
+    <sequenceFlow id="flow12" sourceRef="ceoApprovalGateway" targetRef="processApproval">
+      <conditionExpression xsi:type="tFormalExpression">${ceoDecision == 'APPROVED'}</conditionExpression>
     </sequenceFlow>
     
-    <!-- 总经理审批拒绝 -> 处理拒绝 -->
-    <sequenceFlow id="flow13" sourceRef="generalManagerApprovalGateway" targetRef="processRejection">
-      <conditionExpression xsi:type="tFormalExpression">${approved == false}</conditionExpression>
+    <!-- CEO审批拒绝 -> 处理拒绝 -->
+    <sequenceFlow id="flow13" sourceRef="ceoApprovalGateway" targetRef="processRejection">
+      <conditionExpression xsi:type="tFormalExpression">${ceoDecision == 'REJECTED'}</conditionExpression>
     </sequenceFlow>
     
     <!-- 处理通过 -> 结束(通过) -->

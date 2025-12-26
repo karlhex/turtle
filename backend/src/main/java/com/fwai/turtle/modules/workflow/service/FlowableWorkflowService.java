@@ -459,6 +459,17 @@ public class FlowableWorkflowService {
     }
     
     /**
+     * 根据流程实例ID获取业务键
+     * 
+     * @param processInstanceId 流程实例ID
+     * @return 业务键
+     */
+    public String getProcessBusinessKey(String processInstanceId) {
+        ProcessInstance processInstance = getProcessInstance(processInstanceId);
+        return processInstance != null ? processInstance.getBusinessKey() : null;
+    }
+    
+    /**
      * 获取流程历史实例
      * 
      * @param processInstanceId 流程实例ID

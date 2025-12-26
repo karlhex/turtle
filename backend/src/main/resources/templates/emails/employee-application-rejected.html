@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>入职申请被拒绝</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #f44336;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #f44336;
+            margin: 0;
+            font-size: 24px;
+        }
+        .rejection-notice {
+            background-color: #ffebee;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 5px solid #f44336;
+            margin: 20px 0;
+        }
+        .reason-section {
+            background-color: #fff3e0;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 5px solid #ff9800;
+            margin: 20px 0;
+        }
+        .detail-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .detail-table th,
+        .detail-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .detail-table th {
+            background-color: #f5f5f5;
+            font-weight: bold;
+            width: 30%;
+        }
+        .encouragement {
+            background-color: #e8f5e8;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: #2196F3;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            color: #666;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>入职申请审核结果</h1>
+        </div>
+
+        <div class="content">
+            <p>亲爱的 <strong th:text="${applicantName}">申请人</strong>，</p>
+
+            <div class="rejection-notice">
+                <h3>📋 申请审核结果</h3>
+                <p>经过仔细评估，我们很遗憾地通知您，您的入职申请暂时未能通过审核。</p>
+            </div>
+
+            <table class="detail-table">
+                <tr>
+                    <th>申请编号</th>
+                    <td th:text="${applicationId}">申请编号</td>
+                </tr>
+                <tr>
+                    <th>申请人</th>
+                    <td th:text="${applicantName}">申请人姓名</td>
+                </tr>
+                <tr>
+                    <th>审核时间</th>
+                    <td th:text="${reviewedAt}">审核时间</td>
+                </tr>
+            </table>
+
+            <div class="reason-section">
+                <h3>📝 拒绝原因</h3>
+                <p th:text="${reason}">拒绝原因详情</p>
+            </div>
+
+            <div class="encouragement">
+                <h3>🌟 不要气馁</h3>
+                <p>虽然这次申请没有成功，但我们鼓励您：</p>
+                <ul style="text-align: left; display: inline-block;">
+                    <li>根据反馈意见完善自己</li>
+                    <li>关注我们未来的职位机会</li>
+                    <li>欢迎在合适的时候重新申请</li>
+                </ul>
+            </div>
+
+            <div style="text-align: center;">
+                <a th:href="${frontendUrl + '/careers'}" class="button">
+                    查看其他职位
+                </a>
+            </div>
+
+            <p><strong>感谢您对我们公司的关注和信任。</strong>祝您在求职路上一切顺利，希望未来有机会与您合作！</p>
+        </div>
+
+        <div class="footer">
+            <p>此邮件由人力资源管理系统自动发送。</p>
+            <p>如有疑问，请联系人力资源部门。</p>
+        </div>
+    </div>
+</body>
+</html>
